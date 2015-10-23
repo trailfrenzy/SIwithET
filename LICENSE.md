@@ -3,3 +3,7 @@
  permissions notice appear in all copies and derivatives.
 
  This software is provided "as is" without express or implied warranty.
+ 
+ Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+ curt.leslie.lewis.martin@gmail.com
+
