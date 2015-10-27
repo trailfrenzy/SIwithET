@@ -25,9 +25,9 @@ namespace SystemOfUnits
          if( DIM ) // value known at compile time
          {
             ret << TYPE::str();
-            ret << "^";
+            ret << '^';
             ret << DIM; //static_cast<int>(DIM);
-            ret << " ";
+            ret << ' ';
          }
       }
    }
