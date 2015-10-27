@@ -1,0 +1,391 @@
+// NOTE to myself Add a section for Add, subtraction, Mult and Div, WhatAmI  my be the unit test.
+/**
+File @file contains the operators for multiplication and division which cannot be done by
+itself.
+
+ @page page1 Multiplication and Division Operators
+
+ @section MAD Multiplication and Division Operators
+ Multiplication and division where a little more difficult to implement where the result is 
+ completly different from the two arguments.  The result type should be know by the the developer
+ who uses the code when the division and multiplication operators are used.  For example:
+ @code meter x = 3;
+ meter y = 4.0;
+ meterSq z = x * y; @endcode
+
+ Where the following will not work:
+ @code meter z = x * y; //error @endcode
+
+ Multiplication and division operators can also have scalars in their arguments on either side.
+ @code meter z = 3.0 * y; @endcode
+ or
+ @code meter z = y * 3.0; @endcode
+
+ The idea is to prevent a user software developer to mismatch the to multipler argument types with the
+ product result type.
+
+*/
+#ifndef UNIT_TYPES_OPERATORS_INCLUDE_H
+#define UNIT_TYPES_OPERATORS_INCLUDE_H
+#pragma once
+#include "SI.h"                           /// why we are here
+#include "boost/type_traits/is_same.hpp"  /// find if two types are the same at compile time
+#include "boost/static_assert.hpp"        /// used for compile time asserts
+#include "boost/mpl/if.hpp"               /// used for compile time if statements
+
+namespace SystemOfUnits
+{
+   namespace operators
+   {
+      /** \brief The trait idea came from "C++ Templates", pg 332.
+       trait is used to allow built in types to be used as args in operator's mul and div 
+       The @code A_Trait<T1,T2> @endcode templates are used during has hidden templates that are
+       created during mulitplication and division operations using the SI templates.  @code A_Trait<T1,T2> @endcode
+       allows operators "*" and "/" to use references of the SI types and values for built in types.
+       
+       */
+      template < typename T, typename T2 > struct A_Trait
+      {
+         /// used as the argument for the operators
+         typedef T const &ArgRef;
+         /// constant reference
+         typedef T const &ExprRef;
+
+         /// the diminsions of the trait
+         enum 
+         { eL = T::eL   /// Length Diminsion 
+         , et = T::et   /// Time Diminsion
+         , eM = T::eM   /// Mass Diminsion
+         , eT = T::eT   /// Tempeture Diminsion
+         , eQ = T::eQ   /// Charge Diminsion
+         };
+
+         typedef typename T::Length Length;        /// Length type of the incoming arg.
+         typedef typename T::Time Time;            /// Time type of the incoming arg.
+         typedef typename T::Mass Mass;            /// Mass type of the incoming arg.
+         typedef typename T::Tempeture Tempeture;  /// Tempeture of the incoming arg.
+         typedef typename T::Charge Charge;        /// Charge of the incoming arg.
+      };
+
+      /** NOTE:
+       #define MAKE_ATRAIT() is use to make specilized templated of built in types
+       Used to make multiplications of built in types against the types produced by SI template.
+	   For example \code meter = meter * 4;   \endcode or \code feet = feet * 5.0; \endcode
+	   It is not a good habbit of using built in scalar types, but the option needs to be provided.
+	  */
+
+#ifndef MAKE_ATRAIT
+#define MAKE_ATRAIT( XX ) template< typename T2 > struct A_Trait< XX, T2 >\
+      {\
+      /** Used as the argument for the operators, with the built in types it is a pass by value.  */\
+      typedef XX ArgRef;\
+      /** For the built in types, still need to use a SI unit type, but one that is diminsion less */\
+      typedef tNoUnit ExprRef; \
+      /** Keep the diminsions at zero */\
+      enum { eL = 0, et = 0, eM = 0, eT=0, eQ=0 };\
+      typedef typename T2::Length Length;\
+      typedef typename T2::Time Time;\
+      typedef typename T2::Mass Mass;\
+      typedef typename T2::Tempeture Tempeture;\
+      typedef typename T2::Charge Charge;\
+      };
+
+	  /// creates struct A_Trait<double, typename T2>
+      MAKE_ATRAIT( double );        
+
+	  /// creates struct A_Trait<float, typename T2>
+      MAKE_ATRAIT( float );         
+
+	  /// creates struct A_Trait<int, typename T2>
+      MAKE_ATRAIT( int );           
+
+	  /// creates struct A_Trait<unsigned, typename T2>
+      MAKE_ATRAIT( unsigned );      
+
+	  /// creates struct A_Trait<long, typename T2>
+      MAKE_ATRAIT( long );
+
+	  /// creates struct A_Trait<unsigned long, typename T2>
+      MAKE_ATRAIT( unsigned long );
+
+      /// creates struct A_Trait<short, typename T2>
+      MAKE_ATRAIT( short );
+
+      /// creates struct A_Trait<unsigned short, typename T2>
+      MAKE_ATRAIT( unsigned short ); 
+#endif 
+      /// base class to Mul_Result and Div_Result
+      /** NOTE:
+      "Expression Templates, Chap 18", C++ Templates The Complete Guide, Addison-Wesley,
+      David Vandevoorde and Nicolai M. Josuttis, 2003.
+
+      The ideas for these two classes came from the above reference.
+
+      A good article to read more about expression templates see:
+      "String Concatenation & Expression Templates", Craig Henderson, 'C/C++ Users Journal', June 2005
+
+	  Remember that all enums and types are calculated at compile time.
+      */
+      template< typename T1, typename T2 > class base
+      {
+         /// private struct used in the the two operators (* / )
+         template< typename A1, typename A2 > struct CombineBaseTypes
+         {
+            static double toBase() 
+            { 
+               return A1::toBase() * A2::toBase() * A1::fromBase() * A1::fromBase(); 
+            }
+         };
+
+      protected:
+         typename typedef A_Trait<T1,T2> R1; /// the type of the left side of the arg
+         typename typedef A_Trait<T2,T1> R2; /// the type of the right side of the arg
+      public:
+         /// public enum is used to let users know that the types did not match
+         /// ie so feet and meters are not mixed up but both are base units
+         enum { eALLTYPES_THE_SAME 
+            = (boost::is_same<R1::Length::Base,R2::Length::Base>::value
+            && boost::is_same<R1::Time::Base,  R2::Time::Base >::value
+            && boost::is_same<R1::Mass::Base,  R2::Mass::Base >::value
+            && boost::is_same<R1::Tempeture::Base, R2::Tempeture::Base >::value
+            && boost::is_same<R1::Charge::Base, R2::Charge::Base >::value
+            )
+            || ( R1::eL==0 && R1::et==0 && R1::eM==0 && R1::eT==0 && R1::eQ==0 )
+            || ( R2::eL==0 && R2::et==0 && R2::eM==0 && R2::eT==0 && R2::eQ==0 )
+         };
+
+         // if the length as same type ie meter to meter, not meter to kilometer
+		 // enum value will be true if the two types are the same.
+         enum{ IsLengthSame = boost::is_same< typename R1::Length, typename R2::Length >::value };
+         enum{ IsTimeSame   = boost::is_same< typename R1::Time,   typename R2::Time   >::value };
+         enum{ IsMassSame   = boost::is_same< typename R1::Mass,   typename R2::Mass   >::value };
+         enum{ IsTempSame   = boost::is_same< typename R1::Tempeture, typename R2::Tempeture >::value };
+         enum{ IsChargeSame = boost::is_same< typename R1::Charge, typename R2::Charge >::value };
+
+         /// need to know if BOTH the diminsions in the two operands are base
+         enum{ AreLengthsBase = R1::Length::IsBase && R2::Length::IsBase };
+         /// need to know if BOTH the diminsions in the two operands are base
+         enum{ AreTimeBase    = R1::Time::IsBase   && R2::Time::IsBase };
+         /// need to know if BOTH the diminsions in the two operands are base
+         enum{ AreMassBase    = R1::Mass::IsBase   && R2::Mass::IsBase };
+         /// need to know if BOTH the diminsions in the two operands are base
+         enum{ AreTempBase    = R1::Tempeture::IsBase && R2::Tempeture::IsBase };
+         /// need to know if BOTH the diminsions in the two operands are base
+         enum{ AreChargeBase  = R1::Charge::IsBase && R2::Charge::IsBase };
+
+		 /* what are the 4 proposed traits going to be used for */
+         /// the proposed length type of the result
+         typename typedef boost::mpl::if_c
+            < R1::eL == 0 || R2::eL == 0
+            , NoDim
+            , typename boost::mpl::if_c
+            < IsLengthSame
+            , NoDim
+            , typename boost::mpl::if_c
+            < !R1::Length::IsBase && !R2::Length::IsBase
+            , CombineBaseTypes<typename R1::Length, typename R2::Length>
+            , typename boost::mpl::if_c<R2::Length::IsBase, typename SOU::MakeFrom<typename R1::Length>, typename R2::Length >::type
+            >::type
+            >::type
+            >::type LenType;
+
+         /// the proposed time type of the result
+         typename typedef boost::mpl::if_c
+            < R1::et == 0 || R2::et == 0
+            , NoDim
+            , typename boost::mpl::if_c
+            < IsTimeSame
+            , NoDim
+            , typename boost::mpl::if_c
+            < !R1::Time::IsBase && !R2::Time::IsBase
+            , CombineBaseTypes<typename R1::Time, typename R2::Time>
+            , typename boost::mpl::if_c<R2::Time::IsBase, SOU::MakeFrom<typename R1::Time>, typename R2::Time >::type
+            >::type 
+            >::type
+            >::type TimeType;
+
+         /// the proposed mass type of the result
+         typename typedef boost::mpl::if_c
+            < R1::eM == 0 || R2::eM == 0
+            , NoDim
+            , typename boost::mpl::if_c
+               < IsMassSame
+               , NoDim
+               , typename boost::mpl::if_c
+                  < !R1::Mass::IsBase && !R2::Mass::IsBase
+                  , CombineBaseTypes<typename R1::Mass, typename R2::Mass>
+                  , typename boost::mpl::if_c<R2::Mass::IsBase, SOU::MakeFrom<typename R1::Mass>, typename R2::Mass >::type
+                  >::type 
+               >::type
+            >::type MassType;
+
+         /// the proposed tempeture type of the result
+         typename typedef boost::mpl::if_c
+            < R1::eT == 0 || R2::eT == 0
+            , NoDim
+            , typename boost::mpl::if_c
+            < IsTempSame
+            , NoDim
+            , typename boost::mpl::if_c
+            < !R1::Tempeture::IsBase && !R2::Tempeture::IsBase
+            , CombineBaseTypes<typename R1::Tempeture, typename R2::Tempeture>
+            , typename boost::mpl::if_c<R2::Tempeture::IsBase, SOU::MakeFrom<typename R1::Tempeture>, typename R2::Tempeture >::type
+            >::type 
+            >::type
+            >::type TempetureType;
+
+      };
+
+      /// a class for objects that represents the multiplication of two operands
+      template< typename T1, typename T2 >
+      class Mul_Result : public operators::base< T1, T2 >
+      {
+         typename R1::ExprRef m_r1;    /// first operand reference
+         typename R2::ExprRef m_r2;    /// second operand reference
+      public:
+         /// multplication is addition of the powers 
+         enum { eL = R1::eL + R2::eL   /// Length Diminsion 
+              , et = R1::et + R2::et   /// Time Diminsion 
+              , eM = R1::eM + R2::eM   /// Mass Diminsion 
+              , eT = R1::eT + R2::eT   /// Tempeture Diminsion 
+              , eQ = R1::eQ + R2::eQ };/// Charge Diminsion 
+
+         /// informs us during the compile process that the result has no diminsions.
+         enum { isNonDim = eL==0 && et==0 && eM==0 && eQ==0 && eT==0 };      
+
+         typename typedef boost::mpl::if_c< eL==0, typename R1::Length,    typename boost::mpl::if_c<R1::eL!=0, typename R1::Length, typename R2::Length>::type >::type Length;
+         typename typedef boost::mpl::if_c< et==0, typename R1::Time  ,    typename boost::mpl::if_c<R1::et!=0, typename R1::Time  , typename R2::Time  >::type >::type Time;
+         typename typedef boost::mpl::if_c< eM==0, typename R1::Mass,      typename boost::mpl::if_c<R1::eM!=0, typename R1::Mass  , typename R2::Mass  >::type >::type Mass;
+         typename typedef boost::mpl::if_c< eT==0, typename R1::Tempeture, typename boost::mpl::if_c<R1::eT!=0, typename R1::Tempeture, typename R2::Tempeture>::type >::type Tempeture;
+         typename typedef boost::mpl::if_c< eQ==0, typename R1::Charge   , typename boost::mpl::if_c<R1::eQ!=0, typename R1::Charge, typename R2::Charge>::type >::type Charge;
+
+         /// all results are based on the first operands type, if NoDim then base on the second.
+         typedef SOU::unitType
+            < Length, eL
+            , Time, et
+            , Mass, eM
+            , Tempeture, eT
+            , Charge, eQ
+            > TBeforeResult;
+
+      public:
+         /// if not diminsions then the return type is double
+         typename typedef boost::mpl::if_c<isNonDim, double, typename TBeforeResult >::type TResult;
+
+         /// constructor initializes references to the operands.
+         /// @param R1::ArgRef r1 is the right hand side.
+         /// @param R2::ArgRef r2 is the left hand side.
+         Mul_Result( typename R1::ArgRef r1, typename R2::ArgRef r2 ) : m_r1(r1), m_r2(r2){}
+
+         /// computes when requested
+         /// @return TResult which is found at compile time
+         typename TResult result() const
+         {
+            using namespace SOU;
+
+            // line will crash if not the same compatible types
+            boost::STATIC_ASSERTION_FAILURE< eALLTYPES_THE_SAME >;
+            // tempeture is not supported in more than 1 diminsion
+            boost::STATIC_ASSERTION_FAILURE< eT == 0 || eT == 1 || eT == -1 >;
+
+            return TResult
+               ( m_r1.amount() 
+               * LenType::toBase()
+               * TimeType::toBase()
+               * MassType::toBase()
+               * m_r2.amount()
+               );
+         }
+      };
+
+      /// a class for objects that represents the division of two operands
+      template< typename T1, typename T2 >
+      class Div_Result : public operators::base< T1, T2 >
+      {
+         typename R1::ExprRef m_r1;    /// first operand reference
+         typename R2::ExprRef m_r2;    /// second operand reference
+
+      public:
+         /// division is based on subtracting the two diminsions of the operands
+         enum { eL = R1::eL - R2::eL   /// Length Diminsion 
+              , et = R1::et - R2::et   /// Time Diminsion 
+              , eM = R1::eM - R2::eM   /// Mass Diminsion 
+              , eT = R1::eT - R2::eT   /// Tempeture Diminsion 
+              , eQ = R1::eQ - R2::eQ };/// Charge Diminsion 
+
+         /// informs us during the compile process that the result has no diminsions.
+         enum { isNonDim = eL==0 && et==0 && eM==0 && eT==0 && eQ==0 };      
+
+         typename typedef boost::mpl::if_c< eL==0, typename R1::Length,    typename boost::mpl::if_c<R1::eL!=0, typename R1::Length, typename R2::Length>::type >::type Length;
+         typename typedef boost::mpl::if_c< et==0, typename R1::Time  ,    typename boost::mpl::if_c<R1::et!=0, typename R1::Time  , typename R2::Time  >::type >::type Time;
+         typename typedef boost::mpl::if_c< eM==0, typename R1::Mass,      typename boost::mpl::if_c<R1::eM!=0, typename R1::Mass  , typename R2::Mass  >::type >::type Mass;
+         typename typedef boost::mpl::if_c< eT==0, typename R1::Tempeture, typename boost::mpl::if_c<R1::eT!=0, typename R1::Tempeture, typename R2::Tempeture>::type >::type Tempeture;
+         typename typedef boost::mpl::if_c< eQ==0, typename R1::Charge   , typename boost::mpl::if_c<R1::eQ!=0, typename R1::Charge, typename R2::Charge>::type >::type Charge;
+
+         /// the type it will be if the dims are not 0
+         typedef SOU::unitType
+            < Length, eL
+            , Time,   et
+            , Mass,   eM
+            , Tempeture, eT
+            , Charge, eQ
+            > TBeforeResult;
+         /// enum is used so let user know that the types did not match
+         /// all results are based on the first operands type, if NoDim then base on the second.
+         typename typedef boost::mpl::if_c<isNonDim, double, typename TBeforeResult >::type TResult;
+
+         /// constructor.
+         /// @param R1::ArgRef r1 is the right hand side.
+         /// @param R2::ArgRef r2 is the left hand side.
+         Div_Result( typename R1::ArgRef r1, typename R2::ArgRef r2 ) : m_r1(r1), m_r2(r2){}
+
+         /// computes when requested
+         /// @return TResult which is found at compile time
+         typename TResult result() const
+         {
+            // line will crash if not the same compatible types
+            boost::STATIC_ASSERTION_FAILURE< eALLTYPES_THE_SAME >;
+            boost::STATIC_ASSERTION_FAILURE< eT == 0 || eT == 1 || eT == -1 >;
+
+            return TResult
+               ( 
+               m_r1.amount() 
+               / LenType::toBase()
+               / TimeType::toBase()
+               / MassType::toBase()
+               / m_r2.amount() 
+               );
+         }
+      };
+
+   }  // end of namespace operators
+}  // end of namespace SystemOfUnits
+
+
+/// template function which is multiplication operator of two different operands
+template < typename R1, typename R2 >
+inline typename SOU::operators::Mul_Result<R1,R2>::TResult operator*( R1 const &r1, R2 const &r2 )
+{
+   return SOU::operators::Mul_Result<R1,R2>(r1,r2).result();
+}
+
+/// template function which is divisional operator of two different operands
+template< typename R1, typename R2 >
+inline typename SOU::operators::Div_Result<R1,R2>::TResult operator/( R1 const &r1, R2 const &r2 )
+{
+   return SOU::operators::Div_Result<R1,R2>(r1,r2).result();
+}
+
+// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// curt.leslie.lewis.martin@gmail.com
+//
+// Permission to use, copy, modify, and distribute this software for any
+// purpose is hereby granted without fee, provided that this copyright and
+// permissions notice appear in all copies and derivatives.
+//
+// This software is provided "as is" without express or implied warranty.
+
+/**
+
+*/
+#endif
