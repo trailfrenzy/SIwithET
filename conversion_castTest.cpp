@@ -9,7 +9,7 @@
 	Think of the this file as a contract for what file confersion_cast.h has.
 */
 #include <cppunit/extensions/HelperMacros.h>
-#include "boost/static_assert.hpp"
+//#include "boost/static_assert.hpp"
 #include "SI.h"
 #include "MetricTypes.h"
 #include "conversion_cast.h"
@@ -23,7 +23,7 @@ public:
    void tearDown() {}
 private: 
 
-	/// Test how well compile time expeditanal power template works.
+	/// Test how well compile time exponential power template works.
 	/// @see SI::helpers::P::thePower
 	/// @see Metric::AtomicUnit
 	void TestPow()
@@ -136,7 +136,7 @@ private:
 		CPPUNIT_ASSERT_EQUAL( 1e6, gramSq.amount() );
 	}
 
-   /// Test where the diminsions are the wrong size for a conversion.  Test should be a failure.
+   /// Test where the dimensions are the wrong size for a conversion.  Test should be a failure.
    void TestWrongDim()
    {
       using namespace SOU;
@@ -151,8 +151,8 @@ private:
       CPPUNIT_ASSERT( !eALLDIMS_THE_SAME );
       //BOOST_STATIC_ASSERT< true >;
 
-      t_m m = 9.0;
-      t_ms ms = conversion_cast< t_ms >( m );
+      //t_m m = 9.0;
+      //t_ms ms = conversion_cast< t_ms >( m );
 
    }
 
@@ -173,7 +173,7 @@ private:
 
 CPPUNIT_TEST_SUITE_REGISTRATION( conversion_castTest );
 
-// Copyright Â© 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -181,4 +181,3 @@ CPPUNIT_TEST_SUITE_REGISTRATION( conversion_castTest );
 // permissions notice appear in all copies and derivatives.
 //
 // This software is provided "as is" without express or implied warranty.
-

@@ -14,29 +14,30 @@
 
 #pragma once
 #include "SI.h" /// need to know about
-#include "boost/type_traits/is_same.hpp"
-#include "boost/static_assert.hpp"
-#include "boost/mpl/if.hpp"
+#include "template_help.h"
+//#include "boost/type_traits/is_same.hpp"
+//#include "boost/static_assert.hpp"
+//#include "boost/mpl/if.hpp"
 #include "pow.h"	/// template that does the pow at compile time
 
 namespace SystemOfUnits
 {
-	/** Template used to convert between different types that have the same diminsions.
+	/** Template used to convert between different types that have the same dimensions.
 	@param IN in is what will be converted
 	@return OUT the new type
 	*/
 	template< typename OUT, typename IN > OUT conversion_cast( IN const &in )
 	{
       /** Used in the static assertion to ensure that all types are of the same type.
-          You would not want to compare meter^2 from feet^3.  The diminsions are not the same. */ 
+          You would not want to compare meter^2 from feet^3.  The dimensions are not the same. */ 
 		enum { eALLDIMS_THE_SAME = IN::eL==OUT::eL && IN::et==OUT::et && IN::eM==OUT::eM && IN::eQ==OUT::eQ };
 
       /// Use the incoming types as the base types.
 		enum { eL = IN::eL, et = IN::et, eM = IN::eM, eQ = IN::eQ };
 
-		boost::STATIC_ASSERTION_FAILURE<eALLDIMS_THE_SAME >;
+		STATIC_ASSERTION_FAILURE<eALLDIMS_THE_SAME >;
 
-		// set the value to the incoming scalor before correcting the value
+		// set the value to the incoming scaler before correcting the value
 		double out( in.amount() );
 
 		using namespace helpers;
@@ -56,7 +57,7 @@ namespace SystemOfUnits
 			P< MakeFrom<OUT::Mass> >::thePower<eM>::toBase()
 			* P< IN::Mass >::thePower<eM>::toBase();
 
-      // need a correct the tempeture
+      // need a correct the temperature
 
       // correct the charge
       out *=
@@ -64,10 +65,10 @@ namespace SystemOfUnits
          * P< IN::Charge >::thePower<eQ>::toBase();
 
       // during the return the constructor from a scalar value will be used.
-		return out;
+		return OUT(out);
 	}
 }
-// Copyright Â© 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -77,4 +78,3 @@ namespace SystemOfUnits
 // This software is provided "as is" without express or implied warranty.
 
 #endif
-

@@ -7,7 +7,7 @@
 
 namespace SystemOfUnits /// covers the basics of the system
 {
-   /// struct is used to create no diminson unit type
+   /// struct is used to create no dimension unit type
    struct NoDim
    {
       /// Lets using classes know if class is used as a base
@@ -24,22 +24,22 @@ namespace SystemOfUnits /// covers the basics of the system
 
    /// the class which is the heart of this library
    template
-      < typename L, int iL   // length
+      < typename L, int iL    // length
       , typename t, int it    // time
       , typename M, int iM    // mass
-      , typename T, int iT // tempeture
+      , typename T, int iT    // temperature
       , typename Q, int iQ = 0 // charge
    >
    class unitType
    {
       double m_amount; /// the scalar value of the object
    public:
-      /// Diminsions as enum
-      enum { eL = iL /*!< Diminsion of Length */
-         , et = it   /*!< Diminsion of Time */
-         , eM = iM   /*!< Diminsion of Mass */
-         , eT = iT   /*!< Diminsion of Tempeture */
-         , eQ = iQ   /*!< Diminsion of Charge */
+      /// Dimensions as enum
+      enum { eL = iL /*!< Dimension of Length */
+         , et = it   /*!< Dimension of Time */
+         , eM = iM   /*!< Dimension of Mass */
+         , eT = iT   /*!< Dimension of Tempeture */
+         , eQ = iQ   /*!< Dimension of Charge */
       };
 
       // Quantity as typedefs
@@ -49,17 +49,18 @@ namespace SystemOfUnits /// covers the basics of the system
       typedef T Tempeture; /*!<  Quantity type for Tempeture */
       typedef Q Charge;    /*!<  Quantity type for Charge */
 
-      /// defualt constructor (does not intialize scalar with default value, just like a built in type)
+      /// default constructor (does not initialize scalar with default value, just like a built in type)
       unitType(){}
 
       /// constructor from a scalar
       /** constructor from a scalar value
-       * @param a double that is used to intialize the orginal value
+       * @param a double that is used to initialize the original value
       */
       unitType( double m ) : m_amount(m){}
+	  unitType( unitType const &val ) : m_amount(val.m_amount){}
 
-      /** returns the scaler value of the object
-        * @return the scalare value of the type. */
+      /** returns the scalar value of the object
+        * @return the scalar value of the type. */
       double amount()const { return m_amount; }
 
       /** comparison operator
@@ -143,6 +144,12 @@ namespace SystemOfUnits /// covers the basics of the system
          return *this;
       }
 
+	 // unitType &operator=( double rt )
+	 // {
+		//m_amount = rt;
+		//return *this;
+	 // }
+
       /** addition assignment operator
        * @param unitType value which the left-handed object will be added with
        * @return the current object which was increased by the right-handed value
@@ -164,7 +171,7 @@ namespace SystemOfUnits /// covers the basics of the system
       }
 
       /** multiplication assignment operator
-       *  must be with a scalar type.  Imposible with an other unitType (think about it)
+       *  must be with a scalar type.  Impossible with an other unitType (think about it)
        * @param double which is multiplied against the current object
        * @return the current object
       */
@@ -175,7 +182,7 @@ namespace SystemOfUnits /// covers the basics of the system
       }
 
       /** division assignment operator
-          must be with a scalar type.  Imposible with an other unitType. (think about it)
+          must be with a scalar type.  Impossible with an other unitType. (think about it)
        * @param double which is multiplied against the current object
        * @return the current object
       */
@@ -195,7 +202,7 @@ namespace SystemOfUnits /// covers the basics of the system
          return unitType( lf.amount() + rt.amount() );
       }
 
-      /** diference operator
+      /** difference operator
          @param unitType left-handed side
          @param unitType right-handed side
          @return a new unitType of the same type as the left and right sides.
@@ -234,7 +241,7 @@ namespace SystemOfUnits /// covers the basics of the system
       };
    };
 
-   /// a type with no diminsions or quanitity types.  The same size as a double.
+   /// a type with no dimensions or quantity types.  The same size as a double.
    typedef unitType< NoDim,0, NoDim,0, NoDim,0, NoDim,0, NoDim,0 > tNoUnit;
 
    /// used to call fromBase() while using the toBase() static method
@@ -250,7 +257,7 @@ namespace SOU = SystemOfUnits;
 /** 
  @mainpage My Personal Index Page
  @section copyright_sec Copyright
- Copyright Â© 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+ Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
  curt.leslie.lewis.martin@gmail.com
 
  Permission to use, copy, modify, and distribute this software for any

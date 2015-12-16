@@ -8,6 +8,7 @@ operator for the System of Units Template Class.
 #include "MetricTypes.h"
 #include "operators.h"
 #include "conversion_cast.h"	/// helps out during one of the test
+#include "template_help.h"
 //namespace {
 
 // basic test on the multiplication operator
@@ -36,29 +37,29 @@ public:
    }
 private:
 
-   ///Tests wheather the dimensions are correct.
-   /// BOOST_STATIC_ASSERT will bust out during compile time.
+   ///Tests whether the dimensions are correct.
+   /// STATIC_ASSERTION_FAILURE will bust out during compile time.
    void TestAssignment()
    {
       using namespace SOU::operators;
 
-      BOOST_STATIC_ASSERT( t_MeterSq::eL == 2 );
-      BOOST_STATIC_ASSERT( t_MeterSq::et==0);
-      BOOST_STATIC_ASSERT( t_MeterSq::eM==0);
-      BOOST_STATIC_ASSERT( t_MeterSq::eT==0);
-      BOOST_STATIC_ASSERT( t_MeterSq::eQ==0);
+      CPPUNIT_ASSERT( t_MeterSq::eL == 2 );
+      CPPUNIT_ASSERT( t_MeterSq::et==0);
+      CPPUNIT_ASSERT( t_MeterSq::eM==0);
+      CPPUNIT_ASSERT( t_MeterSq::eT==0);
+      CPPUNIT_ASSERT( t_MeterSq::eQ==0);
 
       typedef Mul_Result<t_Meter, t_Meter> tMulSq;
       CPPUNIT_ASSERT( tMulSq::eALLTYPES_THE_SAME == true );
-      BOOST_STATIC_ASSERT( tMulSq::TResult::eL==t_MeterSq::eL );//good
-      BOOST_STATIC_ASSERT( tMulSq::TResult::et==t_MeterSq::et );
-      BOOST_STATIC_ASSERT( tMulSq::TResult::eM==t_MeterSq::eM );
-      BOOST_STATIC_ASSERT( tMulSq::TResult::eT==t_MeterSq::eT );
-      BOOST_STATIC_ASSERT( tMulSq::TResult::eQ==t_MeterSq::eQ );
-      //BOOST_STATIC_ASSERT(( boost::is_same<tMulSq::TResult::Length, SI::NoDim>::value ));
+      CPPUNIT_ASSERT( tMulSq::TResult::eL==t_MeterSq::eL );//good
+      CPPUNIT_ASSERT( tMulSq::TResult::et==t_MeterSq::et );
+      CPPUNIT_ASSERT( tMulSq::TResult::eM==t_MeterSq::eM );
+      CPPUNIT_ASSERT( tMulSq::TResult::eT==t_MeterSq::eT );
+      CPPUNIT_ASSERT( tMulSq::TResult::eQ==t_MeterSq::eQ );
+      //STATIC_ASSERTION_FAILURE(( boost::is_same<tMulSq::TResult::Length, SI::NoDim>::value ));
 
       tMulSq mulSq( t_Meter(1.0) , t_Meter(1.0) );
-      //BOOST_STATIC_ASSERT(( boost::is_same< t_MeterSq, tMulSq::TResult >::value ));
+      //STATIC_ASSERTION_FAILURE(( boost::is_same< t_MeterSq, tMulSq::TResult >::value ));
       
       tMulSq::TResult sq = mulSq.result();
       t_MeterSq sq1 = mulSq.result();
@@ -75,13 +76,13 @@ private:
       
       t_MeterSq sq2 = t_Meter(1.0) * t_Meter(2.0);
       CPPUNIT_ASSERT( sq2 == 2.0 );
-      CPPUNIT_ASSERT_MESSAGE("not implimented yet", 2.0 == sq2 );
+      CPPUNIT_ASSERT_MESSAGE("not implemented yet", 2.0 == sq2 );
 
       t_MeterSq sq3 = t_Meter(4.5) * t_Meter(5.5);
       CPPUNIT_ASSERT_DOUBLES_EQUAL(24.75, sq3.amount(), 0.00001 );
    }
 
-   /// test with a cube dimension.  Important test when first begining
+   /// test with a cube dimension.  Important test when first beginning
    void TestWithCube()
    {
       t_MeterCubed cu1 = t_Meter(2.0) * t_MeterSq(3.0);
@@ -138,22 +139,22 @@ private:
 
       CPPUNIT_ASSERT( (Mul_Result<t_Meter, tNoUnit>::eALLTYPES_THE_SAME) == true );
       CPPUNIT_ASSERT( (Mul_Result<t_Meter, Metric::t_gramPsec>::eALLTYPES_THE_SAME) == true );
-      // not implimeted yet!!
+      // not implemented yet!!
    }
    ///Basic test with Length types
    void TestWithNonAtomicUnitUnitsLength()
    {
 	   typedef SOU::operators::Mul_Result<t_Meter, Metric::t_centimeter > t_Mul;
-      BOOST_STATIC_ASSERT( t_Mul::IsLengthSame == false );
-      BOOST_STATIC_ASSERT( t_Mul::IsTimeSame == true );
-      BOOST_STATIC_ASSERT( t_Mul::IsMassSame == true );
-      BOOST_STATIC_ASSERT( t_Mul::AreLengthsBase == false );
+      CPPUNIT_ASSERT( t_Mul::IsLengthSame == false );
+      CPPUNIT_ASSERT( t_Mul::IsTimeSame == true );
+      CPPUNIT_ASSERT( t_Mul::IsMassSame == true );
+      CPPUNIT_ASSERT( t_Mul::AreLengthsBase == false );
 
 	   typedef t_Mul::TResult t_MulR;
-	   enum{ b = boost::is_same< t_MulR::Length, Metric::AtomicUnit::Centimeter >::value };
-	   enum{ c = boost::is_same< t_MulR::Length, Metric::AtomicUnit::Meter >::value };
-	   BOOST_STATIC_ASSERT( c );
-	   BOOST_STATIC_ASSERT( !b );  // this is correct Length should not be a Centimeter
+	   enum{ b = SOU::is_same< t_MulR::Length, Metric::AtomicUnit::Centimeter >::value };
+	   enum{ c = SOU::is_same< t_MulR::Length, Metric::AtomicUnit::Meter >::value };
+	   CPPUNIT_ASSERT( c );
+	   CPPUNIT_ASSERT( !b );  // this is correct Length should not be a Centimeter
 
       t_Mul mul( t_Meter(7.0), Metric::t_centimeter(200.0) );
       //CPPUNIT_ASSERT_DOUBLES_EQUAL( 14.0, mul.result().amount(), 0.0001 );
@@ -235,20 +236,20 @@ private:
       CPPUNIT_ASSERT_EQUAL( 75.0, gps.amount() );
    }
    /// Test with the non-dimensional unit type to ensure that operator* still works with
-   /// type of 0 diminsion.
+   /// type of 0 dimension.
    void TestWithNonDimension()
    {
       const t_Meter meter = 7.0;
       double y = 2.0;
       t_Meter high = meter * y;
-      CPPUNIT_ASSERT_MESSAGE("testing with varible", high == 14.0 );
+      CPPUNIT_ASSERT_MESSAGE("testing with variable", high == 14.0 );
       CPPUNIT_ASSERT_MESSAGE("testing unitType*constant", 21.0 == meter * 3.0 );
       CPPUNIT_ASSERT_MESSAGE("testing constant * unitType", 3.0 * meter == 21.0 );
 
       double const x = 4;
       //t_Meter low = meter * tNoUnit(3.0);
       //low = meter * x;
-      CPPUNIT_ASSERT_MESSAGE("testing with constant varible", meter * x == 28.0 );
+      CPPUNIT_ASSERT_MESSAGE("testing with constant variable", meter * x == 28.0 );
       CPPUNIT_ASSERT_MESSAGE("test with a int", meter * 5 == 35.0 );
       CPPUNIT_ASSERT_MESSAGE("test with a float", meter * static_cast<float>(5.0) == 35.0 );
       CPPUNIT_ASSERT_MESSAGE("is this still allowed", 12.0 == x * 3 );
@@ -290,8 +291,8 @@ private:
 
 CPPUNIT_TEST_SUITE_REGISTRATION( MultiplyFirst );
 
-///class template to test multiplation operator against any different type of different
-///diminsions in their quantity
+///class template to test multiplication operator against any different type of different
+///dimensions in their quantity
 template
 < int PROD /// The product of the two arguments
 , int MUL1 /// Argument type 1
@@ -522,7 +523,7 @@ typedef SI_Multiply<-2,3,-5> t_Mul5;
 CPPUNIT_TEST_SUITE_REGISTRATION( t_Mul5 );
 // }
 
-// Copyright Â© 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -530,4 +531,3 @@ CPPUNIT_TEST_SUITE_REGISTRATION( t_Mul5 );
 // permissions notice appear in all copies and derivatives.
 //
 // This software is provided "as is" without express or implied warranty.
-

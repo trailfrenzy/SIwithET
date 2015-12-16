@@ -3,7 +3,8 @@
 #include <cppunit/extensions/HelperMacros.h> // the macros and headers needed by CPPUnit
 #include "SI.h"
 #include "MetricTypes.h"
-#include "boost/type_traits/is_same.hpp"  // used by SITestSQ
+//#include "boost/type_traits/is_same.hpp"  // used by SITestSQ
+#include "template_help.h"
 
 template< class UNIT_TYPE >
 class SITest : public CppUnit::TestFixture
@@ -92,7 +93,10 @@ private:
       CPPUNIT_ASSERT_MESSAGE( "check that m_1 was assigned correctly", *m_1 == 68.9 );
 
       *m_2 = *m_1;
-      CPPUNIT_ASSERT( *m_2 == 68.9 );      
+      CPPUNIT_ASSERT( *m_2 == 68.9 );
+
+	  *m_2 = UNIT_TYPE( 4.5 );
+	  CPPUNIT_ASSERT( *m_2 == 4.5 );
    }
 
    void Addition()
@@ -125,6 +129,7 @@ private:
       UNIT_TYPE u2( 6.0);
       CPPUNIT_ASSERT( u2 + u2 + u2 + u2 - u1 == u1 );
       CPPUNIT_ASSERT( u2 + u2 + u2 + u2 - u1 - u2 == u1 - u2 );
+	  CPPUNIT_ASSERT( UNIT_TYPE(2.0) + UNIT_TYPE(3.0) == UNIT_TYPE(5.0) );
    }
 
 };
@@ -140,7 +145,7 @@ class SITestSQ : public CppUnit::TestFixture
 
       typedef SOU::MakeSQ<t_gramPsec>::type gramSQ;
 
-      enum { b = boost::is_same< gramSQ, typename t_gramPsecSQ >::value };
+	  enum { b = SystemOfUnits::is_same< gramSQ, typename t_gramPsecSQ >::value };
       CPPUNIT_ASSERT( b );
       
    }
@@ -177,7 +182,7 @@ typedef t_Base::MakeDim<3,0,0,0,0>::type t_MeterCubed;
 CPPUNIT_TEST_SUITE_REGISTRATION( SITest<t_MeterSq> );
 CPPUNIT_TEST_SUITE_REGISTRATION( SITest<t_MeterCubed>);
 
-// Copyright Â© 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any
@@ -185,4 +190,3 @@ CPPUNIT_TEST_SUITE_REGISTRATION( SITest<t_MeterCubed>);
 // permissions notice appear in all copies and derivatives.
 //
 // This software is provided "as is" without express or implied warranty.
-

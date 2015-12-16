@@ -37,7 +37,7 @@ private:
 
 CPPUNIT_TEST_SUITE_REGISTRATION( MetricUnitTest );
 
-// Copyright Â© 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

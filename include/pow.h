@@ -12,7 +12,8 @@
 #pragma once
 
 /// template used to find the produce the power at compile time.
-#include "boost/mpl/if.hpp"
+//#include "boost/mpl/if.hpp"
+#include "template_help.h"
 
 namespace SystemOfUnits
 {
@@ -52,15 +53,15 @@ namespace SystemOfUnits
             }
          };
 
-         /// the generic version the struct. must be after the specilized versions.
+         /// the generic version the struct. must be after the specialized versions.
          template< int E > struct thePower
          {
             static double toBase()
             {
                // it is safe to assume that E will be greater than +1 or 
                // less than -1 and not between
-               return boost::mpl::if_c< (E > 0), thePower< E-1 >, thePower< E+1 > >::type::toBase()
-                  * boost::mpl::if_c< (E > 0), thePower< 1   >, thePower< -1  > >::type::toBase();
+               return IF< (E > 0), thePower< E-1 >, thePower< E+1 > >::RET::toBase()
+                  * IF< (E > 0), thePower< 1   >, thePower< -1  > >::RET::toBase();
             }
          };
 
@@ -68,7 +69,7 @@ namespace SystemOfUnits
    }
 } // end of namespace SI
 
-// Copyright Â© 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

@@ -1,3 +1,4 @@
+
 #ifndef SI_WHATAMI_H_INCLUDE
 #define SI_WHATAMI_H_INCLUDE
 #pragma once
@@ -10,7 +11,7 @@
 
  @section WhatAmI()
  The function template provides a way to find out what the type is at run time.  It is
- used manely for user debugging.
+ used mainly for user debugging.
 
 */
 namespace SystemOfUnits
@@ -25,9 +26,9 @@ namespace SystemOfUnits
          if( DIM ) // value known at compile time
          {
             ret << TYPE::str();
-            ret << '^';
+            ret << '^'; // was "^";
             ret << DIM; //static_cast<int>(DIM);
-            ret << ' ';
+            ret << ' '; // was " ";
          }
       }
    }
@@ -35,6 +36,7 @@ namespace SystemOfUnits
    /// method owned by the class which prints the type of class
    /// @prama SystemOfUnits::unitType
    /// @return std::string
+   /// @note future work is to remove the blank space after each string.
    template< typename T >
    std::string WhatAmI( T )
    {
@@ -46,10 +48,10 @@ namespace SystemOfUnits
       helpers::printAtom< T::Tempeture, T::eT >( buf );
       helpers::printAtom< T::Charge, T::eQ >( buf );
 
-      return buf.str();
+      return buf.str().erase(buf.str().size() -1 ); // removes the last space char in the buffer
    }
 }
-// Copyright Â© 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

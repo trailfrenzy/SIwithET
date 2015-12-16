@@ -46,7 +46,7 @@ private:
 
       t_n const N = acc * mass;
       CPPUNIT_ASSERT_DOUBLES_EQUAL( 49.05, N.amount(), 0.0001 );
-      CPPUNIT_ASSERT_EQUAL(std::string("meter^1 second^-2 kilogram^1 "),SOU::WhatAmI(N) );
+      CPPUNIT_ASSERT_EQUAL(std::string("meter^1 second^-2 kilogram^1"),SOU::WhatAmI(N) );
       //std::cout << SI::WhatAmI(N);
    }
 
@@ -88,7 +88,7 @@ private:
 
 CPPUNIT_TEST_SUITE_REGISTRATION( TableIITest );
 
-// Copyright Â© 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

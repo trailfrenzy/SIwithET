@@ -223,7 +223,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION( tDiv5 );
 typedef SOU_Division<2,4,-2> tDiv6;
 CPPUNIT_TEST_SUITE_REGISTRATION( tDiv6 );
 }
-// Copyright Â© 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

@@ -44,7 +44,7 @@ namespace Metric
    typedef AUMetric::MakeDim<0,-1,1,0,0>::type t_gramPsec;
 } // end of namespace
 
-// Copyright Â© 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any
