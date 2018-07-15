@@ -1,0 +1,50 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SIwithET", "SIwithET.vcproj", "{11E6F6A6-C04C-4CC0-826E-3B85A563958C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppunit_dll", "..\cppunit\src\cppunit\cppunit_dll.vcproj", "{B4ED7335-C76E-41FD-A305-6D5E7472EEDF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Crossplatform Setting|Win32 = Debug Crossplatform Setting|Win32
+		Debug DLL|Win32 = Debug DLL|Win32
+		Debug Unicode|Win32 = Debug Unicode|Win32
+		Debug|Win32 = Debug|Win32
+		Release DLL|Win32 = Release DLL|Win32
+		Release Unicode|Win32 = Release Unicode|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{11E6F6A6-C04C-4CC0-826E-3B85A563958C}.Debug Crossplatform Setting|Win32.ActiveCfg = Debug|Win32
+		{11E6F6A6-C04C-4CC0-826E-3B85A563958C}.Debug Crossplatform Setting|Win32.Build.0 = Debug|Win32
+		{11E6F6A6-C04C-4CC0-826E-3B85A563958C}.Debug DLL|Win32.ActiveCfg = Debug|Win32
+		{11E6F6A6-C04C-4CC0-826E-3B85A563958C}.Debug DLL|Win32.Build.0 = Debug|Win32
+		{11E6F6A6-C04C-4CC0-826E-3B85A563958C}.Debug Unicode|Win32.ActiveCfg = Debug|Win32
+		{11E6F6A6-C04C-4CC0-826E-3B85A563958C}.Debug Unicode|Win32.Build.0 = Debug|Win32
+		{11E6F6A6-C04C-4CC0-826E-3B85A563958C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{11E6F6A6-C04C-4CC0-826E-3B85A563958C}.Debug|Win32.Build.0 = Debug|Win32
+		{11E6F6A6-C04C-4CC0-826E-3B85A563958C}.Release DLL|Win32.ActiveCfg = Release|Win32
+		{11E6F6A6-C04C-4CC0-826E-3B85A563958C}.Release DLL|Win32.Build.0 = Release|Win32
+		{11E6F6A6-C04C-4CC0-826E-3B85A563958C}.Release Unicode|Win32.ActiveCfg = Release|Win32
+		{11E6F6A6-C04C-4CC0-826E-3B85A563958C}.Release Unicode|Win32.Build.0 = Release|Win32
+		{11E6F6A6-C04C-4CC0-826E-3B85A563958C}.Release|Win32.ActiveCfg = Release|Win32
+		{11E6F6A6-C04C-4CC0-826E-3B85A563958C}.Release|Win32.Build.0 = Release|Win32
+		{B4ED7335-C76E-41FD-A305-6D5E7472EEDF}.Debug Crossplatform Setting|Win32.ActiveCfg = Debug|Win32
+		{B4ED7335-C76E-41FD-A305-6D5E7472EEDF}.Debug Crossplatform Setting|Win32.Build.0 = Debug|Win32
+		{B4ED7335-C76E-41FD-A305-6D5E7472EEDF}.Debug DLL|Win32.ActiveCfg = Debug|Win32
+		{B4ED7335-C76E-41FD-A305-6D5E7472EEDF}.Debug DLL|Win32.Build.0 = Debug|Win32
+		{B4ED7335-C76E-41FD-A305-6D5E7472EEDF}.Debug Unicode|Win32.ActiveCfg = Debug|Win32
+		{B4ED7335-C76E-41FD-A305-6D5E7472EEDF}.Debug Unicode|Win32.Build.0 = Debug|Win32
+		{B4ED7335-C76E-41FD-A305-6D5E7472EEDF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B4ED7335-C76E-41FD-A305-6D5E7472EEDF}.Debug|Win32.Build.0 = Debug|Win32
+		{B4ED7335-C76E-41FD-A305-6D5E7472EEDF}.Release DLL|Win32.ActiveCfg = Release|Win32
+		{B4ED7335-C76E-41FD-A305-6D5E7472EEDF}.Release DLL|Win32.Build.0 = Release|Win32
+		{B4ED7335-C76E-41FD-A305-6D5E7472EEDF}.Release Unicode|Win32.ActiveCfg = Release|Win32
+		{B4ED7335-C76E-41FD-A305-6D5E7472EEDF}.Release Unicode|Win32.Build.0 = Release|Win32
+		{B4ED7335-C76E-41FD-A305-6D5E7472EEDF}.Release|Win32.ActiveCfg = Release|Win32
+		{B4ED7335-C76E-41FD-A305-6D5E7472EEDF}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
