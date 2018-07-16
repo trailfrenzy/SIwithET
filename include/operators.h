@@ -161,7 +161,7 @@ namespace SystemOfUnits
 			  , T = true
          };
 
-		  friend constexpr bool operator==(const ALLTYPES_THE_SAME lf, const bool rt) { return lf == rt;  }
+		  //friend constexpr bool operator==(const enum ALLTYPES_THE_SAME lf, const bool rt) { return lf::val == rt;  } // used static_cast<> instead
 
          // if the length as same type ie meter to meter, not meter to kilometer
 		 // enum value will be true if the two types are the same.

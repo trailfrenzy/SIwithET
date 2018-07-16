@@ -130,15 +130,15 @@ private:
       using namespace SOU::operators;
       //typedef Mul_Result<t_Meter, t_Meter> tMulSq;
       //CPPUNIT_ASSERT( tMulSq::eALLTYPES_THE_SAME == true );
-      CPPUNIT_ASSERT( (Mul_Result<t_Meter, t_Meter>::ALLTYPES_THE_SAME::val ) == true );
-      CPPUNIT_ASSERT( (Mul_Result<t_Meter, t_MeterSq>::ALLTYPES_THE_SAME::val) == true );
-      CPPUNIT_ASSERT( (Mul_Result<t_MeterCubed, t_Meter>::ALLTYPES_THE_SAME::val) == true );
+      CPPUNIT_ASSERT( static_cast<bool>(Mul_Result<t_Meter, t_Meter>::ALLTYPES_THE_SAME::val ) == true );
+      CPPUNIT_ASSERT(static_cast<bool>(Mul_Result<t_Meter, t_MeterSq>::ALLTYPES_THE_SAME::val) == true );
+      CPPUNIT_ASSERT( static_cast<bool>(Mul_Result<t_MeterCubed, t_Meter>::ALLTYPES_THE_SAME::val) == true );
 
-      CPPUNIT_ASSERT( (Mul_Result<t_centimeter, t_Meter>::ALLTYPES_THE_SAME::val) == true );
-      CPPUNIT_ASSERT( (Mul_Result<t_centimeter, t_MeterCubed>::ALLTYPES_THE_SAME::val) == true );
+      CPPUNIT_ASSERT(static_cast<bool>(Mul_Result<t_centimeter, t_Meter>::ALLTYPES_THE_SAME::val) == true );
+      CPPUNIT_ASSERT(static_cast<bool>(Mul_Result<t_centimeter, t_MeterCubed>::ALLTYPES_THE_SAME::val) == true );
 
-      CPPUNIT_ASSERT( (Mul_Result<t_Meter, tNoUnit>::ALLTYPES_THE_SAME::val) == true );
-      CPPUNIT_ASSERT( (Mul_Result<t_Meter, Metric::t_gramPsec>::ALLTYPES_THE_SAME::val) == true );
+      CPPUNIT_ASSERT(static_cast<bool>(Mul_Result<t_Meter, tNoUnit>::ALLTYPES_THE_SAME::val) == true );
+      CPPUNIT_ASSERT(static_cast<bool>(Mul_Result<t_Meter, Metric::t_gramPsec>::ALLTYPES_THE_SAME::val) == true );
       // not implemented yet!!
    }
    ///Basic test with Length types
