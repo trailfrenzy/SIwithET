@@ -68,14 +68,14 @@ private:
    }
 
    /*
-      the test is to see if dB can be produced correctly.
+      the test is to see if dB is produced correctly.
    */
    void TestWithlog()
    {
       t_sec T1 = 80.0;
       t_sec T2 = 8.0;
 
-      double x = log( T1/T2);
+      double x = log( T1/T2 );
       CPPUNIT_ASSERT_DOUBLES_EQUAL( 2.3025850929940456840179914546844, x, 0.001 );
    }
 
