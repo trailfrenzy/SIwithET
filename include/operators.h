@@ -264,7 +264,7 @@ namespace SystemOfUnits
               , eT = R1::eT + R2::eT   /// Tempeture Dimension 
               , eQ = R1::eQ + R2::eQ };/// Charge Dimension 
 
-		 friend constexpr bool operator==(const Dim lf, const int rt) { return lf == rt;  }
+		 //friend constexpr bool operator==(const Dim lf, const int rt) { return lf == rt;  }
 		 
          /// informs us during the compile process that the result has no dimensions.
 		 //enum { bbb = (Dim::eL == 0) };
@@ -309,7 +309,7 @@ namespace SystemOfUnits
                ( m_r1.amount() 
                * t_base::LenType::toBase()
                * t_base::TimeType::toBase()
-               * t_base::MassType::toBase()
+               * t_base::MassType::toBase()  // TODO: what about tempeture and charge?
                * m_r2.amount()
                );
          }
@@ -319,40 +319,41 @@ namespace SystemOfUnits
       template< typename T1, typename T2 >
       class Div_Result : public operators::base< T1, T2 >
       {
-		  //using R1 = A_Trait<T1, T2>;
-         typename base::R1::ExprRef m_r1;    /// first operand reference
-         typename base::R2::ExprRef m_r2;    /// second operand reference
+		  using t_base = base< T1, T2 >;
+		  typename t_base::R1::ExprRef m_r1;    /// first operand reference
+         typename t_base::R2::ExprRef m_r2;    /// second operand reference
 
       public:
-		  using R1 = base::R1;
-		  using R2 = base::R2;
+		  using R1 = t_base::R1;
+		  using R2 = t_base::R2;
          /// division is based on subtracting the two dimensions of the operands
-         enum class Dim{ eL = R1::eL - R2::eL   /// Length Dimension 
+         enum class Dim{ Z = 0
+			  ,eL = R1::eL - R2::eL   /// Length Dimension 
               , et = R1::et - R2::et   /// Time Dimension 
               , eM = R1::eM - R2::eM   /// Mass Dimension 
               , eT = R1::eT - R2::eT   /// Tempeture Dimension 
               , eQ = R1::eQ - R2::eQ };/// Charge Dimension 
 
          /// informs us during the compile process that the result has no dimensions.
-         enum { isNonDim = Dim::eL==0 && Dim::et==0 && Dim::eM==0 && Dim::eT==0 && Dim::eQ==0 };
+		 enum class isNoDim : bool { val = (Dim::eL == Dim::Z) && (Dim::et == Dim::Z) && (Dim::eM == Dim::Z) && (Dim::eQ == Dim::Z) && (Dim::eT == Dim::Z) };
 
-		 typename typedef IF< Dim::eL==0, typename R1::Length,    typename IF<R1::eL!=0, typename R1::Length, typename R2::Length>::RET >::RET  Length;
-         typename typedef IF< Dim::et==0, typename R1::Time  ,    typename IF<R1::et!=0, typename R1::Time  , typename R2::Time  >::RET >::RET Time;
-         typename typedef IF< Dim::eM==0, typename R1::Mass,      typename IF<R1::eM!=0, typename R1::Mass  , typename R2::Mass  >::RET >::RET Mass;
-         typename typedef IF< Dim::eT==0, typename R1::Tempeture, typename IF<R1::eT!=0, typename R1::Tempeture, typename R2::Tempeture>::RET >::RET Tempeture;
-         typename typedef IF< Dim::eQ==0, typename R1::Charge   , typename IF<R1::eQ!=0, typename R1::Charge, typename R2::Charge>::RET >::RET Charge;
+		 typename typedef IF< Dim::eL==Dim::Z, typename R1::Length,    typename IF<R1::eL!=0, typename R1::Length, typename R2::Length>::RET >::RET  Length;
+         typename typedef IF< Dim::et==Dim::Z, typename R1::Time  ,    typename IF<R1::et!=0, typename R1::Time  , typename R2::Time  >::RET >::RET Time;
+         typename typedef IF< Dim::eM==Dim::Z, typename R1::Mass,      typename IF<R1::eM!=0, typename R1::Mass  , typename R2::Mass  >::RET >::RET Mass;
+         typename typedef IF< Dim::eT==Dim::Z, typename R1::Tempeture, typename IF<R1::eT!=0, typename R1::Tempeture, typename R2::Tempeture>::RET >::RET Tempeture;
+         typename typedef IF< Dim::eQ==Dim::Z, typename R1::Charge   , typename IF<R1::eQ!=0, typename R1::Charge, typename R2::Charge>::RET >::RET Charge;
 
          /// the type it will be if the dims are not 0
          using TBeforeResult  = SOU::unitType
-            < Length, Dim::eL
-            , Time, Dim::et
-            , Mass, Dim::eM
-            , Tempeture, Dim::eT
-            , Charge, Dim::eQ
+            < Length, static_cast<int>(Dim::eL)
+            , Time, static_cast<int>(Dim::et)
+            , Mass, static_cast<int>(Dim::eM)
+            , Tempeture, static_cast<int>(Dim::eT)
+            , Charge, static_cast<int>(Dim::eQ)
             > ;
          /// enum is used so let user know that the types did not match
          /// all results are based on the first operands type, if NoDim then base on the second.
-		 typename typedef IF<isNonDim, double, typename TBeforeResult >::RET TResult;
+		 typename typedef IF< static_cast<bool>(isNoDim::val), double, typename TBeforeResult >::RET TResult;
 		 // TResult = IF<isNonDim, double, typename TBeforeResult >::RET;
 
          /// constructor.
@@ -365,15 +366,15 @@ namespace SystemOfUnits
          typename TResult result() const
          {
             // line will crash if not the same compatible types
-            STATIC_ASSERTION_FAILURE< eALLTYPES_THE_SAME >;
-            STATIC_ASSERTION_FAILURE< eT == 0 || eT == 1 || eT == -1 >;
+            STATIC_ASSERTION_FAILURE< static_cast<bool>(t_base::ALLTYPES_THE_SAME::val) >;
+            STATIC_ASSERTION_FAILURE< static_cast<bool>(Dim::eT == Dim::Z || (int)Dim::eT == 1 || (int)Dim::eT == -1) >;
 
             return TResult
                ( 
                m_r1.amount() 
-               / LenType::toBase()
-               / TimeType::toBase()
-               / MassType::toBase()
+               / t_base::LenType::toBase()
+               / t_base::TimeType::toBase()
+               / t_base::MassType::toBase()
                / m_r2.amount() 
                );
          }

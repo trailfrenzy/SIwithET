@@ -93,7 +93,7 @@ private:
       t_MeterSq meterSq(14.0);
 
       typedef SOU::operators::Div_Result<t_MeterSq, t_centimeter> t_result;
-      CPPUNIT_ASSERT( t_result::eALLTYPES_THE_SAME == true );
+      CPPUNIT_ASSERT( static_cast<bool>(t_result::ALLTYPES_THE_SAME::val) == true );
       
       meter = meterSq / cent;
       CPPUNIT_ASSERT_EQUAL( 7.0, meter.amount() );
