@@ -50,7 +50,7 @@ private:
       CPPUNIT_ASSERT( t_MeterSq::eQ==0);
 
       typedef Mul_Result<t_Meter, t_Meter> tMulSq;
-      CPPUNIT_ASSERT( tMulSq::eALLTYPES_THE_SAME == true );
+      CPPUNIT_ASSERT( tMulSq::ALLTYPES_THE_SAME::val == tMulSq::ALLTYPES_THE_SAME::T );
       CPPUNIT_ASSERT( tMulSq::TResult::eL==t_MeterSq::eL );//good
       CPPUNIT_ASSERT( tMulSq::TResult::et==t_MeterSq::et );
       CPPUNIT_ASSERT( tMulSq::TResult::eM==t_MeterSq::eM );
@@ -130,27 +130,27 @@ private:
       using namespace SOU::operators;
       //typedef Mul_Result<t_Meter, t_Meter> tMulSq;
       //CPPUNIT_ASSERT( tMulSq::eALLTYPES_THE_SAME == true );
-      CPPUNIT_ASSERT( (Mul_Result<t_Meter, t_Meter>::eALLTYPES_THE_SAME) == true );
-      CPPUNIT_ASSERT( (Mul_Result<t_Meter, t_MeterSq>::eALLTYPES_THE_SAME) == true );
-      CPPUNIT_ASSERT( (Mul_Result<t_MeterCubed, t_Meter>::eALLTYPES_THE_SAME) == true );
+      CPPUNIT_ASSERT( (Mul_Result<t_Meter, t_Meter>::ALLTYPES_THE_SAME::val ) == true );
+      CPPUNIT_ASSERT( (Mul_Result<t_Meter, t_MeterSq>::ALLTYPES_THE_SAME::val) == true );
+      CPPUNIT_ASSERT( (Mul_Result<t_MeterCubed, t_Meter>::ALLTYPES_THE_SAME::val) == true );
 
-      CPPUNIT_ASSERT( (Mul_Result<t_centimeter, t_Meter>::eALLTYPES_THE_SAME) == true );
-      CPPUNIT_ASSERT( (Mul_Result<t_centimeter, t_MeterCubed>::eALLTYPES_THE_SAME) == true );
+      CPPUNIT_ASSERT( (Mul_Result<t_centimeter, t_Meter>::ALLTYPES_THE_SAME::val) == true );
+      CPPUNIT_ASSERT( (Mul_Result<t_centimeter, t_MeterCubed>::ALLTYPES_THE_SAME::val) == true );
 
-      CPPUNIT_ASSERT( (Mul_Result<t_Meter, tNoUnit>::eALLTYPES_THE_SAME) == true );
-      CPPUNIT_ASSERT( (Mul_Result<t_Meter, Metric::t_gramPsec>::eALLTYPES_THE_SAME) == true );
+      CPPUNIT_ASSERT( (Mul_Result<t_Meter, tNoUnit>::ALLTYPES_THE_SAME::val) == true );
+      CPPUNIT_ASSERT( (Mul_Result<t_Meter, Metric::t_gramPsec>::ALLTYPES_THE_SAME::val) == true );
       // not implemented yet!!
    }
    ///Basic test with Length types
    void TestWithNonAtomicUnitUnitsLength()
    {
-	   typedef SOU::operators::Mul_Result<t_Meter, Metric::t_centimeter > t_Mul;
+	   using t_Mul = SOU::operators::Mul_Result<t_Meter, Metric::t_centimeter > ;
       CPPUNIT_ASSERT( t_Mul::IsLengthSame == false );
       CPPUNIT_ASSERT( t_Mul::IsTimeSame == true );
       CPPUNIT_ASSERT( t_Mul::IsMassSame == true );
       CPPUNIT_ASSERT( t_Mul::AreLengthsBase == false );
 
-	   typedef t_Mul::TResult t_MulR;
+	   using t_MulR = t_Mul::TResult ;
 	   enum{ b = SOU::is_same< t_MulR::Length, Metric::AtomicUnit::Centimeter >::value };
 	   enum{ c = SOU::is_same< t_MulR::Length, Metric::AtomicUnit::Meter >::value };
 	   CPPUNIT_ASSERT( c );
