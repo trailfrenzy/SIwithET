@@ -1,5 +1,6 @@
 #ifndef UNIT_TYPE_TEMPLATE_HELPER_INCLUDE_H_
 #define UNIT_TYPE_TEMPLATE_HELPER_INCLUDE_H_
+#pragma warning( disable : 4091 )  
 
 namespace SystemOfUnits
 {
@@ -8,12 +9,14 @@ namespace SystemOfUnits
 	  */
 	  template<bool condition, typename THEN, typename ELSE> struct IF
 	  {
-		  typedef THEN RET;
+		  //typedef THEN RET;
+		  using RET = THEN;
 	  };
 
 	  template<typename THEN, typename ELSE>struct IF<false, THEN, ELSE >
 	  {
-		  typedef ELSE RET;
+		  //typedef ELSE RET;
+		  using RET = ELSE;
 	  };
 
 	  template<class T, class U> struct is_same 
@@ -28,7 +31,7 @@ namespace SystemOfUnits
 
 	  template <bool x> struct STATIC_ASSERTION_FAILURE;
 
-	  template <> struct STATIC_ASSERTION_FAILURE<true> { enum { value = 1 }; };
+	  template <> struct STATIC_ASSERTION_FAILURE<true> { enum { value = true }; };
 }
 
 #endif
