@@ -1,9 +1,13 @@
 /** File @file is intended to be used as a Unit Test file to test the integretiy of the Mulitiplcation
 operator for the System of Units Template Class.
-
 */
 
-#include <cppunit/extensions/HelperMacros.h>
+//#include <cppunit/extensions/HelperMacros.h>
+#include <gtest/gtest.h>
+//#include <gtest/internal/gtest-internal.h>
+//#include <gtest/internal/gtest-param-util.h>
+//#include <gtest/internal/gtest-param-util-generated.h>
+
 #include "SI.h"
 #include "MetricTypes.h"
 #include "operators.h"
@@ -12,50 +16,47 @@ operator for the System of Units Template Class.
 //namespace {
 
 // basic test on the multiplication operator
-class MultiplyFirst : public CppUnit::TestFixture
+class MultiplyFirst : public ::testing::Test //: public CppUnit::TestFixture
 {
-   typedef Metric::AtomicUnit::Meter Meter;
-   typedef SOU::Time::AtomicUnit::second second;
-   typedef Metric::AtomicUnit::gram gram;
-   //typedef SOU::MakeType< Meter, second, gram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::coulomb > t_Base;
-   //typedef SOU::MakeType< Meter, second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::coulomb > t_Base;
-   //typedef SI::unitType< Meter, 1, second, 0, gram, 0 > t_Meter;
-   //typedef t_Base::MakeDim<1,0,0,0,0>::type t_Meter;
-   typedef Metric::t_meter t_Meter;
-
-   //typedef 
-   typedef Metric::AUMetric::MakeDim<2,0,0,0,0>::type t_MeterSq;
-   typedef Metric::AUMetric::MakeDim<3,0,0,0,0>::type t_MeterCubed;
-   
-   typedef Metric::t_centimeter t_centimeter;
 public:
-   void setUp()
-   {
-   }
-   void tearDown()
-   {
-   }
-private:
+	typedef Metric::AtomicUnit::Meter Meter;
+	typedef SOU::Time::AtomicUnit::second second;
+	typedef Metric::AtomicUnit::gram gram;
+	//typedef SOU::MakeType< Meter, second, gram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::coulomb > t_Base;
+	//typedef SOU::MakeType< Meter, second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::coulomb > t_Base;
+	//typedef SI::unitType< Meter, 1, second, 0, gram, 0 > t_Meter;
+	//typedef t_Base::MakeDim<1,0,0,0,0>::type t_Meter;
+	typedef Metric::t_meter t_Meter;
 
+	//typedef 
+	typedef Metric::AUMetric::MakeDim<2, 0, 0, 0, 0>::type t_MeterSq;
+	typedef Metric::AUMetric::MakeDim<3, 0, 0, 0, 0>::type t_MeterCubed;
+
+	typedef Metric::t_centimeter t_centimeter;
+public:
+	void SetUp() {}
+	void TearDown() {}
+private:
+};
    ///Tests whether the dimensions are correct.
    /// STATIC_ASSERTION_FAILURE will bust out during compile time.
-   void TestAssignment()
+   TEST_F(MultiplyFirst, TestAssignment )
    {
       using namespace SOU::operators;
 
-      CPPUNIT_ASSERT( t_MeterSq::eL == 2 );
-      CPPUNIT_ASSERT( t_MeterSq::et==0);
-      CPPUNIT_ASSERT( t_MeterSq::eM==0);
-      CPPUNIT_ASSERT( t_MeterSq::eT==0);
-      CPPUNIT_ASSERT( t_MeterSq::eQ==0);
+      EXPECT_TRUE( t_MeterSq::eL == 2 );
+	  EXPECT_TRUE( t_MeterSq::et==0);
+	  EXPECT_TRUE( t_MeterSq::eM==0);
+	  EXPECT_TRUE( t_MeterSq::eT==0);
+	  EXPECT_TRUE( t_MeterSq::eQ==0);
 
       typedef Mul_Result<t_Meter, t_Meter> tMulSq;
-      CPPUNIT_ASSERT( tMulSq::ALLTYPES_THE_SAME::val == tMulSq::ALLTYPES_THE_SAME::T );
-      CPPUNIT_ASSERT( tMulSq::TResult::eL==t_MeterSq::eL );//good
-      CPPUNIT_ASSERT( tMulSq::TResult::et==t_MeterSq::et );
-      CPPUNIT_ASSERT( tMulSq::TResult::eM==t_MeterSq::eM );
-      CPPUNIT_ASSERT( tMulSq::TResult::eT==t_MeterSq::eT );
-      CPPUNIT_ASSERT( tMulSq::TResult::eQ==t_MeterSq::eQ );
+	  EXPECT_TRUE( tMulSq::ALLTYPES_THE_SAME::val == tMulSq::ALLTYPES_THE_SAME::T );
+	  EXPECT_TRUE( tMulSq::TResult::eL==t_MeterSq::eL );//good
+	  EXPECT_TRUE( tMulSq::TResult::et==t_MeterSq::et );
+	  EXPECT_TRUE( tMulSq::TResult::eM==t_MeterSq::eM );
+	  EXPECT_TRUE( tMulSq::TResult::eT==t_MeterSq::eT );
+	  EXPECT_TRUE( tMulSq::TResult::eQ==t_MeterSq::eQ );
       //STATIC_ASSERTION_FAILURE(( boost::is_same<tMulSq::TResult::Length, SI::NoDim>::value ));
 
       tMulSq mulSq( t_Meter(1.0) , t_Meter(1.0) );
@@ -66,30 +67,30 @@ private:
    }
    /// test the class Mul_Result and see how it works.
    /// @see SystemOfUnits::operators::Mul_Result<T1,T2>
-   void TestMul_Result()
+   TEST_F(MultiplyFirst, TestMul_Result )
    {
       using namespace SOU::operators;
 
 	  // test basic 1x1 and if the dim is correct
       t_MeterSq sq( t_Meter(1.0) * t_Meter(1.0));
-      CPPUNIT_ASSERT( sq == 1.0 );
+      EXPECT_TRUE( sq == 1.0 );
       
       t_MeterSq sq2 = t_Meter(1.0) * t_Meter(2.0);
-      CPPUNIT_ASSERT( sq2 == 2.0 );
-      CPPUNIT_ASSERT_MESSAGE("not implemented yet", 2.0 == sq2 );
+	  EXPECT_TRUE( sq2 == 2.0 );
+	  EXPECT_TRUE( 2.0 == sq2 ) << "not implemented yet";
 
       t_MeterSq sq3 = t_Meter(4.5) * t_Meter(5.5);
-      CPPUNIT_ASSERT_DOUBLES_EQUAL(24.75, sq3.amount(), 0.00001 );
+      EXPECT_DOUBLE_EQ(24.75, sq3.amount() );
    }
-
+ 
    /// test with a cube dimension.  Important test when first beginning
-   void TestWithCube()
+   TEST_F(MultiplyFirst, TestWithCube )
    {
       t_MeterCubed cu1 = t_Meter(2.0) * t_MeterSq(3.0);
-      CPPUNIT_ASSERT( cu1 == 6.0 );
+      EXPECT_TRUE( cu1 == 6.0 );
       
       t_MeterCubed cu2 = t_MeterSq( 4.0 ) * t_Meter( 2.0 );
-      CPPUNIT_ASSERT( cu2 == 8.0 );
+      EXPECT_TRUE( cu2 == 8.0 );
    }
 
    /** Test chainging of operator* and see if the result type will be correct
@@ -106,55 +107,55 @@ private:
    cube = t_Meter(2.0) * t_Meter(2.0)* t_Meter(2.0);
    @endcod
    */
-   void TestChaining()
+   TEST_F(MultiplyFirst, TestChaining )
    {
       t_MeterCubed const cu1 = t_Meter(2.0) * t_Meter(2.0) * t_Meter(2.0);
-      CPPUNIT_ASSERT( cu1 == 8.0 );
+      EXPECT_TRUE( cu1 == 8.0 );
 
       t_Meter const x(2.0);
 	   t_MeterCubed cu2 = x * t_Meter(2.0) * t_Meter(2.0);
-      CPPUNIT_ASSERT( cu2 == 8.0 );
+      EXPECT_TRUE( cu2 == 8.0 );
       
 	   t_Meter const y = 2.0;
 	   t_MeterCubed cu3 = t_Meter(2.0) * y * t_Meter(2.0);
-      CPPUNIT_ASSERT( cu3 == 8.0 );
+      EXPECT_TRUE( cu3 == 8.0 );
 
 	   // test bad match this will be commented out after proving failure
       //cu1 = t_Meter(2.0) * t_Meter(2.0);
    }
   
    // What is this doing?  Does it really test whether the types are the same.
-   void TestALLTYPES_THE_SAME()
+   TEST_F(MultiplyFirst, TestALLTYPES_THE_SAME )
    {
       using namespace SOU;
       using namespace SOU::operators;
       //typedef Mul_Result<t_Meter, t_Meter> tMulSq;
       //CPPUNIT_ASSERT( tMulSq::eALLTYPES_THE_SAME == true );
-      CPPUNIT_ASSERT( static_cast<bool>(Mul_Result<t_Meter, t_Meter>::ALLTYPES_THE_SAME::val ) == true );
-      CPPUNIT_ASSERT(static_cast<bool>(Mul_Result<t_Meter, t_MeterSq>::ALLTYPES_THE_SAME::val) == true );
-      CPPUNIT_ASSERT( static_cast<bool>(Mul_Result<t_MeterCubed, t_Meter>::ALLTYPES_THE_SAME::val) == true );
+      EXPECT_TRUE( static_cast<bool>(Mul_Result<t_Meter, t_Meter>::ALLTYPES_THE_SAME::val ) == true );
+	  EXPECT_TRUE(static_cast<bool>(Mul_Result<t_Meter, t_MeterSq>::ALLTYPES_THE_SAME::val) == true );
+	  EXPECT_TRUE( static_cast<bool>(Mul_Result<t_MeterCubed, t_Meter>::ALLTYPES_THE_SAME::val) == true );
 
-      CPPUNIT_ASSERT(static_cast<bool>(Mul_Result<t_centimeter, t_Meter>::ALLTYPES_THE_SAME::val) == true );
-      CPPUNIT_ASSERT(static_cast<bool>(Mul_Result<t_centimeter, t_MeterCubed>::ALLTYPES_THE_SAME::val) == true );
+	  EXPECT_TRUE(static_cast<bool>(Mul_Result<t_centimeter, t_Meter>::ALLTYPES_THE_SAME::val) == true );
+	  EXPECT_TRUE(static_cast<bool>(Mul_Result<t_centimeter, t_MeterCubed>::ALLTYPES_THE_SAME::val) == true );
 
-      CPPUNIT_ASSERT(static_cast<bool>(Mul_Result<t_Meter, tNoUnit>::ALLTYPES_THE_SAME::val) == true );
-      CPPUNIT_ASSERT(static_cast<bool>(Mul_Result<t_Meter, Metric::t_gramPsec>::ALLTYPES_THE_SAME::val) == true );
+	  EXPECT_TRUE(static_cast<bool>(Mul_Result<t_Meter, tNoUnit>::ALLTYPES_THE_SAME::val) == true );
+	  EXPECT_TRUE(static_cast<bool>(Mul_Result<t_Meter, Metric::t_gramPsec>::ALLTYPES_THE_SAME::val) == true );
       // not implemented yet!!
    }
    ///Basic test with Length types
-   void TestWithNonAtomicUnitUnitsLength()
+   TEST_F(MultiplyFirst, TestWithNonAtomicUnitUnitsLength )
    {
 	   using t_Mul = SOU::operators::Mul_Result<t_Meter, Metric::t_centimeter > ;
-      CPPUNIT_ASSERT( t_Mul::IsLengthSame == false );
-      CPPUNIT_ASSERT( t_Mul::IsTimeSame == true );
-      CPPUNIT_ASSERT( t_Mul::IsMassSame == true );
-      CPPUNIT_ASSERT( t_Mul::AreLengthsBase == false );
+	   EXPECT_TRUE( t_Mul::IsLengthSame == false );
+	   EXPECT_TRUE( t_Mul::IsTimeSame == true );
+	   EXPECT_TRUE( t_Mul::IsMassSame == true );
+	   EXPECT_TRUE( t_Mul::AreLengthsBase == false );
 
 	   using t_MulR = t_Mul::TResult ;
 	   enum{ b = SOU::is_same< t_MulR::Length, Metric::AtomicUnit::Centimeter >::value };
 	   enum{ c = SOU::is_same< t_MulR::Length, Metric::AtomicUnit::Meter >::value };
-	   CPPUNIT_ASSERT( c );
-	   CPPUNIT_ASSERT( !b );  // this is correct Length should not be a Centimeter
+	   EXPECT_TRUE( c );
+	   EXPECT_FALSE( b) << "this is correct Length should not be a Centimeter";
 
       t_Mul mul( t_Meter(7.0), Metric::t_centimeter(200.0) );
       //CPPUNIT_ASSERT_DOUBLES_EQUAL( 14.0, mul.result().amount(), 0.0001 );
@@ -162,258 +163,290 @@ private:
       //CPPUNIT_ASSERT_DOUBLES_EQUAL( 14.0, meterSq2.amount(), 0.0001 );
 
 	   const Metric::t_centimeter cent(200.0);
-      CPPUNIT_ASSERT_DOUBLES_EQUAL( 200.0, cent.amount(), 0.00001 );
-	   CPPUNIT_ASSERT_DOUBLES_EQUAL( 2.0, SOU::conversion_cast<t_Meter>( cent ).amount(), 0.00001 );
+      EXPECT_DOUBLE_EQ( 200.0, cent.amount() );
+	  EXPECT_DOUBLE_EQ( 2.0, SOU::conversion_cast<t_Meter>( cent ).amount() );
 
 	   const t_Meter meter = 7.0;
-      CPPUNIT_ASSERT_DOUBLES_EQUAL( 7.0, meter.amount(), 0.00001 );
-	   CPPUNIT_ASSERT_DOUBLES_EQUAL( 700.0, SOU::conversion_cast<Metric::t_centimeter>(meter).amount(), 0.00001 );
+	   EXPECT_DOUBLE_EQ( 7.0, meter.amount() );
+	   EXPECT_DOUBLE_EQ( 700.0, SOU::conversion_cast<Metric::t_centimeter>(meter).amount() );
 
 	   t_MeterSq meterSq;
 	   meterSq = meter * cent; 
-	   // this test caused problems since kilogram is the base mass. fixed problem in operator.h
-	   CPPUNIT_ASSERT_DOUBLES_EQUAL( 14.0, meterSq.amount(), 0.00001 );
+	   // 
+	   EXPECT_DOUBLE_EQ( 14.0, meterSq.amount() ) << "this test caused problems since kilogram is the base mass. fixed problem in operator.h";
 
 	   typedef SOU::MakeSQ<Metric::t_centimeter>::type t_cmSQ;
 	   t_cmSQ cmSQ = cent * meter;
-	   CPPUNIT_ASSERT_DOUBLES_EQUAL( 140000.0, cmSQ.amount(), 0.000001 );
+	   EXPECT_DOUBLE_EQ( 140000.0, cmSQ.amount() );
 
 	   Metric::t_kilometer k = 4.0;
 	   t_Meter m = 4000.0; //k * 1.0;
 
 	   t_MeterSq m2 = m * k; //k * m;
-	   CPPUNIT_ASSERT_EQUAL( 16000000.0, m2.amount() );
+	   EXPECT_DOUBLE_EQ( 16000000.0, m2.amount() );
 
 	   typedef SOU::MakeSQ<Metric::t_kilometer>::type t_kmSQ;
 	   t_kmSQ kmSQ = k * m;
-	   CPPUNIT_ASSERT_EQUAL( 16.0, kmSQ.amount() );
+	   EXPECT_DOUBLE_EQ( 16.0, kmSQ.amount() );
 
 	   kmSQ = k * Metric::t_centimeter( 100000.0 );
-	   CPPUNIT_ASSERT_EQUAL( 4.0, kmSQ.amount() );
+	   EXPECT_DOUBLE_EQ( 4.0, kmSQ.amount() );
 
 	   typedef SOU::MakeSQ<Metric::t_milimeter>::type t_mmSQ;
 	   m = 4.0;
 	   t_mmSQ mmSq = Metric::t_milimeter( 5.0 ) * m;
-	   CPPUNIT_ASSERT_EQUAL( 20000.0, mmSq.amount() );
+	   EXPECT_DOUBLE_EQ( 20000.0, mmSq.amount() );
 
 	   t_MeterSq m3 = m * Metric::t_milimeter( 5.0 );
-	   CPPUNIT_ASSERT_EQUAL( 0.02, m3.amount() );
+	   EXPECT_DOUBLE_EQ( 0.02, m3.amount() );
    }
    /// Basic test with time units
-   void TestWithNonAtomicUnitUnitsTime()
+   TEST_F(MultiplyFirst, TestWithNonAtomicUnitUnitsTime )
    {
       typedef SOU::MakeSQ<Metric::t_second>::type t_sSQ;
       typedef SOU::MakeSQ<Metric::t_minute>::type t_mSQ;
       typedef SOU::MakeSQ<Metric::t_hour>::type t_hrSQ;
 
-      t_sSQ s1 = Metric::t_second(3) * Metric::t_second(4);
-      CPPUNIT_ASSERT_EQUAL( 12.0, s1.amount() );
+      t_sSQ const s1 = Metric::t_second(3) * Metric::t_second(4);
+	  EXPECT_DOUBLE_EQ( 12.0, s1.amount() );
       
-      t_sSQ s2 = Metric::t_second( 3.0 ) * Metric::t_minute( 1.0 );
-      CPPUNIT_ASSERT_EQUAL( 180.0, s2.amount() );
+      t_sSQ const s2 = Metric::t_second( 3.0 ) * Metric::t_minute( 1.0 );
+	  EXPECT_DOUBLE_EQ( 180.0, s2.amount() );
 
-      t_mSQ m1 = Metric::t_minute( 2.0 ) * Metric::t_second( 120.0 );
-      CPPUNIT_ASSERT_EQUAL( 4.0, m1.amount() );
+      t_mSQ const m1 = Metric::t_minute( 2.0 ) * Metric::t_second( 120.0 );
+	  EXPECT_DOUBLE_EQ( 4.0, m1.amount() );
 
-      t_mSQ m2 = Metric::t_minute( 2.0 ) * Metric::t_hour(1.0);
-      CPPUNIT_ASSERT_EQUAL( 120.0, m2.amount() );
+      t_mSQ const m2 = Metric::t_minute( 2.0 ) * Metric::t_hour(1.0);
+	  EXPECT_DOUBLE_EQ( 120.0, m2.amount() );
 
-      t_hrSQ hr1 = Metric::t_hour( 1.0 ) * Metric::t_second( 7200 );
-      CPPUNIT_ASSERT_EQUAL( 2.0, hr1.amount() );
+      t_hrSQ const hr1 = Metric::t_hour( 1.0 ) * Metric::t_second( 7200 );
+	  EXPECT_DOUBLE_EQ( 2.0, hr1.amount() );
 
    }
    ///Basic test with mass types
-   void TestWithNonAtomicUnitUnitsMass()
+   TEST_F(MultiplyFirst, TestWithNonAtomicUnitUnitsMass )
    {
       using namespace Metric;
       namespace AU = AtomicUnit;
       typedef SOU::unitType< AU::Meter, 0, SOU::Time::AtomicUnit::second, -1, AU::gram, 0,AU::kelvin,0, AU::coulomb,0 > t_Hertz;
       
-      Metric::t_gram g = 25.0;
+      Metric::t_gram const g = 25.0;
       t_Hertz h = 3.0;
 
       Metric::t_gramPsec gps = g * h;
-      CPPUNIT_ASSERT_EQUAL( 75.0, gps.amount() );
+	  EXPECT_DOUBLE_EQ( 75.0, gps.amount() );
    }
    /// Test with the non-dimensional unit type to ensure that operator* still works with
    /// type of 0 dimension.
-   void TestWithNonDimension()
+   TEST_F(MultiplyFirst, TestWithNonDimension )
    {
       const t_Meter meter = 7.0;
       double y = 2.0;
+	  EXPECT_TRUE(14.00 == meter * 2) << "with a scalar value";
+	  EXPECT_TRUE(14.00 == 2 * meter ) << "with a scalar value";
       t_Meter high = meter * y;
-      CPPUNIT_ASSERT_MESSAGE("testing with variable", high == 14.0 );
-      CPPUNIT_ASSERT_MESSAGE("testing unitType*constant", 21.0 == meter * 3.0 );
-      CPPUNIT_ASSERT_MESSAGE("testing constant * unitType", 3.0 * meter == 21.0 );
+      EXPECT_TRUE(high == 14.0 ) << "testing with variable" ;
+	  EXPECT_TRUE( 21.0 == meter * 3.0 ) << "testing unitType*constant";
+	  EXPECT_TRUE(3.0 * meter == 21.0 ) << "testing constant * unitType";
 
       double const x = 4;
       //t_Meter low = meter * tNoUnit(3.0);
       //low = meter * x;
-      CPPUNIT_ASSERT_MESSAGE("testing with constant variable", meter * x == 28.0 );
-      CPPUNIT_ASSERT_MESSAGE("test with a int", meter * 5 == 35.0 );
-      CPPUNIT_ASSERT_MESSAGE("test with a float", meter * static_cast<float>(5.0) == 35.0 );
-      CPPUNIT_ASSERT_MESSAGE("is this still allowed", 12.0 == x * 3 );
+	  EXPECT_TRUE( meter * x == 28.0 ) << "testing with constant variable" ;
+	  EXPECT_TRUE( meter * 5 == 35.0 ) << "test with a int";
 
-      CPPUNIT_ASSERT_MESSAGE("with zero", 0 == meter * 0.0 );
-      CPPUNIT_ASSERT( 0 == 0 * meter );
-      CPPUNIT_ASSERT( t_Meter(0) == meter * 0.0 );
+	  EXPECT_TRUE( meter * static_cast<float>(5.0) == 35.0 ) << "test with a float";
+	  EXPECT_TRUE( 12.0 == x * 3 ) << "is this still allowed";
+
+	  EXPECT_TRUE( 0 == meter * 0.0 ) << "with zero";
+	  EXPECT_TRUE( 0 == 0 * meter );
+	  //EXPECT_DOUBLE_EQ( t_Meter(0.0), 0.0 * meter) << "find out why it will not compile.";
+	  EXPECT_TRUE( t_Meter(0) == meter * 0.0 );
+	  EXPECT_TRUE(0.0 == meter * 0.0);
 
       Metric::t_kilometer km = 3.0 * Metric::t_kilometer(1.0);
-      CPPUNIT_ASSERT_EQUAL( 3.0, km.amount() );
+	  EXPECT_DOUBLE_EQ( 3.0, km.amount() );
       km = Metric::t_kilometer(1.0) * 3;
-      CPPUNIT_ASSERT_EQUAL( 3.0, km.amount() );
-      CPPUNIT_ASSERT( Metric::t_kilometer(3.0) == 3.0 * Metric::t_kilometer(1.0) );
+	  EXPECT_DOUBLE_EQ( 3.0, km.amount() );
+      EXPECT_TRUE( Metric::t_kilometer(3.0) == 3.0 * Metric::t_kilometer(1.0) );
    }
 
    /// Test with a multiplication after an subtraction
-   void TestWithSubinside()
+   TEST_F(MultiplyFirst, TestWithSubinside )
    {
       typedef Metric::t_second second;
       second Tmin = 55.5;
       second Tmax = 105.5;
       second Topt = Tmin + 0.7 * ( Tmax - Tmin );
-      CPPUNIT_ASSERT_DOUBLES_EQUAL( 90.5, Topt.amount(), 0.00001 );
+      EXPECT_DOUBLE_EQ( 90.5, Topt.amount() );
    }
-   /// MultiplyFirst suite
-  CPPUNIT_TEST_SUITE( MultiplyFirst );
-  CPPUNIT_TEST( TestAssignment );
-  CPPUNIT_TEST( TestMul_Result );
-  CPPUNIT_TEST( TestWithCube );
-  CPPUNIT_TEST( TestChaining );
-  CPPUNIT_TEST( TestALLTYPES_THE_SAME );
-  CPPUNIT_TEST( TestWithNonAtomicUnitUnitsLength );
-  CPPUNIT_TEST( TestWithNonAtomicUnitUnitsTime );
-  CPPUNIT_TEST( TestWithNonAtomicUnitUnitsMass );
-  CPPUNIT_TEST( TestWithNonDimension );
-  CPPUNIT_TEST( TestWithSubinside );
-  CPPUNIT_TEST_SUITE_END();
-};
 
-CPPUNIT_TEST_SUITE_REGISTRATION( MultiplyFirst );
+//   /// MultiplyFirst suite
+//  CPPUNIT_TEST_SUITE( MultiplyFirst );
+//  CPPUNIT_TEST( TestAssignment );
+//  CPPUNIT_TEST( TestMul_Result );
+//  CPPUNIT_TEST( TestWithCube );
+//  CPPUNIT_TEST( TestChaining );
+//  CPPUNIT_TEST( TestALLTYPES_THE_SAME );
+//  CPPUNIT_TEST( TestWithNonAtomicUnitUnitsLength );
+//  CPPUNIT_TEST( TestWithNonAtomicUnitUnitsTime );
+//  CPPUNIT_TEST( TestWithNonAtomicUnitUnitsMass );
+//  CPPUNIT_TEST( TestWithNonDimension );
+//  CPPUNIT_TEST( TestWithSubinside );
+//  CPPUNIT_TEST_SUITE_END();
+//};
+//
+//CPPUNIT_TEST_SUITE_REGISTRATION( MultiplyFirst );
+template< int NUM_X, int NUM_Y, int PROD > struct ARG{ enum { eX = NUM_X, eY = NUM_Y, ePROD = PROD }; };
 
 ///class template to test multiplication operator against any different type of different
 ///dimensions in their quantity
-template
-< int PROD /// The product of the two arguments
-, int MUL1 /// Argument type 1
-, int MUL2 /// Argument type 2
->
-class SI_Multiply : public CppUnit::TestFixture
+//template
+//< int PROD /// The product of the two arguments
+//, int MUL1 /// Argument type 1
+//, int MUL2 /// Argument type 2
+//>
+template< typename T_ARG >
+class SI_Multiply : public testing::Test //: public CppUnit::TestFixture
 {
-   //using namespace Metric;
-   typedef Metric::AtomicUnit::Meter Meter;
-   typedef SOU::Time::AtomicUnit::second second;
-   typedef Metric::AtomicUnit::gram gram;
-   typedef Metric::AtomicUnit::coulomb coul;
-   typedef Metric::AtomicUnit::kelvin kelvin;
-   ///argument 1 for operator testing
-   typedef SOU::unitType< Meter, MUL1, second, 0, gram, 0, kelvin, 0, coul, 0 > t_1;
-   ///argument 2 for operator testing
-   typedef SOU::unitType< Meter, MUL2, second, 0, gram, 0, kelvin, 0, coul, 0 > t_2;
-   /// product type for the result of operator* testing
-   typedef SOU::unitType< Meter, PROD, second, 0, gram, 0, kelvin, 0, coul, 0 > t_3;
+public:
+	enum { MUL1 = T_ARG::eX, MUL2 = T_ARG::eY, PROD = T_ARG::ePROD };
 
-   t_1 * m_1; /// Argument one
-   t_2 const * m_2;  /// Argument two
-   t_3 * m_3; /// The product of the two arguments
+	//using namespace Metric;
+	typedef Metric::AtomicUnit::Meter Meter;
+	typedef SOU::Time::AtomicUnit::second second;
+	typedef Metric::AtomicUnit::gram gram;
+	typedef Metric::AtomicUnit::coulomb coul;
+	typedef Metric::AtomicUnit::kelvin kelvin;
+	///argument 1 for operator testing
+	typedef SOU::unitType< Meter, MUL1, second, 0, gram, 0, kelvin, 0, coul, 0 > t_1;
+	///argument 2 for operator testing
+	typedef SOU::unitType< Meter, MUL2, second, 0, gram, 0, kelvin, 0, coul, 0 > t_2;
+	/// product type for the result of operator* testing
+	typedef SOU::unitType< Meter, PROD, second, 0, gram, 0, kelvin, 0, coul, 0 > t_3;
 
+	SI_Multiply() : m_delta(0.0000001) {}
+
+	void SetUp()
+	{
+		m_1 = new t_1(3.0);
+		m_2 = new t_2(4.0);
+		m_3 = new t_3(12.);
+	}
+	void TearDown()
+	{
+		delete m_1;
+		delete m_2;
+		delete m_3;
+	}
+protected:
+	t_1 * m_1; /// Argument one
+	t_2 const * m_2;  /// Argument two
+	t_3 * m_3; /// The product of the two arguments
+
+private:
 	double const m_delta;
 
-public:
-	SI_Multiply() : m_delta( 0.0000001 ){}
+};
 
-   void setUp()
-   {
-      m_1 = new t_1( 3.0 );
-      m_2 = new t_2( 4.0 );
-      m_3 = new t_3( 12.);
-   }
-   void tearDown()
-   {
-      delete m_1;
-      delete m_2;
-      delete m_3;
-   }
-private:
+//typedef SI_Multiply<2, 1, 1> t_myMul;
+//typedef testing::Types<2, 1, 1> t_arg;
+//typedef testing::Types<int, int, int> t_arg;
+TYPED_TEST_CASE_P(SI_Multiply);
+//CPPUNIT_TEST_SUITE_REGISTRATION( t_myMul );
+
+TYPED_TEST_P(SI_Multiply, NoTestHere)
+{
+	EXPECT_TRUE(true) << "Just set up to see if it would compile.";
+}
+
+
    /// Test the result type and shows that the result type is working correctly.
-   void TestMul_Result()
+TYPED_TEST_P(SI_Multiply, TestMul_Result )
    {
       using namespace SOU::operators;
-      Mul_Result<t_1, t_2> sq_m( *m_1, *m_2 );
-      CPPUNIT_ASSERT_MESSAGE("testing the expression template for mult", sq_m.result() == *m_3 );
+	  using TAG = SI_Multiply<TypeParam >;
+      Mul_Result<TAG::t_1, TAG::t_2> sq_m( *TAG::m_1, *TAG::m_2 );
+      EXPECT_TRUE( sq_m.result() == *TAG::m_3 ) << "testing the expression template for mult";
 
-      Mul_Result<t_1, t_2> const sq_m2( *m_1, *m_2 );
-      CPPUNIT_ASSERT_MESSAGE("testing the expression template for mult", sq_m2.result() == *m_3 );
+      Mul_Result<TAG::t_1, TAG::t_2> const sq_m2( *TAG::m_1, *TAG::m_2 );
+	  EXPECT_TRUE(sq_m2.result() == *TAG::m_3 ) << "testing the expression template for mult";
    }
+
    /// First test with operator*() and shows that it is working correctly
-   void Test2()
+	TYPED_TEST_P(SI_Multiply, Test2 )
    {
-      // these test call internally Mul_Result
-      t_3 prod = *m_1 * *m_2;
-      CPPUNIT_ASSERT( prod == *m_3 );
-      CPPUNIT_ASSERT( *m_3 == *m_1 * *m_2 );
+		using TAG = SI_Multiply<TypeParam >;
+		// these test call internally Mul_Result
+		TAG::t_3 prod = *TAG::m_1 * *TAG::m_2;
+	  EXPECT_TRUE( prod == *TAG::m_3 );
+	  EXPECT_TRUE( *TAG::m_3 == *TAG::m_1 * *TAG::m_2 );
 
-      *m_3 = *m_1 * *m_2;
-      CPPUNIT_ASSERT( *m_3 == 12.0 );
+      *TAG::m_3 = *TAG::m_1 * *TAG::m_2;
+	  EXPECT_TRUE( *TAG::m_3 == 12.0 );
 
-      CPPUNIT_ASSERT_MESSAGE("some chaining", *m_1 * *m_3 == *m_1 * *m_1 * *m_2 );
-      CPPUNIT_ASSERT_MESSAGE("some chaining", *m_1 * *m_3 * *m_2 == *m_1 * *m_1 * *m_2 * *m_2 );
-      CPPUNIT_ASSERT_MESSAGE("some chaining", (*m_1 * *m_3) * *m_2 == *m_1 * (*m_1 * *m_2) * *m_2 );
-      CPPUNIT_ASSERT_MESSAGE("some chaining", *m_1 * (*m_3 * *m_2) == (*m_1 * *m_1) * (*m_2 * *m_2) );
+	  EXPECT_TRUE( *TAG::m_1 * *TAG::m_3 == *TAG::m_1 * *TAG::m_1 * *TAG::m_2 ) << "some chaining" ;
+	  EXPECT_TRUE( *TAG::m_1 * *TAG::m_3 * *TAG::m_2 == *TAG::m_1 * *TAG::m_1 * *TAG::m_2 * *TAG::m_2 ) << "some chaining";
+	  EXPECT_TRUE((*TAG::m_1 * *TAG::m_3) * *TAG::m_2 == *TAG::m_1 * (*TAG::m_1 * *TAG::m_2) * *TAG::m_2 ) << "some chaining";
+	  EXPECT_TRUE( *TAG::m_1 * (*TAG::m_3 * *TAG::m_2) == (*TAG::m_1 * *TAG::m_1) * (*TAG::m_2 * *TAG::m_2) ) << "some chaining";
 
    }
    /// Test operator*() with scalar values.
-   void TestWithScaler()
+	TYPED_TEST_P(SI_Multiply, TestWithScaler )
    {
-      CPPUNIT_ASSERT( 12.0 == *m_1 * 4.0 );
-      CPPUNIT_ASSERT( t_1(12.0) == *m_1 * 4.0 );
-      CPPUNIT_ASSERT( t_1(12.0) == 4.0 * *m_1 );
+		using TAG = SI_Multiply<TypeParam >;
 
-      CPPUNIT_ASSERT( 16.0 == *m_2 * 4.0 );
-      CPPUNIT_ASSERT( t_2(16.0) == *m_2 * 4.0 );
-      CPPUNIT_ASSERT( t_2(16.0) == 4.0 * *m_2);
+		EXPECT_TRUE( 12.0 == *TAG::m_1 * 4.0 );
+		EXPECT_TRUE(TAG::t_1(12.0) == *TAG::m_1 * 4.0 );
+		EXPECT_TRUE(TAG::t_1(12.0) == 4.0 * *TAG::m_1 );
 
-      CPPUNIT_ASSERT( 48.0 == *m_3 * 4.0 );
-      CPPUNIT_ASSERT( t_3(48.0) == *m_3 * 4.0 );
-      CPPUNIT_ASSERT_MESSAGE("with some chaining", t_3(48.0) == *m_3 * 2.0 * 2.0 );
-      CPPUNIT_ASSERT_MESSAGE("with some chaining", t_3(48.0) == 2.0 * *m_3 * 2.0 );
-      CPPUNIT_ASSERT_MESSAGE("with some chaining", t_3(48.0) == 2.0 * 2.0 * *m_3 );
+		EXPECT_TRUE( 16.0 == *TAG::m_2 * 4.0 );
+		EXPECT_TRUE(TAG::t_2(16.0) == *TAG::m_2 * 4.0 );
+		EXPECT_TRUE(TAG::t_2(16.0) == 4.0 * *TAG::m_2);
+
+		EXPECT_TRUE( 48.0 == *TAG::m_3 * 4.0 );
+		EXPECT_TRUE(TAG::t_3(48.0) == *TAG::m_3 * 4.0 );
+		EXPECT_TRUE(TAG::t_3(48.0) == *TAG::m_3 * 2.0 * 2.0 ) << "with some chaining";
+		EXPECT_TRUE(TAG::t_3(48.0) == 2.0 * *TAG::m_3 * 2.0 ) << "with some chaining";
+		EXPECT_TRUE(TAG::t_3(48.0) == 2.0 * 2.0 * *TAG::m_3 ) << "with some chaining";
 
 	  /// Test with integers
-      CPPUNIT_ASSERT( 12 == *m_1 * 4 );
-      CPPUNIT_ASSERT( t_1(12) == *m_1 * 4 );
-      CPPUNIT_ASSERT( t_1(12) == 4 * *m_1 );
+		EXPECT_TRUE( 12 == *TAG::m_1 * 4 );
+		EXPECT_TRUE(TAG::t_1(12) == *TAG::m_1 * 4 );
+		EXPECT_TRUE(TAG::t_1(12) == 4 * *TAG::m_1 );
 
-      CPPUNIT_ASSERT( 16.0 == *m_2 * 4 );
-      CPPUNIT_ASSERT( t_2(16.0) == *m_2 * 4 );
-      CPPUNIT_ASSERT( t_2(16.0) == 4 * *m_2);
+		EXPECT_TRUE( 16.0 == *TAG::m_2 * 4 );
+		EXPECT_TRUE(TAG::t_2(16.0) == *TAG::m_2 * 4 );
+		EXPECT_TRUE(TAG::t_2(16.0) == 4 * *TAG::m_2);
 
-      CPPUNIT_ASSERT( 48.0 == *m_3 * 4 );
-      CPPUNIT_ASSERT( t_3(48.0) == *m_3 * 4 );
-      CPPUNIT_ASSERT_MESSAGE("with some chaining", t_3(48.0) == *m_3 * 2 * 2.0 );
-      CPPUNIT_ASSERT_MESSAGE("with some chaining", t_3(48.0) == 2 * *m_3 * 2 );
-
+		EXPECT_TRUE( 48.0 == *TAG::m_3 * 4 );
+		EXPECT_TRUE(TAG::t_3(48.0) == *TAG::m_3 * 4 );
+		EXPECT_TRUE(TAG::t_3(48.0) == *TAG::m_3 * 2 * 2.0 ) << "with some chaining";
+		EXPECT_TRUE(TAG::t_3(48.0) == 2 * *TAG::m_3 * 2 ) << "with some chaining";
    }
-   /// Have chaining with scalar values. Inside of a for-loop
-   void TestChainWithScaler()
-   {
-      for( double x = 2.0; x < 12.0; x += 1.3 )
-      {
-         t_3 arg1 = *m_3 *x*x;
-         t_3 arg2 = (*m_1*x) *( *m_2 * x);
-         CPPUNIT_ASSERT_DOUBLES_EQUAL( arg1.amount(), arg2.amount(), 0.00001 );
-         //CPPUNIT_ASSERT_EQUAL(*m_3 *x*x, (*m_1*x) *( *m_2 * x) );
-      }
-   }
+   
+	/// Have chaining with scalar values. Inside of a for-loop
+	TYPED_TEST_P(SI_Multiply, TestChainWithScaler)
+	{
+		using TAG = SI_Multiply<TypeParam >;
+		for (double x = 2.0; x < 12.0; x += 1.3)
+		{
+			TAG::t_3 arg1 = *TAG::m_3 *x*x;
+			TAG::t_3 arg2 = (*TAG::m_1*x) *(*TAG::m_2 * x);
+			EXPECT_DOUBLE_EQ(arg1.amount(), arg2.amount());
+			//EXPECT_DOUBLE_EQ(*TAG::m_3 *x*x, (*TAG::m_1*x) *( *TAG::m_2 * x) ) << "Why didn't it work";
+		}
+	}
 
    /// test operator*=()
-   void TestMultipleAssign()
+	TYPED_TEST_P(SI_Multiply, TestMultipleAssign )
    {
-		*m_3 *= 2.0;
-		CPPUNIT_ASSERT_EQUAL( 24.0, m_3->amount() );
+		using TAG = SI_Multiply<TypeParam >;
+		*TAG::m_3 *= 2.0;
+		EXPECT_DOUBLE_EQ( 24.0, TAG::m_3->amount() );
 
-		*m_3 *= 0.5;
-		CPPUNIT_ASSERT_EQUAL( 12.0, m_3->amount() );
+		*TAG::m_3 *= 0.5;
+		EXPECT_DOUBLE_EQ( 12.0, TAG::m_3->amount() );
 
    }
 
@@ -421,14 +454,15 @@ private:
    to prove that T_Trait handles the different Types
     @see SystemOfUnits::operators::A_Trait<int,T2>
 	*/
-   void TestMultipleInt()
+	TYPED_TEST_P(SI_Multiply, TestMultipleInt )
    {
-	   int const x = 2;
-	   t_1 res1 = *m_1 * x;
-	   t_1 const res2 = x * *m_1;
+		using TAG = SI_Multiply<TypeParam >;
+		int const x = 2;
+	   TAG::t_1 res1 = *TAG::m_1 * x;
+	   TAG::t_1 const res2 = x * *TAG::m_1;
 
-	   CPPUNIT_ASSERT_DOUBLES_EQUAL( 6.0, res1.amount(), m_delta );
-	   CPPUNIT_ASSERT_DOUBLES_EQUAL( 6.0, res2.amount(), m_delta );
+	   EXPECT_DOUBLE_EQ( 6.0, res1.amount() );
+	   EXPECT_DOUBLE_EQ( 6.0, res2.amount() );
    }
 
    /** Test A_Trait<unsigned,T2> template created from macro.  Test needs to be in class template 
@@ -438,89 +472,101 @@ private:
 	When @code SystemOfUnits::operators::A_Trait<unsigned,T2> @endcode was commented out the below method failed to
 	compile.
 	*/ // @code meter z = 3.0 * y; @endcode
-   void TestMultipleUnsigned()
+	TYPED_TEST_P(SI_Multiply, TestMultipleUnsigned )
    {
-	   unsigned const x = 2;
-	   t_1 res1 = *m_1 * x;
-	   t_1 const res2 = x * *m_1;
+		using TAG = SI_Multiply<TypeParam >;
+		unsigned const x = 2;
+	   TAG::t_1 res1 = *TAG::m_1 * x;
+	   TAG::t_1 const res2 = x * *TAG::m_1;
 
-	   CPPUNIT_ASSERT_DOUBLES_EQUAL( 6.0, res1.amount(), m_delta );
-	   CPPUNIT_ASSERT_DOUBLES_EQUAL( 6.0, res2.amount(), m_delta );
+	   EXPECT_DOUBLE_EQ( 6.0, res1.amount() );
+	   EXPECT_DOUBLE_EQ( 6.0, res2.amount() );
    }
 
    /** Test A_Trait<float,T2> template created from macro.  Test needs to be in class template 
    to prove that T_Trait handles the different Types
     @see SystemOfUnits::operators::A_Trait<float,T2>
 	*/
-   void TestMultipleFloat()
+	TYPED_TEST_P(SI_Multiply, TestMultipleFloat )
    {
-	   float const x = 2.000;
-	   t_1 res1 = *m_1 * x;
-	   t_1 const res2 = x * *m_1;
+		using TAG = SI_Multiply<TypeParam >;
+		float const x = 2.000f;
+	   TAG::t_1 res1 = *TAG::m_1 * x;
+	   TAG::t_1 const res2 = x * *TAG::m_1;
 
-	   CPPUNIT_ASSERT_DOUBLES_EQUAL( 6.0, res1.amount(), m_delta );
-	   CPPUNIT_ASSERT_DOUBLES_EQUAL( 6.0, res2.amount(), m_delta );
+	   EXPECT_DOUBLE_EQ( 6.0, res1.amount() );
+	   EXPECT_DOUBLE_EQ( 6.0, res2.amount());
    }
 
    /** Test A_Trait<short,T2> template created from macro.  Test needs to be in class template 
    to prove that T_Trait handles the different Types
     @see SystemOfUnits::operators::A_Trait<short,T2>
 	*/
-   void TestMultipleShort()
+	TYPED_TEST_P(SI_Multiply, TestMultipleShort )
    {
-	   short const x = 2;
-	   t_1 res1 = *m_1 * x;
-	   t_1 const res2 = x * *m_1;
+		using TAG = SI_Multiply<TypeParam >;
+		short const x = 2;
+	   TAG::t_1 res1 = *TAG::m_1 * x;
+	   TAG::t_1 const res2 = x * *TAG::m_1;
 
-	   CPPUNIT_ASSERT_DOUBLES_EQUAL( 6.0, res1.amount(), m_delta );
-	   CPPUNIT_ASSERT_DOUBLES_EQUAL( 6.0, res2.amount(), m_delta );
+	   EXPECT_DOUBLE_EQ( 6.0, res1.amount() );
+	   EXPECT_DOUBLE_EQ( 6.0, res2.amount() );
    }
 
    /** Test A_Trait<short,T2> template created from macro.  Test needs to be in class template 
    to prove that T_Trait handles the different Types
     @see SystemOfUnits::operators::A_Trait<short,T2>
 	*/
-   void TestMultipleLong()
+	TYPED_TEST_P(SI_Multiply, TestMultipleLong )
    {
-	   long const x = 2;
-	   t_1 res1 = *m_1 * x;
-	   t_1 const res2 = x * *m_1;
+		using TAG = SI_Multiply<TypeParam >;
+		long const x = 2;
+	   auto res1 = *TAG::m_1 * x;
+	   TAG::t_1 const res2 = x * *TAG::m_1;
 
-	   CPPUNIT_ASSERT_DOUBLES_EQUAL( 6.0, res1.amount(), m_delta );
-	   CPPUNIT_ASSERT_DOUBLES_EQUAL( 6.0, res2.amount(), m_delta );
+	   EXPECT_DOUBLE_EQ( 6.0, res1.amount() );
+	   EXPECT_DOUBLE_EQ( 6.0, res2.amount() );
    }
 
-   CPPUNIT_TEST_SUITE( SI_Multiply );
-   CPPUNIT_TEST( TestMul_Result );
-   CPPUNIT_TEST( Test2 );
-   CPPUNIT_TEST( TestWithScaler );
-   CPPUNIT_TEST( TestMultipleAssign );
-   CPPUNIT_TEST( TestChainWithScaler );
-   CPPUNIT_TEST( TestMultipleInt );
-   CPPUNIT_TEST( TestMultipleUnsigned );
-   CPPUNIT_TEST( TestMultipleFloat );
-   CPPUNIT_TEST( TestMultipleShort );
-   CPPUNIT_TEST( TestMultipleLong );
-   CPPUNIT_TEST_SUITE_END();
-};
+	REGISTER_TYPED_TEST_CASE_P(SI_Multiply
+		, NoTestHere, TestMul_Result, Test2, TestWithScaler, TestMultipleAssign, TestChainWithScaler, TestMultipleInt, TestMultipleUnsigned, TestMultipleFloat, TestMultipleShort, TestMultipleLong);
 
-typedef SI_Multiply<2,1,1> t_myMul;
-CPPUNIT_TEST_SUITE_REGISTRATION( t_myMul );
+//   CPPUNIT_TEST_SUITE( SI_Multiply );
+//   CPPUNIT_TEST( TestMul_Result );
+//   CPPUNIT_TEST( Test2 );
+//   CPPUNIT_TEST( TestWithScaler );
+//   CPPUNIT_TEST( TestMultipleAssign );
+//   CPPUNIT_TEST( TestChainWithScaler );
+//   CPPUNIT_TEST( TestMultipleInt );
+//   CPPUNIT_TEST( TestMultipleUnsigned );
+//   CPPUNIT_TEST( TestMultipleFloat );
+//   CPPUNIT_TEST( TestMultipleShort );
+//   CPPUNIT_TEST( TestMultipleLong );
+//   CPPUNIT_TEST_SUITE_END();
+//};
+	typedef ::testing::Types< ARG<1, 1, 2>, ARG< 2, 0, 2>, ARG< 2, 1, 3>, ARG<2, 3, 5>, ARG<-3, 5, 2>, ARG<3, -5, -2> > MyTypes;
+	INSTANTIATE_TYPED_TEST_CASE_P(My, SI_Multiply, MyTypes);
+	using t_myArg = ARG<1,1,2>;
+	//INSTANTIATE_TYPED_TEST_CASE_P(My, SI_Multiply, t_myArg );
 
-typedef SI_Multiply<2,2,0> t_myMul1;
-CPPUNIT_TEST_SUITE_REGISTRATION( t_myMul1 );
-
-typedef SI_Multiply<3,2,1> t_Mul2;
-CPPUNIT_TEST_SUITE_REGISTRATION( t_Mul2 );
-
-typedef SI_Multiply<5,2,3> t_Mul3;
-CPPUNIT_TEST_SUITE_REGISTRATION( t_Mul3 );
-
-typedef SI_Multiply<2,-3,5> t_Mul4;
-CPPUNIT_TEST_SUITE_REGISTRATION( t_Mul4 );
-
-typedef SI_Multiply<-2,3,-5> t_Mul5;
-CPPUNIT_TEST_SUITE_REGISTRATION( t_Mul5 );
+//typedef SI_Multiply<2,1,1> t_myMul;
+//TYPED_TEST_CASE(SI_Multiply, t_myMul);
+////CPPUNIT_TEST_SUITE_REGISTRATION( t_myMul );
+//
+//typedef SI_Multiply<2,2,0> t_myMul1;
+//CPPUNIT_TEST_SUITE_REGISTRATION( t_myMul1 );
+//
+//typedef SI_Multiply<3,2,1> t_Mul2;
+//CPPUNIT_TEST_SUITE_REGISTRATION( t_Mul2 );
+//
+//typedef SI_Multiply<5,2,3> t_Mul3;
+//CPPUNIT_TEST_SUITE_REGISTRATION( t_Mul3 );
+//
+//typedef SI_Multiply<2,-3,5> t_Mul4;
+//CPPUNIT_TEST_SUITE_REGISTRATION( t_Mul4 );
+//
+//typedef SI_Multiply<-2,3,-5> t_Mul5;
+//CPPUNIT_TEST_SUITE_REGISTRATION( t_Mul5 );
 // }
 
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.

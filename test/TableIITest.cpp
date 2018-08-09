@@ -4,7 +4,8 @@ ISBN 07-009754-2, pg 22-28
 
 Used these quantities and dimensions to test how well template unitType held up.
 */
-#include <cppunit/extensions/HelperMacros.h> // the macros and headers needed by CPPUnit
+//#include <cppunit/extensions/HelperMacros.h> // the macros and headers needed by CPPUnit
+#include <gtest/gtest.h>
 #include "SI.h"
 #include "MetricBaseUnits.h"
 #include "TimeAtomicUnits.h"
@@ -32,34 +33,35 @@ namespace
    typedef t_Base::MakeDim<-3,0,1,0,0 > rho; // mass density
 }
 
-class TableIITest : public CppUnit::TestFixture
+class TableIITest : public ::testing::Test //: public CppUnit::TestFixture
 {
 public:
-   void setUp(){}
-   void tearDown(){}
+	void setUp() {}
+	void tearDown() {}
 private:
+};
 
-   void TestNewton()
+   TEST_F( TableIITest, TestNewton )
    {
       a acc = 9.81;
       t_mass mass = 5.0;
 
       t_n const N = acc * mass;
-      CPPUNIT_ASSERT_DOUBLES_EQUAL( 49.05, N.amount(), 0.0001 );
-      CPPUNIT_ASSERT_EQUAL(std::string("meter^1 second^-2 kilogram^1"),SOU::WhatAmI(N) );
+      EXPECT_DOUBLE_EQ( 49.05, N.amount() );
+      EXPECT_EQ(std::string("meter^1 second^-2 kilogram^1"),SOU::WhatAmI(N) );
       //std::cout << SI::WhatAmI(N);
    }
 
-   void TestAcceleration()
+   TEST_F(TableIITest, TestAcceleration )
    {
       v V1 = 5.0;
       v V2 = 3.0;
       t_sec t = 2.0;
       a acc = (V1+V2)/t;
-      CPPUNIT_ASSERT_DOUBLES_EQUAL( 4.0, acc.amount(), 0.001 );
+	  EXPECT_DOUBLE_EQ( 4.0, acc.amount() );
 
       a acc2 = acc + V2/t;
-      CPPUNIT_ASSERT_DOUBLES_EQUAL( 5.5, acc2.amount(), 0.001 );
+	  EXPECT_DOUBLE_EQ( 5.5, acc2.amount() );
 
 /* This line below will fail since no brackets are used.
    Forces the user to keep their types together before mul or dividing.
@@ -70,23 +72,24 @@ private:
    /*
       the test is to see if dB is produced correctly.
    */
-   void TestWithlog()
+   TEST_F(TableIITest, TestWithlog )
    {
       t_sec T1 = 80.0;
       t_sec T2 = 8.0;
 
       double x = log( T1/T2 );
-      CPPUNIT_ASSERT_DOUBLES_EQUAL( 2.3025850929940456840179914546844, x, 0.001 );
+	  EXPECT_DOUBLE_EQ( 2.3025850929940456840179914546844, x ) << "Test to see if a scalar value is produced";
+	  EXPECT_DOUBLE_EQ(10.00, T1 / T2);
    }
 
-   CPPUNIT_TEST_SUITE( TableIITest );
-   CPPUNIT_TEST( TestNewton );
-   CPPUNIT_TEST( TestAcceleration);
-   CPPUNIT_TEST( TestWithlog );
-   CPPUNIT_TEST_SUITE_END();
-};
-
-CPPUNIT_TEST_SUITE_REGISTRATION( TableIITest );
+//   CPPUNIT_TEST_SUITE( TableIITest );
+//   CPPUNIT_TEST( TestNewton );
+//   CPPUNIT_TEST( TestAcceleration);
+//   CPPUNIT_TEST( TestWithlog );
+//   CPPUNIT_TEST_SUITE_END();
+//};
+//
+//CPPUNIT_TEST_SUITE_REGISTRATION( TableIITest );
 
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com

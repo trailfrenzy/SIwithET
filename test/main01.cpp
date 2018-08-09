@@ -1,5 +1,6 @@
 /// Brief description.
 /** Detailed description. */
+#ifdef NOT_USED_ANYMORE
 
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/ui/text/TestRunner.h>
@@ -34,6 +35,7 @@ int main(int argc, char** argv)
   bool const wasSucessful = runner.run( "", !selfTest );
   return wasSucessful ? 0 : 1;
 }
+#endif
 
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
@@ -44,3 +46,10 @@ int main(int argc, char** argv)
 //
 // This software is provided "as is" without express or implied warranty.
 
+#include <gtest/gtest.h>   // $(SolutionDir)\..\..\googletest\googletest\include
+
+int main(int argc, char **argv)
+{
+	::testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
+}
