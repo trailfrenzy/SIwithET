@@ -151,9 +151,9 @@ protected:
 	// attributes used in the class
 	void SetUp()
 	{
-		m_1 = std::make_unique<t_1>(3.0);
+		m_1 = std::make_unique<t_1>(12.0); // (3.0);
 		m_2 = std::make_unique<t_2>(4.0);
-		m_3 = std::make_unique<t_3>(12.0);
+		m_3 = std::make_unique<t_3>(3.0); // (12.0);
 	}
 
 	std::unique_ptr<t_1> m_1; /// Argument one
@@ -193,24 +193,25 @@ TYPED_TEST_P(SOU_Division, Test2)
 TYPED_TEST_P(SOU_Division, TestWithScaler)
 {
 	using TAG = SOU_Division<TypeParam >;
+	EXPECT_DOUBLE_EQ(12.0, TAG::m_1->amount()) << "Verify we are starting correctly";
 
 	TAG::t_1 const res = *TAG::m_1 / 4.0;
 	EXPECT_DOUBLE_EQ(3.0, res.amount()) << SOU::WhatAmI(res);
 
-	auto res1 = 36.0 / *TAG::m_1;
-	EXPECT_DOUBLE_EQ(3.0, res1.amount()) << SOU::WhatAmI(res1);
+	TAG::t_inv res1 = 36.0 / *TAG::m_3;
+	EXPECT_DOUBLE_EQ(12.0, res1.amount()) << SOU::WhatAmI(res1);
 }
 
 TYPED_TEST_P(SOU_Division, TestDivideAssign)
 {
 	using TAG = SOU_Division<TypeParam >;
-	EXPECT_DOUBLE_EQ(12.0, TAG::m_3->amount() ) << "Verify we are starting correctly";
+	EXPECT_DOUBLE_EQ(12.0, TAG::m_1->amount() ) << "Verify we are starting correctly";
 
-	*TAG::m_3 /= 2.0;
-	EXPECT_DOUBLE_EQ(6.0, TAG::m_3->amount()) << "12/2 is 6";
+	*TAG::m_1 /= 2.0;
+	EXPECT_DOUBLE_EQ(6.0, TAG::m_1->amount()) << "12/2 is 6";
 
-	*TAG::m_3 /= 0.1;
-	EXPECT_DOUBLE_EQ(60.0, TAG::m_3->amount());
+	*TAG::m_1 /= 0.1;
+	EXPECT_DOUBLE_EQ(60.0, TAG::m_1->amount());
 }
 
 REGISTER_TYPED_TEST_CASE_P(SOU_Division,
