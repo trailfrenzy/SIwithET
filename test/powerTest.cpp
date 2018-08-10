@@ -43,3 +43,7 @@ TEST(powerTest, NegTwo)
 {
 	ASSERT_DOUBLE_EQ(helpers::P<Mock>::thePower<-2>::toBase(), 0.250) << "should be one quarter";
 }
+
+TEST(powerTest, NegFour) {
+	ASSERT_DOUBLE_EQ(helpers::P<Mock>::thePower<-4>::toBase(), 0.0625) << "check the assembly to verify if was calc at compile time";
+}
