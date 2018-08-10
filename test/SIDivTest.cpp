@@ -1,91 +1,104 @@
-#include <cppunit/extensions/HelperMacros.h>
+//#include <cppunit/extensions/HelperMacros.h>
+#include <gtest/gtest.h>
+#include <memory>
 #include "SI.h"
 #include "MetricTypes.h"
 #include "TimeAtomicUnits.h"  // contains the time atomic units
 #include "operators.h"
 #include "WhatAmI.h"
 
-namespace
-{
    namespace AT = SOU::Time::AtomicUnit;
 // basic test on the multiplication operator
-class DivisionFirst : public CppUnit::TestFixture
-{
-   //using namespace Metric;
-   typedef Metric::AtomicUnit::Meter Meter;
-   typedef AT::second second;
-   typedef Metric::AtomicUnit::gram gram;
-   typedef Metric::AtomicUnit::coulomb coul;
-   typedef Metric::AtomicUnit::kelvin kelvin;
-   typedef SOU::MakeType<Meter,second,gram,kelvin,coul> tMake;
-   typedef tMake::MakeDim<1,0,0,0,0>::type t_Meter;
-   typedef tMake::MakeDim<2,0,0,0,0>::type t_MeterSq;
-   typedef tMake::MakeDim<3,0,0,0,0>::type t_MeterCubed;
-   
-public:
-   void setUp() { }
-   void tearDown() {}
-private: 
+   class DivisionFirst : public ::testing::Test // : public CppUnit::TestFixture
+   {
+   public:
+	   //using namespace Metric;
+	   typedef Metric::AtomicUnit::Meter Meter;
+	   typedef AT::second second;
+	   typedef Metric::AtomicUnit::gram gram;
+	   typedef Metric::AtomicUnit::coulomb coul;
+	   typedef Metric::AtomicUnit::kelvin kelvin;
+	   typedef SOU::MakeType<Meter, second, gram, kelvin, coul> tMake;
+	   typedef tMake::MakeDim<1, 0, 0, 0, 0>::type t_Meter;
+	   typedef tMake::MakeDim<2, 0, 0, 0, 0>::type t_MeterSq;
+	   typedef tMake::MakeDim<3, 0, 0, 0, 0>::type t_MeterCubed;
+
+   public:
+	   //void setUp() { }
+	   //void tearDown() {}
+   private:
+   };
+
    /// Test division during assignement
-   void TestDiv_Result()
+   TEST_F(DivisionFirst, TestDiv_Result)
    {   
       // division during intialization
       t_Meter m( t_MeterSq(1.0) / t_Meter(1.0));
-      CPPUNIT_ASSERT( m == 1.0 );
+      EXPECT_TRUE( m == 1.0 );
       
       t_Meter m2 = t_MeterSq(1.0) / t_Meter(2.0);
-      CPPUNIT_ASSERT( m2 == 0.5 );
+	  EXPECT_TRUE( m2 == 0.5 );
+
+	  auto m3 = t_MeterSq(1.0) / t_Meter(4.0);
+	  EXPECT_TRUE(m3 == 0.25);
    }
 
    /// Test with cube
-   void TestWithCube()
+   TEST_F(DivisionFirst, TestWithCube )
    {
       t_MeterSq sq1 = t_MeterCubed(9.0) / t_Meter(2.0);
-      CPPUNIT_ASSERT( sq1 == 4.5 ); 
+	  EXPECT_TRUE( sq1 == 4.5 );
    
       t_Meter m1 = t_MeterCubed(15.0) / t_MeterSq(5.0);
-      CPPUNIT_ASSERT( m1 == 3.0 );
+	  EXPECT_TRUE( m1 == 3.0 );
    
       t_Meter m2 = t_MeterSq( 4.0 ) / t_Meter( 2.0 );
-      CPPUNIT_ASSERT( m2 == 2.0 );
+	  EXPECT_TRUE( m2 == 2.0 );
+
+	  auto m3 = t_MeterCubed(15.0) / t_MeterSq(3.0);
+	  EXPECT_TRUE(m3 == 5.0) << "test with auto";
+
    }
    
    /// @code The SystemOfUnits::operators::Div_Result<T1,T2> @endcode must be able to handle chaining
    /// of division.
-   void TestChaining()
+   TEST_F(DivisionFirst, TestChaining )
    {
       t_Meter m1 = t_Meter(2.0) * t_Meter(2.0) / t_Meter(2.0);
-      CPPUNIT_ASSERT( m1 == 2.0 );
+	  EXPECT_TRUE( m1 == 2.0 );
       
       t_Meter m2 = t_MeterCubed( 27.0 ) / t_Meter(3.0) / t_Meter(3.0);
-      CPPUNIT_ASSERT( m2 == 3.0 );
+	  EXPECT_TRUE( m2 == 3.0 );
       
       m2 = t_MeterCubed( 27.0 ) / t_Meter(3.0) / t_Meter(3.0) / 2;
-      CPPUNIT_ASSERT_EQUAL( 1.5, m2.amount() );
+      EXPECT_DOUBLE_EQ( 1.5, m2.amount() ) << "test with operator=()";
 
       t_Meter m3 = (t_Meter(2.0) * t_Meter(9.0) ) / t_Meter(3.0);
-      CPPUNIT_ASSERT( m3 == 6.0 );
+	  EXPECT_TRUE( m3 == 6.0 );
 
       t_Meter const m4 = 2 * (t_Meter(2.0) * t_Meter(9.0) ) / t_Meter(3.0);
-      CPPUNIT_ASSERT_EQUAL( 12.0, m4.amount() );
+	  EXPECT_DOUBLE_EQ( 12.0, m4.amount() );
 
       t_Meter const m5 = ( 2 * t_Meter(2.0) * t_Meter(9.0) ) / t_Meter(3.0);
-      CPPUNIT_ASSERT_EQUAL( 12.0, m5.amount() );
+	  EXPECT_DOUBLE_EQ( 12.0, m5.amount() );
    }
 
    /// Test that the result can be diminsionless such as Mach or dB.
-   void TestDimisionLess()
+   TEST_F(DivisionFirst, TestDimisionLess )
    {
       // see how well a diminsonless unit is handled
       double d1 = t_MeterSq(12.0) / t_MeterSq(4.0);
-      CPPUNIT_ASSERT( d1 == 3.0 );
+	  EXPECT_TRUE( d1 == 3.0 );
 
       double const d2 = t_Meter(11.0) / t_Meter(11.0);
-      CPPUNIT_ASSERT_EQUAL( 1.0, d2 );
+	  EXPECT_DOUBLE_EQ( 1.0, d2 );
+
+	  auto d3 = t_MeterCubed(24.0) / t_MeterCubed(12.0);
+	  EXPECT_DOUBLE_EQ(2.0, d3);
    }
 
    /** Test with non-atomic values.  When dividing meters by centimeters. */
-   void TestWithNonAtomicUnitUnitsLength()
+   TEST_F(DivisionFirst, TestWithNonAtomicUnitUnitsLength )
    {
       using namespace Metric;
       const t_centimeter cent(200.0);
@@ -93,136 +106,144 @@ private:
       t_MeterSq meterSq(14.0);
 
       typedef SOU::operators::Div_Result<t_MeterSq, t_centimeter> t_result;
-      CPPUNIT_ASSERT( static_cast<bool>(t_result::ALLTYPES_THE_SAME::val) == true );
+      EXPECT_TRUE( static_cast<bool>(t_result::ALLTYPES_THE_SAME::val) == true );
       
       meter = meterSq / cent;
-      CPPUNIT_ASSERT_EQUAL( 7.0, meter.amount() );
+	  EXPECT_DOUBLE_EQ( 7.0, meter.amount() );
 
       typedef SOU::MakeSQ< Metric::t_centimeter >::type t_centSq;
       t_centSq centSq = t_centimeter(600) * meter;
       t_centimeter cent2 = centSq / meter;
-      CPPUNIT_ASSERT_EQUAL( 600.0, cent2.amount() );
+	  EXPECT_DOUBLE_EQ( 600.0, cent2.amount() );
 
       typedef SOU::MakeSQ< Metric::t_kilometer >::type t_kiloSQ;
       Metric::t_kilometer kilo = t_kiloSQ( 12.0 ) / cent2;
-      CPPUNIT_ASSERT_EQUAL( 2000.0, kilo.amount() );
+	  EXPECT_DOUBLE_EQ( 2000.0, kilo.amount() );
    }
 
-  CPPUNIT_TEST_SUITE( DivisionFirst );
-  CPPUNIT_TEST( TestDiv_Result );
-  CPPUNIT_TEST( TestWithCube );
-  CPPUNIT_TEST( TestChaining );
-  CPPUNIT_TEST( TestDimisionLess );
-  CPPUNIT_TEST( TestWithNonAtomicUnitUnitsLength );
-  CPPUNIT_TEST_SUITE_END();
-};
+   template< int NUMERATOR, int DENOMINATOR, int RATIO > struct ARG { enum { eN = NUMERATOR, eD = DENOMINATOR, eR = RATIO
+   }; };
 
-CPPUNIT_TEST_SUITE_REGISTRATION( DivisionFirst );
 
 // template used to make many division tests
-template< int RESULT, int DIV1, int DIV2 >
-class SOU_Division : public CppUnit::TestFixture
+//template< int RESULT, int DIV1, int DIV2 >
+template< typename T_ARG >
+class SOU_Division : public testing::Test //: public CppUnit::TestFixture
 {
-   // define the basic types that will be used here.
-   typedef Metric::AtomicUnit::Meter Meter;
-   typedef SOU::Time::AtomicUnit::second second;
-   typedef Metric::AtomicUnit::gram gram;
-   typedef Metric::AtomicUnit::coulomb coul;
-   typedef Metric::AtomicUnit::kelvin kelvin;
+protected:
+	enum { eNUM = T_ARG::eN, eDEN = T_ARG::eD, eRATIO = T_ARG::eR };
+	// define the basic types that will be used here.
+	typedef Metric::AtomicUnit::Meter Meter;
+	typedef SOU::Time::AtomicUnit::second second;
+	typedef Metric::AtomicUnit::gram gram;
+	typedef Metric::AtomicUnit::coulomb coul;
+	typedef Metric::AtomicUnit::kelvin kelvin;
 
-   // build a type from the basics
-   typedef SOU::MakeType<Meter,second, gram, kelvin, coul> tMake;
+	// build a type from the basics
+	typedef SOU::MakeType<Meter, second, gram, kelvin, coul> tMake;
 
-   // Produce the actual Unit.
-   typename typedef tMake::MakeDim< RESULT, 0,0,0,0 >::type t_1;
-   typename typedef tMake::MakeDim< DIV1,   0,0,0,0 >::type t_2;
-   typename typedef tMake::MakeDim< DIV2,   0,0,0,0 >::type t_3;
-   typename typedef tMake::MakeDim<-RESULT, 0,0,0,0 >::type t_inv;
-   
-   // attributes used in the class
-   t_1 const * m_1;
-   t_2 const * m_2;
-   t_3 * m_3;
+	// Produce the actual Unit.
+	typename typedef tMake::MakeDim< eNUM, 0, 0, 0, 0 >::type t_1;
+	typename typedef tMake::MakeDim< eDEN, 0, 0, 0, 0 >::type t_2;
+	typename typedef tMake::MakeDim< eRATIO, 0, 0, 0, 0 >::type t_3;
+	typename typedef tMake::MakeDim<-eRATIO, 0, 0, 0, 0 >::type t_inv;
 
-public:
-   void setUp()
-   {
-      m_1 = new t_1( 12.0 );
-      m_2 = new t_2( 4.0 );
-      m_3 = new t_3( 3.0);
-   }
-   void tearDown()
-   {
-      delete m_1;
-      delete m_2;
-      delete m_3;
-   }
+	// attributes used in the class
+	void SetUp()
+	{
+		m_1 = std::make_unique<t_1>(3.0);
+		m_2 = std::make_unique<t_2>(4.0);
+		m_3 = std::make_unique<t_3>(12.0);
+	}
+
+	std::unique_ptr<t_1> m_1; /// Argument one
+	std::unique_ptr<t_2> m_2;  /// Argument two
+	std::unique_ptr<t_3> m_3; /// The product of the two arguments
 private:
-   /** Early test to show how @code SOU::operators::Div_Result< T1, T2 > @endcode worked
-
-      */
-   void TestDiv_Result()
-   {  
-      SOU::operators::Div_Result< t_1, t_2 > res(*m_1, *m_2);
-      CPPUNIT_ASSERT( res.result() == *m_3 );
-   }
-
-   /// early test show that a simple division could work.
-   void Test2()
-   {
-      t_3 res = *m_1 / *m_2;
-      CPPUNIT_ASSERT( res == *m_3 );
-      CPPUNIT_ASSERT( *m_3 == *m_1 / *m_2 );
-
-      t_2 res2 = *m_1 / *m_3;
-      CPPUNIT_ASSERT( res2 == *m_2 );
-   }
-   
-   /// Did operator/() work with scalar values?
-   void TestWithScaler()
-   {
-      t_1 const res = *m_1 / 4.0;
-	  CPPUNIT_ASSERT_EQUAL_MESSAGE( SOU::WhatAmI(res), 3.0, res.amount() );
-
-      t_inv res1 = 36.0 / *m_1;
-	  CPPUNIT_ASSERT_EQUAL_MESSAGE( SOU::WhatAmI(res1), 3.0, res1.amount() );
-   }
-
-   void TestDivideAssign()
-   {
-		*m_3 /= 2.0;
-		CPPUNIT_ASSERT_EQUAL( 1.5, m_3->amount() );
-
-		*m_3 /= 0.1;
-		CPPUNIT_ASSERT_EQUAL( 15.0, m_3->amount() );
-   }
-
-  CPPUNIT_TEST_SUITE( SOU_Division );
-  CPPUNIT_TEST( TestDiv_Result );
-  CPPUNIT_TEST( Test2 );
-  CPPUNIT_TEST( TestWithScaler );
-  CPPUNIT_TEST( TestDivideAssign );
-  CPPUNIT_TEST_SUITE_END();
 };
 
-typedef SOU_Division< 2, 1, 1> tDiv1;
-CPPUNIT_TEST_SUITE_REGISTRATION( tDiv1 );
+TYPED_TEST_CASE_P(SOU_Division);
 
-typedef SOU_Division<3,2,1> tDiv2;
-CPPUNIT_TEST_SUITE_REGISTRATION( tDiv2 );
+/** Early test to show how @code SOU::operators::Div_Result< T1, T2 >
+@endcode worked
+  */
+TYPED_TEST_P(SOU_Division, TestDiv_Result)
+{
+	using TAG = SOU_Division<TypeParam >;
 
-typedef SOU_Division<5,2,3> tDiv3;
-CPPUNIT_TEST_SUITE_REGISTRATION( tDiv3 );
-
-typedef SOU_Division<2,2,0> tDiv4;
-CPPUNIT_TEST_SUITE_REGISTRATION( tDiv4 );
-
-typedef SOU_Division<2,0,2> tDiv5;
-CPPUNIT_TEST_SUITE_REGISTRATION( tDiv5 );
-
-typedef SOU_Division<2,4,-2> tDiv6;
-CPPUNIT_TEST_SUITE_REGISTRATION( tDiv6 );
+	SOU::operators::Div_Result< TAG::t_1, TAG::t_2 > res(*TAG::m_1, *TAG::m_2);
+	EXPECT_TRUE(res.result() == *TAG::m_3);
 }
+
+/// early test show that a simple division could work.
+TYPED_TEST_P(SOU_Division, Test2)
+{
+	using TAG = SOU_Division<TypeParam >;
+
+	TAG::t_3 res = *TAG::m_1 / *TAG::m_2;
+	EXPECT_TRUE(res == *TAG::m_3);
+	EXPECT_TRUE(*TAG::m_3 == *TAG::m_1 / *TAG::m_2);
+
+	TAG::t_2 res2 = *TAG::m_1 / *TAG::m_3;
+	EXPECT_TRUE(res2 == *TAG::m_2);
+}
+
+/// Did operator/() work with scalar values?
+TYPED_TEST_P(SOU_Division, TestWithScaler)
+{
+	using TAG = SOU_Division<TypeParam >;
+
+	TAG::t_1 const res = *TAG::m_1 / 4.0;
+	EXPECT_DOUBLE_EQ(3.0, res.amount()) << SOU::WhatAmI(res);
+
+	auto res1 = 36.0 / *TAG::m_1;
+	EXPECT_DOUBLE_EQ(3.0, res1.amount()) << SOU::WhatAmI(res1);
+}
+
+TYPED_TEST_P(SOU_Division, TestDivideAssign)
+{
+	using TAG = SOU_Division<TypeParam >;
+
+	*TAG::m_3 /= 2.0;
+	EXPECT_DOUBLE_EQ(1.5, TAG::m_3->amount());
+
+	*TAG::m_3 /= 0.1;
+	EXPECT_DOUBLE_EQ(15.0, TAG::m_3->amount());
+}
+
+REGISTER_TYPED_TEST_CASE_P(SOU_Division,
+	TestDiv_Result, Test2, TestWithScaler, TestDivideAssign);
+
+//  CPPUNIT_TEST_SUITE( SOU_Division );
+//  CPPUNIT_TEST( TestDiv_Result );
+//  CPPUNIT_TEST( Test2 );
+//  CPPUNIT_TEST( TestWithScaler );
+//  CPPUNIT_TEST( TestDivideAssign );
+//  CPPUNIT_TEST_SUITE_END();
+//};
+
+//typedef SOU_Division< 2, 1, 1> tDiv1;
+//CPPUNIT_TEST_SUITE_REGISTRATION( tDiv1 );
+//
+//typedef SOU_Division<3,2,1> tDiv2;
+//CPPUNIT_TEST_SUITE_REGISTRATION( tDiv2 );
+//
+//typedef SOU_Division<5,2,3> tDiv3;
+//CPPUNIT_TEST_SUITE_REGISTRATION( tDiv3 );
+//
+//typedef SOU_Division<2,2,0> tDiv4;
+//CPPUNIT_TEST_SUITE_REGISTRATION( tDiv4 );
+//
+//typedef SOU_Division<2,0,2> tDiv5;
+//CPPUNIT_TEST_SUITE_REGISTRATION( tDiv5 );
+//
+//typedef SOU_Division<2,4,-2> tDiv6;
+//CPPUNIT_TEST_SUITE_REGISTRATION( tDiv6 );
+//
+typedef ::testing::Types< ARG<2, 1, 1>, ARG< 3, 2, 1>, ARG<5, 2, 3>, ARG<2, 2, 0>, ARG<2, 0, 2>, ARG<2, 4, -2> > MyTypes;
+INSTANTIATE_TYPED_TEST_CASE_P(My, SOU_Division, MyTypes);
+
+
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //

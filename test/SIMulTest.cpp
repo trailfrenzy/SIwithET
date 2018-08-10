@@ -4,17 +4,14 @@ operator for the System of Units Template Class.
 
 //#include <cppunit/extensions/HelperMacros.h>
 #include <gtest/gtest.h>
-//#include <gtest/internal/gtest-internal.h>
-//#include <gtest/internal/gtest-param-util.h>
-//#include <gtest/internal/gtest-param-util-generated.h>
-
 #include "SI.h"
 #include "MetricTypes.h"
 #include "operators.h"
 #include "conversion_cast.h"	/// helps out during one of the test
 #include "template_help.h"
+#include "WhatAmI.h"
+
 #include <memory>
-//namespace {
 
 // basic test on the multiplication operator
 class MultiplyFirst : public ::testing::Test //: public CppUnit::TestFixture
@@ -412,7 +409,7 @@ TYPED_TEST_P(SI_Multiply, TestMul_Result )
 		EXPECT_TRUE(TAG::t_3(48.0) == 2.0 * 2.0 * *TAG::m_3 ) << "with some chaining";
 
 	  /// Test with integers
-		EXPECT_TRUE( 12 == *TAG::m_1 * 4 );
+		EXPECT_TRUE( 12 == *TAG::m_1 * 4 ) << SOU::WhatAmI(*TAG::m_1);
 		EXPECT_TRUE(TAG::t_1(12) == *TAG::m_1 * 4 );
 		EXPECT_TRUE(TAG::t_1(12) == 4 * *TAG::m_1 );
 

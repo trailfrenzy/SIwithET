@@ -1,41 +1,42 @@
-#include <cppunit/extensions/HelperMacros.h>
+#include <gtest\gtest.h>
+//#include <cppunit/extensions/HelperMacros.h>
 //#include "EnglishTypes.h"
 #include "MetricTypes.h"
 #include "operators.h"
 #include "conversion_cast.h"
 
 
-class MetricUnitTest : public CppUnit::TestFixture
-{
-public:
-   void setUp(){}
-   void tearDown(){}
-private:
+//class MetricUnitTest : public CppUnit::TestFixture
+//{
+//public:
+//   void setUp(){}
+//   void tearDown(){}
+//private:
 
 
-   void BasicTest()
+   TEST(MetricUnitTest, BasicTest )
    {
 	   typedef Metric::AtomicUnit::Meter m;
-	   CPPUNIT_ASSERT_EQUAL( std::string("meter"), std::string( m::str() ) );
-	   CPPUNIT_ASSERT( m::IsBase == true );
-	   CPPUNIT_ASSERT( m::toBase() == 1.0 );
-	   CPPUNIT_ASSERT( m::fromBase() == 1.0 );
+	   EXPECT_EQ( std::string("meter"), std::string( m::str() ) );
+	   EXPECT_TRUE( m::IsBase == true );
+	   EXPECT_TRUE( m::toBase() == 1.0 );
+	   EXPECT_TRUE( m::fromBase() == 1.0 );
    }
-   void BasicTestLength()
+   TEST(MetricUnitTest, BasicTestLength )
    {
 		typedef Metric::AtomicUnit::Meter m;
 		typedef Metric::AtomicUnit::Kilometer km;
-		CPPUNIT_ASSERT_EQUAL( 1000.0, km::toBase() );
+		EXPECT_EQ( 1000.0, km::toBase() );
    }
 
-   CPPUNIT_TEST_SUITE( MetricUnitTest );
-   CPPUNIT_TEST( BasicTest );
-   CPPUNIT_TEST( BasicTestLength );
-   CPPUNIT_TEST_SUITE_END();
-
-};
-
-CPPUNIT_TEST_SUITE_REGISTRATION( MetricUnitTest );
+//   CPPUNIT_TEST_SUITE( MetricUnitTest );
+//   CPPUNIT_TEST( BasicTest );
+//   CPPUNIT_TEST( BasicTestLength );
+//   CPPUNIT_TEST_SUITE_END();
+//
+//};
+//
+//CPPUNIT_TEST_SUITE_REGISTRATION( MetricUnitTest );
 
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
