@@ -13,6 +13,7 @@ operator for the System of Units Template Class.
 #include "operators.h"
 #include "conversion_cast.h"	/// helps out during one of the test
 #include "template_help.h"
+#include <memory>
 //namespace {
 
 // basic test on the multiplication operator
@@ -329,20 +330,20 @@ public:
 
 	void SetUp()
 	{
-		m_1 = new t_1(3.0);
-		m_2 = new t_2(4.0);
-		m_3 = new t_3(12.);
+		m_1 = std::make_unique<t_1>(3.0);
+		m_2 = std::make_unique<t_2>(4.0);
+		m_3 = std::make_unique<t_3>(12.0);
 	}
 	void TearDown()
 	{
-		delete m_1;
-		delete m_2;
-		delete m_3;
+		//delete m_1;
+		//delete m_2;
+		//delete m_3;
 	}
 protected:
-	t_1 * m_1; /// Argument one
-	t_2 const * m_2;  /// Argument two
-	t_3 * m_3; /// The product of the two arguments
+	std::unique_ptr<t_1> m_1; /// Argument one
+	std::unique_ptr<t_2> m_2;  /// Argument two
+	std::unique_ptr<t_3> m_3; /// The product of the two arguments
 
 private:
 	double const m_delta;
