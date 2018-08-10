@@ -182,6 +182,7 @@ TYPED_TEST_P(SOU_Division, Test2)
 
 	TAG::t_3 res = *TAG::m_1 / *TAG::m_2;
 	EXPECT_TRUE(res == *TAG::m_3);
+	//EXPECT_DOUBLE_EQ( res.amount(), *TAG::m_3.amount() ) << "need to write an comparison for episoln";
 	EXPECT_TRUE(*TAG::m_3 == *TAG::m_1 / *TAG::m_2);
 
 	TAG::t_2 res2 = *TAG::m_1 / *TAG::m_3;
@@ -203,12 +204,13 @@ TYPED_TEST_P(SOU_Division, TestWithScaler)
 TYPED_TEST_P(SOU_Division, TestDivideAssign)
 {
 	using TAG = SOU_Division<TypeParam >;
+	EXPECT_DOUBLE_EQ(12.0, TAG::m_3->amount() ) << "Verify we are starting correctly";
 
 	*TAG::m_3 /= 2.0;
-	EXPECT_DOUBLE_EQ(1.5, TAG::m_3->amount());
+	EXPECT_DOUBLE_EQ(6.0, TAG::m_3->amount()) << "12/2 is 6";
 
 	*TAG::m_3 /= 0.1;
-	EXPECT_DOUBLE_EQ(15.0, TAG::m_3->amount());
+	EXPECT_DOUBLE_EQ(60.0, TAG::m_3->amount());
 }
 
 REGISTER_TYPED_TEST_CASE_P(SOU_Division,
