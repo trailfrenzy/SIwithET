@@ -33,65 +33,48 @@ namespace
    typedef t_Base::MakeDim<-3,0,1,0,0 > rho; // mass density
 }
 
-class TableIITest : public ::testing::Test //: public CppUnit::TestFixture
+TEST(TableIITest, TestNewton)
 {
-public:
-	void setUp() {}
-	void tearDown() {}
-private:
-};
+	a acc = 9.81;
+	t_mass mass = 5.0;
 
-   TEST_F( TableIITest, TestNewton )
-   {
-      a acc = 9.81;
-      t_mass mass = 5.0;
+	t_n const N = acc * mass;
+	EXPECT_DOUBLE_EQ(49.05, N.amount());
+	EXPECT_EQ(std::string("meter^1 second^-2 kilogram^1"), SOU::WhatAmI(N));
+	//std::cout << SI::WhatAmI(N);
+}
 
-      t_n const N = acc * mass;
-      EXPECT_DOUBLE_EQ( 49.05, N.amount() );
-      EXPECT_EQ(std::string("meter^1 second^-2 kilogram^1"),SOU::WhatAmI(N) );
-      //std::cout << SI::WhatAmI(N);
-   }
+TEST(TableIITest, TestAcceleration)
+{
+	v V1 = 5.0;
+	v V2 = 3.0;
+	t_sec t = 2.0;
+	a acc = (V1 + V2) / t;
+	EXPECT_DOUBLE_EQ(4.0, acc.amount());
 
-   TEST_F(TableIITest, TestAcceleration )
-   {
-      v V1 = 5.0;
-      v V2 = 3.0;
-      t_sec t = 2.0;
-      a acc = (V1+V2)/t;
-	  EXPECT_DOUBLE_EQ( 4.0, acc.amount() );
+	a acc2 = acc + V2 / t;
+	EXPECT_DOUBLE_EQ(5.5, acc2.amount());
 
-      a acc2 = acc + V2/t;
-	  EXPECT_DOUBLE_EQ( 5.5, acc2.amount() );
+	/* This line below will fail since no brackets are used.
+	   Forces the user to keep their types together before mul or dividing.
+		  a acc2 = V1+V2/t;
+	*/
+}
 
-/* This line below will fail since no brackets are used.
-   Forces the user to keep their types together before mul or dividing.
-      a acc2 = V1+V2/t;
+/**
+   Test is to see if dB is produced correctly.
 */
-   }
+TEST(TableIITest, TestWithlog)
+{
+	t_sec T1 = 80.0;
+	t_sec T2 = 8.0;
 
-   /*
-      the test is to see if dB is produced correctly.
-   */
-   TEST_F(TableIITest, TestWithlog )
-   {
-      t_sec T1 = 80.0;
-      t_sec T2 = 8.0;
+	double x = log(T1 / T2);
+	EXPECT_DOUBLE_EQ(2.3025850929940456840179914546844, x) << "Test to see if a scalar value is produced";
+	EXPECT_DOUBLE_EQ(10.00, T1 / T2);
+}
 
-      double x = log( T1/T2 );
-	  EXPECT_DOUBLE_EQ( 2.3025850929940456840179914546844, x ) << "Test to see if a scalar value is produced";
-	  EXPECT_DOUBLE_EQ(10.00, T1 / T2);
-   }
-
-//   CPPUNIT_TEST_SUITE( TableIITest );
-//   CPPUNIT_TEST( TestNewton );
-//   CPPUNIT_TEST( TestAcceleration);
-//   CPPUNIT_TEST( TestWithlog );
-//   CPPUNIT_TEST_SUITE_END();
-//};
-//
-//CPPUNIT_TEST_SUITE_REGISTRATION( TableIITest );
-
-// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2002-2018 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any
