@@ -1,4 +1,3 @@
-//#include <cppunit/extensions/HelperMacros.h>
 #include <gtest/gtest.h>
 #include <memory>
 #include "SI.h"
@@ -9,7 +8,7 @@
 
    namespace AT = SOU::Time::AtomicUnit;
 // basic test on the multiplication operator
-   class DivisionFirst : public ::testing::Test // : public CppUnit::TestFixture
+   class DivisionFirst : public ::testing::Test 
    {
    public:
 	   //using namespace Metric;
@@ -22,11 +21,6 @@
 	   typedef tMake::MakeDim<1, 0, 0, 0, 0>::type t_Meter;
 	   typedef tMake::MakeDim<2, 0, 0, 0, 0>::type t_MeterSq;
 	   typedef tMake::MakeDim<3, 0, 0, 0, 0>::type t_MeterCubed;
-
-   public:
-	   //void setUp() { }
-	   //void tearDown() {}
-   private:
    };
 
    /// Test division during assignement
@@ -57,7 +51,6 @@
 
 	  auto m3 = t_MeterCubed(15.0) / t_MeterSq(3.0);
 	  EXPECT_TRUE(m3 == 5.0) << "test with auto";
-
    }
    
    /// @code The SystemOfUnits::operators::Div_Result<T1,T2> @endcode must be able to handle chaining
@@ -217,32 +210,6 @@ TYPED_TEST_P(SOU_Division, TestDivideAssign)
 REGISTER_TYPED_TEST_CASE_P(SOU_Division,
 	TestDiv_Result, Test2, TestWithScaler, TestDivideAssign);
 
-//  CPPUNIT_TEST_SUITE( SOU_Division );
-//  CPPUNIT_TEST( TestDiv_Result );
-//  CPPUNIT_TEST( Test2 );
-//  CPPUNIT_TEST( TestWithScaler );
-//  CPPUNIT_TEST( TestDivideAssign );
-//  CPPUNIT_TEST_SUITE_END();
-//};
-
-//typedef SOU_Division< 2, 1, 1> tDiv1;
-//CPPUNIT_TEST_SUITE_REGISTRATION( tDiv1 );
-//
-//typedef SOU_Division<3,2,1> tDiv2;
-//CPPUNIT_TEST_SUITE_REGISTRATION( tDiv2 );
-//
-//typedef SOU_Division<5,2,3> tDiv3;
-//CPPUNIT_TEST_SUITE_REGISTRATION( tDiv3 );
-//
-//typedef SOU_Division<2,2,0> tDiv4;
-//CPPUNIT_TEST_SUITE_REGISTRATION( tDiv4 );
-//
-//typedef SOU_Division<2,0,2> tDiv5;
-//CPPUNIT_TEST_SUITE_REGISTRATION( tDiv5 );
-//
-//typedef SOU_Division<2,4,-2> tDiv6;
-//CPPUNIT_TEST_SUITE_REGISTRATION( tDiv6 );
-//
 typedef ::testing::Types< ARG<2, 1, 1>, ARG< 3, 2, 1>, ARG<5, 2, 3>, ARG<2, 2, 0>, ARG<2, 0, 2>, ARG<2, 4, -2> > MyTypes;
 INSTANTIATE_TYPED_TEST_CASE_P(My, SOU_Division, MyTypes);
 
