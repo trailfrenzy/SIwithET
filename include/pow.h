@@ -61,7 +61,7 @@ namespace SystemOfUnits
                // it is safe to assume that E will be greater than +1 or 
                // less than -1 and not between
                return IF< (E > 0), thePower< E-1 >, thePower< E+1 > >::RET::toBase()
-                  * IF< (E > 0), thePower< 1   >, thePower< -1  > >::RET::toBase();
+                  * IF< (E > 0), thePower< 1>, thePower<-1> >::RET::toBase();
             }
          };
 
