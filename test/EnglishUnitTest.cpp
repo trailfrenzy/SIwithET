@@ -7,7 +7,7 @@
 
 namespace
 {
-   double const delta = 0.000001;
+   constexpr double delta = 0.000001;
 }
 
 // basic test on the multiplication operator
@@ -46,7 +46,7 @@ namespace
 
       English::t_mph mph = 65.0;
       English::t_FPS fps = SOU::conversion_cast< English::t_FPS >( mph );
-	  EXPECT_DOUBLE_EQ( 95.333333333, fps.amount() );
+	  EXPECT_NEAR( 95.333333333, fps.amount(), delta );
    }
 
 //   CPPUNIT_TEST_SUITE( EnglishUnitTest );
