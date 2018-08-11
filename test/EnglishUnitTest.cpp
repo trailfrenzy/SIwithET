@@ -3,10 +3,49 @@
 #include "MetricTypes.h"
 #include "operators.h"
 #include "conversion_cast.h"
+#include "WhatAmI.h"
 
 namespace
 {
    constexpr double delta = 0.000001;
+}
+
+TEST(EnglishUnitTest, CubeFoot) {
+	English::t_foot foot(1.0);
+	auto cubed = foot * foot * foot;
+	EXPECT_DOUBLE_EQ(cubed.amount(), 1.0);
+	EXPECT_EQ(SystemOfUnits::WhatAmI(cubed), std::string("foot^3"));
+}
+
+namespace {
+	/// Using the Type factory where all the English types have the same base unit types.
+	typedef SOU::MakeType< English::AtomicUnit::Inch, AT::second, English::AtomicUnit::Slug, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::coulomb > MakeEnglishIn;
+
+	using t_Inch = MakeEnglishIn::MakeDim<1, 0, 0, 0, 0>::type;
+	//using t_cubeInch = MakeEnglishIn::MakeDim<3, 0, 0, 0, 0>::type;
+	using t_cubeInch = MakeEnglishIn::MakeDim<3, 0, 0, 0, 0>::type;
+}
+
+TEST(EnglishUnitTest, InchCubeConversion) {
+	English::t_foot foot(1.0);
+	auto cubeFoot = foot * foot * foot;
+
+	auto cubeInch = SystemOfUnits::conversion_cast<t_cubeInch>(cubeFoot);
+
+	EXPECT_DOUBLE_EQ(cubeInch.amount(), 1728.0);
+	EXPECT_EQ(SystemOfUnits::WhatAmI(cubeInch), std::string("inch^3"));
+}
+
+TEST(EnglishUnitTest, SmallBox) {
+	t_Inch const W = 16 + (3.0 / 8);
+	t_Inch const L = 12 + (5.0 / 8);
+	t_Inch const H = 12 + (5.0 / 8);
+
+	auto CubeInch = W * L * H;
+	using t_CubeFoot = English::MakeEnglish::MakeDim<3, 0, 0, 0, 0>::type;
+
+	auto cubeFoot = SystemOfUnits::conversion_cast<t_CubeFoot>(CubeInch);
+	EXPECT_NEAR(1.5104, cubeFoot.amount(), 0.001) << "Should be 1.5 cube feet";
 }
 
 /// Test converting Feet per second from Feet / Second.
