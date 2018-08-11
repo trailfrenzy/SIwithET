@@ -26,9 +26,9 @@ namespace SystemOfUnits
          if( DIM ) // value known at compile time
          {
             ret << TYPE::str();
-            ret << '^'; // was "^";
-            ret << DIM; //static_cast<int>(DIM);
-            ret << ' '; // was " ";
+            ret << '^';
+            ret << DIM;
+            ret << ' ';
          }
       }
    }
@@ -38,7 +38,7 @@ namespace SystemOfUnits
    /// @return std::string
    /// @note future work is to remove the blank space after each string.
    template< typename T >
-   std::string WhatAmI( T )
+   inline std::string WhatAmI( T )
    {
       std::stringstream buf;
       // use a template map to sort these later
@@ -50,6 +50,9 @@ namespace SystemOfUnits
 
       return buf.str().erase(buf.str().size() -1 ); // removes the last space char in the buffer
    }
+
+   /// If user pushes a double into the template.
+   template<> inline std::string WhatAmI(double) { return ""; }
 }
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
