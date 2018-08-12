@@ -58,7 +58,7 @@ namespace SystemOfUnits /// covers the basics of the system
       */
       unitType( double m ) : m_amount(m){}
 	  unitType( unitType const &val ) : m_amount(val.m_amount){}
-	  //unitType( unitType &&val ) : m_amount( std::move(val.m_amount )){}
+	  unitType( unitType &&val ) : m_amount( std::move(val.m_amount )){}
 	  //unitType& operator=(unitType const &val) : m_amount(val.m_amount) {}
 	  unitType& operator=(double m) = delete; // prevent assigning scalar values to an existing unit but still allows assnment to a new type.
 
