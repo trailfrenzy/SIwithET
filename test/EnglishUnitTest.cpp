@@ -70,7 +70,7 @@ TEST(EnglishUnitTest, TestLength)
 	English::t_foot feet = SOU::conversion_cast<English::t_foot>(mile);
 	EXPECT_DOUBLE_EQ(5280.0, feet.amount());
 
-	feet = 15;
+	feet = English::t_foot(15);
 	English::t_yard yard = conversion_cast<English::t_yard>(feet);
 	EXPECT_DOUBLE_EQ(5.0, yard.amount());
 

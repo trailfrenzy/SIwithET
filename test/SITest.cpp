@@ -63,8 +63,8 @@ TYPED_TEST_P(SITest, Comparison)
 {
 	using TAG = SITest<TypeParam >;
 	//using namespace SI;
-	*TAG::m_1 = 4.5;
-	*TAG::m_2 = 4.5;
+	*TAG::m_1 = TAG::t_type(4.5);
+	*TAG::m_2 = TAG::t_type(4.5);
 
 	EXPECT_TRUE(*TAG::m_1 == *TAG::m_2);
 	EXPECT_TRUE(TAG::m_1->amount() == 4.5);
@@ -85,8 +85,8 @@ TYPED_TEST_P(SITest, NotEqual)
 TYPED_TEST_P(SITest, LessThan)
 {
 	using TAG = SITest<TypeParam >;
-	*TAG::m_1 = 4.55555;
-	*TAG::m_2 = 4.55556;
+	*TAG::m_1 = TAG::t_type(4.55555);
+	*TAG::m_2 = TAG::t_type(4.55556);
 	EXPECT_TRUE(*TAG::m_1 < *TAG::m_2);
 	EXPECT_TRUE(*TAG::m_3 < *TAG::m_4);
 }
@@ -100,7 +100,7 @@ TYPED_TEST_P(SITest, GreaterThan)
 TYPED_TEST_P(SITest, Assignment)
 {
 	using TAG = SITest<TypeParam >;
-	*TAG::m_1 = 68.9;
+	*TAG::m_1 = TAG::t_type(68.9);
 	EXPECT_TRUE(*TAG::m_1 == 68.9) << "operator=(double) is no longer availible";
 
 	*TAG::m_2 = *TAG::m_1;

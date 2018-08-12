@@ -9,9 +9,8 @@
 	Think of the this file as a contract for what file confersion_cast.h has.
 */
 #include <gtest\gtest.h>
-//#include <cppunit/extensions/HelperMacros.h>
-//#include "boost/static_assert.hpp"
 #include "SI.h"
+#include "operators.h" // needed for multiplications
 #include "MetricTypes.h"
 #include "conversion_cast.h"
 #include "pow.h"
@@ -21,7 +20,7 @@ class conversion_castTest : public ::testing::Test //: public CppUnit::TestFixtu
 protected:
 	Metric::t_centimeter m_cent = 0.0;
 public:
-	void SetUp() { m_cent = 0.0; }
+	void SetUp() { m_cent = Metric::t_centimeter(0.0); }
 	void TearDown() {}
 private:
 };
@@ -55,7 +54,7 @@ private:
 		Metric::t_meter meter = SOU::conversion_cast<Metric::t_meter>( cent );
 		EXPECT_DOUBLE_EQ( 0.20, meter.amount() );
 
-		m_cent = 200.0;
+		m_cent = Metric::t_centimeter(200.0);
 		Metric::t_kilometer kilo = SOU::conversion_cast<Metric::t_kilometer>( m_cent );
 		EXPECT_DOUBLE_EQ( 0.002, kilo.amount() );
 
@@ -87,7 +86,7 @@ private:
 	  EXPECT_DOUBLE_EQ( 2.0*60.0*60.0, sec.amount() );
 
       // sec to hour
-      sec = 22.0 * 60.0 * 60.0;
+      sec = Metric::t_second(22.0) * 60.0 * 60.0;
       hr = SOU::conversion_cast<Metric::t_hour>(sec);
 	  EXPECT_DOUBLE_EQ( 22.0, hr.amount() );
 	}

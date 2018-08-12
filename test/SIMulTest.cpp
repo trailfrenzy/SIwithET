@@ -191,7 +191,7 @@ private:
 	   EXPECT_DOUBLE_EQ( 4.0, kmSQ.amount() );
 
 	   typedef SOU::MakeSQ<Metric::t_milimeter>::type t_mmSQ;
-	   m = 4.0;
+	   m = t_Meter(4.0);
 	   t_mmSQ mmSq = Metric::t_milimeter( 5.0 ) * m;
 	   EXPECT_DOUBLE_EQ( 20000.0, mmSq.amount() );
 
