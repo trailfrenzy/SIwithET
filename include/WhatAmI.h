@@ -38,7 +38,7 @@ namespace SystemOfUnits
    /// @return std::string
    /// @note future work is to remove the blank space after each string.
    template< typename T >
-   inline std::string WhatAmI( T )
+   inline std::string WhatAmI( T const & )
    {
       std::stringstream buf;
       // use a template map to sort these later
@@ -52,7 +52,7 @@ namespace SystemOfUnits
    }
 
    /// If user pushes a double into the template.
-   template<> inline std::string WhatAmI(double) { return ""; }
+   template<> inline std::string WhatAmI(double const &) { return ""; }
 }
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
