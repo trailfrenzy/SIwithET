@@ -27,6 +27,7 @@ protected:
 TYPED_TEST_CASE_P(SITest);
 
 /// All types should be the same as a double
+/// Size is needed to show that unitType<> is the same size as a double
 TYPED_TEST_P(SITest, SizeOf)
 {
 	using TAG = SITest<TypeParam >;
@@ -125,36 +126,19 @@ TYPED_TEST_P(SITest, Chaining)
 REGISTER_TYPED_TEST_CASE_P(SITest
 	, SizeOf, Assignment, NotEqual, LessThan, GreaterThan, Comparison, Addition, AdditionAssignment, Subtraction, SubtractionAssignment, Chaining );
 
+TEST(SITestSQ, Squaring)
+{
+	namespace AT = SOU::Time::AtomicUnit;
+	using namespace Metric::AtomicUnit;
+	typedef SOU::unitType< Meter, 0, AT::second, -1, gram, 1, SOU::NoDim, 0, SOU::NoDim > t_gramPsec;
+	typedef SOU::unitType< Meter, 0, AT::second, -2, gram, 2, SOU::NoDim, 0, SOU::NoDim > t_gramPsecSQ;
 
-//};
+	typedef SOU::MakeSQ<t_gramPsec>::type gramSQ;
 
-   TEST(SITestSQ, Squaring )
-   {
-      namespace AT = SOU::Time::AtomicUnit;
-      using namespace Metric::AtomicUnit;
-      typedef SOU::unitType< Meter, 0, AT::second,-1, gram, 1, SOU::NoDim,0,SOU::NoDim > t_gramPsec;
-      typedef SOU::unitType< Meter, 0, AT::second,-2, gram, 2, SOU::NoDim,0,SOU::NoDim > t_gramPsecSQ;
+	enum { b = SystemOfUnits::is_same< gramSQ, typename t_gramPsecSQ >::value };
+	EXPECT_TRUE(b);
 
-      typedef SOU::MakeSQ<t_gramPsec>::type gramSQ;
-
-	  enum { b = SystemOfUnits::is_same< gramSQ, typename t_gramPsecSQ >::value };
-	  EXPECT_TRUE( b );
-      
-   }
-
-   /// Size is needed to show that unitType<> is the same size as a double
-   TEST(SITestSQ, TestSize )
-   {
-	   EXPECT_TRUE( sizeof(double) == sizeof( Metric::t_meter ) );
-   }
-
-
-//CPPUNIT_TEST_SUITE_REGISTRATION( SITest<Metric::t_meter> );
-//CPPUNIT_TEST_SUITE_REGISTRATION( SITest<Metric::t_metersecond> );
-//CPPUNIT_TEST_SUITE_REGISTRATION( SITest<Metric::t_second> );
-//CPPUNIT_TEST_SUITE_REGISTRATION( SITest<Metric::t_velocity> );
-//CPPUNIT_TEST_SUITE_REGISTRATION( SITest<Metric::t_gramPsec> );
-//CPPUNIT_TEST_SUITE_REGISTRATION( SITestSQ );
+}
 
 typedef Metric::AtomicUnit::Meter Meter;
 typedef SOU::Time::AtomicUnit::second second;
@@ -168,9 +152,6 @@ typedef t_Base::MakeDim<3,0,0,0,0>::type t_MeterCubed;
 
 typedef ::testing::Types< Metric::t_meter, Metric::t_metersecond, Metric::t_second, Metric::t_velocity, Metric::t_gramPsec, t_MeterSq, t_MeterCubed > MyTypes;
 INSTANTIATE_TYPED_TEST_CASE_P(My, SITest, MyTypes);
-
-//CPPUNIT_TEST_SUITE_REGISTRATION( SITest<t_MeterSq> );
-//CPPUNIT_TEST_SUITE_REGISTRATION( SITest<t_MeterCubed>);
 
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
