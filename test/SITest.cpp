@@ -1,53 +1,27 @@
-
-
-//#include <cppunit/extensions/HelperMacros.h> // the macros and headers needed by CPPUnit
 #include <gtest/gtest.h>
+#include <memory>
 #include "SI.h"
 #include "MetricTypes.h"
-//#include "boost/type_traits/is_same.hpp"  // used by SITestSQ
 #include "template_help.h"
 
 template< class UNIT_TYPE >
-class SITest : public testing::Test //: public CppUnit::TestFixture
+class SITest : public testing::Test
 {
-	//CPPUNIT_TEST_SUITE( SITest );
-	//CPPUNIT_TEST( Assignment );
-	//CPPUNIT_TEST( NotEqual );
-	//CPPUNIT_TEST( LessThan );
-	//CPPUNIT_TEST( GreaterThan );
-	//CPPUNIT_TEST( Comparison );
-	//CPPUNIT_TEST( Addition );
-	//CPPUNIT_TEST( AdditionAssignment );
-	//CPPUNIT_TEST( Subtraction );
-	//CPPUNIT_TEST( SubtractionAssignment );
-	//CPPUNIT_TEST( Chaining );
-	////CPPUNIT_TEST( Squaring );
-	//CPPUNIT_TEST_SUITE_END();
-
 protected:
-	UNIT_TYPE * m_1;
-	UNIT_TYPE * m_2;
-	UNIT_TYPE const * m_3;
-	UNIT_TYPE const * m_4;
+	using p_type = std::unique_ptr<UNIT_TYPE>;
+	p_type m_1;
+	p_type m_2;
+	p_type const m_3;
+	p_type const m_4;
 
-public:
 	using t_type = UNIT_TYPE;
 	void SetUp()
 	{
-		m_1 = new UNIT_TYPE(8.0);
-		m_2 = new UNIT_TYPE(5.0);
-		m_3 = new UNIT_TYPE(3.0);
-		m_4 = new UNIT_TYPE(4.0);
+		m_1 = std::make_unique<t_type>(8.0);
+		m_2 = std::make_unique<t_type>(5.0);
+		m_3 = std::make_unique<t_type>(3.0);
+		m_4 = std::make_unique<t_type>(4.0);
 	}
-
-	void TearDown()
-	{
-		delete m_1;
-		delete m_2;
-		delete m_3;
-		delete m_4;
-	}
-private:
 };
 
 TYPED_TEST_CASE_P(SITest);

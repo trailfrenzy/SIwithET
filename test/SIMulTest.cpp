@@ -31,11 +31,8 @@ public:
 	typedef Metric::AUMetric::MakeDim<3, 0, 0, 0, 0>::type t_MeterCubed;
 
 	typedef Metric::t_centimeter t_centimeter;
-public:
-	void SetUp() {}
-	void TearDown() {}
-private:
 };
+
    ///Tests whether the dimensions are correct.
    /// STATIC_ASSERTION_FAILURE will bust out during compile time.
    TEST_F(MultiplyFirst, TestAssignment )
@@ -279,33 +276,12 @@ private:
       EXPECT_DOUBLE_EQ( 90.5, Topt.amount() );
    }
 
-//   /// MultiplyFirst suite
-//  CPPUNIT_TEST_SUITE( MultiplyFirst );
-//  CPPUNIT_TEST( TestAssignment );
-//  CPPUNIT_TEST( TestMul_Result );
-//  CPPUNIT_TEST( TestWithCube );
-//  CPPUNIT_TEST( TestChaining );
-//  CPPUNIT_TEST( TestALLTYPES_THE_SAME );
-//  CPPUNIT_TEST( TestWithNonAtomicUnitUnitsLength );
-//  CPPUNIT_TEST( TestWithNonAtomicUnitUnitsTime );
-//  CPPUNIT_TEST( TestWithNonAtomicUnitUnitsMass );
-//  CPPUNIT_TEST( TestWithNonDimension );
-//  CPPUNIT_TEST( TestWithSubinside );
-//  CPPUNIT_TEST_SUITE_END();
-//};
-//
-//CPPUNIT_TEST_SUITE_REGISTRATION( MultiplyFirst );
 template< int NUM_X, int NUM_Y, int PROD > struct ARG{ enum { eX = NUM_X, eY = NUM_Y, ePROD = PROD }; };
 
 ///class template to test multiplication operator against any different type of different
 ///dimensions in their quantity
-//template
-//< int PROD /// The product of the two arguments
-//, int MUL1 /// Argument type 1
-//, int MUL2 /// Argument type 2
-//>
 template< typename T_ARG >
-class SI_Multiply : public testing::Test //: public CppUnit::TestFixture
+class SI_Multiply : public testing::Test 
 {
 public:
 	enum { MUL1 = T_ARG::eX, MUL2 = T_ARG::eY, PROD = T_ARG::ePROD };
@@ -331,12 +307,6 @@ public:
 		m_2 = std::make_unique<t_2>(4.0);
 		m_3 = std::make_unique<t_3>(12.0);
 	}
-	void TearDown()
-	{
-		//delete m_1;
-		//delete m_2;
-		//delete m_3;
-	}
 protected:
 	std::unique_ptr<t_1> m_1; /// Argument one
 	std::unique_ptr<t_2> m_2;  /// Argument two
@@ -351,7 +321,6 @@ private:
 //typedef testing::Types<2, 1, 1> t_arg;
 //typedef testing::Types<int, int, int> t_arg;
 TYPED_TEST_CASE_P(SI_Multiply);
-//CPPUNIT_TEST_SUITE_REGISTRATION( t_myMul );
 
 TYPED_TEST_P(SI_Multiply, NoTestHere)
 {
@@ -359,213 +328,180 @@ TYPED_TEST_P(SI_Multiply, NoTestHere)
 }
 
 
-   /// Test the result type and shows that the result type is working correctly.
-TYPED_TEST_P(SI_Multiply, TestMul_Result )
-   {
-      using namespace SOU::operators;
-	  using TAG = SI_Multiply<TypeParam >;
-      Mul_Result<TAG::t_1, TAG::t_2> sq_m( *TAG::m_1, *TAG::m_2 );
-      EXPECT_TRUE( sq_m.result() == *TAG::m_3 ) << "testing the expression template for mult";
+/// Test the result type and shows that the result type is working correctly.
+TYPED_TEST_P(SI_Multiply, TestMul_Result)
+{
+	using namespace SOU::operators;
+	using TAG = SI_Multiply<TypeParam >;
+	Mul_Result<TAG::t_1, TAG::t_2> sq_m(*TAG::m_1, *TAG::m_2);
+	EXPECT_TRUE(sq_m.result() == *TAG::m_3) << "testing the expression template for mult";
 
-      Mul_Result<TAG::t_1, TAG::t_2> const sq_m2( *TAG::m_1, *TAG::m_2 );
-	  EXPECT_TRUE(sq_m2.result() == *TAG::m_3 ) << "testing the expression template for mult";
-   }
+	Mul_Result<TAG::t_1, TAG::t_2> const sq_m2(*TAG::m_1, *TAG::m_2);
+	EXPECT_TRUE(sq_m2.result() == *TAG::m_3) << "testing the expression template for mult";
+}
 
-   /// First test with operator*() and shows that it is working correctly
-	TYPED_TEST_P(SI_Multiply, Test2 )
-   {
-		using TAG = SI_Multiply<TypeParam >;
-		// these test call internally Mul_Result
-		TAG::t_3 prod = *TAG::m_1 * *TAG::m_2;
-	  EXPECT_TRUE( prod == *TAG::m_3 );
-	  EXPECT_TRUE( *TAG::m_3 == *TAG::m_1 * *TAG::m_2 );
+/// First test with operator*() and shows that it is working correctly
+TYPED_TEST_P(SI_Multiply, Test2)
+{
+	using TAG = SI_Multiply<TypeParam >;
+	// these test call internally Mul_Result
+	TAG::t_3 prod = *TAG::m_1 * *TAG::m_2;
+	EXPECT_TRUE(prod == *TAG::m_3);
+	EXPECT_TRUE(*TAG::m_3 == *TAG::m_1 * *TAG::m_2);
 
-      *TAG::m_3 = *TAG::m_1 * *TAG::m_2;
-	  EXPECT_TRUE( *TAG::m_3 == 12.0 );
+	*TAG::m_3 = *TAG::m_1 * *TAG::m_2;
+	EXPECT_TRUE(*TAG::m_3 == 12.0);
 
-	  EXPECT_TRUE( *TAG::m_1 * *TAG::m_3 == *TAG::m_1 * *TAG::m_1 * *TAG::m_2 ) << "some chaining" ;
-	  EXPECT_TRUE( *TAG::m_1 * *TAG::m_3 * *TAG::m_2 == *TAG::m_1 * *TAG::m_1 * *TAG::m_2 * *TAG::m_2 ) << "some chaining";
-	  EXPECT_TRUE((*TAG::m_1 * *TAG::m_3) * *TAG::m_2 == *TAG::m_1 * (*TAG::m_1 * *TAG::m_2) * *TAG::m_2 ) << "some chaining";
-	  EXPECT_TRUE( *TAG::m_1 * (*TAG::m_3 * *TAG::m_2) == (*TAG::m_1 * *TAG::m_1) * (*TAG::m_2 * *TAG::m_2) ) << "some chaining";
+	EXPECT_TRUE(*TAG::m_1 * *TAG::m_3 == *TAG::m_1 * *TAG::m_1 * *TAG::m_2) << "some chaining";
+	EXPECT_TRUE(*TAG::m_1 * *TAG::m_3 * *TAG::m_2 == *TAG::m_1 * *TAG::m_1 * *TAG::m_2 * *TAG::m_2) << "some chaining";
+	EXPECT_TRUE((*TAG::m_1 * *TAG::m_3) * *TAG::m_2 == *TAG::m_1 * (*TAG::m_1 * *TAG::m_2) * *TAG::m_2) << "some chaining";
+	EXPECT_TRUE(*TAG::m_1 * (*TAG::m_3 * *TAG::m_2) == (*TAG::m_1 * *TAG::m_1) * (*TAG::m_2 * *TAG::m_2)) << "some chaining";
 
-   }
-   /// Test operator*() with scalar values.
-	TYPED_TEST_P(SI_Multiply, TestWithScaler )
-   {
-		using TAG = SI_Multiply<TypeParam >;
+}
+/// Test operator*() with scalar values.
+TYPED_TEST_P(SI_Multiply, TestWithScaler)
+{
+	using TAG = SI_Multiply<TypeParam >;
 
-		EXPECT_TRUE( 12.0 == *TAG::m_1 * 4.0 );
-		EXPECT_TRUE(TAG::t_1(12.0) == *TAG::m_1 * 4.0 );
-		EXPECT_TRUE(TAG::t_1(12.0) == 4.0 * *TAG::m_1 );
+	EXPECT_TRUE(12.0 == *TAG::m_1 * 4.0);
+	EXPECT_TRUE(TAG::t_1(12.0) == *TAG::m_1 * 4.0);
+	EXPECT_TRUE(TAG::t_1(12.0) == 4.0 * *TAG::m_1);
 
-		EXPECT_TRUE( 16.0 == *TAG::m_2 * 4.0 );
-		EXPECT_TRUE(TAG::t_2(16.0) == *TAG::m_2 * 4.0 );
-		EXPECT_TRUE(TAG::t_2(16.0) == 4.0 * *TAG::m_2);
+	EXPECT_TRUE(16.0 == *TAG::m_2 * 4.0);
+	EXPECT_TRUE(TAG::t_2(16.0) == *TAG::m_2 * 4.0);
+	EXPECT_TRUE(TAG::t_2(16.0) == 4.0 * *TAG::m_2);
 
-		EXPECT_TRUE( 48.0 == *TAG::m_3 * 4.0 );
-		EXPECT_TRUE(TAG::t_3(48.0) == *TAG::m_3 * 4.0 );
-		EXPECT_TRUE(TAG::t_3(48.0) == *TAG::m_3 * 2.0 * 2.0 ) << "with some chaining";
-		EXPECT_TRUE(TAG::t_3(48.0) == 2.0 * *TAG::m_3 * 2.0 ) << "with some chaining";
-		EXPECT_TRUE(TAG::t_3(48.0) == 2.0 * 2.0 * *TAG::m_3 ) << "with some chaining";
+	EXPECT_TRUE(48.0 == *TAG::m_3 * 4.0);
+	EXPECT_TRUE(TAG::t_3(48.0) == *TAG::m_3 * 4.0);
+	EXPECT_TRUE(TAG::t_3(48.0) == *TAG::m_3 * 2.0 * 2.0) << "with some chaining";
+	EXPECT_TRUE(TAG::t_3(48.0) == 2.0 * *TAG::m_3 * 2.0) << "with some chaining";
+	EXPECT_TRUE(TAG::t_3(48.0) == 2.0 * 2.0 * *TAG::m_3) << "with some chaining";
 
-	  /// Test with integers
-		EXPECT_TRUE( 12 == *TAG::m_1 * 4 ) << SOU::WhatAmI(*TAG::m_1);
-		EXPECT_TRUE(TAG::t_1(12) == *TAG::m_1 * 4 );
-		EXPECT_TRUE(TAG::t_1(12) == 4 * *TAG::m_1 );
+	/// Test with integers
+	EXPECT_TRUE(12 == *TAG::m_1 * 4) << SOU::WhatAmI(*TAG::m_1);
+	EXPECT_TRUE(TAG::t_1(12) == *TAG::m_1 * 4);
+	EXPECT_TRUE(TAG::t_1(12) == 4 * *TAG::m_1);
 
-		EXPECT_TRUE( 16.0 == *TAG::m_2 * 4 );
-		EXPECT_TRUE(TAG::t_2(16.0) == *TAG::m_2 * 4 );
-		EXPECT_TRUE(TAG::t_2(16.0) == 4 * *TAG::m_2);
+	EXPECT_TRUE(16.0 == *TAG::m_2 * 4);
+	EXPECT_TRUE(TAG::t_2(16.0) == *TAG::m_2 * 4);
+	EXPECT_TRUE(TAG::t_2(16.0) == 4 * *TAG::m_2);
 
-		EXPECT_TRUE( 48.0 == *TAG::m_3 * 4 );
-		EXPECT_TRUE(TAG::t_3(48.0) == *TAG::m_3 * 4 );
-		EXPECT_TRUE(TAG::t_3(48.0) == *TAG::m_3 * 2 * 2.0 ) << "with some chaining";
-		EXPECT_TRUE(TAG::t_3(48.0) == 2 * *TAG::m_3 * 2 ) << "with some chaining";
-   }
-   
-	/// Have chaining with scalar values. Inside of a for-loop
-	TYPED_TEST_P(SI_Multiply, TestChainWithScaler)
+	EXPECT_TRUE(48.0 == *TAG::m_3 * 4);
+	EXPECT_TRUE(TAG::t_3(48.0) == *TAG::m_3 * 4);
+	EXPECT_TRUE(TAG::t_3(48.0) == *TAG::m_3 * 2 * 2.0) << "with some chaining";
+	EXPECT_TRUE(TAG::t_3(48.0) == 2 * *TAG::m_3 * 2) << "with some chaining";
+}
+
+/// Have chaining with scalar values. Inside of a for-loop
+TYPED_TEST_P(SI_Multiply, TestChainWithScaler)
+{
+	using TAG = SI_Multiply<TypeParam >;
+	for (double x = 2.0; x < 12.0; x += 1.3)
 	{
-		using TAG = SI_Multiply<TypeParam >;
-		for (double x = 2.0; x < 12.0; x += 1.3)
-		{
-			TAG::t_3 arg1 = *TAG::m_3 *x*x;
-			TAG::t_3 arg2 = (*TAG::m_1*x) *(*TAG::m_2 * x);
-			EXPECT_DOUBLE_EQ(arg1.amount(), arg2.amount());
-			//EXPECT_DOUBLE_EQ(*TAG::m_3 *x*x, (*TAG::m_1*x) *( *TAG::m_2 * x) ) << "Why didn't it work";
-		}
+		TAG::t_3 arg1 = *TAG::m_3 *x*x;
+		TAG::t_3 arg2 = (*TAG::m_1*x) *(*TAG::m_2 * x);
+		EXPECT_DOUBLE_EQ(arg1.amount(), arg2.amount());
+		//EXPECT_DOUBLE_EQ(*TAG::m_3 *x*x, (*TAG::m_1*x) *( *TAG::m_2 * x) ) << "Why didn't it work";
 	}
+}
 
-   /// test operator*=()
-	TYPED_TEST_P(SI_Multiply, TestMultipleAssign )
-   {
-		using TAG = SI_Multiply<TypeParam >;
-		*TAG::m_3 *= 2.0;
-		EXPECT_DOUBLE_EQ( 24.0, TAG::m_3->amount() );
+/// test operator*=()
+TYPED_TEST_P(SI_Multiply, TestMultipleAssign)
+{
+	using TAG = SI_Multiply<TypeParam >;
+	*TAG::m_3 *= 2.0;
+	EXPECT_DOUBLE_EQ(24.0, TAG::m_3->amount());
 
-		*TAG::m_3 *= 0.5;
-		EXPECT_DOUBLE_EQ( 12.0, TAG::m_3->amount() );
+	*TAG::m_3 *= 0.5;
+	EXPECT_DOUBLE_EQ(12.0, TAG::m_3->amount());
 
-   }
+}
 
-   /** Test A_Trait<int,T2> template created from macro.  Test needs to be in class template 
-   to prove that T_Trait handles the different Types
-    @see SystemOfUnits::operators::A_Trait<int,T2>
-	*/
-	TYPED_TEST_P(SI_Multiply, TestMultipleInt )
-   {
-		using TAG = SI_Multiply<TypeParam >;
-		int const x = 2;
-	   TAG::t_1 res1 = *TAG::m_1 * x;
-	   TAG::t_1 const res2 = x * *TAG::m_1;
+/** Test A_Trait<int,T2> template created from macro.  Test needs to be in class template
+to prove that T_Trait handles the different Types
+ @see SystemOfUnits::operators::A_Trait<int,T2>
+ */
+TYPED_TEST_P(SI_Multiply, TestMultipleInt)
+{
+	using TAG = SI_Multiply<TypeParam >;
+	int const x = 2;
+	TAG::t_1 res1 = *TAG::m_1 * x;
+	TAG::t_1 const res2 = x * *TAG::m_1;
 
-	   EXPECT_DOUBLE_EQ( 6.0, res1.amount() );
-	   EXPECT_DOUBLE_EQ( 6.0, res2.amount() );
-   }
+	EXPECT_DOUBLE_EQ(6.0, res1.amount());
+	EXPECT_DOUBLE_EQ(6.0, res2.amount());
+}
 
-   /** Test A_Trait<unsigned,T2> template created from macro.  Test needs to be in class template 
-   to prove that T_Trait handles the different Types
-    @see SystemOfUnits::operators::A_Trait<unsigned,T2>
+/** Test A_Trait<unsigned,T2> template created from macro.  Test needs to be in class template
+to prove that T_Trait handles the different Types
+ @see SystemOfUnits::operators::A_Trait<unsigned,T2>
 
-	When @code SystemOfUnits::operators::A_Trait<unsigned,T2> @endcode was commented out the below method failed to
-	compile.
-	*/ // @code meter z = 3.0 * y; @endcode
-	TYPED_TEST_P(SI_Multiply, TestMultipleUnsigned )
-   {
-		using TAG = SI_Multiply<TypeParam >;
-		unsigned const x = 2;
-	   TAG::t_1 res1 = *TAG::m_1 * x;
-	   TAG::t_1 const res2 = x * *TAG::m_1;
+ When @code SystemOfUnits::operators::A_Trait<unsigned,T2> @endcode was commented out the below method failed to
+ compile.
+ */ // @code meter z = 3.0 * y; @endcode
+TYPED_TEST_P(SI_Multiply, TestMultipleUnsigned)
+{
+	using TAG = SI_Multiply<TypeParam >;
+	unsigned const x = 2;
+	TAG::t_1 res1 = *TAG::m_1 * x;
+	TAG::t_1 const res2 = x * *TAG::m_1;
 
-	   EXPECT_DOUBLE_EQ( 6.0, res1.amount() );
-	   EXPECT_DOUBLE_EQ( 6.0, res2.amount() );
-   }
+	EXPECT_DOUBLE_EQ(6.0, res1.amount());
+	EXPECT_DOUBLE_EQ(6.0, res2.amount());
+}
 
-   /** Test A_Trait<float,T2> template created from macro.  Test needs to be in class template 
-   to prove that T_Trait handles the different Types
-    @see SystemOfUnits::operators::A_Trait<float,T2>
-	*/
-	TYPED_TEST_P(SI_Multiply, TestMultipleFloat )
-   {
-		using TAG = SI_Multiply<TypeParam >;
-		float const x = 2.000f;
-	   TAG::t_1 res1 = *TAG::m_1 * x;
-	   TAG::t_1 const res2 = x * *TAG::m_1;
+/** Test A_Trait<float,T2> template created from macro.  Test needs to be in class template
+to prove that T_Trait handles the different Types
+ @see SystemOfUnits::operators::A_Trait<float,T2>
+ */
+TYPED_TEST_P(SI_Multiply, TestMultipleFloat)
+{
+	using TAG = SI_Multiply<TypeParam >;
+	float const x = 2.000f;
+	TAG::t_1 res1 = *TAG::m_1 * x;
+	TAG::t_1 const res2 = x * *TAG::m_1;
 
-	   EXPECT_DOUBLE_EQ( 6.0, res1.amount() );
-	   EXPECT_DOUBLE_EQ( 6.0, res2.amount());
-   }
+	EXPECT_DOUBLE_EQ(6.0, res1.amount());
+	EXPECT_DOUBLE_EQ(6.0, res2.amount());
+}
 
-   /** Test A_Trait<short,T2> template created from macro.  Test needs to be in class template 
-   to prove that T_Trait handles the different Types
-    @see SystemOfUnits::operators::A_Trait<short,T2>
-	*/
-	TYPED_TEST_P(SI_Multiply, TestMultipleShort )
-   {
-		using TAG = SI_Multiply<TypeParam >;
-		short const x = 2;
-	   TAG::t_1 res1 = *TAG::m_1 * x;
-	   TAG::t_1 const res2 = x * *TAG::m_1;
+/** Test A_Trait<short,T2> template created from macro.  Test needs to be in class template
+to prove that T_Trait handles the different Types
+ @see SystemOfUnits::operators::A_Trait<short,T2>
+ */
+TYPED_TEST_P(SI_Multiply, TestMultipleShort)
+{
+	using TAG = SI_Multiply<TypeParam >;
+	short const x = 2;
+	TAG::t_1 res1 = *TAG::m_1 * x;
+	TAG::t_1 const res2 = x * *TAG::m_1;
 
-	   EXPECT_DOUBLE_EQ( 6.0, res1.amount() );
-	   EXPECT_DOUBLE_EQ( 6.0, res2.amount() );
-   }
+	EXPECT_DOUBLE_EQ(6.0, res1.amount());
+	EXPECT_DOUBLE_EQ(6.0, res2.amount());
+}
 
-   /** Test A_Trait<short,T2> template created from macro.  Test needs to be in class template 
-   to prove that T_Trait handles the different Types
-    @see SystemOfUnits::operators::A_Trait<short,T2>
-	*/
-	TYPED_TEST_P(SI_Multiply, TestMultipleLong )
-   {
-		using TAG = SI_Multiply<TypeParam >;
-		long const x = 2;
-	   auto res1 = *TAG::m_1 * x;
-	   TAG::t_1 const res2 = x * *TAG::m_1;
+/** Test A_Trait<short,T2> template created from macro.  Test needs to be in class template
+to prove that T_Trait handles the different Types
+ @see SystemOfUnits::operators::A_Trait<short,T2>
+ */
+TYPED_TEST_P(SI_Multiply, TestMultipleLong)
+{
+	using TAG = SI_Multiply<TypeParam >;
+	long const x = 2;
+	auto res1 = *TAG::m_1 * x;
+	TAG::t_1 const res2 = x * *TAG::m_1;
 
-	   EXPECT_DOUBLE_EQ( 6.0, res1.amount() );
-	   EXPECT_DOUBLE_EQ( 6.0, res2.amount() );
-   }
+	EXPECT_DOUBLE_EQ(6.0, res1.amount());
+	EXPECT_DOUBLE_EQ(6.0, res2.amount());
+}
 
-	REGISTER_TYPED_TEST_CASE_P(SI_Multiply
-		, NoTestHere, TestMul_Result, Test2, TestWithScaler, TestMultipleAssign, TestChainWithScaler, TestMultipleInt, TestMultipleUnsigned, TestMultipleFloat, TestMultipleShort, TestMultipleLong);
+REGISTER_TYPED_TEST_CASE_P(SI_Multiply
+	, NoTestHere, TestMul_Result, Test2, TestWithScaler, TestMultipleAssign, TestChainWithScaler, TestMultipleInt, TestMultipleUnsigned, TestMultipleFloat, TestMultipleShort, TestMultipleLong);
 
-//   CPPUNIT_TEST_SUITE( SI_Multiply );
-//   CPPUNIT_TEST( TestMul_Result );
-//   CPPUNIT_TEST( Test2 );
-//   CPPUNIT_TEST( TestWithScaler );
-//   CPPUNIT_TEST( TestMultipleAssign );
-//   CPPUNIT_TEST( TestChainWithScaler );
-//   CPPUNIT_TEST( TestMultipleInt );
-//   CPPUNIT_TEST( TestMultipleUnsigned );
-//   CPPUNIT_TEST( TestMultipleFloat );
-//   CPPUNIT_TEST( TestMultipleShort );
-//   CPPUNIT_TEST( TestMultipleLong );
-//   CPPUNIT_TEST_SUITE_END();
-//};
-	typedef ::testing::Types< ARG<1, 1, 2>, ARG< 2, 0, 2>, ARG< 2, 1, 3>, ARG<2, 3, 5>, ARG<-3, 5, 2>, ARG<3, -5, -2> > MyTypes;
-	INSTANTIATE_TYPED_TEST_CASE_P(My, SI_Multiply, MyTypes);
-	using t_myArg = ARG<1,1,2>;
-	//INSTANTIATE_TYPED_TEST_CASE_P(My, SI_Multiply, t_myArg );
-
-//typedef SI_Multiply<2,1,1> t_myMul;
-//TYPED_TEST_CASE(SI_Multiply, t_myMul);
-////CPPUNIT_TEST_SUITE_REGISTRATION( t_myMul );
-//
-//typedef SI_Multiply<2,2,0> t_myMul1;
-//CPPUNIT_TEST_SUITE_REGISTRATION( t_myMul1 );
-//
-//typedef SI_Multiply<3,2,1> t_Mul2;
-//CPPUNIT_TEST_SUITE_REGISTRATION( t_Mul2 );
-//
-//typedef SI_Multiply<5,2,3> t_Mul3;
-//CPPUNIT_TEST_SUITE_REGISTRATION( t_Mul3 );
-//
-//typedef SI_Multiply<2,-3,5> t_Mul4;
-//CPPUNIT_TEST_SUITE_REGISTRATION( t_Mul4 );
-//
-//typedef SI_Multiply<-2,3,-5> t_Mul5;
-//CPPUNIT_TEST_SUITE_REGISTRATION( t_Mul5 );
-// }
+typedef ::testing::Types< ARG<1, 1, 2>, ARG< 2, 0, 2>, ARG< 2, 1, 3>, ARG<2, 3, 5>, ARG<-3, 5, 2>, ARG<3, -5, -2> > MyTypes;
+INSTANTIATE_TYPED_TEST_CASE_P(My, SI_Multiply, MyTypes);
+using t_myArg = ARG<1, 1, 2>;
+//INSTANTIATE_TYPED_TEST_CASE_P(My, SI_Multiply, t_myArg );
 
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com

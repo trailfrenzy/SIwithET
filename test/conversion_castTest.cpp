@@ -21,7 +21,6 @@ protected:
 	Metric::t_centimeter m_cent = 0.0;
 public:
 	void SetUp() { m_cent = Metric::t_centimeter(0.0); }
-	void TearDown() {}
 private:
 };
 	/// Test how well compile time exponential power template works.
@@ -155,23 +154,6 @@ private:
       //t_m m = 9.0;
       //t_ms ms = conversion_cast< t_ms >( m );
    }
-
-	/// The test suite
-//   CPPUNIT_TEST_SUITE( conversion_castTest );
-//   CPPUNIT_TEST( TestPow );
-//   CPPUNIT_TEST( TestLength );
-//   CPPUNIT_TEST( TestLengthSquared );
-//   CPPUNIT_TEST( TestTime );
-//   CPPUNIT_TEST( TestTimeSq );
-//   CPPUNIT_TEST( TestInverseTimeSq );
-//   CPPUNIT_TEST( TestMass );
-//   CPPUNIT_TEST( TestMassSq );
-//   CPPUNIT_TEST( TestWrongDim );
-//   CPPUNIT_TEST_SUITE_END();
-//
-//};
-//
-//CPPUNIT_TEST_SUITE_REGISTRATION( conversion_castTest );
 
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
