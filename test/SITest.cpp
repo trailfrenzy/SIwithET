@@ -11,8 +11,8 @@ protected:
 	using p_type = std::unique_ptr<UNIT_TYPE>;
 	p_type m_1;
 	p_type m_2;
-	p_type const m_3;
-	p_type const m_4;
+	p_type m_3;
+	p_type m_4;
 
 	using t_type = UNIT_TYPE;
 	void SetUp()

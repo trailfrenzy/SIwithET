@@ -59,8 +59,18 @@ namespace SystemOfUnits /// covers the basics of the system
       unitType( double m ) : m_amount(m){}
 	  explicit unitType( unitType const &val ) : m_amount(val.m_amount){}
 	  unitType( unitType &&val ) : m_amount( std::move(val.m_amount )){}
-	  //unitType& operator=(unitType const &val) : m_amount(val.m_amount) {}
-	  unitType& operator=(double m) = delete; // prevent assigning scalar values to an existing unit but still allows assnment to a new type.
+
+	  /** assignment operator
+	  * @param value which the left-handed object will be assigned
+	  * @return the current object
+	  */
+	  unitType &operator=(unitType const &rt)
+	  {
+		  m_amount = rt.m_amount;
+		  return *this;
+	  }
+
+	  unitType& operator=(double m) = delete; /// prevent assigning scalar values to an existing unit but still allows assnment to a new type.
 
       /** returns the scalar value of the object
         * @return the scalar value of the type. */
@@ -136,22 +146,6 @@ namespace SystemOfUnits /// covers the basics of the system
        * @return bool true if the left side is greater than the right side
       */
       friend bool operator> ( unitType const &lf, unitType const &rt ) { return lf.m_amount > rt.m_amount; }
-
-      /** assignment operator
-       * @param value which the left-handed object will be assigned
-       * @return the current object
-      */
-      unitType &operator=( unitType const &rt )
-      {
-         m_amount = rt.m_amount;
-         return *this;
-      }
-
-	 // unitType &operator=( double rt )
-	 // {
-		//m_amount = rt;
-		//return *this;
-	 // }
 
       /** addition assignment operator
        * @param unitType value which the left-handed object will be added with
@@ -260,7 +254,7 @@ namespace SOU = SystemOfUnits;
 /** 
  @mainpage My Personal Index Page
  @section copyright_sec Copyright
- Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+ Copyright © 2003-2018 "Curt" Leslie L. Martin, All rights reserved.
  curt.leslie.lewis.martin@gmail.com
 
  Permission to use, copy, modify, and distribute this software for any
@@ -271,10 +265,11 @@ namespace SOU = SystemOfUnits;
 
  @section Introduction
  The Systems Of Units (SOU) Library was created out the author's desire to solve a problem where
- known engineering and scientific unit types will not be mixed to the wrong result type.  The library
- automatically does unit conversions during compile time.  
+ known engineering and scientific unit types will not mix to produce the wrong result type.  The library
+ automatically does unit conversions during compile time or will produce a compile time error if types
+ are mixed incorrectly.
  The library provides strong type-checking of different unit types at compile time.  It does not wait for
- runtime to find errors that the compiler can detect.
+ runtime to find errors the compiler will detect.
  When writing code to solve an engineering 
  problem it is hard to find what the units are envolved in the equation and if the equation
  cancels out the incorrect units.  For example, what is the unit for the following varible:
