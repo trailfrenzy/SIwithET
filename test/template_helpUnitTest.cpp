@@ -1,22 +1,9 @@
-// cpp file is created only to test with CPPUnit
-//#include <cppunit/extensions/HelperMacros.h>	// contains the help we need
+// cpp file is created only to use with Google Test Framework.
 #include <gtest/gtest.h>
 #include "template_help.h"	/// The file we are testing.
+#include "MetricTypes.h"
 
-//class TheSameTypeTest : public ::testing::Test //: public CppUnit::TestFixture
-//{
-//public:
-//
-//	/// The test suite
-//   CPPUNIT_TEST_SUITE( TheSameTypeTest );
-//   CPPUNIT_TEST( runTest );
-//   CPPUNIT_TEST_SUITE_END();
-//
-//};
-//
-//CPPUNIT_TEST_SUITE_REGISTRATION( TheSameTypeTest );
-
-TEST(helpUnitTest, TheSameTypeTest)  //void runTest()
+TEST(helpUnitTest, TheSameTypeTest)
 {
 	EXPECT_TRUE((SystemOfUnits::is_same<float, float>::value)) << "Using the built in types for test";
 	EXPECT_TRUE((SystemOfUnits::is_same<int, int>::value));
@@ -31,21 +18,10 @@ TEST(helpUnitTest, IF_Test)
 	EXPECT_TRUE((SystemOfUnits::is_same< SystemOfUnits::IF<false, int, double >::RET, double>::value));
 }
 
+TEST(helpUnitTest, MetricMeter) {
+	EXPECT_FALSE((SystemOfUnits::is_same<Metric::t_meter, Metric::t_centimeter>::value));
+}
+TEST(helpUnitTest, MetricGram) {
+	EXPECT_FALSE((SystemOfUnits::is_same<Metric::t_gram, Metric::t_kilogram>::value));
+}
 
-//class IF_Test : public CppUnit::TestFixture
-//{
-//public:
-//	void runTest()
-//	{
-//		CPPUNIT_ASSERT( 4 == 4);
-//		CPPUNIT_ASSERT( (SystemOfUnits::is_same< SystemOfUnits::IF<true,  int, double >::RET, int >::value) );
-//		CPPUNIT_ASSERT( (SystemOfUnits::is_same< SystemOfUnits::IF<false, int, double >::RET, double>::value) );
-//	}
-//
-//	/// The test suite
-//	CPPUNIT_TEST_SUITE( IF_Test );
-//	CPPUNIT_TEST( runTest );
-//	CPPUNIT_TEST_SUITE_END();
-//};
-//
-//CPPUNIT_TEST_SUITE_REGISTRATION( IF_Test );
