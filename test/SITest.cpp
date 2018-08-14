@@ -140,6 +140,10 @@ TEST(SITestSQ, Squaring)
 
 }
 
+TEST(NoUnit, Size) {
+	EXPECT_EQ(sizeof(double), sizeof(SOU::tNoUnit)) << "should be the same";
+}
+
 typedef Metric::AtomicUnit::Meter Meter;
 typedef SOU::Time::AtomicUnit::second second;
 typedef Metric::AtomicUnit::gram gram;
