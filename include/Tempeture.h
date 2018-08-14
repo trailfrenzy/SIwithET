@@ -4,27 +4,36 @@
 
 namespace SystemOfUnits 
 {
-   namespace Tempeture
+   namespace Temperature
    {
       struct kelvin
       {
          enum { IsBase = true }; /// Lets using classes know if class is used as a base.
-         static char const * str() { return "kelvin"; }/// Called by WhatAmI when creating the string describing the type.
+         static char const * str() { return "Kelvin"; }/// Called by WhatAmI when creating the string describing the type.
          static double toBase( double val) { return val; } 
          static double fromBase( double val) { return val; }
+		 using Base = kelvin;
          //typedef Metric::AtomicUnit::Meter Base;/// Typedef of the actual base
       };
 
       struct celsius
       {
          enum { IsBase = false }; /// Lets using classes know if class is used as a base.
-         static char const * str() { return "celsius"; }/// Called by WhatAmI when creating the string describing the type.
-         static double toBase( double val ) { return val + 273.15; }
-         static double fromBase( double val ) { return val - 273.15; }
-
-         //typedef Metric::AtomicUnit::Meter Base;/// Typedef of the actual base 
+         static char const * str() { return "°C"; }/// Called by WhatAmI when creating the string describing the type.
+         static double toBase( double C ) { return C + 273.15; } // ex Kelvin = toBase(Celsius);
+         static double fromBase( double K ) { return K - 273.15; }
+		 using Base = kelvin;
+		 //typedef Metric::AtomicUnit::Meter Base;/// Typedef of the actual base 
       };
 
+	  struct fahrenheit
+	  {
+		  enum { IsBase = false }; /// Lets using classes know if class is used as a base.
+		  static char const * str() { return "°F"; }/// Called by WhatAmI when creating the string describing the type. K = 5/9 (° F - 32) + 273
+		  static double toBase(double F) { return (5.0/9.0)*(F - 32.0) + 273.15; }
+		  static double fromBase(double K) { return (9.0/5.0)*(K - 273.15) + 32.0; } // ° F = 9/5 (K - 273) + 32
+		  using Base = kelvin;
+	  };
    }
 
 }

@@ -15,9 +15,6 @@
 #pragma once
 #include "SI.h" /// need to know about
 #include "template_help.h"
-//#include "boost/type_traits/is_same.hpp"
-//#include "boost/static_assert.hpp"
-//#include "boost/mpl/if.hpp"
 #include "pow.h"	/// template that does the pow at compile time
 
 namespace SystemOfUnits
@@ -26,45 +23,52 @@ namespace SystemOfUnits
 	@param IN in is what will be converted
 	@return OUT the new type
 	*/
-	template< typename OUT, typename IN > OUT conversion_cast( IN const &in )
+	template< typename OUT, typename IN > OUT conversion_cast(IN const &in)
 	{
-      /** Used in the static assertion to ensure that all types are of the same type.
-          You would not want to compare meter^2 from feet^3.  The dimensions are not the same. */ 
-		enum { eALLDIMS_THE_SAME = IN::eL==OUT::eL && IN::et==OUT::et && IN::eM==OUT::eM && IN::eQ==OUT::eQ };
+		/** Used in the static assertion to ensure that all types are of the same type.
+			You would not want to compare meter^2 from feet^3.  The dimensions are not the same. */
+		enum { eALLDIMS_THE_SAME = IN::eL == OUT::eL && IN::et == OUT::et && IN::eM == OUT::eM && IN::eT == OUT::eT && IN::eQ == OUT::eQ };
 
-      /// Use the incoming types as the base types.
-		enum { eL = IN::eL, et = IN::et, eM = IN::eM, eQ = IN::eQ };
+		/// Use the incoming types as the base types.
+		enum { eL = IN::eL, et = IN::et, eM = IN::eM, eT = IN::eT, eQ = IN::eQ };
 
 		STATIC_ASSERTION_FAILURE<eALLDIMS_THE_SAME >;
 
 		// set the value to the incoming scaler before correcting the value
-		double out( in.amount() );
+		double out(in.amount());
 
 		using namespace helpers;
 
 		// correct the length
-		out *=
-			P< MakeFrom<OUT::Length> >::thePower<eL>::toBase() // converts the outgoing to the base unit
-			* P< IN::Length >::thePower<eL>::toBase();         // converts the incoming to the base unit
-
+		if (eL) {  // check to see if compiles out when zero
+			out *=
+				P< MakeFrom<OUT::Length> >::thePower<eL>::toBase() // converts the outgoing to the base unit
+				* P< IN::Length >::thePower<eL>::toBase();         // converts the incoming to the base unit
+		}
 		// correct the time
-		out *=
-			P< MakeFrom<OUT::Time> >::thePower<et>::toBase()
-			* P< IN::Time >::thePower<et>::toBase();
-
+		if (et) {
+			out *=
+				P< MakeFrom<OUT::Time> >::thePower<et>::toBase()
+				* P< IN::Time >::thePower<et>::toBase();
+		}
 		// correct the mass
-		out *=
-			P< MakeFrom<OUT::Mass> >::thePower<eM>::toBase()
-			* P< IN::Mass >::thePower<eM>::toBase();
+		if (eM) {
+			out *=
+				P< MakeFrom<OUT::Mass> >::thePower<eM>::toBase()
+				* P< IN::Mass >::thePower<eM>::toBase();
+		}
+		// need a correct the temperature
+		if (eT) {
+			out *= 2.0;
+		}
 
-      // need a correct the temperature
-
-      // correct the charge
-      out *=
-         P< MakeFrom<OUT::Charge> >::thePower<eQ>::toBase()
-         * P< IN::Charge >::thePower<eQ>::toBase();
-
-      // during the return the constructor from a scalar value will be used.
+		// correct the charge
+		if (eQ) {
+			out *=
+				P< MakeFrom<OUT::Charge> >::thePower<eQ>::toBase()
+				* P< IN::Charge >::thePower<eQ>::toBase();
+		}
+		// during the return the constructor from a scalar value will be used.
 		return OUT(out);
 	}
 }
