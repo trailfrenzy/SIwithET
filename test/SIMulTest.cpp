@@ -503,6 +503,18 @@ INSTANTIATE_TYPED_TEST_CASE_P(My, SI_Multiply, MyTypes);
 using t_myArg = ARG<1, 1, 2>;
 //INSTANTIATE_TYPED_TEST_CASE_P(My, SI_Multiply, t_myArg );
 
+TEST(NoUnit, withMeter) {
+	SOU::tNoUnit myScaler = 9.0;
+	Metric::t_meter Meter = 2.0;
+	auto val = Meter * myScaler;
+	EXPECT_DOUBLE_EQ(val.amount(), 18.00);
+}
+
+TEST(NoUnit, Constructor) {
+	Metric::t_meter Meter = 2.0;
+	auto val = Meter * SOU::tNoUnit(9.0);
+	EXPECT_DOUBLE_EQ(val.amount(), 18.00);
+}
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
