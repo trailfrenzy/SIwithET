@@ -12,7 +12,7 @@ using t_Far = SOU::unitType< AU::Meter, 0, AT::minute, 1, AU::gram, 0, SOU::Temp
 using t_Cel = SOU::unitType< AU::Meter, 0, AT::minute, 1, AU::gram, 0, SOU::Temperature::celsius, 0, AU::coulomb, 0 >;
 
 TEST(Temperature, StartC) {
-	t_Kelvin K(1.0);
+	t_Kelvin K(0.0);
 	t_Cel C = SOU::conversion_cast<t_Cel>(K);
 	EXPECT_NEAR(C.amount(), -273.15, 0.01) << "is it close?";
 }

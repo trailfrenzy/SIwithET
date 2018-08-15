@@ -78,18 +78,19 @@ namespace Metric
       {
          enum { IsBase = true };/// Lets using classes know if class is used as a base.
          static char const * str() { return "Kelvin"; }/// Called by WhatAmI when creating the string describing the type.
-         static double toBase() { return 1.0; }///  Multiply by toBase() to get base value.
-         static double fromBase() { return 1.0; }/// Multiply by fromBase() to get diminsional value.
-         typedef kelvin Base;/// Typedef of the actual base
+		 static double toBase(double val) { return val; }
+		 static double fromBase(double val) { return val; }
+		 typedef kelvin Base;/// Typedef of the actual base
       };
       /// @warning Do not use
       struct celsius /// represents quanity tempeture celsius. NOT AVAILBE FOR USE.
       {
          enum { IsBase = false };/// Lets using classes know if class is used as a base.
-         static char const * str() { return "Celsius"; }/// Called by WhatAmI when creating the string describing the type.
+         static char const * str() { return "°C"; }/// Called by WhatAmI when creating the string describing the type.
          // currently only kelvin is the only tempeture offered in compound
          static double toBase( double C )   { return C + 273.15; }///  Multiply by toBase() to get base value.
          static double fromBase( double K ) { return K - 273.15; }/// Multiply by fromBase() to get diminsional value.
+		 using Base = kelvin;
       };
 
       struct coulomb /// represents quantity charge coulomb.

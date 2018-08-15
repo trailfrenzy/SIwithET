@@ -58,8 +58,9 @@ namespace SystemOfUnits
 				* P< IN::Mass >::thePower<eM>::toBase();
 		}
 		// need a correct the temperature
-		if (eT) {
-			out *= 2.0;
+		if (eT == 1) {
+			//out *= 2.0;
+			out = OUT::Tempeture::fromBase(out);
 		}
 
 		// correct the charge
