@@ -59,8 +59,8 @@ namespace SystemOfUnits
 		}
 		// need a correct the temperature
 		if (eT == 1) {
-			//out *= 2.0;
-			out = OUT::Tempeture::fromBase(out);
+			out =  IN::Tempeture::toBase(out);  // to K
+			out = OUT::Tempeture::fromBase(out); // from K
 		}
 
 		// correct the charge
