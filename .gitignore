@@ -17,3 +17,5 @@ UpgradeLog.htm
 *.vcxproj
 *.vcxproj
 x64/Release/test.exe
+x64/Debug/test.exe
+x64/Debug/test.ilk
