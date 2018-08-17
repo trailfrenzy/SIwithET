@@ -31,3 +31,9 @@ SI base units‎: ‎1 kg⋅m⋅s−2	Unit of‎: ‎Force
 Unit system‎: ‎SI derived unit	1 N in‎: ‎is equal to
 */
 using t_Newton = t_MakeType::MakeDim<1, -2, 1, 0, 0 >::type;
+
+TEST(Diminsion, Newton) {
+	t_Newton N{ 45.5885 };
+	EXPECT_EQ(SystemOfUnits::Diminsion(N), "L·t^-2·M");
+	EXPECT_EQ(SystemOfUnits::WhatAmI(N), "meter·second^-2·kilogram");
+}
