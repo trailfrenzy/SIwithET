@@ -30,7 +30,7 @@ namespace SystemOfUnits
 				ret << '^';
 				ret << DIM;
 			}
-            ret << ' ';
+            ret << '·';
          }
       }
    }
