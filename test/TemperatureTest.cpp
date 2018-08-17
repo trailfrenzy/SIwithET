@@ -2,6 +2,7 @@
 #include "Tempeture.h"
 #include "MetricTypes.h"
 #include "conversion_cast.h"
+#include "WhatAmI.h"
 
 namespace AU = Metric::AU;
 using AUMetric = Metric::AUMetric;
@@ -14,7 +15,6 @@ using t_Cel = SOU::unitType< AU::Meter, 0, AT::minute, 0, AU::gram, 0, SOU::Temp
 TEST(Temperature, ToBase) {
 	EXPECT_NEAR( t_Cel::Tempeture::toBase(0.0), 273.15, 0.01);  // to K
 	EXPECT_NEAR(t_Kelvin::Tempeture::toBase(0.0), 0.0, 0.01);
-
 }
 TEST(Temperature, FromBase) {
 	EXPECT_NEAR(t_Kelvin::Tempeture::fromBase(0.0), 0.0, 0.01);
@@ -37,4 +37,19 @@ TEST(Temperature, StartCtoK) {
 	EXPECT_DOUBLE_EQ(C.amount(), 0.0);
 	t_Kelvin K = SOU::conversion_cast<t_Kelvin>(C);
 	EXPECT_NEAR(K.amount(), 273.15, 0.01);
+}
+TEST(Temerature, FtoC) {
+	t_Far F(32.0);
+	t_Cel C = SOU::conversion_cast<t_Cel>(F);
+	EXPECT_NEAR(C.amount(), (0.0), 0.01);
+}
+TEST(Temerature, CtoF) {
+	t_Cel C{ 100.0 };
+	t_Far F = SOU::conversion_cast<t_Far>(C);
+	EXPECT_NEAR(F.amount(), 212.0, 0.01);
+}
+TEST(Diminsion, Name_C) {
+	t_Cel C{ 100.0 };
+	EXPECT_EQ(SOU::WhatAmI(C), "°C");
+	EXPECT_EQ(SOU::Diminsion(C), "T");
 }

@@ -1,4 +1,4 @@
-
+﻿
 #ifndef SI_WHATAMI_H_INCLUDE
 #define SI_WHATAMI_H_INCLUDE
 #pragma once
@@ -26,8 +26,10 @@ namespace SystemOfUnits
          if( DIM ) // value known at compile time
          {
             ret << TYPE::str();
-            ret << '^';
-            ret << DIM;
+			if (DIM != 1) {
+				ret << '^';
+				ret << DIM;
+			}
             ret << ' ';
          }
       }
@@ -53,8 +55,35 @@ namespace SystemOfUnits
 
    /// If user pushes a double into the template.
    template<> inline std::string WhatAmI(double const &) { return ""; }
+
+   template< typename T > constexpr inline std::string Diminsion(T const &)
+   {
+	   std::stringstream buf;
+	   if (T::eL == 1) buf << 'L';
+	   else if (T::eL) buf << "L^" << T::eL;
+
+	   if (T::eL && T::et ) buf << '·'; // '⋅'
+
+	   if (T::et == 1) buf << 't';
+	   else if (T::et) buf << "t^" << T::et;
+
+	   if ((T::eL || T::et) && T::eM ) buf << '·';
+
+	   if (T::eM == 1) buf << 'M';
+	   else if (T::eM) buf << "M^" << T::eM;
+
+	   if ((T::eL || T::et || T::eM ) && T::eT ) buf << '·';
+
+	   if (T::eT) buf << 'T';
+
+	   if ((T::eL || T::et || T::eM || T::eT ) && T::eQ ) buf << '·';
+
+	   if (T::eQ == 1) buf << 'Q';
+	   if (T::eQ) buf << "Q^" << T::eQ;
+	   return buf.str();
+   }
 }
-// Copyright � 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

@@ -6,6 +6,25 @@
 #include "WhatAmI.h"
 #include <strstream>
 
+TEST(Diminsion, LEN) {
+	Metric::t_meter meter{ 444.5 };
+	EXPECT_EQ("L", SOU::Diminsion(meter));
+}
+TEST(Diminsion, MASS) {
+	Metric::t_gram gram{ 444.5 };
+	EXPECT_EQ("M", SOU::Diminsion(gram));
+}
+TEST(Diminsion, time) {
+	Metric::t_second sec{ 444.5 };
+	EXPECT_EQ("t", SOU::Diminsion(sec));
+}
+TEST(Diminsion, TEMP) {
+	using t_kel = Metric::AUMetric::MakeDim<0, 0, 0, 1, 0>::type;
+	t_kel meter{ 444.5 };
+	EXPECT_EQ("T", SOU::Diminsion(meter));
+}
+
+
 TEST(WhatAmITest, TestWithOneDim)
 {
 	/*
@@ -13,16 +32,16 @@ TEST(WhatAmITest, TestWithOneDim)
 	a template map is used.
 	*/
 	Metric::t_meter const meter(1.34578f);
-	EXPECT_EQ(std::string("meter^1"), SOU::WhatAmI(meter));
+	EXPECT_EQ(std::string("meter"), SOU::WhatAmI(meter));
 
 	Metric::t_second sec(58903.3);
-	EXPECT_EQ(std::string("second^1"), SOU::WhatAmI(sec));
+	EXPECT_EQ(std::string("second"), SOU::WhatAmI(sec));
 
 	Metric::t_velocity vel(81.5);
-	EXPECT_EQ(std::string("meter^1 second^-1"), SOU::WhatAmI(vel));
+	EXPECT_EQ(std::string("meter second^-1"), SOU::WhatAmI(vel));
 
 	Metric::t_gramPsec massFlow(3.895);
-	EXPECT_EQ(std::string("second^-1 gram^1"), SOU::WhatAmI(massFlow));
+	EXPECT_EQ(std::string("second^-1 gram"), SOU::WhatAmI(massFlow));
 	EXPECT_TRUE(true);
 }
 
