@@ -223,7 +223,7 @@ namespace SystemOfUnits /// covers the basics of the system
    };
 
    /// Create a struct base on the quantity types.
-   /// Used as a factory to create different types with the same quantities.
+   /// Used as a builder to create different types with the same quantities.  See builder pattern.
    template< typename LEN, typename TIM, typename MAS, typename TEM = NoDim, typename CHR = NoDim > struct MakeType
    {
       /// template is used to create unitTypes with just the dimension types.
@@ -241,7 +241,7 @@ namespace SystemOfUnits /// covers the basics of the system
    /// a type with no dimensions or quantity types.  The same size as a double.
    typedef unitType< NoDim,0, NoDim,0, NoDim,0, NoDim,0, NoDim,0 > tNoUnit;
 
-   /// used to call fromBase() while using the toBase() static method
+   /// used to call fromBase() while using the toBase() static method.  Used in conversion_cast<>.
    template< typename ARG > struct MakeFrom
    {
       /// inverse of fromBase()
