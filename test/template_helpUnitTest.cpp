@@ -1,5 +1,6 @@
 // cpp file is created only to use with Google Test Framework.
 #include <gtest/gtest.h>
+#include <tuple>
 #include "template_help.h"	/// The file we are testing.
 #include "MetricTypes.h"
 
@@ -23,5 +24,22 @@ TEST(helpUnitTest, MetricMeter) {
 }
 TEST(helpUnitTest, MetricGram) {
 	EXPECT_FALSE((SystemOfUnits::is_same<Metric::t_gram, Metric::t_kilogram>::value));
+}
+
+using t_MakeType = SOU::MakeType< Metric::AtomicUnit::Meter, AT::second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::coulomb >;
+using t_Joule = t_MakeType::MakeDim<2, -2, 1, 0, 0>::type;
+
+TEST(Sort, DISABLED_UseTuple) { 
+	EXPECT_TRUE(true) << "Ignored since the tuple_selection_sort<> is not working";
+	using namespace SystemOfUnits;
+	using t_L = TL::Atom< t_Joule::eL, t_Joule::Length >;
+	using t_M = TL::Atom< t_Joule::eM, t_Joule::Mass >;
+	using t_time = TL::Atom< t_Joule::et, t_Joule::Time >;
+	using t_T = TL::Atom< t_Joule::eT, t_Joule::Tempeture >;
+	using t_Q = TL::Atom< t_Joule::eQ, t_Joule::Charge >;
+	using input_tuple_t = std::tuple< t_L, t_M, t_time, t_T, t_Q >;
+
+	//using result_tuple_t = TL::tuple_selection_sort< TL::descending, input_tuple_t>::type;
+
 }
 
