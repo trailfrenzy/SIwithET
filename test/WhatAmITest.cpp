@@ -4,7 +4,7 @@
 #include "SI.h"
 #include "MetricTypes.h"
 #include "WhatAmI.h"
-#include <strstream>
+#include <sstream>
 
 TEST(Diminsion, LEN) {
 	Metric::t_meter meter{ 444.5 };
