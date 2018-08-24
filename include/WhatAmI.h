@@ -82,11 +82,11 @@ namespace SystemOfUnits
 	   helpers::t_bufPair buf;
 	   
 	   using namespace helpers;
-	   OneDim<'L', T::eL >(buf);
-	   OneDim<'M', T::eM >(buf);
-	   OneDim<'T', T::et >(buf);
-	   OneDim<char(THETA), T::eT >(buf);
-	   OneDim<'Q', T::eQ >(buf);
+	   if( T::eL) OneDim<'L', T::eL >(buf);
+	   if( T::eM) OneDim<'M', T::eM >(buf);
+	   if(T::et) OneDim<'T', T::et >(buf);
+	   if(T::eT) OneDim<char(THETA), T::eT >(buf);
+	   if(T::eQ) OneDim<'Q', T::eQ >(buf);
 
 	   std::stringstream out;
 
