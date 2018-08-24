@@ -59,6 +59,7 @@ namespace SystemOfUnits
    namespace helpers
    {
 	   using t_bufPair = std::pair< std::stringstream, std::stringstream >;
+	   enum { THETA = 233 }; // from www.asciitable.com
 
 	   template < char C, int T > inline t_bufPair& OneDim(t_bufPair &buf)
 	   {
@@ -74,32 +75,51 @@ namespace SystemOfUnits
 	   }
    }
 
-   template< typename T > constexpr inline std::string Diminsion(T const &)
+   template< typename T > constexpr inline std::string Diminsion(T const &)  // Θ
    {
-	   std::stringstream buf;
+	   if (!T::eL && !T::eM && !T::et && !T::eT && !T::eQ) return ""; // no dim, baleout fast!
 
-	   if (T::eL == 1) buf << 'L';
-	   else if (T::eL) buf << "L^" << T::eL;
+	   helpers::t_bufPair buf;
+	   
+	   using namespace helpers;
+	   OneDim<'L', T::eL >(buf);
+	   OneDim<'M', T::eM >(buf);
+	   OneDim<'T', T::et >(buf);
+	   OneDim<char(THETA), T::eT >(buf);
+	   OneDim<'Q', T::eQ >(buf);
 
-	   if (T::eL && T::et ) buf << '·'; // '⋅'
+	   std::stringstream out;
 
-	   if (T::et == 1) buf << 't';
-	   else if (T::et) buf << "t^" << T::et;
+	   if (buf.first.tellp() != std::streampos(0) ) out << buf.first.str();
+	   else out << '1';
 
-	   if ((T::eL || T::et) && T::eM ) buf << '·';
+	   if (buf.second.tellp() != std::streampos(0)) out << '/' << buf.second.str();
 
-	   if (T::eM == 1) buf << 'M';
-	   else if (T::eM) buf << "M^" << T::eM;
+	   //out << '/' << buf.second;
+	   return out.str();
 
-	   if ((T::eL || T::et || T::eM ) && T::eT ) buf << '·';
+	   //if (T::eL == 1) buf << 'L';
+	   //else if (T::eL) buf << "L^" << T::eL;
 
-	   if (T::eT) buf << 'T';
+	   //if (T::eL && T::et ) buf << '·'; // '⋅'
 
-	   if ((T::eL || T::et || T::eM || T::eT ) && T::eQ ) buf << '·';
+	   //if (T::et == 1) buf << 't';
+	   //else if (T::et) buf << "t^" << T::et;
 
-	   if (T::eQ == 1) buf << 'Q';
-	   if (T::eQ) buf << "Q^" << T::eQ;
-	   return buf.str();
+	   //if ((T::eL || T::et) && T::eM ) buf << '·';
+
+	   //if (T::eM == 1) buf << 'M';
+	   //else if (T::eM) buf << "M^" << T::eM;
+
+	   //if ((T::eL || T::et || T::eM ) && T::eT ) buf << '·';
+
+	   //if (T::eT) buf << 'T';
+
+	   //if ((T::eL || T::et || T::eM || T::eT ) && T::eQ ) buf << '·';
+
+	   //if (T::eQ == 1) buf << 'Q';
+	   //if (T::eQ) buf << "Q^" << T::eQ;
+	   //return buf.str();
    }
 }
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.

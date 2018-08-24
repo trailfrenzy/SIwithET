@@ -48,8 +48,12 @@ TEST(Temerature, CtoF) {
 	t_Far F = SOU::conversion_cast<t_Far>(C);
 	EXPECT_NEAR(F.amount(), 212.0, 0.01);
 }
-TEST(Diminsion, Name_C) {
+TEST(Diminsion, TEMPERATURE ) {
 	t_Cel C{ 100.0 };
 	EXPECT_EQ(SOU::WhatAmI(C), "°C");
-	EXPECT_EQ(SOU::Diminsion(C), "T");
+	std::string temp{ '[' };
+	temp += char(SOU::helpers::THETA);
+	temp += ']';
+
+	EXPECT_EQ(SOU::Diminsion(C), temp );
 }

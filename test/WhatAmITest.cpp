@@ -6,22 +6,21 @@
 #include "WhatAmI.h"
 #include <sstream>
 
+TEST(Diminsion, NoDim) {
+	EXPECT_EQ("", SOU::Diminsion(SOU::tNoUnit(2.0) ));
+}
+
 TEST(Diminsion, LEN) {
 	Metric::t_meter meter{ 444.5 };
-	EXPECT_EQ("L", SOU::Diminsion(meter));
+	EXPECT_EQ("[L]", SOU::Diminsion(meter));
 }
 TEST(Diminsion, MASS) {
 	Metric::t_gram gram{ 444.5 };
-	EXPECT_EQ("M", SOU::Diminsion(gram));
+	EXPECT_EQ("[M]", SOU::Diminsion(gram));
 }
-TEST(Diminsion, time) {
+TEST(Diminsion, TIME ) {
 	Metric::t_second sec{ 444.5 };
-	EXPECT_EQ("t", SOU::Diminsion(sec));
-}
-TEST(Diminsion, TEMP) {
-	using t_kel = Metric::AUMetric::MakeDim<0, 0, 0, 1, 0>::type;
-	t_kel meter{ 444.5 };
-	EXPECT_EQ("T", SOU::Diminsion(meter));
+	EXPECT_EQ("[T]", SOU::Diminsion(sec));
 }
 
 
