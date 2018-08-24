@@ -106,6 +106,21 @@ TEST(WhatAmITest, TestDouble)
 	EXPECT_EQ(SOU::WhatAmI(val), std::string(""));
 }
 
+TEST(Diminsion, OneDimPrint1) {
+	SystemOfUnits::helpers::t_bufPair bufPair;
+	std::string temp{ SystemOfUnits::helpers::OneDim<'L', 1>(bufPair).first.str() };
+	EXPECT_EQ( temp , std::string("[L]") );
+	temp = SystemOfUnits::helpers::OneDim<'M', -1 >(bufPair).second.str();
+	EXPECT_EQ(temp, "[M]");
+}
+TEST(Diminsion, OneDimPrint2) {
+	SystemOfUnits::helpers::t_bufPair bufPair;
+	std::string temp = SystemOfUnits::helpers::OneDim<'L', 2>(bufPair).first.str();
+	EXPECT_EQ(temp, "[L]^2");
+	temp = SystemOfUnits::helpers::OneDim<'M', -3 >(bufPair).second.str();
+	EXPECT_EQ(temp, "[M]^3");
+}
+
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //

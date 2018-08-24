@@ -56,9 +56,28 @@ namespace SystemOfUnits
    /// If user pushes a double into the template.
    template<> inline std::string WhatAmI(double const &) { return ""; }
 
+   namespace helpers
+   {
+	   using t_bufPair = std::pair< std::stringstream, std::stringstream >;
+
+	   template < char C, int T > inline t_bufPair& OneDim(t_bufPair &buf)
+	   {
+		   if (T > 0) {
+			   buf.first << '[' << C << ']';
+			   if (T > 1) buf.first << '^' << T;
+		   }
+		   if (T < 0) {
+			   buf.second << '[' << C << ']';
+			   if (T < -1) buf.second << '^' << abs(T);
+		   }
+		   return buf;
+	   }
+   }
+
    template< typename T > constexpr inline std::string Diminsion(T const &)
    {
 	   std::stringstream buf;
+
 	   if (T::eL == 1) buf << 'L';
 	   else if (T::eL) buf << "L^" << T::eL;
 
