@@ -4,6 +4,7 @@
 #include "SI.h"
 #include "MetricTypes.h"
 #include "WhatAmI.h"
+#include "operators.h"
 #include <sstream>
 
 TEST(Diminsion, NoDim) {
@@ -23,6 +24,11 @@ TEST(Diminsion, TIME ) {
 	EXPECT_EQ("[T]", SOU::Diminsion(sec));
 }
 
+TEST(Diminsion, Inverse) {
+	Metric::t_gram gram{ 444.5 };
+	auto inv = 1.0 / gram;
+	EXPECT_EQ("1/[M]", SOU::Diminsion(inv));
+}
 
 TEST(WhatAmITest, TestWithOneDim)
 {

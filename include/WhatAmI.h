@@ -95,31 +95,7 @@ namespace SystemOfUnits
 
 	   if (buf.second.tellp() != std::streampos(0)) out << '/' << buf.second.str();
 
-	   //out << '/' << buf.second;
 	   return out.str();
-
-	   //if (T::eL == 1) buf << 'L';
-	   //else if (T::eL) buf << "L^" << T::eL;
-
-	   //if (T::eL && T::et ) buf << '·'; // '⋅'
-
-	   //if (T::et == 1) buf << 't';
-	   //else if (T::et) buf << "t^" << T::et;
-
-	   //if ((T::eL || T::et) && T::eM ) buf << '·';
-
-	   //if (T::eM == 1) buf << 'M';
-	   //else if (T::eM) buf << "M^" << T::eM;
-
-	   //if ((T::eL || T::et || T::eM ) && T::eT ) buf << '·';
-
-	   //if (T::eT) buf << 'T';
-
-	   //if ((T::eL || T::et || T::eM || T::eT ) && T::eQ ) buf << '·';
-
-	   //if (T::eQ == 1) buf << 'Q';
-	   //if (T::eQ) buf << "Q^" << T::eQ;
-	   //return buf.str();
    }
 }
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
