@@ -30,7 +30,7 @@ using t_MakeType = SOU::MakeType< Metric::AtomicUnit::Meter, AT::second, Metric:
 using t_Joule = t_MakeType::MakeDim<2, -2, 1, 0, 0>::type;
 
 TEST(Sort, DISABLED_UseTuple) { 
-	EXPECT_TRUE(true) << "Ignored since the tuple_selection_sort<> is not working";
+	GTEST_FAIL() << "Ignored since the tuple_selection_sort<> is not working. Asked https://codereview.stackexchange.com if the code has worked with the MS-VC compilers.";
 	using namespace SystemOfUnits;
 	using t_L = TL::Atom< t_Joule::eL, t_Joule::Length >;
 	using t_M = TL::Atom< t_Joule::eM, t_Joule::Mass >;
