@@ -155,6 +155,14 @@ private:
       //t_ms ms = conversion_cast< t_ms >( m );
    }
 
+	TEST(reinterpit_cast, DoesItWork) {
+		Metric::t_centimeter cent{ 100.0 };
+		//Metric::t_kilogram kg = reinterpret_cast<double>(cent);
+		//Metric::t_kilogram kg = reinterpret_cast<t_kilogram>(cent);
+
+		SUCCEED() << "Does not allow reinterpret_cast<> to work.  Code commented out.";
+	}
+
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
