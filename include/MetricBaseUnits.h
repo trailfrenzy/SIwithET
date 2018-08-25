@@ -15,7 +15,10 @@ namespace Metric
    */
    namespace AtomicUnit
    {
-      struct Meter /// @anchor repesent quantity length of a meter.
+      template<char C > struct T_Symbol{ static char symbol() { return C; } };
+      using LENGTH = T_Symbol<'L'>;
+
+      struct Meter : LENGTH /// @anchor repesent quantity length of a meter.
       {
          enum { IsBase = true };/// Lets using classes know if class is used as a base.
          static char const * str() { return "meter"; }/// Called by WhatAmI when creating the string describing the type.
@@ -23,7 +26,7 @@ namespace Metric
          static double fromBase() { return 1.0; }/// Multiply by fromBase() to get diminsional value.
          typedef Meter Base;/// Typedef of the actual base
       };
-      struct Kilometer /// represents quantity length of a kilometer
+      struct Kilometer : LENGTH /// represents quantity length of a kilometer
       {
          enum { IsBase = false };/// Lets using classes know if class is used as a base.
          static char const * str() { return "kilometer"; }/// Called by WhatAmI when creating the string describing the type.
@@ -32,7 +35,7 @@ namespace Metric
          static double fromBase() { return 1.0 / toBase(); }/// Multiply by fromBase() to get diminsional value.
          typedef Meter Base;/// Typedef of the actual base
       };
-      struct Centimeter /// represents quantity length of a centimeter
+      struct Centimeter : LENGTH /// represents quantity length of a centimeter
       {
          enum { IsBase = false };/// Lets using classes know if class is used as a base.
          static char const * str() { return "centimeter"; }/// Called by WhatAmI when creating the string describing the type.
@@ -41,7 +44,7 @@ namespace Metric
          static double toBase() { return 1.0/100.0; }///  Multiply by toBase() to get base value.
          typedef Meter Base;/// Typedef of the actual base
       };
-      struct Milimeter /// represents quantity length of a milimeter
+      struct Milimeter : LENGTH /// represents quantity length of a milimeter
       {
          enum { IsBase = false };/// Lets using classes know if class is used as a base.
          static char const * str() { return "milimeter";}/// Called by WhatAmI when creating the string describing the type.
@@ -50,7 +53,8 @@ namespace Metric
          typedef Meter Base;/// Typedef of the actual base
       };
 
-      struct gram /// represents quantity mass of a gram
+      using MASS = T_Symbol<'M'>;
+      struct gram : MASS /// represents quantity mass of a gram
       {
          enum { IsBase = true };/// Lets using classes know if class is used as a base.
          static char const * str() { return "gram"; }/// Called by WhatAmI when creating the string describing the type.
@@ -58,7 +62,7 @@ namespace Metric
          static double fromBase() { return 1.0; }/// Multiply by fromBase() to get diminsional value.
          typedef gram Base;/// Typedef of the actual base
       };
-      struct kilogram /// represents quantity mass of a kilogram.
+      struct kilogram : MASS /// represents quantity mass of a kilogram.
       {
          enum { IsBase = false };/// Lets using classes know if class is used as a base.
          static char const * str() { return "kilogram"; }/// Called by WhatAmI when creating the string describing the type.
@@ -66,7 +70,7 @@ namespace Metric
          static double fromBase() { return 1.0 / toBase() ; }/// Multiply by fromBase() to get diminsional value.
          typedef gram Base;/// Typedef of the actual base
       };
-      struct miligram /// represents quantity mass of miligram.
+      struct miligram : MASS /// represents quantity mass of miligram.
       {
          enum { IsBase = false };/// Lets using classes know if class is used as a base.
          static char const * str() { return "miligram"; }/// Called by WhatAmI when creating the string describing the type.
