@@ -76,3 +76,7 @@ TEST(Joule, Gravity) {
 	auto F = GRAVITY * M1 * M2 / (r*r);
 	EXPECT_EQ(SystemOfUnits::Diminsion(F), SystemOfUnits::Diminsion(t_Newton(2.0)));
 }
+
+TEST(Joule, GravityDim) {
+	EXPECT_EQ("[L]^3/[M][T]^2", SystemOfUnits::Diminsion(GRAVITY));
+}
