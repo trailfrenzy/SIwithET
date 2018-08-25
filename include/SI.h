@@ -1,5 +1,5 @@
 /** @file SI.h
-  * contains the the class template that can represent any different unit type
+  * contains the the class template which represent any different unit type to enforce Dimensional Homogeneity.
 */
 #ifndef SI_INCLUDE_H_07MAY2003
 #define SI_INCLUDE_H_07MAY2003
@@ -54,7 +54,7 @@ namespace SystemOfUnits /// covers the basics of the system
 
       /// constructor from a scalar
       /** constructor from a scalar value
-       * @param a double that is used to initialize the original value
+       * @param a double is used to initialize the original value
       */
       unitType( double m ) : m_amount(m){}
 	  explicit unitType( unitType const &val ) : m_amount(val.m_amount){}
@@ -210,7 +210,7 @@ namespace SystemOfUnits /// covers the basics of the system
       }
    };
 
-   /// template used to create a type that has been squared
+   /// template used to create a type has been squared
    template< typename UNIT > struct MakeSQ
    {
       typename typedef unitType
@@ -268,6 +268,7 @@ namespace SOU = SystemOfUnits;
  known engineering and scientific unit types will not mix to produce the wrong result type.  The library
  automatically does unit conversions during compile time or will produce a compile time error if types
  are mixed incorrectly.
+ Any physically meaningful equation (and any inequality) will have the same dimensions on its left and right sides, a property known as dimensional homogeneity. Checking for dimensional homogeneity is a common application of dimensional analysis, serving as a plausibility check on derived equations and computations. It also serves as a guide and constraint in deriving equations that may describe a physical system in the absence of a more rigorous derivation.
  The library provides strong type-checking of different unit types at compile time.  It does not wait for
  runtime to find errors the compiler will detect.
  When writing code to solve an engineering 
