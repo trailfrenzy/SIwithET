@@ -59,6 +59,7 @@ TEST(Joule, Ratio) {
 }
 using t_Meter = t_MakeType::MakeDim<1, 0, 0, 0, 0>::type;
 using t_MeterSq = t_MakeType::MakeDim<2, 0, 0, 0, 0>::type;
+using t_Second = t_MakeType::MakeDim<0, 1, 0, 0, 0>::type;
 
 TEST(Joule, Pressure) {
 	t_Newton N{ 45.0 };
@@ -66,6 +67,11 @@ TEST(Joule, Pressure) {
 	auto Pressure = N / M2;
 	EXPECT_DOUBLE_EQ(5.0, Pressure.amount()) << "Building up for the ideal gas law"; // kg/(m·s2)
 	//EXPECT_EQ( SystemOfUnits::WhatAmI( P ), "")
+}
+
+TEST(Joule, Watt) {
+   auto Watt = t_Newton(300.0) * t_Meter(20.0) / t_Second(4.0);
+   EXPECT_EQ("[L]^2[M]/[T]^3", SystemOfUnits::Diminsion(Watt));
 }
 
 TEST(Joule, Gravity) {
