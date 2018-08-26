@@ -125,6 +125,10 @@ TEST(Diminsion, OneDimPrint2) {
 	temp = SystemOfUnits::helpers::OneDim<'M', -3 >(bufPair).second.str();
 	EXPECT_EQ(temp, "[M]^3");
 }
+TEST(Diminsion, Struct_Sym) {
+   using t_X = SystemOfUnits::helpers::T_Symbol<'X'>;
+   EXPECT_EQ('X', t_X::sym);
+}
 
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com

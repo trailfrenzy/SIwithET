@@ -11,7 +11,7 @@ namespace SystemOfUnits /// covers the basics of the system
    struct NoDim
    {
       /// Lets using classes know if class is used as a base
-      enum { IsBase = false };
+      enum { IsBase = false, sym = ' ' };
       /// Called by WhatAmI when creating the string describing the type.
       static char const * str() { return ""; }
       ///  Multiply by toBase() to get base value.

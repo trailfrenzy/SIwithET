@@ -77,16 +77,16 @@ namespace SystemOfUnits
 
    template< typename T > constexpr inline std::string Diminsion(T const &)  // Θ
    {
-	   if (!T::eL && !T::eM && !T::et && !T::eT && !T::eQ) return ""; // no dim, baleout fast!
+	   if (!T::eL && !T::eM && !T::et && !T::eT && !T::eQ) return ""; // no dim, bale out fast!
 
 	   helpers::t_bufPair buf;
 	   
 	   using namespace helpers;
-	   if( T::eL) OneDim<'L', T::eL >(buf);
-	   if( T::eM) OneDim<'M', T::eM >(buf);
-	   if(T::et) OneDim<'T', T::et >(buf);
-	   if(T::eT) OneDim<char(THETA), T::eT >(buf);
-	   if(T::eQ) OneDim<'Q', T::eQ >(buf);
+	   if( T::eL) OneDim<T::Length::sym, T::eL >(buf);
+	   if( T::eM) OneDim<T::Mass::sym, T::eM >(buf);
+	   if(T::et) OneDim<T::Time::sym, T::et >(buf);
+	   if(T::eT) OneDim<T::Tempeture::sym, T::eT >(buf);
+	   if(T::eQ) OneDim<T::Charge::sym, T::eQ >(buf);
 
 	   std::stringstream out;
 

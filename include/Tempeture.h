@@ -1,12 +1,16 @@
 
 #ifndef SOU_TEMPETURE_INCLUDE_H
 #define SOU_TEMPETURE_INCLUDE_H
+#include "Struct_Symbol.h"
 
 namespace SystemOfUnits 
 {
-   namespace Temperature
+   namespace Temperature  // Tempeture
    {
-      struct kelvin
+      enum { THETA = 233 }; // from www.asciitable.com
+
+      using TEMPERATURE = helpers::T_Symbol<THETA >;
+      struct kelvin : TEMPERATURE
       {
          enum { IsBase = true }; /// Lets using classes know if class is used as a base.
          static char const * str() { return "Kelvin"; }/// Called by WhatAmI when creating the string describing the type.
@@ -16,7 +20,7 @@ namespace SystemOfUnits
          //typedef Metric::AtomicUnit::Meter Base;/// Typedef of the actual base
       };
 
-      struct celsius
+      struct celsius : TEMPERATURE
       {
          enum { IsBase = false }; /// Lets using classes know if class is used as a base.
          static char const * str() { return "°C"; }/// Called by WhatAmI when creating the string describing the type.
@@ -26,7 +30,7 @@ namespace SystemOfUnits
 		 //typedef Metric::AtomicUnit::Meter Base;/// Typedef of the actual base 
       };
 
-	  struct fahrenheit
+	  struct fahrenheit : TEMPERATURE
 	  {
 		  enum { IsBase = false }; /// Lets using classes know if class is used as a base.
 		  static char const * str() { return "°F"; }/// Called by WhatAmI when creating the string describing the type. K = 5/9 (° F - 32) + 273

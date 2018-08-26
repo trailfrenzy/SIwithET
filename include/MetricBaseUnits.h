@@ -2,6 +2,7 @@
 #ifndef METRICBASEUNITS_H_INCLUDE
 #define METRICBASEUNITS_H_INCLUDE
 #pragma once
+#include "Struct_Symbol.h"
 /// represents the SI-Metric system of measurment
 namespace Metric
 {
@@ -15,8 +16,7 @@ namespace Metric
    */
    namespace AtomicUnit
    {
-      template<char C > struct T_Symbol{ static char symbol() { return C; } };
-      using LENGTH = T_Symbol<'L'>;
+      using LENGTH = SystemOfUnits::helpers::T_Symbol<'L'>;
 
       struct Meter : LENGTH /// @anchor repesent quantity length of a meter.
       {
@@ -53,7 +53,7 @@ namespace Metric
          typedef Meter Base;/// Typedef of the actual base
       };
 
-      using MASS = T_Symbol<'M'>;
+      using MASS = SystemOfUnits::helpers::T_Symbol<'M'>;
       struct gram : MASS /// represents quantity mass of a gram
       {
          enum { IsBase = true };/// Lets using classes know if class is used as a base.
@@ -78,7 +78,11 @@ namespace Metric
          static double fromBase() { return 1000.0; }/// Multiply by fromBase() to get diminsional value.
          typedef gram Base;/// Typedef of the actual base
       };
-      struct kelvin /// represents quantity tempeture of kelvin
+
+      enum { THETA = 233 }; // from www.asciitable.com
+      using TEMPERATURE = SystemOfUnits::helpers::T_Symbol<THETA >;
+
+      struct kelvin : TEMPERATURE /// represents quantity tempeture of kelvin
       {
          enum { IsBase = true };/// Lets using classes know if class is used as a base.
          static char const * str() { return "Kelvin"; }/// Called by WhatAmI when creating the string describing the type.
@@ -87,7 +91,7 @@ namespace Metric
 		 typedef kelvin Base;/// Typedef of the actual base
       };
       /// @warning Do not use
-      struct celsius /// represents quanity tempeture celsius. NOT AVAILBE FOR USE.
+      struct celsius : TEMPERATURE/// represents quanity tempeture celsius.
       {
          enum { IsBase = false };/// Lets using classes know if class is used as a base.
          static char const * str() { return "°C"; }/// Called by WhatAmI when creating the string describing the type.
@@ -97,7 +101,8 @@ namespace Metric
 		 using Base = kelvin;
       };
 
-      struct coulomb /// represents quantity charge coulomb.
+      using CHARGE = SystemOfUnits::helpers::T_Symbol<'Q'>;
+      struct coulomb : CHARGE /// represents quantity charge coulomb.
       {
          enum{ IsBase = true };/// Lets using classes know if class is used as a base.
          static char const * str() { return "coulomb"; }/// Called by WhatAmI when creating the string describing the type.

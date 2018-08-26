@@ -126,6 +126,7 @@
     <ClInclude Include="..\include\Tempeture.h" />
     <ClInclude Include="..\include\TimeAtomicUnits.h" />
     <ClInclude Include="..\include\WhatAmI.h" />
+    <ClInclude Include="Struct_Symbol.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

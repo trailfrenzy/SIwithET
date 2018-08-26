@@ -6,16 +6,18 @@ by both libraries it is indepent of both.
 */
 #ifndef TIMEATOMICUNITS_H_INCLUDE
 #define TIMEATOMICUNITS_H_INCLUDE
+#include"Struct_Symbol.h"
 
 namespace SystemOfUnits
 {
    /// Namespace contains the tags used to identify time.
    namespace Time
    {
+      using TIME = helpers::T_Symbol<'T'>;
       namespace AtomicUnit
       {
          /// tag class for time.  Base Unit for time.
-         struct second
+         struct second : TIME
          {
             enum { IsBase = true };
             typedef second Base;
@@ -24,7 +26,7 @@ namespace SystemOfUnits
             static double fromBase() { return 1.0; }
          };
          /// tag class for time.
-         struct minute
+         struct minute : TIME
          {
             enum { IsBase = false };
             typedef second Base;
@@ -33,7 +35,7 @@ namespace SystemOfUnits
             static double fromBase() { return 1.0 / toBase(); }
          };
          /// tag clase for time.
-         struct hour
+         struct hour : TIME
          {
             enum { IsBase = false };
             typedef second Base;
