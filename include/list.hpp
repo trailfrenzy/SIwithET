@@ -1,6 +1,3 @@
-// From https://tismith.id.au/2014/template-metaprogramming-fun-part3.html
-// Author: Toby Smith
-
 #ifndef META_LIST_H
 #define META_LIST_H
 #include <iostream>
@@ -207,7 +204,9 @@ namespace Meta
       typedef typename MERGE<P, _L1, _L2>::TYPE TYPE;
    };
 
-   template < template <typename, typename> class P > struct SORT<P, EmptyList> 
+   // From https://tismith.id.au/2014/template-metaprogramming-fun-part3.html
+   // Author: Toby Smith
+   template < template <typename, typename> class P > struct SORT<P, EmptyList>
    {
       //typedef EmptyList TYPE;
       using TYPE = EmptyList;

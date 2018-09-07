@@ -8,7 +8,7 @@ template< int D > struct t_Test
    enum { DIM = D }; 
    template< typename OUT> friend static OUT &operator<<(OUT &out, t_Test<D> )
    {
-      return out << D;
+      return out << DIM;
    }
 };
 
@@ -17,6 +17,11 @@ using myList = Meta::LIST5<t_Test<10>, t_Test<23>, t_Test<4>, t_Test<2>, t_Test<
 template <class a, class b> struct ORD {
    enum { VALUE = a::DIM > b::DIM };
 };
+
+TEST(MetaList, LIST5) {
+   EXPECT_EQ(myList::LENGTH, 5);
+   //using t_list = Meta::LIST5< 2, 1, 5, 3, 10>::TYPE; does not compile
+}
 
 TEST(MetaList, UnSortedInt) {
    std::stringstream strm;
@@ -85,3 +90,4 @@ TEST(MetaList, SizeSorted) {
    using t_Sorted = Meta::SORT<ORD, myList>::TYPE;
    EXPECT_EQ(t_Sorted::LENGTH, 5);
 }
+
