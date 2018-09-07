@@ -7,12 +7,10 @@ namespace Meta
    template< bool CONDITION, class THEN, class ELSE > struct IF {};
 
    template<class THEN, class ELSE> struct IF< false, THEN, ELSE > {
-      //typedef ELSE TEST;
       using RET = ELSE;
    };
 
    template<class THEN, class ELSE> struct IF< true, THEN, ELSE > {
-      //typedef THEN TEST;
       using RET = THEN;
    };
 
@@ -208,14 +206,12 @@ namespace Meta
    // Author: Toby Smith
    template < template <typename, typename> class P > struct SORT<P, EmptyList>
    {
-      //typedef EmptyList TYPE;
       using TYPE = EmptyList;
    };
 
    template < template <typename, typename> class P, typename a>
    struct SORT<P, LIST<a, EmptyList> > 
    {
-      //typedef LIST<a, EmptyList> TYPE;
       using TYPE = LIST<a, EmptyList >;
    };
 
