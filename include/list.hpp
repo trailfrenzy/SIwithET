@@ -219,6 +219,23 @@ namespace Meta
       using TYPE = LIST<a, EmptyList >;
    };
 
+   /// From "Modern C++ Design", Andrei Alexandrescu, section 3.6
+   template< typename L, unsigned Index > struct At;
+
+   /// specialized template for a LIST of 1.
+   template< class Head, class Tail >
+   struct At< Meta::LIST<Head, Tail>, 0>
+   {
+      using RET = Head;
+   };
+
+   /// specialized template for a LIST of 2 thru infinity.  (to the limits of the compiler)
+   template< class Head, class Tail, unsigned Index >
+   struct At< Meta::LIST<Head, Tail>, Index >
+   {
+      typedef typename At< Tail, Index - 1>::RET RET;
+   };
+
 
 
 }

@@ -49,40 +49,23 @@ TEST( MetaList, PrintBaseDim) {
    EXPECT_EQ(std::string("[L]"), Len1::c_str());
 }
 
-// From "Modern C++ Design", Andrei Alexandrescu, section 3.6
-template< typename L, unsigned Index > struct At;
-
-template< class Head, class Tail > 
-struct At< Meta::LIST<Head,Tail>, 0> 
-{
-   using RET = Head;
-};
-
-// /*
-template< class Head, class Tail, unsigned Index >
-struct At< Meta::LIST<Head,Tail>, Index >
-{
-   typedef typename At< Tail, Index - 1>::RET RET;
-};
-// */
-
 TEST(MetaList, ListAtZero ) {
    using t_Sorted = Meta::SORT<ORD, myList>::TYPE;
-   using t_num0 = At< t_Sorted, 0 >::RET;
+   using t_num0 = Meta::At< t_Sorted, 0 >::RET;
    EXPECT_EQ(t_num0::DIM, 23);
-   using t_numUn = At< myList, 0 >::RET;
+   using t_numUn = Meta::At< myList, 0 >::RET;
    EXPECT_EQ(t_numUn::DIM, 10) << "before the sort";
 }
 
 TEST(MetaList, ListAtFirst) {
    using t_Sorted = Meta::SORT<ORD, myList>::TYPE;
-   using t_num1 = At< t_Sorted, 1 >::RET;
+   using t_num1 = Meta::At< t_Sorted, 1 >::RET;
    EXPECT_EQ(t_num1::DIM, 10);
 }
 
 TEST(MetaList, ListAtForth) {
    using t_Sorted = Meta::SORT<ORD, myList>::TYPE;
-   using t_num4 = At< t_Sorted, 4 >::RET;
+   using t_num4 = Meta::At< t_Sorted, 4 >::RET;
    EXPECT_EQ(t_num4::DIM, 2);
 }
 
