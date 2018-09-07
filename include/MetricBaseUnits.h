@@ -80,7 +80,7 @@ namespace Metric
       };
 
       enum { THETA = 233 }; // from www.asciitable.com
-      using TEMPERATURE = SystemOfUnits::helpers::T_Symbol<THETA >;
+      using TEMPERATURE = SystemOfUnits::helpers::T_Symbol< char(THETA) >;
 
       struct kelvin : TEMPERATURE /// represents quantity tempeture of kelvin
       {

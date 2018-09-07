@@ -130,6 +130,10 @@ TEST(Diminsion, Struct_Sym) {
    EXPECT_EQ('X', t_X::sym);
 }
 
+TEST(Dim, NoDiminsion) {
+   EXPECT_EQ( SystemOfUnits::Dim(SystemOfUnits::tNoUnit() ), std::string("") );
+}
+
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //

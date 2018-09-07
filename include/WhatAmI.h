@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include "SI.h"
+#include "list.hpp"
 
 /**
  @page page3 What am I
@@ -73,7 +74,42 @@ namespace SystemOfUnits
 		   }
 		   return buf;
 	   }
+
+   template< typename T, int D> struct t_BaseDim
+   {
+      using t_BaseUnit = T;
+      enum { DIM = D };
+
+      static char const * c_str()
+      {
+         if (DIM == 0) return "";
+         if (DIM == 1 || DIM == -1) {
+            constexpr char str[] = { '[', t_BaseUnit::sym ,']', '\0' };
+            return str;
+         }
+         enum { absDIM = '0' + DIM < 0 ? -1 * DIM : DIM };
+         constexpr char str[] = { '[', t_BaseUnit::sym, ']', '^', absDIM, '\0' };
+         return str;
+      }
+   };
    }
+
+
+   template <class a, class b> struct ORD {
+      enum { VALUE = a::DIM > b::DIM };
+   };
+
+
+   template< class T > inline std::string Dim( T const &)
+   {
+      if (!T::eL && !T::eM && !T::et && !T::eT && !T::eQ) return ""; // no dim, bale out fast!
+
+     // using t_List = Meta::LIST5< t_BaseDim<T::Length, T::eL>, t_BaseDim< T::Time, T::et>, t_BaseDim< //T::Mass, T::eM>, t_BaseDim< T::Tempeture, T::eT>, t_BaseDim< T::Charge, T::eQ > >;
+
+     // using  t_Sorted = typename Meta::SORT<ORD, myList>::TYPE;
+
+      return "";
+   };
 
    template< typename T > constexpr inline std::string Diminsion(T const &)  // Θ
    {
