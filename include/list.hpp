@@ -14,6 +14,9 @@ namespace Meta
       using RET = THEN;
    };
 
+   template <class a, class b> struct DIM_GT {
+      enum { VALUE = a::DIM > b::DIM };
+   };
 
    // basic lists and their constructors
    struct EmptyList {
@@ -161,7 +164,7 @@ namespace Meta
    private:
       typedef typename SPLIT<TAIL>::TYPE _SPLIT_REC;
    public:
-      typedef PAIR<
+      typedef typename PAIR<
          typename PREPEND<a, typename _SPLIT_REC::FST>::TYPE,
          typename PREPEND<b, typename _SPLIT_REC::SND>::TYPE
       > TYPE;
@@ -197,7 +200,7 @@ namespace Meta
    private:
       typedef typename SPLIT<L>::TYPE _SPLIT_LIST;
       typedef typename SORT<P, typename _SPLIT_LIST::FST>::TYPE _L1;
-      typedef typename SORT<P, typename _SPLIT_LIST::SND>::TYPE _L2;
+      typedef typename SORT<P, typename _SPLIT_LIST::SND>::TYPE _L2;  // if error here you forgot to add ::TYPE to list.
    public:
       typedef typename MERGE<P, _L1, _L2>::TYPE TYPE;
    };
