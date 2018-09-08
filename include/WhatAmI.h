@@ -75,7 +75,7 @@ namespace SystemOfUnits
 		   return buf;
 	   }
 
-   template< typename T, int D> struct t_BaseDim
+   template< typename T, int D> struct t_SingleDim
    {
       using t_BaseUnit = T;
       enum { DIM = D };

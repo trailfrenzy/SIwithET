@@ -37,7 +37,7 @@ TEST(MetaList, SortedInt) {
 
 using LENGTH = SystemOfUnits::helpers::T_Symbol<'L'>;
 using MASS = SystemOfUnits::helpers::T_Symbol<'M'>;
-using Len1 = SystemOfUnits::helpers::t_BaseDim< LENGTH, 1 >;
+using Len1 = SystemOfUnits::helpers::t_SingleDim< LENGTH, 1 >;
 
 TEST(MetaList, PrintSymbol) {
    EXPECT_EQ(std::string("[L]"), LENGTH::Symstr() ) << "Ensure base print works";
