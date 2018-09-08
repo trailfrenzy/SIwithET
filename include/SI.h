@@ -22,6 +22,13 @@ namespace SystemOfUnits /// covers the basics of the system
       typedef NoDim Base;
    };
 
+   /// Used in making the dimensions
+   template< typename T, int D> struct t_BaseDim
+   {
+      using t_BaseUnit = T;
+      enum { DIM = D };
+   };
+
    /// the class which is the heart of this library
    template
       < typename L, int iL    // length

@@ -47,7 +47,7 @@ namespace Meta
       typedef LIST<a, LIST<b, LIST<c, LIST<d, EmptyList > > > > TYPE;
    };
    template<typename a, typename b, typename c, typename d, typename e> struct LIST5 {
-      typedef LIST<a, LIST<b, LIST<c, LIST<d, LIST<e, EmptyList > > > > > TYPE;
+      typedef typename LIST<a, LIST<b, LIST<c, LIST<d, LIST<e, EmptyList > > > > > TYPE;
    };
 
    // printing lists to std::cout
