@@ -75,38 +75,44 @@ namespace SystemOfUnits
 		   return buf;
 	   }
 
-   template< typename T, int D> struct t_SingleDim
-   {
-      using t_BaseUnit = T;
-      enum { DIM = D };
-
-      static char const * c_str()
+      template < class UNIT > struct t_base
       {
-         if (DIM == 0) return "";
-         if (DIM == 1 || DIM == -1) {
-            constexpr char str[] = { '[', t_BaseUnit::sym ,']', '\0' };
+         using t_UNIT = UNIT;
+         typedef typename SystemOfUnits::t_BaseDim< typename t_UNIT::L, t_UNIT::iL > LEN;
+      };
+ 
+      template< typename T, int D> struct t_SingleDim
+      {
+         using t_BaseUnit = T;
+         enum { DIM = D, CHAR = t_BaseUnit::sym };
+
+         static char const * c_str()
+         {
+            if (DIM == 0) return "";
+            if (DIM == 1 || DIM == -1) {
+               constexpr char str[] = { '[', CHAR ,']', '\0' };
+               return str;
+            }
+            enum { absDIM = (DIM < 0) ? -1 * DIM : DIM };
+            constexpr char str[] = { '[', CHAR, ']', '^', '0' + absDIM, '\0' };
             return str;
          }
-         enum { absDIM = '0' + DIM < 0 ? -1 * DIM : DIM };
-         constexpr char str[] = { '[', t_BaseUnit::sym, ']', '^', absDIM, '\0' };
-         return str;
-      }
-   };
+      };
    }
-
-
+   
    template <class a, class b> struct ORD {
       enum { VALUE = a::DIM > b::DIM };
    };
-
-
+   
    template< class T > inline std::string Dim( T const &)
    {
       if (!T::eL && !T::eM && !T::et && !T::eT && !T::eQ) return ""; // no dim, bale out fast!
 
-     // using t_List = Meta::LIST5< t_BaseDim<T::Length, T::eL>, t_BaseDim< T::Time, T::et>, t_BaseDim< //T::Mass, T::eM>, t_BaseDim< T::Tempeture, T::eT>, t_BaseDim< T::Charge, T::eQ > >;
+     typedef typename Meta::LIST5< t_BaseDim< typename T::Length, T::eL>, t_BaseDim< T::Time, T::et>, t_BaseDim< T::Mass, T::eM>, t_BaseDim< T::Tempeture, T::eT>, t_BaseDim< T::Charge, T::eQ > >::TYPE t_List;
 
-     // using  t_Sorted = typename Meta::SORT<ORD, myList>::TYPE;
+      using  t_Sorted = typename Meta::SORT<ORD, t_List >;
+
+
 
       return "";
    };

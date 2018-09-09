@@ -88,19 +88,35 @@ TEST(MetaList, BuildListWithUnit) {
    EXPECT_EQ(t_List::TYPE::LENGTH, 5);
 }
 
-
-
 TEST(MetaList, SortWithUnit) {
    using T = t_Joule;
    using SystemOfUnits::t_BaseDim;
 
    using t_List = Meta::LIST5< t_BaseDim< t_Joule::Length, T::eL>, t_BaseDim< T::Time, T::et>, t_BaseDim< T::Mass, T::eM>, t_BaseDim< T::Tempeture, T::eT>, t_BaseDim< T::Charge, T::eQ > >::TYPE;
 
-   using myListA = Meta::LIST5< t_BaseDim< T::Length, T::eL>, t_Test<23>, t_Test<4>, t_Test<2>, t_Test<9> >::TYPE;
-
+   //using myListA = Meta::LIST5< t_BaseDim< T::Length, T::eL>, t_Test<23>, t_Test<4>, t_Test<2>, t_Test<9> >::TYPE;
 
    using t_Sort = Meta::SORT< Meta::DIM_GT, t_List >::TYPE;
    constexpr int x = Meta::At< t_Sort, 0 >::RET::DIM;
    EXPECT_EQ( x , 2) << "Not sure why it would not use the enum DIM";
 }
+
+TEST(Dim, CharFromSingleString) {
+
+   using T = t_Joule;
+   using SystemOfUnits::helpers::t_SingleDim;
+
+   using t_List = Meta::LIST5< t_SingleDim< t_Joule::Length, T::eL>, t_SingleDim< T::Time, T::et>, t_SingleDim< T::Mass, T::eM>, t_SingleDim< T::Tempeture, T::eT>, t_SingleDim< T::Charge, T::eQ > >::TYPE;
+   using t_Sorted = Meta::SORT< Meta::DIM_GT, t_List >::TYPE;
+
+   std::string const retStr = Meta::At< t_Sorted, 0 >::RET::c_str();
+   EXPECT_EQ(retStr, "[L]^2");
+}
+
+TEST(Dim, DISABLED_FirstTest ) {
+   std::string const str = SystemOfUnits::Dim(t_Joule() );
+
+   EXPECT_EQ( str, std::string("[L]^2[M]/[t]^2")) << "The return of Dim is: " << str;
+}
+
 
