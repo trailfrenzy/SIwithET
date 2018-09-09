@@ -86,7 +86,7 @@ namespace SystemOfUnits
          using t_BaseUnit = T;
          enum { DIM = D, CHAR = t_BaseUnit::sym };
 
-         static char const * c_str()
+         static constexpr char const * c_str()
          {
             if (DIM == 0) return "";
             if (DIM == 1 || DIM == -1) {
