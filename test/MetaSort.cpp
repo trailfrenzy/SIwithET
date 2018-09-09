@@ -46,6 +46,13 @@ TEST( MetaList, PrintBaseDim) {
    EXPECT_EQ(std::string("[L]"), Len1::c_str());
 }
 
+TEST(MetaList, SortWithNeg) {
+   using t_List = Meta::LIST5<t_Test<-10>, t_Test<23>, t_Test<4>, t_Test<2>, t_Test<9> >::TYPE;
+   using t_Sorted = Meta::SORT<Meta::DIM_GT, t_List>::TYPE;
+   using t_Last = Meta::At<t_Sorted, 4 >::RET;
+   EXPECT_EQ(t_Last::DIM, -10);
+}
+
 TEST(MetaList, ListAtZero ) {
    using t_Sorted = Meta::SORT<Meta::DIM_GT, myList>::TYPE;
    using t_num0 = Meta::At< t_Sorted, 0 >::RET;
@@ -105,18 +112,24 @@ TEST(Dim, CharFromSingleString) {
 
    using T = t_Joule;
    using SystemOfUnits::helpers::t_SingleDim;
+   EXPECT_EQ(T::et, -2);
 
-   using t_List = Meta::LIST5< t_SingleDim< t_Joule::Length, T::eL>, t_SingleDim< T::Time, T::et>, t_SingleDim< T::Mass, T::eM>, t_SingleDim< T::Tempeture, T::eT>, t_SingleDim< T::Charge, T::eQ > >::TYPE;
+   using t_List = Meta::LIST5< t_SingleDim< T::Length, T::eL>, t_SingleDim< T::Time, T::et>, t_SingleDim< T::Mass, T::eM>, t_SingleDim< T::Tempeture, T::eT>, t_SingleDim< T::Charge, T::eQ > >::TYPE;
    using t_Sorted = Meta::SORT< Meta::DIM_GT, t_List >::TYPE;
 
-   std::string const retStr = Meta::At< t_Sorted, 0 >::RET::c_str();
-   EXPECT_EQ(retStr, "[L]^2");
+   //std::string const retStr = Meta::At< t_Sorted, 0 >::RET::c_str();
+   EXPECT_EQ(std::string( Meta::At< t_Sorted, 0 >::RET::c_str() ), "[L]^2");
+   EXPECT_EQ(std::string(Meta::At< t_Sorted, 1 >::RET::c_str()), "[M]");
+   EXPECT_EQ( int(Meta::At< t_Sorted, 2 >::RET::DIM), 0);
+   EXPECT_EQ(int(Meta::At< t_Sorted, 4 >::RET::DIM), -2);
+   EXPECT_EQ(std::string(Meta::At< t_Sorted, 4 >::RET::c_str()), "[T]^2");
+
 }
 
-TEST(Dim, DISABLED_FirstTest ) {
+TEST(Dim, FirstTest ) {
    std::string const str = SystemOfUnits::Dim(t_Joule() );
 
-   EXPECT_EQ( str, std::string("[L]^2[M]/[t]^2")) << "The return of Dim is: " << str;
+   EXPECT_EQ( str, std::string("[L]^2[M]/[T]^2")) << "The return of Dim is: " << str;
 }
 
 

@@ -107,14 +107,17 @@ namespace SystemOfUnits
    template< class T > inline std::string Dim( T const &)
    {
       if (!T::eL && !T::eM && !T::et && !T::eT && !T::eQ) return ""; // no dim, bale out fast!
+      using SystemOfUnits::helpers::t_SingleDim;
 
-     typedef typename Meta::LIST5< t_BaseDim< typename T::Length, T::eL>, t_BaseDim< T::Time, T::et>, t_BaseDim< T::Mass, T::eM>, t_BaseDim< T::Tempeture, T::eT>, t_BaseDim< T::Charge, T::eQ > >::TYPE t_List;
+     typedef typename Meta::LIST5< t_SingleDim< T::Length, T::eL>, t_SingleDim< T::Time, T::et>, t_SingleDim< T::Mass, T::eM>, t_SingleDim< T::Tempeture, T::eT>, t_SingleDim< T::Charge, T::eQ > >::TYPE t_List;
 
-      using  t_Sorted = typename Meta::SORT<ORD, t_List >;
+      using  t_Sorted = typename Meta::SORT<ORD, t_List >::TYPE;
+      std::string retStr = Meta::At< t_Sorted, 0 >::RET::c_str();
+      retStr += Meta::At< t_Sorted, 1 >::RET::c_str();
+      retStr += '/';
+      retStr += Meta::At<t_Sorted, 4 >::RET::c_str();
 
-
-
-      return "";
+      return retStr;
    };
 
    template< typename T > constexpr inline std::string Diminsion(T const &)  // Θ
