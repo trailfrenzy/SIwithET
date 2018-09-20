@@ -134,7 +134,7 @@ namespace SystemOfUnits
          /// private struct used in the the two operators (* / )
          template< typename A1, typename A2 > struct CombineBaseTypes
          {
-            static double toBase() 
+            constexpr static double toBase()
             { 
                return A1::toBase() * A2::toBase() * A1::fromBase() * A1::fromBase(); 
             }

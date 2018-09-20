@@ -6,7 +6,7 @@ namespace SystemOfUnits {
          template<char C > struct T_Symbol 
          { 
             enum { sym = C };
-            static inline char const * Symstr()
+            constexpr static inline char const * Symstr()
             {
                constexpr char str[] = { '[', sym ,']', '\0' };
                return str;
