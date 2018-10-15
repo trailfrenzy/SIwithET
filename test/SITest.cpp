@@ -1,6 +1,6 @@
+#include "SI.h"
 #include <gtest/gtest.h>
 #include <memory>
-#include "SI.h"
 #include "MetricTypes.h"
 #include "template_help.h"
 
@@ -156,6 +156,12 @@ typedef t_Base::MakeDim<3,0,0,0,0>::type t_MeterCubed;
 
 typedef ::testing::Types< Metric::t_meter, Metric::t_metersecond, Metric::t_second, Metric::t_velocity, Metric::t_gramPsec, t_MeterSq, t_MeterCubed > MyTypes;
 INSTANTIATE_TYPED_TEST_CASE_P(My, SITest, MyTypes);
+
+TEST(NoUnit, Value) {
+   SOU::tNoUnit val( 0.0 );
+   EXPECT_EQ(val.m_amount, 0.0);
+}
+
 
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com

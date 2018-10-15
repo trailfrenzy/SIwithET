@@ -3,7 +3,9 @@
 */
 #ifndef SI_INCLUDE_H_07MAY2003
 #define SI_INCLUDE_H_07MAY2003
+#include <gtest/gtest_prod.h>
 #pragma once
+class NoUnit_Value_Test;  // need forward declaration prior to use as friend.
 
 namespace SystemOfUnits /// covers the basics of the system
 {
@@ -39,6 +41,7 @@ namespace SystemOfUnits /// covers the basics of the system
    >
    class unitType
    {
+      FRIEND_TEST(NoUnit, Value);  // for testing private attribute
       double m_amount; /// the scalar value of the object
    public:
       /// Dimensions as enum
