@@ -111,21 +111,21 @@ namespace SystemOfUnits /// covers the basics of the system
        * @param unitType on the right hand side
        * @return bool true if the left and right are not equal, false if equal
       */
-      friend constexpr bool operator!=( unitType const &lf, unitType const &rt ) { return lf.m_amount != rt.m_amount; }
+      friend constexpr bool operator!=( unitType const &lf, unitType const &rt ) { return !(lf == rt); }
 
       /** not-comparison operator with double
        * @param unitType on the left hand side
        * @param double on the right hand side
        * @return bool true if the left and right are not equal, false if equal
       */
-      friend constexpr bool operator!=( unitType const &lf, double rt ) { return lf.m_amount != rt; }
+      friend constexpr bool operator!=( unitType const &lf, double rt ) { return !(lf == rt); }
 
       /** not-comparison operator
        * @param unitType on the left hand side
        * @param double on the right hand side
        * @return bool true if the left and right are not equal, false if equal
       */
-      friend constexpr bool operator!=( double lf, unitType const &rt ) { return lf != rt.m_amount; }
+      friend constexpr bool operator!=( double lf, unitType const &rt ) { return !(lf == rt); }
 
       /** less than equal operator
        * @param unitType on the left hand side
