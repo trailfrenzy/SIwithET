@@ -59,8 +59,8 @@ namespace SystemOfUnits /// covers the basics of the system
       typedef T Tempeture; /*!<  Quantity type for Tempeture */
       typedef Q Charge;    /*!<  Quantity type for Charge */
 
-      /// default constructor (does not initialize scalar with default value, just like a built in type)
-      unitType() : m_amount(std::numeric_limits<T>::has_quiet_NaN ){}
+      /// default constructor (does not initialize scalar with default value, just like a built in type).
+      unitType() {}
 
       /// constructor from a scalar
       /** constructor from a scalar value
