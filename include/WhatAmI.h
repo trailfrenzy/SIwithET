@@ -89,7 +89,7 @@ namespace SystemOfUnits
 
          static std::string c_str()
          {
-            std::string str = "";
+            std::string str;
             if (CHAR == SOLIDUS::sym) str = CHAR;
             else if (DIM == 0) {} //return "";
             else if (DIM == 1 || DIM == -1) {
