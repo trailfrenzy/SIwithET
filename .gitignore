@@ -19,3 +19,7 @@ UpgradeLog.htm
 x64/Release/test.exe
 x64/Debug/test.exe
 x64/Debug/test.ilk
+*.asm
+*.xml
+x64/Release/test.exe.gta.testdurations
+x64/Release/test.exe.lastcodeanalysissucceeded

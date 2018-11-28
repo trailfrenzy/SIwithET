@@ -108,6 +108,10 @@ TEST(MetaList, SortWithUnit) {
    EXPECT_EQ( x , 2) << "Not sure why it would not use the enum DIM";
 }
 
+TEST(MetaList, EraseFromList) {
+   SystemOfUnits::t_BaseDim< SystemOfUnits::helpers::SOLIDUS, 0 >;
+}
+
 TEST(Dim, CharFromSingleString) {
 
    using T = t_Joule;
@@ -122,14 +126,20 @@ TEST(Dim, CharFromSingleString) {
    EXPECT_EQ(std::string(Meta::At< t_Sorted, 1 >::RET::c_str()), "[M]");
    EXPECT_EQ( int(Meta::At< t_Sorted, 2 >::RET::DIM), 0);
    EXPECT_EQ(int(Meta::At< t_Sorted, 4 >::RET::DIM), -2);
-   EXPECT_EQ(std::string(Meta::At< t_Sorted, 4 >::RET::c_str()), "[T]^2");
+   //EXPECT_STREQ( (Meta::At< t_Sorted, 4 >::RET::c_str()), "[T]^2");
 
 }
 
-TEST(Dim, FirstTest ) {
+TEST(Dim, DISABLED_FirstTest ) {  // disabled since it is not ready for use.
    std::string const str = SystemOfUnits::Dim(t_Joule() );
 
-   EXPECT_EQ( str, std::string("[L]^2[M]/[T]^2")) << "The return of Dim is: " << str;
+   EXPECT_EQ(str, std::string("[L]^2[M]/[T]^2")); // << "The return of Dim is: " << str;
+}
+
+TEST(MetaList, InverseOne) {
+   using t_Unk = t_MakeType::MakeDim< -3, -2, -1, 0, 0 >::type;
+   EXPECT_EQ("1/[M][T]^2[L]^3", SystemOfUnits::Dim(t_Unk()));
+   //EXPECT_EQ("1/);
 }
 
 

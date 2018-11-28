@@ -1,5 +1,6 @@
 #include "SI.h"
 #include <gtest/gtest.h>
+#include <type_traits>
 #include <memory>
 #include "MetricTypes.h"
 #include "template_help.h"
@@ -123,8 +124,29 @@ TYPED_TEST_P(SITest, Chaining)
 	EXPECT_TRUE(TAG::t_type(2.0) + TAG::t_type(3.0) == TAG::t_type(5.0));
 }
 
+TYPED_TEST_P(SITest, DestructorNoThrow) {
+   using TAG = SITest<TypeParam >;
+   ASSERT_TRUE(std::is_destructible< TAG::t_type >::value);
+   ASSERT_TRUE(std::is_nothrow_destructible< TAG::t_type >::value);
+}
+
+TYPED_TEST_P(SITest, IsMovable) {
+   using TAG = SITest<TypeParam >;
+   //EXPECT_TRUE(std::is_move_assignable<TAG>::value);
+   //ASSERT_TRUE(std::is_move_constructible<TAG>::value);
+}
+
+TYPED_TEST_P(SITest, IsCopyable) {
+   using TAG = SITest<TypeParam >;
+   //EXPECT_TRUE( std::is_assignable<TAG&, TAG >::value );
+   //EXPECT_TRUE(std::is_copy_assignable<TAG>::value);
+   //EXPECT_TRUE(std::is_trivially_copy_assignable<TAG>::value);
+   //EXPECT_TRUE(std::is_trivially_copy_constructible<TAG>::value);
+   //EXPECT_TRUE(std::is_nothrow_copy_constructible<TAG>::value);
+}
+
 REGISTER_TYPED_TEST_CASE_P(SITest
-	, SizeOf, Assignment, NotEqual, LessThan, GreaterThan, Comparison, Addition, AdditionAssignment, Subtraction, SubtractionAssignment, Chaining );
+	, SizeOf, Assignment, NotEqual, LessThan, GreaterThan, Comparison, Addition, AdditionAssignment, Subtraction, SubtractionAssignment, Chaining, DestructorNoThrow, IsMovable, IsCopyable);
 
 TEST(SITestSQ, Squaring)
 {

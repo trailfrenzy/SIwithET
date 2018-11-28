@@ -235,7 +235,28 @@ namespace Meta
       typedef typename At< Tail, Index - 1>::RET RET;
    };
 
+   using NullType = EmptyList;
+   /*
+   /// From "Modern C++ Design", Andrei Alexandrescu, section 3.8
+   template< class LIST, class APPEND > struct Append;
 
+   /// From "Modern C++ Design", Andrei Alexandrescu, section 3.9, "Erasing a Type from a Typelist"
+   template< class LIST, class t_ERASE > struct Erase;
 
+   template <class T> struct Erase< NullType, t_ERASE >
+   {
+      using RET = NullType;
+   };
+
+   template <class t_ERASE, class TAIL> struct Erase< Meta::LIST< t_ERASE, TAIL>, t_ERASE >
+   {
+      using RET = TAIL;
+   };
+
+   template< class Head, class Tail, class t_ERASE> struct Erase< Meta::LIST< Head, Tail>, t_ERASE >
+   {
+      typedef Meta::LIST<Head, typename Erase< Tail, t_ERASE>::RET > RET;
+   };
+   */
 }
 #endif

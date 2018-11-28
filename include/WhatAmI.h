@@ -6,6 +6,7 @@
 #include <sstream>
 #include "SI.h"
 #include "list.hpp"
+//#include "template_help.h"
 
 /**
  @page page3 What am I
@@ -86,24 +87,33 @@ namespace SystemOfUnits
          using t_BaseUnit = T;
          enum { DIM = D, CHAR = t_BaseUnit::sym };
 
-         static constexpr char const * c_str()
+         static std::string c_str()
          {
-            if (DIM == 0) return "";
-            if (DIM == 1 || DIM == -1) {
-               constexpr char str[] = { '[', CHAR ,']', '\0' };
-               return str;
+            std::string str = "";
+            if (CHAR == SOLIDUS::sym) str = CHAR;
+            else if (DIM == 0) {} //return "";
+            else if (DIM == 1 || DIM == -1) {
+               str = { '[', CHAR ,']' };
+               //return str;
             }
-            enum { absDIM = (DIM < 0) ? -1 * DIM : DIM };
-            constexpr char str[] = { '[', CHAR, ']', '^', '0' + absDIM, '\0' };
+            else {
+               enum { absDIM = (DIM < 0) ? -1 * DIM : DIM };
+               str = { '[', CHAR, ']', '^', '0' + absDIM };
+               //return str;
+            }
             return str;
          }
       };
+
+      /// Solidus is the name of the slash
+      using SOLIDUS = SystemOfUnits::helpers::T_Symbol<'/'>;
    }
    
    template <class a, class b> struct ORD {
       enum { VALUE = a::DIM > b::DIM };
    };
    
+   // NOTE: Not ready for use.
    template< class T > inline std::string Dim( T const &)
    {
       if (!T::eL && !T::eM && !T::et && !T::eT && !T::eQ) return ""; // no dim, bale out fast!
@@ -112,10 +122,29 @@ namespace SystemOfUnits
      typedef typename Meta::LIST5< t_SingleDim< T::Length, T::eL>, t_SingleDim< T::Time, T::et>, t_SingleDim< T::Mass, T::eM>, t_SingleDim< T::Tempeture, T::eT>, t_SingleDim< T::Charge, T::eQ > >::TYPE t_List;
 
       using  t_Sorted = typename Meta::SORT<ORD, t_List >::TYPE;
-      std::string retStr = Meta::At< t_Sorted, 0 >::RET::c_str();
-      retStr += Meta::At< t_Sorted, 1 >::RET::c_str();
-      retStr += '/';
-      retStr += Meta::At<t_Sorted, 4 >::RET::c_str();
+      using DIM0 = typename Meta::At< t_Sorted, 0 >::RET;
+      using DIM1 = typename Meta::At< t_Sorted, 1 >::RET;
+      using DIM2 = typename Meta::At< t_Sorted, 2 >::RET;
+      using DIM3 = typename Meta::At< t_Sorted, 3 >::RET;
+      using DIM4 = typename Meta::At< t_Sorted, 4 >::RET;
+
+      //enum{ isDIM0 = SystemOfUnits::IF<(DIM0::DIM < 0), true, false>::RET };
+      enum{ isDIM0_Neg = DIM0::DIM <= 0, isDIM4_Pos = DIM4::DIM >= 0 };
+
+      std::string retStr;
+      if (isDIM0_Neg) {
+         retStr += "1/";
+         if (DIM0::DIM) retStr += DIM0::c_str();
+         if (DIM1::DIM) retStr += DIM1::c_str();
+         if (DIM2::DIM) retStr += DIM2::c_str();
+         if (DIM3::DIM) retStr += DIM3::c_str();
+         if (DIM4::DIM) retStr += DIM4::c_str();
+      }
+
+      //std::string retStr = Meta::At< t_Sorted, 0 >::RET::c_str();
+      //retStr += Meta::At< t_Sorted, 1 >::RET::c_str();
+      //retStr += '/';
+      //retStr += Meta::At<t_Sorted, 4 >::RET::c_str();
 
       return retStr;
    };

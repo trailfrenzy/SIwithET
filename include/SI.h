@@ -60,27 +60,25 @@ namespace SystemOfUnits /// covers the basics of the system
       typedef Q Charge;    /*!<  Quantity type for Charge */
 
       /// default constructor (does not initialize scalar with default value, just like a built in type)
-      unitType(){}
+      unitType() : m_amount(std::numeric_limits<T>::has_quiet_NaN ){}
 
       /// constructor from a scalar
       /** constructor from a scalar value
        * @param a double is used to initialize the original value
       */
       constexpr unitType( double m ) : m_amount(m){}
-	  explicit constexpr unitType( unitType const &val ) : m_amount(val.m_amount){}
-	  constexpr unitType( unitType &&val ) : m_amount( std::move(val.m_amount )){}
+      explicit constexpr unitType(unitType const &val ) : m_amount(val.m_amount) {}
+      constexpr unitType(unitType &&val) = default; // : m_amount(std::move(val.m_amount)) {}
 
 	  /** assignment operator
 	  * @param value which the left-handed object will be assigned
 	  * @return the current object
 	  */
-     constexpr unitType &operator=(unitType const &rt)
-	  {
-		  m_amount = rt.m_amount;
-		  return *this;
-	  }
+     constexpr unitType &operator=(unitType const &) & = default;
+     
+     constexpr unitType &operator=(unitType &&rt) && = default;
 
-	  unitType& operator=(double m) = delete; /// prevent assigning scalar values to an existing unit but still allows assnment to a new type.
+     unitType& operator=(double m) = delete; /// prevent assigning scalar values to an existing unit but still allows assnment to a new type.
 
       /** returns the scalar value of the object
         * @return the scalar value of the type. */
@@ -217,6 +215,12 @@ namespace SystemOfUnits /// covers the basics of the system
       friend constexpr unitType operator-( unitType const &lf, unitType const &rt )
       {
          return unitType( lf.m_amount - rt.m_amount);
+      }
+
+      template< typename TOUT> 
+      friend TOUT &operator<<(TOUT &out, unitType const &val)
+      {
+         return out << val.m_amount;
       }
    };
 
