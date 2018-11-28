@@ -108,10 +108,6 @@ TEST(MetaList, SortWithUnit) {
    EXPECT_EQ( x , 2) << "Not sure why it would not use the enum DIM";
 }
 
-TEST(MetaList, EraseFromList) {
-   SystemOfUnits::t_BaseDim< SystemOfUnits::helpers::SOLIDUS, 0 >;
-}
-
 TEST(Dim, CharFromSingleString) {
 
    using T = t_Joule;
