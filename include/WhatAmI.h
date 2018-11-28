@@ -149,9 +149,9 @@ namespace SystemOfUnits
       return retStr;
    };
 
-   template< typename T > constexpr inline std::string Diminsion(T const &)  // Θ
+   template< typename T > inline std::string Diminsion(T const &)  // Θ
    {
-	   if (!T::eL && !T::eM && !T::et && !T::eT && !T::eQ) return ""; // no dim, bale out fast!
+      if (!T::eL && !T::eM && !T::et && !T::eT && !T::eQ) return {}; // no dim, bale out fast!
 
 	   helpers::t_bufPair buf;
 	   
