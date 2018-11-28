@@ -1,6 +1,9 @@
 #include "SI.h"
 #include <gtest/gtest.h>
 #include <type_traits>
+//#include <iostream>
+#include <sstream>
+#include <string>
 #include <memory>
 #include "MetricTypes.h"
 #include "template_help.h"
@@ -184,8 +187,22 @@ TEST(NoUnit, Value) {
    EXPECT_EQ(val.m_amount, 0.0);
 }
 
+TEST(Inserter, NoUnit) {
+   SOU::tNoUnit val(9.78);
+   std::stringstream strm;
+   strm << val;
+   EXPECT_EQ( strm.str(), std::string("9.78") );
+}
 
-// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+TEST(Inserter, MeterCubed) {
+   t_MeterCubed m3(10.11);
+
+   std::stringstream strm;
+   strm << m3;
+   EXPECT_EQ(strm.str(), std::string("10.11"));
+}
+
+// Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

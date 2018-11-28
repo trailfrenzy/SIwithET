@@ -220,7 +220,8 @@ namespace SystemOfUnits /// covers the basics of the system
       template< typename TOUT> 
       friend TOUT &operator<<(TOUT &out, unitType const &val)
       {
-         return out << val.m_amount;
+         out << val.m_amount;
+         return out;
       }
    };
 
