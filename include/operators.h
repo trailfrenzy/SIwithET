@@ -30,9 +30,6 @@ itself.
 #pragma once
 #include "SI.h"                           /// why we are here
 #include "template_help.h"
-//#include "boost/type_traits/is_same.hpp"  /// find if two types are the same at compile time
-//#include "boost/static_assert.hpp"        /// used for compile time asserts
-//#include "boost/mpl/if.hpp"               /// used for compile time if statements
 
 namespace SystemOfUnits
 {
