@@ -43,6 +43,12 @@ namespace SystemOfUnits /// covers the basics of the system
    {
       FRIEND_TEST(NoUnit, Value);  // for testing private attribute
       double m_amount; /// the scalar value of the object
+
+      typedef unitType< L, iL, t, it, M, iM, T, iT, Q, iQ > my_type;
+      //template< typename T > friend struct is_UnitType { enum { value = false }; }; // primary template
+      //template< > 
+      //friend struct is_UnitType< my_type  > { enum { value = true }; };
+
    public:
       /// Dimensions as enum
       enum { eL = iL /*!< Dimension of Length */
@@ -223,6 +229,19 @@ namespace SystemOfUnits /// covers the basics of the system
          out << val.m_amount;
          return out;
       }
+   };
+
+   template< typename T > struct is_UnitType { enum { value = false }; }; // primary template
+   template
+      < typename L, int iL    // length
+      , typename t, int it    // time
+      , typename M, int iM    // mass
+      , typename T, int iT    // temperature
+      , typename Q, int iQ  // charge
+      >
+      struct is_UnitType< unitType<L, iL, t, it, M, iM, T, iT, Q, iQ> >
+   {
+      enum{ value = true};
    };
 
    /// template used to create a type has been squared

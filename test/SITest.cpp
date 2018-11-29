@@ -148,8 +148,17 @@ TYPED_TEST_P(SITest, IsCopyable) {
    //EXPECT_TRUE(std::is_nothrow_copy_constructible<TAG>::value);
 }
 
+TYPED_TEST_P(SITest, isUnitType) {
+   using TAG = SITest<TypeParam >::t_type;
+   ASSERT_TRUE(SOU::is_UnitType<TAG>::value ) << "why is it wrong?";
+   ASSERT_FALSE(SOU::is_UnitType<SITest<TypeParam >>::value);
+   ASSERT_FALSE(SOU::is_UnitType<double>::value);
+   ASSERT_FALSE(SOU::is_UnitType<unsigned>::value);
+}
+
+
 REGISTER_TYPED_TEST_CASE_P(SITest
-	, SizeOf, Assignment, NotEqual, LessThan, GreaterThan, Comparison, Addition, AdditionAssignment, Subtraction, SubtractionAssignment, Chaining, DestructorNoThrow, IsMovable, IsCopyable);
+	, SizeOf, Assignment, NotEqual, LessThan, GreaterThan, Comparison, Addition, AdditionAssignment, Subtraction, SubtractionAssignment, Chaining, DestructorNoThrow, IsMovable, IsCopyable, isUnitType);
 
 TEST(SITestSQ, Squaring)
 {
@@ -184,7 +193,7 @@ INSTANTIATE_TYPED_TEST_CASE_P(My, SITest, MyTypes);
 
 TEST(NoUnit, Value) {
    SOU::tNoUnit val( 0.0 );
-   EXPECT_EQ(val.m_amount, 0.0);
+   EXPECT_EQ( val.m_amount, 0.0);
 }
 
 TEST(Inserter, NoUnit) {
