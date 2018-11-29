@@ -390,8 +390,10 @@ namespace SystemOfUnits
    public:
       ShowDim_t(TOUT &r) : ref(r) {}
 
-      template< typename T > ShowDim_t& operator<<(const T& unit) {
-         ref << unit << ' ' << Diminsion(unit);
+      template< typename T > ShowDim_t& operator<<(const T& unit)
+      {
+         ref << unit;
+         if (SOU::is_UnitType<T>) { ref << ' ' << Diminsion(unit); }
          return *this;
       }
 
