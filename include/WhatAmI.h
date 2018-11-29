@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include "SI.h"
+#include"Struct_Symbol.h"
 #include "list.hpp"
 //#include "template_help.h"
 
