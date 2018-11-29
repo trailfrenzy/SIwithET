@@ -401,26 +401,19 @@ namespace SystemOfUnits
 
       operator TOUT &() const { return ref; }
 
-      //friend ShowDim_t operator<<(TOUT & out, ShowDim_t* (*)()) // only a friend so we don't need a seperate template declaration.
-      //{
-      //   return ShowDim_t(out);
-      //}
-
-      //friend auto ShowDim() ->TOUT* { return 0; } // only a friend so we don't need a seperate template declaration.
-   private:
+    private:
       TOUT & ref;
    };
 
    //template< class TOUT >
+   /// Acutual menuplator used in the stream.
    inline auto ShowDim() -> ShowDim_t*  { return 0;}
-   //{
-   //   return static_cast< ShowDim_t<TOUT>* >(0);
-   //} //
 
-   //template< class TOUT >
 }  // end of namespace SystemOfUnits
 
-inline SOU::ShowDim_t operator<<(std::ostream & out, SOU::ShowDim_t* (*)())  // only a friend so we don't need a seperate template declaration.
+/// The functions below require their presence in the global namespace. The alternative is to provide the namespace each time these functions are used.
+
+inline auto operator<<(std::ostream & out, SOU::ShowDim_t* (*)()) -> SOU::ShowDim_t
 {
    return SOU::ShowDim_t(out);
 }
