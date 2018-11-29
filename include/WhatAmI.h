@@ -142,11 +142,6 @@ namespace SystemOfUnits
          if (DIM4::DIM) retStr += DIM4::c_str();
       }
 
-      //std::string retStr = Meta::At< t_Sorted, 0 >::RET::c_str();
-      //retStr += Meta::At< t_Sorted, 1 >::RET::c_str();
-      //retStr += '/';
-      //retStr += Meta::At<t_Sorted, 4 >::RET::c_str();
-
       return retStr;
    };
 
@@ -163,7 +158,7 @@ namespace SystemOfUnits
 	   if(T::eT) OneDim<T::Tempeture::sym, T::eT >(buf);
 	   if(T::eQ) OneDim<T::Charge::sym, T::eQ >(buf);
 
-	   std::stringstream out;
+	   std::ostringstream out;
 
 	   if (buf.first.tellp() != std::streampos(0) ) out << buf.first.str();
 	   else out << '1';
