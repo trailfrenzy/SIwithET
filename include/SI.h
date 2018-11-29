@@ -231,8 +231,9 @@ namespace SystemOfUnits /// covers the basics of the system
       }
    };
 
-   template< typename T > struct is_UnitType { enum { value = false }; }; // primary template
-   template
+   /// Type trait struct which tests if the type is of UnitType class template above or not.
+   template< typename T > struct is_UnitType { enum { value = false }; }; // primary template for everything not a UnitType
+   template  /// for only UnitType only
       < typename L, int iL    // length
       , typename t, int it    // time
       , typename M, int iM    // mass
