@@ -383,17 +383,15 @@ namespace SystemOfUnits
    }  // end of namespace operators
 
    /// Manipulator class Diminsion.  The template for the manipulator class is from "Advanced Metaprogramming in Classic C++" page 464 by Davide Di Gennaro ©2015. ISBN 978-1-4842-1011-6.
-   template< class TOUT >
-   class ShowDim_t
+   template< class TOUT > class ShowDim_t
    {
       //using TOUT = std::ostream;
       TOUT &ref;
    public:
       ShowDim_t(TOUT &r) : ref(r) {}
 
-      template< typename T >
-      ShowDim_t& operator<<(const T& unit) {
-         ref << unit; // << ' ' << Diminsion(unit);
+      template< typename T > ShowDim_t& operator<<(const T& unit) {
+         ref << unit << ' ' << Diminsion(unit);
          return *this;
       }
 
