@@ -30,6 +30,7 @@ itself.
 #pragma once
 #include "SI.h"                           /// why we are here
 #include "template_help.h"
+#include "WhatAmI.h"
 
 namespace SystemOfUnits
 {
@@ -377,7 +378,35 @@ namespace SystemOfUnits
          }
       };
 
+
+
    }  // end of namespace operators
+
+   /// Manipulator class Diminsion.  The template for the manipulator class is from "Advanced Metaprogramming in Classic C++" page 464 by Davide Di Gennaro ©2015. ISBN 978-1-4842-1011-6.
+   template< class TOUT >
+   class ShowDim_t
+   {
+      //using TOUT = std::ostream;
+      TOUT &ref;
+   public:
+      ShowDim_t(TOUT &r) : ref(r) {}
+
+      template< typename T >
+      ShowDim_t& operator<<(const T& unit) {
+         ref << unit; // << ' ' << Diminsion(unit);
+         return *this;
+      }
+
+      operator TOUT &() const { return ref; }
+
+      friend ShowDim_t * ShowDim() { return 0; } // only a friend so we don't need a seperate template declaration.
+      
+      friend ShowDim_t operator<<(TOUT & out, ShowDim_t* (*)()) // only a friend so we don't need a seperate template declaration.
+      {
+         return ShowDim_t(out);
+      }
+   };
+
 }  // end of namespace SystemOfUnits
 
 
@@ -395,7 +424,7 @@ inline typename SOU::operators::Div_Result<R1,R2>::TResult operator/( R1 const &
    return SOU::operators::Div_Result<R1,R2>(r1,r2).result();
 }
 
-// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any
