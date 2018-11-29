@@ -383,32 +383,47 @@ namespace SystemOfUnits
    }  // end of namespace operators
 
    /// Manipulator class Diminsion.  The template for the manipulator class is from "Advanced Metaprogramming in Classic C++" page 464 by Davide Di Gennaro ©2015. ISBN 978-1-4842-1011-6.
-   template< class TOUT > class ShowDim_t
+   //template< class TOUT > 
+   class ShowDim_t
    {
-      //using TOUT = std::ostream;
-      TOUT &ref;
    public:
+      using TOUT = std::ostream;
       ShowDim_t(TOUT &r) : ref(r) {}
 
       template< typename T > ShowDim_t& operator<<(const T& unit)
       {
          ref << unit;
-         if (SOU::is_UnitType<T>) { ref << ' ' << Diminsion(unit); }
+         if (SOU::is_UnitType<T>::value ) { 
+            ref << ' ' << Diminsion(unit);
+         }
          return *this;
       }
 
       operator TOUT &() const { return ref; }
 
-      friend ShowDim_t * ShowDim() { return 0; } // only a friend so we don't need a seperate template declaration.
-      
-      friend ShowDim_t operator<<(TOUT & out, ShowDim_t* (*)()) // only a friend so we don't need a seperate template declaration.
-      {
-         return ShowDim_t(out);
-      }
+      //friend ShowDim_t operator<<(TOUT & out, ShowDim_t* (*)()) // only a friend so we don't need a seperate template declaration.
+      //{
+      //   return ShowDim_t(out);
+      //}
+
+      //friend auto ShowDim() ->TOUT* { return 0; } // only a friend so we don't need a seperate template declaration.
+   private:
+      TOUT & ref;
    };
 
+   //template< class TOUT >
+   inline auto ShowDim() -> ShowDim_t*  { return 0;}
+   //{
+   //   return static_cast< ShowDim_t<TOUT>* >(0);
+   //} //
+
+   //template< class TOUT >
 }  // end of namespace SystemOfUnits
 
+inline SOU::ShowDim_t operator<<(std::ostream & out, SOU::ShowDim_t* (*)())  // only a friend so we don't need a seperate template declaration.
+{
+   return SOU::ShowDim_t(out);
+}
 
 /// template function which is multiplication operator of two different operands
 template < typename R1, typename R2 >

@@ -1,4 +1,5 @@
 #include "SI.h"
+#include "operators.h"
 #include <gtest/gtest.h>
 #include <sstream>
 #include "MetricTypes.h"
@@ -18,3 +19,21 @@ TEST(Inserter, MeterCubed) {
    EXPECT_EQ(strm.str(), std::string("10.11"));
 }
 
+TEST(Inserter, ShowDimMeterCubed) {
+   t_MeterCubed m3(10.11);
+
+   std::stringstream strm;
+   strm << SOU::ShowDim << m3;
+   EXPECT_EQ(strm.str(), std::string("10.11 [L]^3"));
+
+   //SOU::ShowDim << m3;
+}
+
+// Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
+// curt.leslie.lewis.martin@gmail.com
+//
+// Permission to use, copy, modify, and distribute this software for any
+// purpose is hereby granted without fee, provided that this copyright and
+// permissions notice appear in all copies and derivatives.
+//
+// This software is provided "as is" without express or implied warranty.
