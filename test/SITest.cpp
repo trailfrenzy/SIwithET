@@ -134,16 +134,17 @@ TYPED_TEST_P(SITest, DestructorNoThrow) {
 }
 
 TYPED_TEST_P(SITest, IsMovable) {
-   using TAG = SITest<TypeParam >;
-   //EXPECT_TRUE(std::is_move_assignable<TAG>::value);
-   //ASSERT_TRUE(std::is_move_constructible<TAG>::value);
+   using TAG = SITest<TypeParam >::t_type;
+   EXPECT_TRUE(std::is_move_assignable<TAG>::value);
+   ASSERT_TRUE(std::is_move_constructible<TAG>::value);
 }
 
 TYPED_TEST_P(SITest, IsCopyable) {
-   using TAG = SITest<TypeParam >;
+   using TAG = SITest<TypeParam >::t_type;
    //EXPECT_TRUE( std::is_assignable<TAG&, TAG >::value );
-   //EXPECT_TRUE(std::is_copy_assignable<TAG>::value);
-   //EXPECT_TRUE(std::is_trivially_copy_assignable<TAG>::value);
+   EXPECT_TRUE(std::is_copy_assignable<TAG>::value);
+   EXPECT_TRUE(std::is_trivially_copy_assignable<TAG>::value);
+   EXPECT_TRUE(std::is_copy_constructible<TAG>::value);
    //EXPECT_TRUE(std::is_trivially_copy_constructible<TAG>::value);
    //EXPECT_TRUE(std::is_nothrow_copy_constructible<TAG>::value);
 }
