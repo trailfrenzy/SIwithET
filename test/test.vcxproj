@@ -165,6 +165,7 @@
   <ItemGroup>
     <ClCompile Include="conversion_castTest.cpp" />
     <ClCompile Include="EnglishUnitTest.cpp" />
+    <ClCompile Include="InserterTest.cpp" />
     <ClCompile Include="JouleTest.cpp" />
     <ClCompile Include="main01.cpp" />
     <ClCompile Include="MetaSort.cpp" />

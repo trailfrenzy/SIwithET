@@ -204,14 +204,6 @@ TEST(Inserter, NoUnit) {
    EXPECT_EQ( strm.str(), std::string("9.78") );
 }
 
-TEST(Inserter, MeterCubed) {
-   t_MeterCubed m3(10.11);
-
-   std::stringstream strm;
-   strm << m3;
-   EXPECT_EQ(strm.str(), std::string("10.11"));
-}
-
 // Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
