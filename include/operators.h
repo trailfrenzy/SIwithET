@@ -383,11 +383,11 @@ namespace SystemOfUnits
    }  // end of namespace operators
 
    /// Manipulator class Diminsion.  The template for the manipulator class is from "Advanced Metaprogramming in Classic C++" page 464 by Davide Di Gennaro ©2015. ISBN 978-1-4842-1011-6.
-   //template< class TOUT > 
+   template< class TOUT > 
    class ShowDim_t
    {
    public:
-      using TOUT = std::ostream;
+      //using TOUT = std::ostream;
       ShowDim_t(TOUT &r) : ref(r) {}
 
       template< typename T > ShowDim_t& operator<<(const T& unit)
@@ -405,17 +405,18 @@ namespace SystemOfUnits
       TOUT & ref;
    };
 
-   //template< class TOUT >
+   template< class TOUT >
    /// Acutual menuplator used in the stream.
-   inline auto ShowDim() -> ShowDim_t*  { return 0;}
+   inline auto ShowDim() -> ShowDim_t<TOUT>*  { return 0;}
 
 }  // end of namespace SystemOfUnits
 
 /// The functions below require their presence in the global namespace. The alternative is to provide the namespace each time these functions are used.
 
-inline auto operator<<(std::ostream & out, SOU::ShowDim_t* (*)()) -> SOU::ShowDim_t
+template< class TOUT >
+inline auto operator<<(TOUT & out, SOU::ShowDim_t<TOUT>* (*)() ) -> SOU::ShowDim_t<TOUT>
 {
-   return SOU::ShowDim_t(out);
+   return SOU::ShowDim_t<TOUT>(out);
 }
 
 /// template function which is multiplication operator of two different operands
