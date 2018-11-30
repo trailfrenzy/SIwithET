@@ -24,7 +24,7 @@ namespace SystemOfUnits
    {
       /// used by what am i
       /// @prama std::stringstream is used to create the return stream
-      template< typename TYPE, int DIM > void printAtom( std::stringstream &ret )
+      template< typename TYPE, int DIM > void printAtom( std::ostringstream &ret )
       {
          if( DIM ) // value known at compile time
          {
@@ -45,7 +45,7 @@ namespace SystemOfUnits
    template< typename T >
    inline std::string WhatAmI( T const & )
    {
-      std::stringstream buf;
+      std::ostringstream buf;
       // use a template map to sort these later
       helpers::printAtom< T::Length, T::eL >( buf );
       helpers::printAtom< T::Time,   T::et >( buf );
@@ -61,7 +61,7 @@ namespace SystemOfUnits
 
    namespace helpers
    {
-	   using t_bufPair = std::pair< std::stringstream, std::stringstream >;
+	   using t_bufPair = std::pair< std::ostringstream, std::ostringstream >;
 	   enum { THETA = 233 }; // from www.asciitable.com
 
 	   template < char C, int T > inline t_bufPair& OneDim(t_bufPair &buf)
