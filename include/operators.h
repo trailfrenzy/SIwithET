@@ -377,28 +377,40 @@ namespace SystemOfUnits
                );
          }
       };
-
-
-
    }  // end of namespace operators
 
-   /// Manipulator class Diminsion.  The template for the manipulator class is from "Advanced Metaprogramming in Classic C++" page 464 by Davide Di Gennaro ©2015. ISBN 978-1-4842-1011-6.
-   template< class TOUT > 
+   /**
+   @page 5 Stream Manipulator for SystemOfUnits::UnitType template to produce dimeninsions only for the type in the stream.
+   The template for the manipulator class is based from "Advanced Metaprogramming in Classic C++" page 464 by Davide Di Gennaro ©2015. ISBN 978-1-4842-1011-6.
+
+   @code t_metricCube m3 = 8.2;
+   std::cout << ShowDim << m3 << '\n';
+   @endcode
+
+   The output is: @code "8.2 [L]^3" @endcode
+   */
+   /// Stream Manipulator class ShowDim_t.  
+   template< class TOUT >
    class ShowDim_t
    {
+      TOUT & ref;  /// TOUT can be std::cout, std::ofstream, std::stringstream, or anyother stream which uses insertors.
    public:
-      //using TOUT = std::ostream;
       ShowDim_t(TOUT &r) : ref(r) {}
 
+      /// pass by value instead of reference.
       ShowDim_t& operator<<(char c) { ref << c; return *this; }
+      ShowDim_t& operator<<(int i) { ref << i; return *this; }
+      ShowDim_t& operator<<(unsigned u) { ref << u; return *this; }
 
+      /// Uused by any type besides UnitType
       template< typename T > ShowDim_t& operator<<(const T& val)
       {
          ref << val;
          return *this;
       }
 
-      template  /// for only UnitType only
+      /// for only UnitType only use only.
+      template
          < typename L, int iL    // length
          , typename t, int it    // time
          , typename M, int iM    // mass
@@ -412,9 +424,6 @@ namespace SystemOfUnits
       }
 
       operator TOUT &() const { return ref; }
-
-    private:
-      TOUT & ref;
    };
 
    /// Acutual menuplator used in the stream.
@@ -424,6 +433,7 @@ namespace SystemOfUnits
 
 /// The functions below require their presence in the global namespace. The alternative is to provide the namespace each time these functions are used.
 
+/// function is used to impliment the stream manipulator SOU::UnitType dimensions.  
 template< class TOUT >
 inline auto operator<<(TOUT & out, SOU::ShowDim_t<TOUT>* (*)() ) -> SOU::ShowDim_t<TOUT>
 {
