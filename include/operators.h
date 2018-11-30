@@ -390,12 +390,24 @@ namespace SystemOfUnits
       //using TOUT = std::ostream;
       ShowDim_t(TOUT &r) : ref(r) {}
 
-      template< typename T > ShowDim_t& operator<<(const T& unit)
+      ShowDim_t& operator<<(char c) { ref << c; return *this; }
+
+      template< typename T > ShowDim_t& operator<<(const T& val)
       {
-         ref << unit;
-         if (SOU::is_UnitType<T>::value ) { 
-            ref << ' ' << Diminsion(unit);
-         }
+         ref << val;
+         return *this;
+      }
+
+      template  /// for only UnitType only
+         < typename L, int iL    // length
+         , typename t, int it    // time
+         , typename M, int iM    // mass
+         , typename T, int iT    // temperature
+         , typename Q, int iQ  // charge
+         >
+         ShowDim_t& operator<<(const SOU::unitType<L, iL, t, it, M, iM, T, iT, Q, iQ> &unit)
+      {
+         ref << unit << ' ' << Diminsion(unit);
          return *this;
       }
 
@@ -405,9 +417,8 @@ namespace SystemOfUnits
       TOUT & ref;
    };
 
-   template< class TOUT >
    /// Acutual menuplator used in the stream.
-   inline auto ShowDim() -> ShowDim_t<TOUT>*  { return 0;}
+   template< class TOUT > inline auto ShowDim() -> ShowDim_t<TOUT>*  { return 0;}
 
 }  // end of namespace SystemOfUnits
 

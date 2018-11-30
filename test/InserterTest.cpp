@@ -25,8 +25,14 @@ TEST(Inserter, ShowDimMeterCubed) {
    std::stringstream strm;
    strm << SOU::ShowDim << m3;
    EXPECT_EQ(strm.str(), std::string("10.11 [L]^3"));
+}
 
-   //SOU::ShowDim << m3;
+TEST(Inserter, ShowDimMeterCubed44) {
+   t_MeterCubed m3(10.11);
+
+   std::stringstream strm;
+   strm << SOU::ShowDim << m3 << ' ' << 44;
+   EXPECT_EQ(strm.str(), std::string("10.11 [L]^3 44"));
 }
 
 // Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
