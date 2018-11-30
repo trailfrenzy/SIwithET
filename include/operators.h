@@ -383,11 +383,16 @@ namespace SystemOfUnits
    @page 5 Stream Manipulator for SystemOfUnits::UnitType template to produce dimeninsions only for the type in the stream.
    The template for the manipulator class is based from "Advanced Metaprogramming in Classic C++" page 464 by Davide Di Gennaro ©2015. ISBN 978-1-4842-1011-6.
 
+   Stream manipulators are one of the least known and more expressive pieces of the C++ Standard  They are simply functions which take a stream as an argument.  Since their signature is fixed, streams have a special insertion operator to run them.
+
    @code t_metricCube m3 = 8.2;
    std::cout << ShowDim << m3 << '\n';
    @endcode
 
    The output is: @code "8.2 [L]^3" @endcode
+
+   All insertions after @code ShowDim @endcode atcually calls to @code ShowDim_t::operator<< @endcode, not to std::ostream.
+   The code generates a unique signature for the manipulator with the proxy itself.  The effect of the manipulator insertion is lost after the next insertion.
    */
    /// Stream Manipulator class ShowDim_t.  
    template< class TOUT >
