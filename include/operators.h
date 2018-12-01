@@ -431,8 +431,8 @@ namespace SystemOfUnits
       operator TOUT &() const { return ref; }
    };
 
-   /// Acutual menuplator used in the stream.
-   template< class TOUT > inline auto ShowDim() -> ShowDim_t<TOUT>*  { return 0;}
+   /// Acutual menuplator used in the stream. The word "dimension" is more universally accepted in other languages besides English.  Replacement for ShowDim. Use of "dimension" is better than "dim" or "ShowDim".  
+   template< class TOUT > inline auto dimension() -> ShowDim_t<TOUT>* { return 0; }
 
 }  // end of namespace SystemOfUnits
 

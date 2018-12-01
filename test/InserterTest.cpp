@@ -23,7 +23,7 @@ TEST(Inserter, ShowDimMeterCubed) {
    t_MeterCubed m3(10.11);
 
    std::stringstream strm;
-   strm << SOU::ShowDim << m3;
+   strm << SOU::dimension << m3;
    EXPECT_EQ(strm.str(), std::string("10.11 [L]^3"));
 }
 
@@ -31,7 +31,7 @@ TEST(Inserter, ShowDimMeterCubed44) {
    t_MeterCubed m3(10.11);
 
    std::stringstream strm;
-   strm << SOU::ShowDim << m3 << ' ' << 44;
+   strm << SOU::dimension << m3 << ' ' << 44;
    EXPECT_EQ(strm.str(), std::string("10.11 [L]^3 44"));
 }
 
@@ -39,7 +39,7 @@ TEST(Inserter, ShowDimMeterSqDouble) {
    t_MeterSq m3(10.11);
 
    std::stringstream strm;
-   strm << SOU::ShowDim << m3 << ' ' << 44.6666;
+   strm << SOU::dimension << m3 << ' ' << 44.6666;
    EXPECT_EQ(strm.str(), std::string("10.11 [L]^2 44.6666"));
 }
 
@@ -47,7 +47,7 @@ TEST(Inserter, ShowDimMeterSqCstring) {
    t_MeterSq m3(10.11);
 
    std::stringstream strm;
-   strm << SOU::ShowDim << m3 << ' ' << "44.6666";
+   strm << SOU::dimension << m3 << ' ' << "44.6666";
    EXPECT_EQ(strm.str(), std::string("10.11 [L]^2 44.6666"));
 }
 
@@ -55,7 +55,7 @@ TEST(Inserter, ShowDimMeterSqString) {
    t_MeterSq m3(10.11);
 
    std::stringstream strm;
-   strm << SOU::ShowDim << m3 << ' ' << std::string("44.6666");
+   strm << SOU::dimension << m3 << ' ' << std::string("44.6666");
    EXPECT_EQ(strm.str(), std::string("10.11 [L]^2 44.6666"));
 }
 // Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
