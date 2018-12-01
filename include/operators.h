@@ -400,7 +400,7 @@ namespace SystemOfUnits
    {
       TOUT & ref;  /// TOUT can be std::cout, std::ofstream, std::stringstream, or anyother stream which uses insertors.
    public:
-      ShowDim_t(TOUT &r) : ref(r) {}
+      ShowDim_t(TOUT &r) : ref(r) {} // TBD: Make private but will require the inster which calls it to be in the same namespace.
 
       /// pass by value instead of reference.
       ShowDim_t& operator<<(char c) { ref << c; return *this; }
