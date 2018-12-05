@@ -407,7 +407,7 @@ namespace SystemOfUnits
       ShowDim_t& operator<<(int i) { ref << i; return *this; }
       ShowDim_t& operator<<(unsigned u) { ref << u; return *this; }
 
-      /// Uused by any type besides UnitType
+      /// Used by any type besides UnitType
       template< typename T > ShowDim_t& operator<<(const T& val)
       {
          ref << val;
@@ -434,6 +434,45 @@ namespace SystemOfUnits
    /// Acutual menuplator used in the stream. The word "dimension" is more universally accepted in other languages besides English.  Replacement for ShowDim. Use of "dimension" is better than "dim" or "ShowDim".  
    template< class TOUT > inline auto dimension() -> ShowDim_t<TOUT>* { return 0; }
 
+   template< class TOUT >
+   class ShowUnits_t
+   {
+      TOUT & ref;  /// TOUT can be std::cout, std::ofstream, std::stringstream, or anyother stream which uses insertors.
+   public:
+      ShowUnits_t(TOUT &r) : ref(r) {} // TBD: Make private but will require the inster which calls it to be in the same namespace.
+
+                                       /// pass by value instead of reference.
+      ShowUnits_t& operator<<(char c) { ref << c; return *this; }
+      ShowUnits_t& operator<<(int i) { ref << i; return *this; }
+      ShowUnits_t& operator<<(unsigned u) { ref << u; return *this; }
+
+      /// Used by any type besides UnitType
+      template< typename T > ShowUnits_t& operator<<(const T& val)
+      {
+         ref << val;
+         return *this;
+      }
+
+      /// for only UnitType only use only.
+      template
+         < typename L, int iL    // length
+         , typename t, int it    // time
+         , typename M, int iM    // mass
+         , typename T, int iT    // temperature
+         , typename Q, int iQ  // charge
+         >
+         ShowUnits_t& operator<<(const SOU::unitType<L, iL, t, it, M, iM, T, iT, Q, iQ> &unit)
+      {
+         ref << unit << ' ' << SOU::WhatAmI(unit);
+         return *this;
+      }
+
+      operator TOUT &() const { return ref; }
+   };
+
+   template< class TOUT > inline auto units() -> ShowUnits_t<TOUT>* { return 0; }
+
+
 }  // end of namespace SystemOfUnits
 
 /// The functions below require their presence in the global namespace. The alternative is to provide the namespace each time these functions are used.
@@ -443,6 +482,12 @@ template< class TOUT >
 inline auto operator<<(TOUT & out, SOU::ShowDim_t<TOUT>* (*)() ) -> SOU::ShowDim_t<TOUT>
 {
    return SOU::ShowDim_t<TOUT>(out);
+}
+
+template< class TOUT >
+inline auto operator<<(TOUT & out, SOU::ShowUnits_t<TOUT>* (*)()) //-> SOU::ShowDim_t<TOUT>
+{
+   return SOU::ShowUnits_t<TOUT>(out);
 }
 
 /// template function which is multiplication operator of two different operands
