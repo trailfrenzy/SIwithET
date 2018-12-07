@@ -3,6 +3,7 @@
 #include <gtest/gtest.h>
 #include <sstream>
 #include "MetricTypes.h"
+#include <string_view>
 
 typedef Metric::AtomicUnit::Meter Meter;
 typedef SOU::Time::AtomicUnit::second second;
@@ -81,6 +82,14 @@ TEST(Inserter, ShowDimMeterSqString) {
 
    std::stringstream strm;
    strm << SOU::dimension << m3 << ' ' << std::string("44.6666");
+   EXPECT_EQ(strm.str(), std::string_view("10.11 [L]^2 44.6666"));
+}
+
+TEST(Inserter, ShowDimMeterSqStringView) {
+   t_MeterSq m3(10.11);
+   std::string_view s("44.6666");
+   std::stringstream strm;
+   strm << SOU::dimension << m3 << ' ' << s;
    EXPECT_EQ(strm.str(), std::string_view("10.11 [L]^2 44.6666"));
 }
 
