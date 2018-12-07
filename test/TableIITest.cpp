@@ -12,6 +12,7 @@ Used these quantities and dimensions to test how well template unitType held up.
 #include "operators.h"
 #include "WhatAmI.h"
 #include <cmath>
+#include <string_view>
 
 namespace
 {
@@ -40,7 +41,7 @@ TEST(TableIITest, TestNewton)
 
 	t_n const N = acc * mass;
 	EXPECT_DOUBLE_EQ(49.05, N.amount());
-	EXPECT_EQ(std::string("meter*second^-2*kilogram"), SOU::WhatAmI(N));
+	EXPECT_EQ(std::string_view("meter*second^(-2)*kilogram"), SOU::WhatAmI(N));
 	//std::cout << SI::WhatAmI(N);
 }
 

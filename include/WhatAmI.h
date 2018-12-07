@@ -29,11 +29,15 @@ namespace SystemOfUnits
          if( DIM ) // value known at compile time
          {
             ret << TYPE::str();
-   			if (DIM != 1) 
+   			if (DIM > 1) 
             {
-				   ret << '^';
-				   ret << DIM;
+               ret << '^' << DIM;
 			   }
+            if (DIM < 0)
+            {
+               ret << "^(" << DIM << ')';
+            }
+
             ret << '*';
          }
       }
@@ -169,7 +173,7 @@ namespace SystemOfUnits
 	   return out.str();
    }
 }
-// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

@@ -6,6 +6,7 @@
 #include "WhatAmI.h"
 #include "operators.h"
 #include <sstream>
+#include <string_view>
 
 TEST(Diminsion, NoDim) {
 	EXPECT_EQ("", SOU::Diminsion(SOU::tNoUnit(2.0) ));
@@ -43,10 +44,10 @@ TEST(WhatAmITest, TestWithOneDim)
 	EXPECT_EQ(std::string("second"), SOU::WhatAmI(sec));
 
 	Metric::t_velocity vel(81.5);
-	EXPECT_EQ(std::string( "meter*second^-1"), SOU::WhatAmI(vel));
+	EXPECT_EQ(std::string_view( "meter*second^(-1)"), SOU::WhatAmI(vel));
 
 	Metric::t_gramPsec massFlow(3.895);
-	EXPECT_EQ(std::string("second^-1*gram"), SOU::WhatAmI(massFlow));
+	EXPECT_EQ(std::string_view("second^(-1)*gram"), SOU::WhatAmI(massFlow));
 	EXPECT_TRUE(true);
 }
 
