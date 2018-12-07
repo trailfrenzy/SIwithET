@@ -441,7 +441,7 @@ namespace SystemOfUnits
    public:
       ShowUnits_t(TOUT &r) : ref(r) {} // TBD: Make private but will require the inster which calls it to be in the same namespace.
 
-                                       /// pass by value instead of reference.
+      /// pass by value instead of reference.
       ShowUnits_t& operator<<(char c) { ref << c; return *this; }
       ShowUnits_t& operator<<(int i) { ref << i; return *this; }
       ShowUnits_t& operator<<(unsigned u) { ref << u; return *this; }
