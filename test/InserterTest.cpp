@@ -10,13 +10,14 @@ typedef Metric::AtomicUnit::gram gram;
 typedef SOU::MakeType< Meter, second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::coulomb > t_Base;
 typedef t_Base::MakeDim<2, 0, 0, 0, 0>::type t_MeterSq;
 typedef t_Base::MakeDim<3, 0, 0, 0, 0>::type t_MeterCubed;
+typedef t_Base::MakeDim<3, -1, 0, 0, 0>::type t_CubedPerSec;
 
 TEST(Inserter, MeterCubed) {
    t_MeterCubed m3(10.11);
 
    std::stringstream strm;
    strm << m3;
-   EXPECT_EQ(strm.str(), std::string("10.11"));
+   EXPECT_EQ(strm.str(), std::string_view("10.11"));
 }
 
 TEST(Inserter, ShowDimMeterCubed) {
@@ -24,7 +25,7 @@ TEST(Inserter, ShowDimMeterCubed) {
 
    std::stringstream strm;
    strm << SOU::dimension << m3;
-   EXPECT_EQ(strm.str(), std::string("10.11 [L]^3"));
+   EXPECT_EQ(strm.str(), std::string_view("10.11 [L]^3"));
 }
 
 TEST(Inserter, ShowUnitMeterCubed) {
@@ -32,7 +33,7 @@ TEST(Inserter, ShowUnitMeterCubed) {
 
    std::stringstream strm;
    strm << SOU::units << m3;
-   EXPECT_EQ(strm.str(), std::string("10.11 meter^3"));
+   EXPECT_EQ(strm.str(), std::string_view("10.11 meter^3"));
 }
 
 TEST(Inserter, ShowDimMeterCubed44) {
@@ -40,7 +41,7 @@ TEST(Inserter, ShowDimMeterCubed44) {
 
    std::stringstream strm;
    strm << SOU::dimension << m3 << ' ' << 44;
-   EXPECT_EQ(strm.str(), std::string("10.11 [L]^3 44"));
+   EXPECT_EQ(strm.str(), std::string_view("10.11 [L]^3 44"));
 }
 
 TEST(Inserter, ShowUnitMeterCubed44) {
@@ -48,7 +49,7 @@ TEST(Inserter, ShowUnitMeterCubed44) {
 
    std::stringstream strm;
    strm << SOU::units << m3 << ' ' << 44;
-   EXPECT_EQ(strm.str(), std::string("10.11 meter^3 44"));
+   EXPECT_EQ(strm.str(), std::string_view("10.11 meter^3 44"));
 }
 
 TEST(Inserter, ShowDimMeterSqDouble) {
@@ -56,7 +57,7 @@ TEST(Inserter, ShowDimMeterSqDouble) {
 
    std::stringstream strm;
    strm << SOU::dimension << m3 << ' ' << 44.6666;
-   EXPECT_EQ(strm.str(), std::string("10.11 [L]^2 44.6666"));
+   EXPECT_EQ(strm.str(), std::string_view("10.11 [L]^2 44.6666"));
 }
 
 TEST(Inserter, ShowUnitMeterSqDouble) {
@@ -64,7 +65,7 @@ TEST(Inserter, ShowUnitMeterSqDouble) {
 
    std::stringstream strm;
    strm << SOU::units << m3 << ' ' << 44.6666;
-   EXPECT_EQ(strm.str(), std::string("10.11 meter^2 44.6666"));
+   EXPECT_EQ(strm.str(), std::string_view("10.11 meter^2 44.6666"));
 }
 
 TEST(Inserter, ShowDimMeterSqCstring) {
@@ -72,7 +73,7 @@ TEST(Inserter, ShowDimMeterSqCstring) {
 
    std::stringstream strm;
    strm << SOU::dimension << m3 << ' ' << "44.6666";
-   EXPECT_EQ(strm.str(), std::string("10.11 [L]^2 44.6666"));
+   EXPECT_EQ(strm.str(), std::string_view("10.11 [L]^2 44.6666"));
 }
 
 TEST(Inserter, ShowDimMeterSqString) {
@@ -80,8 +81,23 @@ TEST(Inserter, ShowDimMeterSqString) {
 
    std::stringstream strm;
    strm << SOU::dimension << m3 << ' ' << std::string("44.6666");
-   EXPECT_EQ(strm.str(), std::string("10.11 [L]^2 44.6666"));
+   EXPECT_EQ(strm.str(), std::string_view("10.11 [L]^2 44.6666"));
 }
+
+TEST(Inserter, ShowDimCubeSec) {
+   t_CubedPerSec mps = 1967.09;
+   std::stringstream strm;
+   strm << SOU::dimension << mps;
+   ASSERT_EQ(strm.str(), std::string_view("1967.09 [L]^3/[T]"));
+}
+TEST(Inserter, ShowUnitCubeSec) {
+   t_CubedPerSec mps = 1967.09;
+   std::stringstream strm;
+   strm << SOU::units << mps;
+   ASSERT_EQ(strm.str(), std::string_view("1967.09 meter^3*second^(-1)"));
+}
+
+
 // Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
