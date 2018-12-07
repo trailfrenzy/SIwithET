@@ -40,7 +40,7 @@ TEST(TableIITest, TestNewton)
 
 	t_n const N = acc * mass;
 	EXPECT_DOUBLE_EQ(49.05, N.amount());
-	EXPECT_EQ(std::string("meter·second^-2·kilogram"), SOU::WhatAmI(N));
+	EXPECT_EQ(std::string("meter*second^-2*kilogram"), SOU::WhatAmI(N));
 	//std::cout << SI::WhatAmI(N);
 }
 

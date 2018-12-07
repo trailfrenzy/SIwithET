@@ -29,11 +29,12 @@ namespace SystemOfUnits
          if( DIM ) // value known at compile time
          {
             ret << TYPE::str();
-			if (DIM != 1) {
-				ret << '^';
-				ret << DIM;
-			}
-            ret << '·';
+   			if (DIM != 1) 
+            {
+				   ret << '^';
+				   ret << DIM;
+			   }
+            ret << '*';
          }
       }
    }
