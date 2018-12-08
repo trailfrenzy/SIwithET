@@ -88,7 +88,7 @@ namespace SystemOfUnits /// covers the basics of the system
 
       /** returns the scalar value of the object
         * @return the scalar value of the type. */
-      constexpr double amount()const { return m_amount; }
+      constexpr auto amount()const { return m_amount; }
 
       /** comparison operator
        * @param unitType on the left hand side
@@ -223,6 +223,11 @@ namespace SystemOfUnits /// covers the basics of the system
          return unitType( lf.m_amount - rt.m_amount);
       }
 
+      /** stream inserter operator
+        @param output stream which may be any type (i.e. wchar_t or char_t)
+        @param unitType The value inserted into the stream.
+        @return The same output stream which was passed as a input parameter.
+      */
       template< typename TOUT> 
       friend TOUT &operator<<(TOUT &out, unitType const &val)
       {
