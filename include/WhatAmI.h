@@ -95,24 +95,23 @@ namespace SystemOfUnits
          typedef typename SystemOfUnits::t_BaseDim< typename t_UNIT::L, t_UNIT::iL > LEN;
       };
  
-      template< typename T, int D> struct t_SingleDim
+      template< typename T, int D, typename char_type = char > struct t_SingleDim
       {
          using t_BaseUnit = T;
          enum { DIM = D, CHAR = t_BaseUnit::sym };
+         using string = typename std::basic_string<char_type>;
 
-         static std::string c_str()
+         static auto c_str() -> string
          {
-            std::string str;
+            string str;
             if (CHAR == SOLIDUS::sym) str = CHAR;
             else if (DIM == 0) {} //return "";
             else if (DIM == 1 || DIM == -1) {
                str = { '[', CHAR ,']' };
-               //return str;
             }
             else {
                enum { absDIM = (DIM < 0) ? -1 * DIM : DIM };
                str = { '[', CHAR, ']', '^', '0' + absDIM };
-               //return str;
             }
             return str;
          }
