@@ -479,7 +479,7 @@ namespace SystemOfUnits
 
 /// function is used to impliment the stream manipulator SOU::UnitType dimensions.  
 template< class TOUT >
-inline auto operator<<(TOUT & out, SOU::ShowDim_t<TOUT>* (*)() ) -> SOU::ShowDim_t<TOUT>
+inline auto operator<<(TOUT & out, SOU::ShowDim_t<TOUT>* (*)() ) // -> SOU::ShowDim_t<TOUT>
 {
    return SOU::ShowDim_t<TOUT>(out);
 }
