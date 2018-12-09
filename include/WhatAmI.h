@@ -76,7 +76,7 @@ namespace SystemOfUnits
 	   using t_bufPair = std::pair< std::ostringstream, std::ostringstream >;
 	   enum { THETA = 233 }; // from www.asciitable.com
 
-	   template < char C, int T > inline t_bufPair& OneDim(t_bufPair &buf)
+	   template < char C, int T, typename T_BufPair = t_bufPair > inline t_bufPair& OneDim(T_BufPair &buf)
 	   {
 		   if (T > 0) {
 			   buf.first << '[' << C << ']';
