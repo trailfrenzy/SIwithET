@@ -463,7 +463,8 @@ namespace SystemOfUnits
          >
          ShowUnits_t& operator<<(const SOU::unitType<L, iL, t, it, M, iM, T, iT, Q, iQ> &unit)
       {
-         ref << unit << ' ' << SOU::WhatAmI(unit);
+         using t_char = typename TOUT::char_type;  // will not compile if TOUT does not have char_type.
+         ref << unit << ' ' << SOU::UnitName<t_char>(unit);
          return *this;
       }
 

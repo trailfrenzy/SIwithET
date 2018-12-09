@@ -48,10 +48,11 @@ namespace SystemOfUnits
    /// @prama SystemOfUnits::unitType
    /// @return std::string
    /// @note future work is to remove the blank space after each string.
-   template< typename T >
-   inline std::string WhatAmI( T const & )
+   template< typename char_type, typename T >
+   inline auto UnitName( T const & )
    {
-      std::ostringstream buf;
+      std::basic_ostringstream<char_type> buf;
+
       // use a template map to sort these later
       helpers::printAtom< T::Length, T::eL >( buf );
       helpers::printAtom< T::Time,   T::et >( buf );
@@ -60,6 +61,11 @@ namespace SystemOfUnits
       helpers::printAtom< T::Charge, T::eQ >( buf );
 
       return buf.str().erase(buf.str().size() -1 ); // removes the last space char in the buffer
+   }
+
+   template< typename T > inline std::string WhatAmI(T const &val) {
+      using t_char = std::ostringstream::char_type;
+      return UnitName<t_char>(val);
    }
 
    /// If user pushes a double into the template.
