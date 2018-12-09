@@ -228,8 +228,7 @@ namespace SystemOfUnits /// covers the basics of the system
         @param unitType The value inserted into the stream.
         @return The same output stream which was passed as a input parameter.
       */
-      template< typename TOUT> 
-      friend TOUT &operator<<(TOUT &out, unitType const &val)
+      template< typename TOUT> friend TOUT &operator<<(TOUT &out, unitType const &val)
       {
          out << val.m_amount;
          return out;
