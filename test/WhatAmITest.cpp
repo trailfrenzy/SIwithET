@@ -51,6 +51,21 @@ TEST(WhatAmITest, TestWithOneDim)
 	EXPECT_TRUE(true);
 }
 
+TEST(UnitNameWchar, Basic)
+{
+   Metric::t_meter const meter(1.34578f);
+   EXPECT_EQ(std::wstring(L"meter"), SOU::UnitName<wchar_t>(meter));
+
+   Metric::t_second sec(58903.3);
+   EXPECT_EQ(std::wstring(L"second"), SOU::UnitName<wchar_t>(sec));
+
+   Metric::t_velocity vel(81.5);
+   EXPECT_EQ(std::wstring_view(L"meter*second^(-1)"), SOU::UnitName<wchar_t>(vel));
+
+   Metric::t_gramPsec massFlow(3.895);
+   EXPECT_EQ(std::wstring_view(L"second^(-1)*gram"), SOU::UnitName<wchar_t>(massFlow));
+}
+
 /// function template is used by TestWithTwoDim()
 /// @see TestWithTwoDim()
 template< int SIZE > void MakeDimTest()
