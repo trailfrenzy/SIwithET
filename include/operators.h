@@ -424,7 +424,10 @@ namespace SystemOfUnits
          >
          ShowDim_t& operator<<(const SOU::unitType<L, iL, t, it, M, iM, T, iT, Q, iQ> &unit)
       {
-         ref << unit << ' ' << Diminsion(unit);
+         using t_unit = SOU::unitType<L, iL, t, it, M, iM, T, iT, Q, iQ>;
+         using t_char = typename TOUT::char_type;  // will not compile if TOUT does not have char_type.
+         ref << unit << ' ' 
+            << Diminsion<t_unit, t_char>(unit);
          return *this;
       }
 
