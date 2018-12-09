@@ -156,11 +156,12 @@ namespace SystemOfUnits
       return retStr;
    };
 
-   template< typename T > inline std::string Diminsion(T const &)  // Θ
+   template< typename T, typename char_type = char > 
+   inline auto Diminsion(T const &) -> std::basic_string<char_type>
    {
       if (!T::eL && !T::eM && !T::et && !T::eT && !T::eQ) return {}; // no dim, bale out fast!
 
-	   helpers::t_bufPair buf;
+      std::pair< std::basic_ostringstream<char_type>, std::basic_ostringstream<char_type> > buf;
 	   
 	   using namespace helpers;
 	   if( T::eL) OneDim<T::Length::sym, T::eL >(buf);
@@ -169,7 +170,7 @@ namespace SystemOfUnits
 	   if(T::eT) OneDim<T::Tempeture::sym, T::eT >(buf);
 	   if(T::eQ) OneDim<T::Charge::sym, T::eQ >(buf);
 
-	   std::ostringstream out;
+	   std::basic_ostringstream<char_type> out;
 
 	   if (buf.first.tellp() != std::streampos(0) ) out << buf.first.str();
 	   else out << '1';
