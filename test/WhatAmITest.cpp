@@ -66,6 +66,20 @@ TEST(UnitNameWchar, Basic)
    EXPECT_EQ(std::wstring_view(L"second^(-1)*gram"), SOU::UnitName<wchar_t>(massFlow));
 }
 
+TEST(UnitNameWchar, Dim) {
+   Metric::t_meter const meter(1.34578f);
+   EXPECT_EQ(std::wstring(L"[L]"), SOU::t_Diminsion<wchar_t>(meter));
+
+   Metric::t_second sec(58903.3);
+   EXPECT_EQ(std::wstring(L"[T]"), SOU::t_Diminsion<wchar_t>(sec));
+
+   Metric::t_velocity vel(81.5);
+   EXPECT_EQ(std::wstring_view(L"[L]/[T]"), SOU::t_Diminsion<wchar_t>(vel));
+
+   Metric::t_gramPsec massFlow(3.895);
+   EXPECT_EQ(std::wstring_view(L"[M]/[T]"), SOU::t_Diminsion<wchar_t>(massFlow));
+}
+
 /// function template is used by TestWithTwoDim()
 /// @see TestWithTwoDim()
 template< int SIZE > void MakeDimTest()
