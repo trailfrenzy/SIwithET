@@ -7,9 +7,10 @@ namespace SystemOfUnits
 {
    namespace Temperature  // Tempeture
    {
-      enum { THETA = 233 }; // from www.asciitable.com
+      //enum { THETA = 233 }; // from www.asciitable.com
+      constexpr char THETA = 233; // 'Ø';//L'\u0233'; 
 
-      using TEMPERATURE = helpers::T_Symbol<char(THETA) >;
+      using TEMPERATURE = helpers::T_Symbol< THETA >;
       struct kelvin : TEMPERATURE
       {
          enum { IsBase = true }; /// Lets using classes know if class is used as a base.

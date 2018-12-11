@@ -1,3 +1,4 @@
+// file contains tests for tempeture which is different from other dimensions in its unique conversions it does.
 #include <gtest/gtest.h>
 #include "Tempeture.h"
 #include "MetricTypes.h"
@@ -50,10 +51,21 @@ TEST(Temerature, CtoF) {
 }
 TEST(Diminsion, TEMPERATURE ) {
 	t_Cel C{ 100.0 };
-	EXPECT_EQ(SOU::WhatAmI(C), "°C");
-	std::string temp{ '[' };
-	temp += char(SOU::helpers::THETA);
-	temp += ']';
+	EXPECT_EQ(SOU::WhatAmI(C), "°C") << "May need to comeback to see why the dot is not displayed";
 
-	EXPECT_EQ(SOU::Diminsion(C), temp );
+   constexpr char const *cTHETA = u8"\u0233";
+   std::wcout << "THEATA is " << cTHETA << '\n';
+   std::wcout << "THEATA is " << SOU::helpers::THETA << '\n';
+
+   std::string const theta{ '[', char(SOU::helpers::THETA),  ']' };
+	EXPECT_EQ( SOU::Diminsion(C), theta );
 }
+
+// Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
+// curt.leslie.lewis.martin@gmail.com
+//
+// Permission to use, copy, modify, and distribute this software for any
+// purpose is hereby granted without fee, provided that this copyright and
+// permissions notice appear in all copies and derivatives.
+//
+// This software is provided "as is" without express or implied warranty.
