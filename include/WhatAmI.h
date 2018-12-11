@@ -76,7 +76,7 @@ namespace SystemOfUnits
 	   using t_bufPair = std::pair< std::ostringstream, std::ostringstream >;
 	   enum { THETA = 233 }; // from www.asciitable.com
 
-	   template < char C, int T, typename T_BufPair > inline t_bufPair& OneDim(T_BufPair &buf)
+	   template < char C, int T, typename T_BufPair > inline auto& OneDim(T_BufPair &buf)
 	   {
 		   if (T > 0) {
 			   buf.first << '[' << C << ']';
@@ -156,8 +156,8 @@ namespace SystemOfUnits
       return retStr;
    };
 
-   template< typename T, typename char_type = char > 
-   inline auto Diminsion(T const &) -> std::basic_string<char_type>
+   template< typename char_type, typename T >
+   inline auto t_Diminsion(T const &) -> std::basic_string<char_type>
    {
       if (!T::eL && !T::eM && !T::et && !T::eT && !T::eQ) return {}; // no dim, bale out fast!
 
@@ -179,6 +179,12 @@ namespace SystemOfUnits
 
 	   return out.str();
    }
+
+   template<typename T > auto Diminsion(T const &val )
+   {
+      return t_Diminsion<char>(val);
+   }
+
 }
 // Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
