@@ -5,11 +5,14 @@ namespace SystemOfUnits {
    namespace helpers {
          template<char C > struct T_Symbol 
          { 
-            enum { sym = C };
-            constexpr static inline char const * Symstr()
+            enum { sym = C };  /// used on the input of template OneDim<>
+
+            // ideally the function is used by the sorting template and its output.  Currently not used.
+            template<typename t_char = char>
+            constexpr static inline auto Symstr() -> t_char const *
             {
                // creation of a static character string array.
-               constexpr char static str[] = { '[', sym ,']', '\0' };
+               constexpr t_char static str[] = { '[', sym ,']', '\0' };
                return str;
             }
          };

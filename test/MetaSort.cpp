@@ -39,6 +39,12 @@ using Len1 = SystemOfUnits::helpers::t_SingleDim< LENGTH, 1 >;
 TEST(MetaList, PrintSymbol) {
    EXPECT_EQ(std::string("[L]"), LENGTH::Symstr() ) << "Ensure base print works";
    EXPECT_EQ(std::string("[M]"), MASS::Symstr());
+   //EXPECT_STREQ
+}
+
+TEST(MetaList, PrintSymbolWchar) {
+   EXPECT_EQ(std::wstring(L"[L]"), LENGTH::Symstr<wchar_t>() ) << "Ensure base print works";
+   EXPECT_EQ(std::wstring(L"[M]"), MASS::Symstr<wchar_t>());
 }
 
 TEST( MetaList, PrintBaseDim) {
