@@ -86,7 +86,7 @@ namespace SystemOfUnits /// covers the basics of the system
 
      unitType& operator=(double m) = delete; /// prevent assigning scalar values to an existing unit but still allows assnment to a new type.
 
-      /** returns the scalar value of the object
+      /** returns the scalar value of the object.  Would like to eliminate this method but is needed for testing currently.
         * @return the scalar value of the type. */
       constexpr auto amount()const { return m_amount; }
 
