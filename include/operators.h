@@ -138,9 +138,6 @@ namespace SystemOfUnits
             }
          };
 
-      protected:
-         //typename typedef A_Trait<T1,T2> R1; /// the type of the left side of the arg
-         //typename typedef A_Trait<T2,T1> R2; /// the type of the right side of the arg
       public:
 		  using R1 = A_Trait<T1, T2>; /// the type of the left side of the arg
 		  using R2 = A_Trait<T2, T1>; /// the type of the right side of the arg
@@ -161,8 +158,8 @@ namespace SystemOfUnits
 
 		  //friend constexpr bool operator==(const enum ALLTYPES_THE_SAME lf, const bool rt) { return lf::val == rt;  } // used static_cast<> instead
 
-         // if the length as same type ie meter to meter, not meter to kilometer
-		 // enum value will be true if the two types are the same.
+         // Below is a compile time check to compare if the length as same type ie meter to meter, not meter to kilometer
+		   // enum value is true if the two types are the same.
          enum{ IsLengthSame = is_same< typename R1::Length, typename R2::Length >::value };
          enum{ IsTimeSame   = is_same< typename R1::Time,   typename R2::Time   >::value };
          enum{ IsMassSame   = is_same< typename R1::Mass,   typename R2::Mass   >::value };
@@ -180,7 +177,7 @@ namespace SystemOfUnits
          /// need to know if BOTH the dimensions in the two operands are base
          enum{ AreChargeBase  = R1::Charge::IsBase && R2::Charge::IsBase };
 
-		 /* what are the 4 proposed traits going to be used for */
+		 /* what are the 4 proposed traits used for */
          /// the proposed length type of the result
          typename typedef IF //boost::mpl::if_c
             < R1::eL == 0 || R2::eL == 0
