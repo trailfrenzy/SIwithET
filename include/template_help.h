@@ -3,8 +3,8 @@
 #ifndef UNIT_TYPE_TEMPLATE_HELPER_INCLUDE_H_
 #define UNIT_TYPE_TEMPLATE_HELPER_INCLUDE_H_
 #pragma warning( disable : 4091 )  
-#include <tuple>
-#include <utility> // for tuple_sort
+//#include <tuple>
+//#include <utility> // for tuple_sort
 
 namespace SystemOfUnits
 {
@@ -44,7 +44,8 @@ namespace SystemOfUnits
 			  using t_AtomicType = T;
 		  };
 
-		  template <class T, class U>
+#ifdef DO_NOT_USE_YET
+        template <class T, class U>
 		  struct descending : std::conditional_t<( U::eDIM < T::eDIM ), std::true_type, std::false_type>
 		  {};
 
@@ -129,20 +130,22 @@ namespace SystemOfUnits
 		  };
 
 		  struct NullType { enum { eDIM = -99999 }; };
-	  }
+#endif
 
-	  typedef double t_meter;
-	  typedef double t_sec;
-	  typedef double t_gram;
-	  using sortList = TL::Typelist< TL::Atom< 3, t_meter>, TL::NullType >;
+     }
+
+	  //typedef double t_meter;
+	  //typedef double t_sec;
+	  //typedef double t_gram;
+	  //using sortList = TL::Typelist< TL::Atom< 3, t_meter>, TL::NullType >;
 	  //using myList = TL::Typelist < TL::Atom< -1, t_meter >, TL::Typelist< Atom< 2, t_sec >, TL::TypeList< Atom< 3, t_gram >, TL::NullType > > >;
 
 	  /// less-than needed for compile time sort
-	  template< class TList > struct Sort
-	  {
+	  //template< class TList > struct Sort
+	  //{
 
 
-	  };
+	  //};
 }
 
 #endif
