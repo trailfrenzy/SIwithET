@@ -192,9 +192,19 @@ typedef t_Base::MakeDim<3,0,0,0,0>::type t_MeterCubed;
 typedef ::testing::Types< Metric::t_meter, Metric::t_metersecond, Metric::t_second, Metric::t_velocity, Metric::t_gramPsec, t_MeterSq, t_MeterCubed > MyTypes;
 INSTANTIATE_TYPED_TEST_CASE_P(My, SITest, MyTypes);
 
-TEST(NoUnit, Value) {
+TEST(NoUnit, ValueZero ) {
    SOU::tNoUnit val( 0.0 );
-   EXPECT_EQ( val.m_amount, 0.0);
+   EXPECT_EQ( val.amount(), 0.0);
+}
+
+TEST(NoUnit, Value) {
+   SOU::tNoUnit val(6.0);
+   EXPECT_EQ(val.amount(), 6.0);
+}
+
+TEST(NoUnit, Constexpr_gram) {
+   constexpr t_MeterSq const val(7.0);
+   EXPECT_EQ(val.amount(), 7.0);
 }
 
 TEST(Inserter, NoUnit) {
