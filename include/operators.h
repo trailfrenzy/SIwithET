@@ -493,14 +493,14 @@ inline auto operator<<(TOUT & out, SOU::ShowUnits_t<TOUT>* (*)()) //-> SOU::Show
 
 /// template function which is multiplication operator of two different operands
 template < typename R1, typename R2 >
-inline typename SOU::operators::Mul_Result<R1,R2>::TResult operator*( R1 const &r1, R2 const &r2 )
+inline auto operator*( R1 const &r1, R2 const &r2 )
 {
    return SOU::operators::Mul_Result<R1,R2>(r1,r2).result();
 }
 
 /// template function which is divisional operator of two different operands
 template< typename R1, typename R2 >
-inline typename SOU::operators::Div_Result<R1,R2>::TResult operator/( R1 const &r1, R2 const &r2 )
+inline auto operator/( R1 const &r1, R2 const &r2 )
 {
    return SOU::operators::Div_Result<R1,R2>(r1,r2).result();
 }
