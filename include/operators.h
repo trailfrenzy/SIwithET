@@ -262,7 +262,6 @@ namespace SystemOfUnits
 		 //friend constexpr bool operator==(const Dim lf, const int rt) { return lf == rt;  }
 		 
          /// informs us during the compile process that the result has no dimensions.
-		 //enum { bbb = (Dim::eL == 0) };
          enum class isNoDim : bool { val = (Dim::eL==Dim::Z) && (Dim::et== Dim::Z) && (Dim::eM== Dim::Z) && (Dim::eQ== Dim::Z) && (Dim::eT== Dim::Z) };
 
          typename typedef IF< Dim::eL== Dim::Z, typename R1::Length,   typename IF<R1::eL!=0, typename R1::Length, typename R2::Length>::RET >::RET Length;
@@ -282,7 +281,7 @@ namespace SystemOfUnits
 
       public:
          /// if not dimensions then the return type is double
-         typename typedef  IF< (bool)isNoDim::val, double, typename TBeforeResult >::RET TResult;
+         using TResult = typename IF<static_cast<bool>(isNoDim::val), double, typename TBeforeResult >::RET;
 
          /// constructor initializes references to the operands.
          /// @param R1::ArgRef r1 is the right hand side.
@@ -290,12 +289,12 @@ namespace SystemOfUnits
          Mul_Result( typename R1::ArgRef r1, typename R2::ArgRef r2 ) : m_r1(r1), m_r2(r2){}
 
          /// computes when requested
-         /// @return TResult which is found at compile time
-         typename TResult result() const
+         /// @return TResult which is found at compile time which is a double or UnitType<>
+         typename auto result() const
          {
             using namespace SOU;
 
-            // line will crash if not the same compatible types
+            // line will compiler error if not the same compatible types
             STATIC_ASSERTION_FAILURE< static_cast<bool>(t_base::ALLTYPES_THE_SAME::val) >;
             // temperature is not supported in more than 1 dimension
             STATIC_ASSERTION_FAILURE< static_cast<bool>( (int)Dim::eT == 0 || (int)Dim::eT == 1 || (int)Dim::eT == -1) >;
@@ -348,8 +347,7 @@ namespace SystemOfUnits
             > ;
          /// enum is used so let user know that the types did not match
          /// all results are based on the first operands type, if NoDim then base on the second.
-		 typename typedef IF< static_cast<bool>(isNoDim::val), double, typename TBeforeResult >::RET TResult;
-		 // TResult = IF<isNonDim, double, typename TBeforeResult >::RET;
+         using TResult = typename IF<static_cast<bool>(isNoDim::val), double, typename TBeforeResult >::RET;
 
          /// constructor.
          /// @param R1::ArgRef r1 is the right hand side.
@@ -358,9 +356,9 @@ namespace SystemOfUnits
 
          /// computes when requested
          /// @return TResult which is found at compile time
-         typename TResult result() const
+         typename auto result() const
          {
-            // line will crash if not the same compatible types
+            // line will compiler error if not the same compatible types
             STATIC_ASSERTION_FAILURE< static_cast<bool>(t_base::ALLTYPES_THE_SAME::val) >;
             STATIC_ASSERTION_FAILURE< static_cast<bool>(Dim::eT == Dim::Z || (int)Dim::eT == 1 || (int)Dim::eT == -1) >;
 
