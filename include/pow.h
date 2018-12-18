@@ -11,8 +11,6 @@
 #define POWER_TEMPLATE_H_INCLUDE
 #pragma once
 
-/// template used to find the produce the power at compile time.
-//#include "boost/mpl/if.hpp"
 #include "template_help.h"
 
 namespace SystemOfUnits
@@ -29,7 +27,7 @@ namespace SystemOfUnits
          /// specialized version when the power is 1.
          template<> struct thePower<1>
          {
-            static double toBase()
+            constexpr static double toBase()
             {
                return T::toBase();
             }
@@ -38,7 +36,7 @@ namespace SystemOfUnits
          /// specialized class when the power is 0.
          template<> struct thePower<0>
          {
-            static double toBase()
+            constexpr static double toBase()
             {
                return 1.0;
             }
@@ -47,7 +45,7 @@ namespace SystemOfUnits
          /// specialized class when the power is -1.
          template<> struct thePower<-1>
          {
-            static double toBase()
+            constexpr static double toBase()
             {
                return 1.0 / T::toBase();
             }
@@ -56,7 +54,7 @@ namespace SystemOfUnits
          /// the generic version the struct. must be after the specialized versions.
          template< int E > struct thePower
          {
-            static double toBase()
+            constexpr static double toBase()
             {
                // it is safe to assume that E will be greater than +1 or 
                // less than -1 and not between
@@ -69,7 +67,7 @@ namespace SystemOfUnits
    }
 } // end of namespace SI
 
-// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any
