@@ -361,23 +361,27 @@ TYPED_TEST_P(SI_Multiply, Test2)
 /// Test operator*() with scalar values.
 TYPED_TEST_P(SI_Multiply, TestWithScaler)
 {
-	using TAG = SI_Multiply<TypeParam >;
+   using TAG = SI_Multiply<TypeParam >;
 
-	EXPECT_TRUE(12.0 == *TAG::m_1 * 4.0);
-	EXPECT_TRUE(TAG::t_1(12.0) == *TAG::m_1 * 4.0);
-	EXPECT_TRUE(TAG::t_1(12.0) == 4.0 * *TAG::m_1);
+   EXPECT_TRUE(12.0 == *TAG::m_1 * 4.0);
+   EXPECT_TRUE(TAG::t_1(12.0) == *TAG::m_1 * 4.0);
+   EXPECT_TRUE(TAG::t_1(12.0) == 4.0 * *TAG::m_1);
 
-	EXPECT_TRUE(16.0 == *TAG::m_2 * 4.0);
-	EXPECT_TRUE(TAG::t_2(16.0) == *TAG::m_2 * 4.0);
-	EXPECT_TRUE(TAG::t_2(16.0) == 4.0 * *TAG::m_2);
+   EXPECT_TRUE(16.0 == *TAG::m_2 * 4.0);
+   EXPECT_TRUE(TAG::t_2(16.0) == *TAG::m_2 * 4.0);
+   EXPECT_TRUE(TAG::t_2(16.0) == 4.0 * *TAG::m_2);
 
-	EXPECT_TRUE(48.0 == *TAG::m_3 * 4.0);
-	EXPECT_TRUE(TAG::t_3(48.0) == *TAG::m_3 * 4.0);
-	EXPECT_TRUE(TAG::t_3(48.0) == *TAG::m_3 * 2.0 * 2.0) << "with some chaining";
-	EXPECT_TRUE(TAG::t_3(48.0) == 2.0 * *TAG::m_3 * 2.0) << "with some chaining";
-	EXPECT_TRUE(TAG::t_3(48.0) == 2.0 * 2.0 * *TAG::m_3) << "with some chaining";
+   EXPECT_TRUE(48.0 == *TAG::m_3 * 4.0);
+   EXPECT_TRUE(TAG::t_3(48.0) == *TAG::m_3 * 4.0);
+   EXPECT_TRUE(TAG::t_3(48.0) == *TAG::m_3 * 2.0 * 2.0) << "with some chaining";
+   EXPECT_TRUE(TAG::t_3(48.0) == 2.0 * *TAG::m_3 * 2.0) << "with some chaining";
+   EXPECT_TRUE(TAG::t_3(48.0) == 2.0 * 2.0 * *TAG::m_3) << "with some chaining";
+}
 
-	/// Test with integers
+TYPED_TEST_P(SI_Multiply, ScalerInteter )
+{
+   using TAG = SI_Multiply<TypeParam >;
+   /// Test with integers
 	EXPECT_TRUE(12 == *TAG::m_1 * 4) << SOU::WhatAmI(*TAG::m_1);
 	EXPECT_TRUE(TAG::t_1(12) == *TAG::m_1 * 4);
 	EXPECT_TRUE(TAG::t_1(12) == 4 * *TAG::m_1);
@@ -414,6 +418,18 @@ TYPED_TEST_P(SI_Multiply, TestMultipleAssign)
 
 	*TAG::m_3 *= 0.5;
 	EXPECT_DOUBLE_EQ(12.0, TAG::m_3->amount());
+
+}
+
+/// test operator*=()
+TYPED_TEST_P(SI_Multiply, TestMultipleAssignInt)
+{
+   using TAG = SI_Multiply<TypeParam >;
+   *TAG::m_3 *= 2;
+   EXPECT_DOUBLE_EQ(24.0, TAG::m_3->amount());
+
+   *TAG::m_3 *= 0.5f;
+   EXPECT_DOUBLE_EQ(12.0, TAG::m_3->amount());
 
 }
 
@@ -496,7 +512,7 @@ TYPED_TEST_P(SI_Multiply, TestMultipleLong)
 }
 
 REGISTER_TYPED_TEST_CASE_P(SI_Multiply
-	, NoTestHere, TestMul_Result, Test2, TestWithScaler, TestMultipleAssign, TestChainWithScaler, TestMultipleInt, TestMultipleUnsigned, TestMultipleFloat, TestMultipleShort, TestMultipleLong);
+	, NoTestHere, TestMul_Result, Test2, TestWithScaler, ScalerInteter, TestMultipleAssign, TestMultipleAssignInt, TestChainWithScaler, TestMultipleInt, TestMultipleUnsigned, TestMultipleFloat, TestMultipleShort, TestMultipleLong);
 
 typedef ::testing::Types< ARG<1, 1, 2>, ARG< 2, 0, 2>, ARG< 2, 1, 3>, ARG<2, 3, 5>, ARG<-3, 5, 2>, ARG<3, -5, -2> > MyTypes;
 INSTANTIATE_TYPED_TEST_CASE_P(My, SI_Multiply, MyTypes);
@@ -515,7 +531,7 @@ TEST(NoUnit, Constructor) {
 	auto val = Meter * SOU::tNoUnit(9.0);
 	EXPECT_DOUBLE_EQ(val.amount(), 18.00);
 }
-// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any
