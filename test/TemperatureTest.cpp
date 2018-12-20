@@ -28,27 +28,30 @@ TEST(Temerature, ToFromBase) {
 	EXPECT_DOUBLE_EQ(out, 273.15) << "worked but the one below doesn't";
 }
 
-TEST(Temperature, StartKtoC) {
+TEST(Temperature, StartKtoC_conversion_cast) {
 	t_Kelvin K(0.0);
 	t_Cel C = SOU::conversion_cast<t_Cel>(K);
 	EXPECT_NEAR(C.amount(), -273.15, 0.01) << "is it close?";
 }
-TEST(Temperature, StartCtoK) {
+TEST(Temperature, StartCtoK_conversion_cast) {
 	t_Cel C(0.0);
 	EXPECT_DOUBLE_EQ(C.amount(), 0.0);
 	t_Kelvin K = SOU::conversion_cast<t_Kelvin>(C);
 	EXPECT_NEAR(K.amount(), 273.15, 0.01);
 }
-TEST(Temerature, FtoC) {
+TEST(Temerature, FtoC_conversion_cast) {
 	t_Far F(32.0);
 	t_Cel C = SOU::conversion_cast<t_Cel>(F);
 	EXPECT_NEAR(C.amount(), (0.0), 0.01);
 }
-TEST(Temerature, CtoF) {
+TEST(Temerature, CtoF_conversion_cast) {
 	t_Cel C{ 100.0 };
 	t_Far F = SOU::conversion_cast<t_Far>(C);
 	EXPECT_NEAR(F.amount(), 212.0, 0.01);
 }
+
+
+
 TEST(Diminsion, TEMPERATURE ) {
 	t_Cel C{ 100.0 };
 	EXPECT_EQ(SOU::WhatAmI(C), "°C") << "May need to comeback to see why the dot is not displayed";
