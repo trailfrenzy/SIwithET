@@ -20,10 +20,12 @@
 
 namespace SystemOfUnits
 {
-   /// function returns true if both inputs have the same dimensions, else will crash.
+   /// function returns true if both inputs have the same dimensions, else will crash.  Was in conversion_cast<> but pulled it out.
    template< typename LF, typename RT >
    constexpr bool dimensions_same()
    {
+      /** Used in the static assertion to ensure that all types are of the same type.
+      You would not want to compare meter^2 from feet^3.  The dimensions are not the same. */
       static_assert(LF::eL == RT::eL, "Length not the same");
       static_assert(LF::et == RT::et, "Time not the same");
       static_assert(LF::eM == RT::eM, "Mass not the same");
@@ -39,22 +41,13 @@ namespace SystemOfUnits
 	*/
 	template< typename OUT, typename IN > OUT conversion_cast(IN const &in)
 	{
-		/** Used in the static assertion to ensure that all types are of the same type.
-			You would not want to compare meter^2 from feet^3.  The dimensions are not the same. */
-		//enum { eALLDIMS_THE_SAME = IN::eL == OUT::eL && IN::et == OUT::et && IN::eM == OUT::eM && IN::eT == OUT::eT && IN::eQ == OUT::eQ };
-      static_assert(IN::eL == OUT::eL, "Length not the same");
-      static_assert(IN::et == OUT::et, "Time not the same");
-      static_assert(IN::eM == OUT::eM, "Mass not the same");
-      static_assert(IN::eT == OUT::eT, "Temp not the same");
-      static_assert(IN::eQ == OUT::eQ, "charge not the same");
+      dimensions_same< OUT, IN >();
 
 		/// Use the incoming types as the base types.
 		enum { eL = IN::eL, et = IN::et, eM = IN::eM, eT = IN::eT, eQ = IN::eQ };
 
-		//static_assert( eALLDIMS_THE_SAME, "Dimensions are not the same" );
-
 		// set the value to the incoming scaler before correcting the value
-		double out(in.amount());
+      double out{ in.amount() };
 
 		using namespace helpers;
 
@@ -91,10 +84,10 @@ namespace SystemOfUnits
 				* P< IN::Charge >::thePower<eQ>::toBase();
 		}
 		// during the return the constructor from a scalar value will be used.
-		return OUT(out);
+      return OUT{ out };
 	}
 }
-// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any
