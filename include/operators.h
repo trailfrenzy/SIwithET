@@ -286,11 +286,11 @@ namespace SystemOfUnits
          /// constructor initializes references to the operands.
          /// @param R1::ArgRef r1 is the right hand side.
          /// @param R2::ArgRef r2 is the left hand side.
-         Mul_Result( typename R1::ArgRef r1, typename R2::ArgRef r2 ) : m_r1(r1), m_r2(r2){}
+         constexpr Mul_Result( typename R1::ArgRef r1, typename R2::ArgRef r2 ) : m_r1(r1), m_r2(r2){}
 
          /// computes when requested
          /// @return TResult which is found at compile time which is a double or UnitType<>
-         typename auto result() const
+         constexpr typename auto result() const
          {
             using namespace SOU;
 
@@ -352,11 +352,11 @@ namespace SystemOfUnits
          /// constructor.
          /// @param R1::ArgRef r1 is the right hand side.
          /// @param R2::ArgRef r2 is the left hand side.
-         Div_Result( typename R1::ArgRef r1, typename R2::ArgRef r2 ) : m_r1(r1), m_r2(r2){}
+         constexpr Div_Result( typename R1::ArgRef r1, typename R2::ArgRef r2 ) : m_r1(r1), m_r2(r2){}
 
          /// computes when requested
          /// @return TResult which is found at compile time
-         typename auto result() const
+         constexpr typename auto result() const
          {
             // line will compiler error if not the same compatible types
             static_assert( static_cast<bool>(t_base::ALLTYPES_THE_SAME::val), "line will compiler error if not the same compatible types" );
