@@ -34,7 +34,6 @@ namespace SystemOfUnits
       return true;
    }
 
-
 	/** Template used to convert between different types that have the same dimensions.
 	@param IN in is what will be converted
 	@return OUT the new type
