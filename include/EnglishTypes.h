@@ -29,7 +29,7 @@ namespace English
    typedef SOU::unitType< AU::Mile, 1, AT::second,-1, AU::Slug, 0, K, 0, coulomb, 0 > t_mps; /// Miles per Second Type
    typedef SOU::unitType< AU::Mile, 1, AT::hour, -1, AU::Slug, 0, K, 0, coulomb, 0 > t_mph;/// Miles per Hour Type
 
-   typedef SOU::unitType< AU::Yard, 1, AT::hour, -1, AU::Slug, 0, K, 0, coulomb, 0 > t_yard; /// Yard Type
+   typedef SOU::unitType< AU::Yard, 1, AT::hour, 0, AU::Slug, 0, K, 0, coulomb, 0 > t_yard; /// Yard Type
 
 }
 #endif
