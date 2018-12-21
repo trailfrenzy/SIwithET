@@ -210,7 +210,7 @@ namespace SystemOfUnits /// covers the basics of the system
       */
       friend constexpr unitType operator+( unitType const &lf, unitType const &rt )
       {
-         return unitType( lf.amount() + rt.amount() );
+         return unitType( lf.m_amount + rt.m_amount );
       }
 
       /** difference operator
