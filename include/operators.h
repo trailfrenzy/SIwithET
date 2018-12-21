@@ -295,9 +295,9 @@ namespace SystemOfUnits
             using namespace SOU;
 
             // line will compiler error if not the same compatible types
-            STATIC_ASSERTION_FAILURE< static_cast<bool>(t_base::ALLTYPES_THE_SAME::val) >;
+            static_assert( static_cast<bool>(t_base::ALLTYPES_THE_SAME::val), "line will compiler error if not the same compatible types" );
             // temperature is not supported in more than 1 dimension
-            STATIC_ASSERTION_FAILURE< static_cast<bool>( (int)Dim::eT == 0 || (int)Dim::eT == 1 || (int)Dim::eT == -1) >;
+            static_assert( static_cast<bool>( (int)Dim::eT == 0 || (int)Dim::eT == 1 || (int)Dim::eT == -1), "temperature is not supported in more than 1 dimension" );
 
             return TResult
                ( m_r1.amount() 
@@ -359,8 +359,8 @@ namespace SystemOfUnits
          typename auto result() const
          {
             // line will compiler error if not the same compatible types
-            STATIC_ASSERTION_FAILURE< static_cast<bool>(t_base::ALLTYPES_THE_SAME::val) >;
-            STATIC_ASSERTION_FAILURE< static_cast<bool>(Dim::eT == Dim::Z || (int)Dim::eT == 1 || (int)Dim::eT == -1) >;
+            static_assert( static_cast<bool>(t_base::ALLTYPES_THE_SAME::val), "line will compiler error if not the same compatible types" );
+            static_assert(static_cast<bool>(Dim::eT == Dim::Z || (int)Dim::eT == 1 || (int)Dim::eT == -1) ,"T must not be greater abs(1)");
 
             return TResult
                ( 
