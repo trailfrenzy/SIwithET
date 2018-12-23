@@ -97,6 +97,16 @@ TYPED_TEST_P(SITest, Addition)
 	EXPECT_TRUE(*TAG::m_1 == *TAG::m_4 + *TAG::m_4);
 	//CPPUNIT_ASSERT_DOUBLES_EQUAL( *m_1, *m_4 + *m_4, 0.00000001 ); 
 }
+TYPED_TEST_P(SITest, Addition_constexp) {
+   using TAG = SITest<TypeParam >;
+   using t_type = TAG::t_type;
+   constexpr t_type a = 2;
+   constexpr t_type b = 3.0;
+   constexpr auto c = a + b;
+   ASSERT_DOUBLE_EQ(c.amount(), 5.0);
+
+}
+
 TYPED_TEST_P(SITest, AdditionAssignment)
 {
 	using TAG = SITest<TypeParam >;
@@ -159,7 +169,7 @@ TYPED_TEST_P(SITest, isUnitType) {
 
 
 REGISTER_TYPED_TEST_CASE_P(SITest
-	, SizeOf, Assignment, NotEqual, LessThan, GreaterThan, Comparison, Addition, AdditionAssignment, Subtraction, SubtractionAssignment, Chaining, DestructorNoThrow, IsMovable, IsCopyable, isUnitType);
+	, SizeOf, Assignment, NotEqual, LessThan, GreaterThan, Comparison, Addition, Addition_constexp, AdditionAssignment, Subtraction, SubtractionAssignment, Chaining, DestructorNoThrow, IsMovable, IsCopyable, isUnitType);
 
 TEST(SITestSQ, Squaring)
 {
