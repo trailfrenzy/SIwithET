@@ -77,9 +77,9 @@ namespace SystemOfUnits
 #define MAKE_ATRAIT( XX ) template< typename T2 > struct A_Trait< XX, T2 >\
       {\
       /** Used as the argument for the operators, with the built in types it is a pass by value.  */\
-      typedef XX ArgRef;\
+      using ArgRef = const XX;\
       /** For the built in types, still need to use a SI unit type, but one that is dimension less */\
-      using ExprRef = tNoUnit; \
+      using ExprRef = const tNoUnit; \
       /** Keep the dimensions at zero */\
       enum { eL = 0, et = 0, eM = 0, eT=0, eQ=0 };\
       typedef typename T2::Length Length;\
@@ -246,8 +246,8 @@ namespace SystemOfUnits
       {
 		  using t_base = base< T1, T2 >;
 		  //using R1 = A_Trait<T1, T2>;
-         typename t_base::R1::ExprRef m_r1;    /// first operand reference
-         typename t_base::R2::ExprRef m_r2;    /// second operand reference
+         typename const t_base::R1::ExprRef m_r1;    /// first operand reference
+         typename const t_base::R2::ExprRef m_r2;    /// second operand reference
       public:
 		  using R1 = t_base::R1;
 		  using R2 = t_base::R2;
@@ -286,7 +286,7 @@ namespace SystemOfUnits
          /// constructor initializes references to the operands.
          /// @param R1::ArgRef r1 is the right hand side.
          /// @param R2::ArgRef r2 is the left hand side.
-         constexpr Mul_Result( typename R1::ArgRef r1, typename R2::ArgRef r2 ) : m_r1(r1), m_r2(r2){}
+         constexpr Mul_Result( typename const R1::ArgRef r1, typename const R2::ArgRef r2 ) : m_r1(r1), m_r2(r2){}
 
          /// computes when requested
          /// @return TResult which is found at compile time which is a double or UnitType<>
