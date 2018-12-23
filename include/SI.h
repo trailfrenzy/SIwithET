@@ -17,9 +17,9 @@ namespace SystemOfUnits /// covers the basics of the system
       /// Called by WhatAmI when creating the string describing the type.
       static char const * str() { return ""; }
       ///  Multiply by toBase() to get base value.
-      static double toBase() { return 1.0; }
+      constexpr static double toBase() { return 1.0; }
       /// Multiply by fromBase() to get diminsional value
-      static double fromBase() { return 1.0; }
+      constexpr static double fromBase() { return 1.0; }
       /// Typedef of the actual base
       typedef NoDim Base;
    };
@@ -284,7 +284,7 @@ namespace SystemOfUnits /// covers the basics of the system
    template< typename ARG > struct MakeFrom
    {
       /// inverse of fromBase()
-      static double toBase() { return ARG::fromBase(); }
+      constexpr static double toBase() { return ARG::fromBase(); }
    };
 } /// end of namespace SystemOfUnits
 
