@@ -184,8 +184,7 @@ typedef SOU::Time::AtomicUnit::second second;
 typedef Metric::AtomicUnit::gram gram;
 typedef SOU::MakeType< Meter, second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::coulomb > t_Base;
 //typedef SI::unitType< Meter, 1, second, 0, gram, 0 > t_Meter;
-//typedef t_Base::MakeDim<1,0,0,0,0>::type t_Meter;
-
+typedef t_Base::MakeDim<1,0,0,0,0>::type t_Meter;
 typedef t_Base::MakeDim<2,0,0,0,0>::type t_MeterSq;
 typedef t_Base::MakeDim<3,0,0,0,0>::type t_MeterCubed;
 
@@ -202,10 +201,12 @@ TEST(NoUnit, Value) {
    EXPECT_EQ(val.amount(), 6.0);
 }
 
-TEST(NoUnit, Constexpr_gram) {
+TEST(Constexpr, set) {
    constexpr t_MeterSq const val(7.0);
    EXPECT_EQ(val.amount(), 7.0);
 }
+
+// TODO: change ASSERT_DOUBLE_EQ() to handle comparison of two different types.
 
 TEST(Inserter, NoUnit) {
    SOU::tNoUnit val(9.78);

@@ -33,6 +33,8 @@ public:
 	typedef Metric::t_centimeter t_centimeter;
 };
 
+
+
    ///Tests whether the dimensions are correct.
    /// STATIC_ASSERTION_FAILURE will bust out during compile time.
    TEST_F(MultiplyFirst, TestAssignment )
@@ -519,18 +521,51 @@ INSTANTIATE_TYPED_TEST_CASE_P(My, SI_Multiply, MyTypes);
 using t_myArg = ARG<1, 1, 2>;
 //INSTANTIATE_TYPED_TEST_CASE_P(My, SI_Multiply, t_myArg );
 
-TEST(NoUnit, withMeter) {
+TEST( Multiply, NoUnit_Meter) {
 	SOU::tNoUnit myScaler = 9.0;
 	Metric::t_meter Meter = 2.0;
 	auto val = Meter * myScaler;
 	EXPECT_DOUBLE_EQ(val.amount(), 18.00);
 }
 
-TEST(NoUnit, Constructor) {
+TEST(Multiply, NoUnit_Const) {
 	Metric::t_meter Meter = 2.0;
 	auto val = Meter * SOU::tNoUnit(9.0);
 	EXPECT_DOUBLE_EQ(val.amount(), 18.00);
 }
+
+TEST(Multiply, Meter_double) {
+   Metric::t_meter M = 2.0;
+   auto val = M * 3;
+   ASSERT_DOUBLE_EQ(val.amount(), 6.0);
+   val = 3 * M;
+   ASSERT_DOUBLE_EQ(val.amount(), 6.0);
+}
+
+typedef Metric::AUMetric::MakeDim<1, 0, 0, 0, 0>::type t_Meter;
+typedef Metric::AUMetric::MakeDim<2, 0, 0, 0, 0>::type t_MeterSq;
+typedef Metric::AUMetric::MakeDim<3, 0, 0, 0, 0>::type t_MeterCubed;
+
+TEST(Multiply, Const) {
+   const t_Meter M1{ 2.0 };
+   t_Meter M2{ 3.0 };
+   auto mSq = M1 * M2;
+   ASSERT_DOUBLE_EQ(mSq.amount(), 6.0);
+   auto val = M2 * M1;
+   ASSERT_DOUBLE_EQ(val.amount(), 6.0);
+}
+
+TEST(Multiply, constexpr_Mul ) {
+   constexpr t_Meter m1{ 4.0 };
+   constexpr t_MeterSq mSq{ 8.0 };
+   constexpr t_MeterCubed meterCubed = m1 * mSq;
+   ASSERT_DOUBLE_EQ(meterCubed.amount(), 32.0) << "The inputs may be constexpr but the result many not";
+   constexpr auto mCubed{ m1 * mSq };
+   ASSERT_DOUBLE_EQ(mCubed.amount(), 32.0) << "missing a constexp if this fails";
+}
+
+
+
 // Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
