@@ -23,6 +23,25 @@
 	   typedef tMake::MakeDim<3, 0, 0, 0, 0>::type t_MeterCubed;
    };
 
+   TEST_F(DivisionFirst, NoUnit) {
+      SOU::tNoUnit myScaler = 9.0;
+      Metric::t_meter Meter = 27.0;
+      auto val = Meter / myScaler;
+      EXPECT_DOUBLE_EQ(val.amount(), 3.00);
+   }
+   TEST_F(DivisionFirst, Constexpr) {
+      constexpr t_Meter m1{ 4.0 };
+      constexpr t_MeterSq mSq{ 32.0 };
+      constexpr auto M = mSq / m1;
+      ASSERT_DOUBLE_EQ(M.amount(), 8.0);
+   }
+
+   TEST_F(DivisionFirst, Constexpr_schaler) {
+      constexpr t_Meter m1{ 36.0 };
+      constexpr auto m = m1 / 9;
+      ASSERT_DOUBLE_EQ(m.amount(), 4.0);
+   }
+
    /// Test division during assignement
    TEST_F(DivisionFirst, TestDiv_Result)
    {   
@@ -213,8 +232,7 @@ REGISTER_TYPED_TEST_CASE_P(SOU_Division,
 typedef ::testing::Types< ARG<2, 1, 1>, ARG< 3, 2, 1>, ARG<5, 2, 3>, ARG<2, 2, 0>, ARG<2, 0, 2>, ARG<2, 4, -2> > MyTypes;
 INSTANTIATE_TYPED_TEST_CASE_P(My, SOU_Division, MyTypes);
 
-
-// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any
