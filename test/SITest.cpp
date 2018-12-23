@@ -104,9 +104,14 @@ TYPED_TEST_P(SITest, Addition_constexp) {
    constexpr t_type b = 3.0;
    constexpr auto c = a + b;
    ASSERT_DOUBLE_EQ(c.amount(), 5.0);
-
 }
-
+TYPED_TEST_P(SITest, Subtraction_constexp) {
+   using t_type = SITest<TypeParam >::t_type;
+   constexpr t_type a = 12;
+   constexpr t_type b = 5.0;
+   constexpr auto c = a - b;
+   ASSERT_DOUBLE_EQ(c.amount(), 7.0);
+}
 TYPED_TEST_P(SITest, AdditionAssignment)
 {
 	using TAG = SITest<TypeParam >;
@@ -169,7 +174,7 @@ TYPED_TEST_P(SITest, isUnitType) {
 
 
 REGISTER_TYPED_TEST_CASE_P(SITest
-	, SizeOf, Assignment, NotEqual, LessThan, GreaterThan, Comparison, Addition, Addition_constexp, AdditionAssignment, Subtraction, SubtractionAssignment, Chaining, DestructorNoThrow, IsMovable, IsCopyable, isUnitType);
+	, SizeOf, Assignment, NotEqual, LessThan, GreaterThan, Comparison, Addition, Addition_constexp, AdditionAssignment, Subtraction, Subtraction_constexp, SubtractionAssignment, Chaining, DestructorNoThrow, IsMovable, IsCopyable, isUnitType);
 
 TEST(SITestSQ, Squaring)
 {
