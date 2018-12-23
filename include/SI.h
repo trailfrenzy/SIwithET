@@ -45,9 +45,6 @@ namespace SystemOfUnits /// covers the basics of the system
       double m_amount; /// the scalar value of the object
 
       typedef unitType< L, iL, t, it, M, iM, T, iT, Q, iQ > my_type;
-      //template< typename T > friend struct is_UnitType { enum { value = false }; }; // primary template
-      //template< > 
-      //friend struct is_UnitType< my_type  > { enum { value = true }; };
 
    public:
       /// Dimensions as enum
