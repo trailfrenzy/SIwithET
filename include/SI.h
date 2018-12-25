@@ -44,8 +44,6 @@ namespace SystemOfUnits /// covers the basics of the system
       FRIEND_TEST(NoUnit, Value);  // for testing private attribute
       double m_amount; /// the scalar value of the object
 
-      typedef unitType< L, iL, t, it, M, iM, T, iT, Q, iQ > my_type;
-
    public:
       /// Dimensions as enum
       enum { eL = iL /*!< Dimension of Length */
