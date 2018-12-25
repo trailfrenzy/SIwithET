@@ -159,6 +159,13 @@ TYPED_TEST_P(SITest, IsCopyable) {
    //EXPECT_TRUE( std::is_assignable<TAG&, TAG >::value );
    EXPECT_TRUE(std::is_copy_assignable<TAG>::value);
    EXPECT_TRUE(std::is_trivially_copy_assignable<TAG>::value);
+}
+
+TYPED_TEST_P(SITest, IsConstructible) 
+{
+   using TAG = SITest<TypeParam >::t_type;
+   EXPECT_TRUE(std::is_constructible<TAG >::value );
+   //EXPECT_TRUE( std::is_constructible<TAG, double >::value );
    EXPECT_TRUE(std::is_copy_constructible<TAG>::value);
    //EXPECT_TRUE(std::is_trivially_copy_constructible<TAG>::value);
    //EXPECT_TRUE(std::is_nothrow_copy_constructible<TAG>::value);
@@ -174,7 +181,7 @@ TYPED_TEST_P(SITest, isUnitType) {
 
 
 REGISTER_TYPED_TEST_CASE_P(SITest
-	, SizeOf, Assignment, NotEqual, LessThan, GreaterThan, Comparison, Addition, Addition_constexp, AdditionAssignment, Subtraction, Subtraction_constexp, SubtractionAssignment, Chaining, DestructorNoThrow, IsMovable, IsCopyable, isUnitType);
+	, SizeOf, Assignment, NotEqual, LessThan, GreaterThan, Comparison, Addition, Addition_constexp, AdditionAssignment, Subtraction, Subtraction_constexp, SubtractionAssignment, Chaining, DestructorNoThrow, IsMovable, IsCopyable, IsConstructible, isUnitType);
 
 TEST(SITestSQ, Squaring)
 {
