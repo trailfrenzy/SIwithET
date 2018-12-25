@@ -197,7 +197,7 @@ TEST(SITestSQ, Squaring)
 
 }
 
-TEST(NoUnit, Size) {
+TEST(BasicSI, Size) {
 	EXPECT_EQ(sizeof(double), sizeof(SOU::tNoUnit)) << "should be the same";
 }
 
@@ -213,28 +213,53 @@ typedef t_Base::MakeDim<3,0,0,0,0>::type t_MeterCubed;
 typedef ::testing::Types< Metric::t_meter, Metric::t_metersecond, Metric::t_second, Metric::t_velocity, Metric::t_gramPsec, t_MeterSq, t_MeterCubed > MyTypes;
 INSTANTIATE_TYPED_TEST_CASE_P(My, SITest, MyTypes);
 
-TEST(NoUnit, ValueZero ) {
+TEST( BasicSI, NoUnitValueZero ) {
    SOU::tNoUnit val( 0.0 );
    EXPECT_EQ( val.amount(), 0.0);
 }
 
-TEST(NoUnit, Value) {
+TEST(BasicSI, NoUnitValue) {
    SOU::tNoUnit val(6.0);
    EXPECT_EQ(val.amount(), 6.0);
 }
 
-TEST(Constexpr, set) {
+TEST(BasicSI, Constexpr) {
    constexpr t_MeterSq const val(7.0);
    EXPECT_EQ(val.amount(), 7.0);
 }
 
 // TODO: change ASSERT_DOUBLE_EQ() to handle comparison of two different types.
 
-TEST(Inserter, NoUnit) {
+TEST(BasicSI, InserterNoUnit) {
    SOU::tNoUnit val(9.78);
    std::stringstream strm;
    strm << val;
    EXPECT_EQ( strm.str(), std::string("9.78") );
+}
+
+TEST(BasicSI, IsConstructable) 
+{
+   EXPECT_TRUE(std::is_default_constructible<t_MeterSq>::value);
+   EXPECT_TRUE(std::is_constructible<t_MeterSq >::value);
+   //EXPECT_TRUE( std::is_constructible<t_MeterSq, t_MeterSq >::value );
+   EXPECT_TRUE(std::is_copy_constructible<t_MeterSq>::value);
+   //EXPECT_TRUE(std::is_trivially_copy_constructible<t_MeterSq>::value);
+   //EXPECT_TRUE(std::is_nothrow_copy_constructible<t_MeterSq>::value);
+}
+
+TEST(BasicSI, IsPoly) {
+   EXPECT_FALSE(std::is_polymorphic<t_MeterSq>::value);
+}
+TEST(BasicSI, IsClass) {
+   EXPECT_TRUE(std::is_class<t_MeterSq>::value);
+}
+TEST(BasicSI, IsPOD) {
+   EXPECT_FALSE(std::is_pod<t_Meter>::value) << "Why is this false?";
+   EXPECT_TRUE(std::is_pod<t_Meter::Length>::value);
+   EXPECT_TRUE(std::is_pod<t_Meter::Mass>::value);
+   EXPECT_TRUE(std::is_pod<t_Meter::Time>::value);
+   EXPECT_TRUE(std::is_pod<t_Meter::Tempeture>::value);
+   EXPECT_TRUE(std::is_pod<t_Meter::Charge>::value);
 }
 
 // Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
