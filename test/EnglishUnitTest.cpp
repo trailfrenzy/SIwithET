@@ -79,6 +79,17 @@ TEST(EnglishUnitTest, TestLength)
 	EXPECT_NEAR(95.333333333, fps.amount(), delta);
 }
 
+TEST(EnglishUnitTest, IsPod)
+{
+   EXPECT_TRUE(std::is_pod< English::AtomicUnit::Foot>::value);
+   EXPECT_TRUE(std::is_pod< English::AtomicUnit::Inch>::value);
+   EXPECT_TRUE(std::is_pod< English::AtomicUnit::Mile>::value);
+   EXPECT_TRUE(std::is_pod< English::AtomicUnit::poundMass>::value);
+   EXPECT_TRUE(std::is_pod< English::AtomicUnit::Slug>::value);
+   EXPECT_TRUE(std::is_pod< English::AtomicUnit::Yard>::value);
+   EXPECT_TRUE(std::is_standard_layout<English::AtomicUnit::Foot>::value);
+}
+
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
