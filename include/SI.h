@@ -126,7 +126,7 @@ namespace SystemOfUnits /// covers the basics of the system
        * @param unitType on the right hand side
        * @return bool true if the left side is greater than or equal to the right side
       */
-      friend constexpr bool operator>=( unitType const &lf, unitType const &rt ) { return lf.m_amount >= rt.m_amount; }
+      friend constexpr bool operator>=( unitType const &lf, unitType const &rt ) { return !(lf < rt); }
 
       /** addition assignment operator
        * @param unitType value which the left-handed object will be added with
