@@ -92,20 +92,6 @@ namespace SystemOfUnits /// covers the basics of the system
       */
       friend constexpr bool operator==( unitType const &lf, unitType const &rt ) { return lf.m_amount == rt.m_amount; }
 
-      /** comparison operator with a double
-       * @param unitType on the left hand side
-       * @param double on the right hand side
-       * @return bool true if the left and right are equal, false if not
-      */
-      //friend constexpr bool operator==( unitType const &lf, double rt ) { return lf.m_amount == rt; }
-
-      /** comparison operator with a double
-       * @param double on the left hand side
-       * @param unitType on the right hand side
-       * @return bool true if the left and right are equal, false if not
-      */
-      //friend constexpr bool operator==( double lf, unitType const &rt ) { return lf == rt.m_amount; }
-
       // not-comparison operator
       /** not-comparison operator
        * @param unitType (or numeric type) on the left hand side
@@ -114,19 +100,12 @@ namespace SystemOfUnits /// covers the basics of the system
       */
       friend constexpr bool operator!=( unitType const &lf, unitType const &rt ) { return !(lf == rt); }
 
-      /** not-comparison operator with double
-       * @param unitType on the left hand side
-       * @param double on the right hand side
-       * @return bool true if the left and right are not equal, false if equal
+      /** less than operator
+      * @param unitType on the left hand side
+      * @param unitType on the right hand side
+      * @return bool true if the left side is less than the right side
       */
-      //friend constexpr bool operator!=( unitType const &lf, double rt ) { return !(lf == rt); }
-
-      /** not-comparison operator
-       * @param unitType on the left hand side
-       * @param double on the right hand side
-       * @return bool true if the left and right are not equal, false if equal
-      */
-      //friend constexpr bool operator!=( double lf, unitType const &rt ) { return !(lf == rt); }
+      friend constexpr bool operator< (unitType const &lf, unitType const &rt) { return lf.m_amount < rt.m_amount; }
 
       /** less than equal operator
        * @param unitType on the left hand side
@@ -141,13 +120,6 @@ namespace SystemOfUnits /// covers the basics of the system
        * @return bool true if the left side is greater than or equal to the right side
       */
       friend constexpr bool operator>=( unitType const &lf, unitType const &rt ) { return lf.m_amount >= rt.m_amount; }
-
-      /** less than operator
-       * @param unitType on the left hand side
-       * @param unitType on the right hand side
-       * @return bool true if the left side is less than the right side
-      */
-      friend constexpr bool operator< ( unitType const &lf, unitType const &rt ) { return lf.m_amount < rt.m_amount; }
 
       /** greater than operator
        * @param unitType on the left hand side
