@@ -84,6 +84,18 @@ TYPED_TEST_P(SITest, GreaterThan)
    EXPECT_TRUE( 20 > *TAG::m_3);
 }
 
+TYPED_TEST_P(SITest, LessThanEqual )
+{
+   using TAG = SITest<TypeParam >;
+   *TAG::m_1 = TAG::t_type(4.55555);
+   *TAG::m_2 = TAG::t_type(4.55556);
+   EXPECT_TRUE(*TAG::m_1 <= *TAG::m_2);
+   EXPECT_TRUE(*TAG::m_3 <= *TAG::m_4);
+   EXPECT_TRUE(*TAG::m_3 <= 20) << "uses the constructor to convert the 20 to a UnitType";
+   EXPECT_TRUE(1 <= *TAG::m_3);
+   EXPECT_TRUE(3.0 <= *TAG::m_3);
+}
+
 TYPED_TEST_P(SITest, Assignment)
 {
 	using TAG = SITest<TypeParam >;
@@ -189,7 +201,7 @@ TYPED_TEST_P(SITest, isUnitType) {
 
 
 REGISTER_TYPED_TEST_CASE_P(SITest
-	, SizeOf, Assignment, NotEqual, LessThan, GreaterThan, Comparison, Addition, Addition_constexp, AdditionAssignment, Subtraction, Subtraction_constexp, SubtractionAssignment, Chaining, DestructorNoThrow, IsMovable, IsCopyable, IsConstructible, isUnitType);
+	, SizeOf, Assignment, NotEqual, LessThan, LessThanEqual, GreaterThan, Comparison, Addition, Addition_constexp, AdditionAssignment, Subtraction, Subtraction_constexp, SubtractionAssignment, Chaining, DestructorNoThrow, IsMovable, IsCopyable, IsConstructible, isUnitType);
 
 TEST(SITestSQ, Squaring)
 {
