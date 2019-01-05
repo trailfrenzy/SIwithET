@@ -84,6 +84,14 @@ TYPED_TEST_P(SITest, GreaterThan)
    EXPECT_TRUE( 20 > *TAG::m_3);
 }
 
+TYPED_TEST_P(SITest, GreaterThanEqual )
+{
+   using TAG = SITest<TypeParam >;
+   EXPECT_TRUE(*TAG::m_4 >= *TAG::m_3);
+   EXPECT_TRUE(20 >= *TAG::m_3);
+   EXPECT_TRUE(3.0 >= *TAG::m_3);
+}
+
 TYPED_TEST_P(SITest, LessThanEqual )
 {
    using TAG = SITest<TypeParam >;
@@ -201,7 +209,7 @@ TYPED_TEST_P(SITest, isUnitType) {
 
 
 REGISTER_TYPED_TEST_CASE_P(SITest
-	, SizeOf, Assignment, NotEqual, LessThan, LessThanEqual, GreaterThan, Comparison, Addition, Addition_constexp, AdditionAssignment, Subtraction, Subtraction_constexp, SubtractionAssignment, Chaining, DestructorNoThrow, IsMovable, IsCopyable, IsConstructible, isUnitType);
+	, SizeOf, Assignment, NotEqual, LessThan, LessThanEqual, GreaterThan, GreaterThanEqual, Comparison, Addition, Addition_constexp, AdditionAssignment, Subtraction, Subtraction_constexp, SubtractionAssignment, Chaining, DestructorNoThrow, IsMovable, IsCopyable, IsConstructible, isUnitType);
 
 TEST(SITestSQ, Squaring)
 {
