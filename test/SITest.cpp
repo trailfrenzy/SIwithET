@@ -38,6 +38,11 @@ TYPED_TEST_P(SITest, SizeOf)
 	EXPECT_TRUE(sizeof(double) == sizeof(TAG::t_type)) << "was not 64 bit";
 }
 
+//#define ASSERT_UNITTYPE_EQ(val1, val2)\
+//  ASSERT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<decltype(val1)>, \
+//                      val1, val2)
+//   ASSERT_UNITTYPE_EQ(TAG::t_type(4.5), *TAG::m_1);
+
 TYPED_TEST_P(SITest, Comparison)
 {
 	using TAG = SITest<TypeParam >;
@@ -49,7 +54,7 @@ TYPED_TEST_P(SITest, Comparison)
 	EXPECT_TRUE(TAG::m_1->amount() == 4.5);
 
 	// testing with one side double the other side unitType
-	EXPECT_TRUE(*TAG::m_1 == 4.5);
+	EXPECT_TRUE(*TAG::m_1 == 4.5)  << "Use to have three different comparison operators, now only one";
 	EXPECT_TRUE(4.5 == *TAG::m_1);
 }
 

@@ -97,14 +97,14 @@ namespace SystemOfUnits /// covers the basics of the system
        * @param double on the right hand side
        * @return bool true if the left and right are equal, false if not
       */
-      friend constexpr bool operator==( unitType const &lf, double rt ) { return lf.m_amount == rt; }
+      //friend constexpr bool operator==( unitType const &lf, double rt ) { return lf.m_amount == rt; }
 
       /** comparison operator with a double
        * @param double on the left hand side
        * @param unitType on the right hand side
        * @return bool true if the left and right are equal, false if not
       */
-      friend constexpr bool operator==( double lf, unitType const &rt ) { return lf == rt.m_amount; }
+      //friend constexpr bool operator==( double lf, unitType const &rt ) { return lf == rt.m_amount; }
 
       // not-comparison operator
       /** not-comparison operator
@@ -220,7 +220,7 @@ namespace SystemOfUnits /// covers the basics of the system
 
       /** stream inserter operator
         @param output stream which may be any type (i.e. wchar_t or char_t)
-        @param unitType The value inserted into the stream.
+        @param unitType The value amount inserted into the stream.  See manipulators in operators.h for inserting dimensions into the stream.
         @return The same output stream which was passed as a input parameter.
       */
       template< typename TOUT> friend TOUT &operator<<(TOUT &out, unitType const &val)
