@@ -73,12 +73,15 @@ TYPED_TEST_P(SITest, LessThan)
 	*TAG::m_2 = TAG::t_type(4.55556);
 	EXPECT_TRUE(*TAG::m_1 < *TAG::m_2);
 	EXPECT_TRUE(*TAG::m_3 < *TAG::m_4);
+   EXPECT_TRUE(*TAG::m_3 < 20 ) << "uses the constructor to convert the 20 to a UnitType";
+   EXPECT_TRUE( 1 < *TAG::m_3);
 }
 
 TYPED_TEST_P(SITest, GreaterThan)
 {
 	using TAG = SITest<TypeParam >;
 	EXPECT_TRUE(*TAG::m_4 > *TAG::m_3);
+   EXPECT_TRUE( 20 > *TAG::m_3);
 }
 
 TYPED_TEST_P(SITest, Assignment)
