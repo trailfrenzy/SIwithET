@@ -62,7 +62,7 @@ TYPED_TEST_P(SITest, NotEqual)
 {
 	using TAG = SITest<TypeParam >;
 	EXPECT_TRUE(*TAG::m_1 != *TAG::m_2);
-	EXPECT_TRUE(4.5 != *TAG::m_2);
+	EXPECT_TRUE(4.5 != *TAG::m_2) << "Use to have three types now only have one";
 	EXPECT_TRUE(*TAG::m_2 != 4.5);
 }
 

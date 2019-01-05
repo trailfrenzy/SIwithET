@@ -86,8 +86,8 @@ namespace SystemOfUnits /// covers the basics of the system
       constexpr auto amount()const { return m_amount; }
 
       /** comparison operator
-       * @param unitType on the left hand side
-       * @param unitType on the right hand side
+       * @param unitType (or numeric type) on the left hand side
+       * @param unitType (or numeric type) on the right hand side
        * @return bool true if the left and right are equal, false if not
       */
       friend constexpr bool operator==( unitType const &lf, unitType const &rt ) { return lf.m_amount == rt.m_amount; }
@@ -108,8 +108,8 @@ namespace SystemOfUnits /// covers the basics of the system
 
       // not-comparison operator
       /** not-comparison operator
-       * @param unitType on the left hand side
-       * @param unitType on the right hand side
+       * @param unitType (or numeric type) on the left hand side
+       * @param unitType (or numeric type) on the right hand side
        * @return bool true if the left and right are not equal, false if equal
       */
       friend constexpr bool operator!=( unitType const &lf, unitType const &rt ) { return !(lf == rt); }
@@ -119,14 +119,14 @@ namespace SystemOfUnits /// covers the basics of the system
        * @param double on the right hand side
        * @return bool true if the left and right are not equal, false if equal
       */
-      friend constexpr bool operator!=( unitType const &lf, double rt ) { return !(lf == rt); }
+      //friend constexpr bool operator!=( unitType const &lf, double rt ) { return !(lf == rt); }
 
       /** not-comparison operator
        * @param unitType on the left hand side
        * @param double on the right hand side
        * @return bool true if the left and right are not equal, false if equal
       */
-      friend constexpr bool operator!=( double lf, unitType const &rt ) { return !(lf == rt); }
+      //friend constexpr bool operator!=( double lf, unitType const &rt ) { return !(lf == rt); }
 
       /** less than equal operator
        * @param unitType on the left hand side
