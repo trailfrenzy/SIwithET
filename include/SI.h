@@ -119,7 +119,7 @@ namespace SystemOfUnits /// covers the basics of the system
        * @param unitType on the right hand side
        * @return bool true if the left side is less than or equal to the right side
       */
-      friend constexpr bool operator<=( unitType const &lf, unitType const &rt ) { return lf.m_amount <= rt.m_amount; }
+      friend constexpr bool operator<=( unitType const &lf, unitType const &rt ) { return !(rt < lf); }
 
       /** greater than equal operator
        * @param unitType on the left hand side
