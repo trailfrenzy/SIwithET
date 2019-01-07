@@ -26,11 +26,11 @@ namespace SystemOfUnits
    {
       /** Used in the static assertion to ensure that all types are of the same type.
       You would not want to compare meter^2 from feet^3.  The dimensions are not the same. */
-      static_assert(LF::eL == RT::eL, "Length not the same");
-      static_assert(LF::et == RT::et, "Time not the same");
-      static_assert(LF::eM == RT::eM, "Mass not the same");
-      static_assert(LF::eT == RT::eT, "Temp not the same");
-      static_assert(LF::eQ == RT::eQ, "charge not the same");
+      static_assert(LF::eL == RT::eL, "Length not the same. See next line of error output for location.");
+      static_assert(LF::et == RT::et, "Time not the same. See next line of error output for location.");
+      static_assert(LF::eM == RT::eM, "Mass not the same. See next line of error output for location.");
+      static_assert(LF::eT == RT::eT, "Temp not the same. See next line of error output for location.");
+      static_assert(LF::eQ == RT::eQ, "Charge not the same. See next line of error output for location.");
       return true;
    }
 
