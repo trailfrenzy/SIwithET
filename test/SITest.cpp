@@ -55,15 +55,15 @@ TYPED_TEST_P(SITest, Comparison)
 
 	// testing with one side double the other side unitType
 	EXPECT_TRUE(*TAG::m_1 == 4.5)  << "Use to have three different comparison operators, now only one";
-	EXPECT_TRUE(4.5 == *TAG::m_1);
+   EXPECT_TRUE(TAG::t_type{ 4.5 } == *TAG::m_1);
 }
 
 TYPED_TEST_P(SITest, NotEqual)
 {
 	using TAG = SITest<TypeParam >;
 	EXPECT_TRUE(*TAG::m_1 != *TAG::m_2);
-	EXPECT_TRUE(4.5 != *TAG::m_2) << "Use to have three types now only have one";
-	EXPECT_TRUE(*TAG::m_2 != 4.5);
+   EXPECT_TRUE(TAG::t_type{ 4.5 } != *TAG::m_2) << "Use to have three types now only have one";
+   EXPECT_TRUE(*TAG::m_2 != TAG::t_type{ 4.5 });
 }
 
 TYPED_TEST_P(SITest, LessThan)
@@ -73,23 +73,23 @@ TYPED_TEST_P(SITest, LessThan)
 	*TAG::m_2 = TAG::t_type(4.55556);
 	EXPECT_TRUE(*TAG::m_1 < *TAG::m_2);
 	EXPECT_TRUE(*TAG::m_3 < *TAG::m_4);
-   EXPECT_TRUE(*TAG::m_3 < 20 ) << "uses the constructor to convert the 20 to a UnitType";
-   EXPECT_TRUE( 1 < *TAG::m_3);
+   EXPECT_TRUE(*TAG::m_3 < TAG::t_type(20) ) << "uses the constructor to convert the 20 to a UnitType";
+   EXPECT_TRUE(TAG::t_type(1) < *TAG::m_3);
 }
 
 TYPED_TEST_P(SITest, GreaterThan)
 {
 	using TAG = SITest<TypeParam >;
 	EXPECT_TRUE(*TAG::m_4 > *TAG::m_3);
-   EXPECT_TRUE( 20 > *TAG::m_3);
+   EXPECT_TRUE(TAG::t_type(20) > *TAG::m_3);
 }
 
 TYPED_TEST_P(SITest, GreaterThanEqual )
 {
    using TAG = SITest<TypeParam >;
    EXPECT_TRUE(*TAG::m_4 >= *TAG::m_3);
-   EXPECT_TRUE(20 >= *TAG::m_3);
-   EXPECT_TRUE(3.0 >= *TAG::m_3);
+   EXPECT_TRUE(TAG::t_type(20) >= *TAG::m_3);
+   EXPECT_TRUE(TAG::t_type(3.0) >= *TAG::m_3);
 }
 
 TYPED_TEST_P(SITest, LessThanEqual )
@@ -99,9 +99,9 @@ TYPED_TEST_P(SITest, LessThanEqual )
    *TAG::m_2 = TAG::t_type(4.55556);
    EXPECT_TRUE(*TAG::m_1 <= *TAG::m_2);
    EXPECT_TRUE(*TAG::m_3 <= *TAG::m_4);
-   EXPECT_TRUE(*TAG::m_3 <= 20) << "uses the constructor to convert the 20 to a UnitType";
-   EXPECT_TRUE(1 <= *TAG::m_3);
-   EXPECT_TRUE(3.0 <= *TAG::m_3);
+   EXPECT_TRUE(*TAG::m_3 <= TAG::t_type(20) ) << "uses the constructor to convert the 20 to a UnitType";
+   EXPECT_TRUE(TAG::t_type(1) <= *TAG::m_3);
+   EXPECT_TRUE(TAG::t_type{ 3.0 } <= *TAG::m_3);
 }
 
 TYPED_TEST_P(SITest, Assignment)
@@ -128,15 +128,15 @@ TYPED_TEST_P(SITest, Addition)
 TYPED_TEST_P(SITest, Addition_constexp) {
    using TAG = SITest<TypeParam >;
    using t_type = TAG::t_type;
-   constexpr t_type a = 2;
-   constexpr t_type b = 3.0;
+   constexpr t_type a  { 2 };
+   constexpr t_type b  { 3.0 };
    constexpr auto c = a + b;
    ASSERT_DOUBLE_EQ(c.amount(), 5.0);
 }
 TYPED_TEST_P(SITest, Subtraction_constexp) {
    using t_type = SITest<TypeParam >::t_type;
-   constexpr t_type a = 12;
-   constexpr t_type b = 5.0;
+   constexpr t_type a{ 12 };
+   constexpr t_type b{ 5.0 };
    constexpr auto c = a - b;
    ASSERT_DOUBLE_EQ(c.amount(), 7.0);
 }
@@ -145,6 +145,7 @@ TYPED_TEST_P(SITest, AdditionAssignment)
 	using TAG = SITest<TypeParam >;
 	*TAG::m_2 += *TAG::m_3;
 	EXPECT_TRUE(*TAG::m_1 == *TAG::m_2);
+   *TAG::m_2 += TAG::t_type(3.0);
 }
 TYPED_TEST_P(SITest, Subtraction)
 {

@@ -113,7 +113,7 @@ public:
 	   t_MeterCubed cu2 = x * t_Meter(2.0) * t_Meter(2.0);
       EXPECT_TRUE( cu2 == 8.0 );
       
-	   t_Meter const y = 2.0;
+      t_Meter const y { 2.0 };
 	   t_MeterCubed cu3 = t_Meter(2.0) * y * t_Meter(2.0);
       EXPECT_TRUE( cu3 == 8.0 );
 
@@ -163,7 +163,7 @@ public:
       EXPECT_DOUBLE_EQ( 200.0, cent.amount() );
 	  EXPECT_DOUBLE_EQ( 2.0, SOU::conversion_cast<t_Meter>( cent ).amount() );
 
-	   const t_Meter meter = 7.0;
+     const t_Meter meter  { 7.0 };
 	   EXPECT_DOUBLE_EQ( 7.0, meter.amount() );
 	   EXPECT_DOUBLE_EQ( 700.0, SOU::conversion_cast<Metric::t_centimeter>(meter).amount() );
 
@@ -176,8 +176,8 @@ public:
 	   t_cmSQ cmSQ = cent * meter;
 	   EXPECT_DOUBLE_EQ( 140000.0, cmSQ.amount() );
 
-	   Metric::t_kilometer k = 4.0;
-	   t_Meter m = 4000.0; //k * 1.0;
+      Metric::t_kilometer k  { 4.0 };
+      t_Meter m  { 4000.0 }; //k * 1.0;
 
 	   t_MeterSq m2 = m * k; //k * m;
 	   EXPECT_DOUBLE_EQ( 16000000.0, m2.amount() );
@@ -227,8 +227,8 @@ public:
       namespace AU = AtomicUnit;
       typedef SOU::unitType< AU::Meter, 0, SOU::Time::AtomicUnit::second, -1, AU::gram, 0,AU::kelvin,0, AU::coulomb,0 > t_Hertz;
       
-      Metric::t_gram const g = 25.0;
-      t_Hertz h = 3.0;
+      Metric::t_gram const g{ 25.0 };
+      t_Hertz h{ 3.0 };
 
       Metric::t_gramPsec gps = g * h;
 	  EXPECT_DOUBLE_EQ( 75.0, gps.amount() );
@@ -237,7 +237,7 @@ public:
    /// type of 0 dimension.
    TEST_F(MultiplyFirst, TestWithNonDimension )
    {
-      const t_Meter meter = 7.0;
+      const t_Meter meter{ 7.0 };
       double y = 2.0;
 	  EXPECT_TRUE(14.00 == meter * 2) << "with a scalar value";
 	  EXPECT_TRUE(14.00 == 2 * meter ) << "with a scalar value";
@@ -272,8 +272,8 @@ public:
    TEST_F(MultiplyFirst, TestWithSubinside )
    {
       typedef Metric::t_second second;
-      second Tmin = 55.5;
-      second Tmax = 105.5;
+      second Tmin{ 55.5 };
+      second Tmax{ 105.5 };
       second Topt = Tmin + 0.7 * ( Tmax - Tmin );
       EXPECT_DOUBLE_EQ( 90.5, Topt.amount() );
    }
@@ -522,20 +522,20 @@ using t_myArg = ARG<1, 1, 2>;
 //INSTANTIATE_TYPED_TEST_CASE_P(My, SI_Multiply, t_myArg );
 
 TEST( Multiply, NoUnit_Meter) {
-	SOU::tNoUnit myScaler = 9.0;
-	Metric::t_meter Meter = 2.0;
+   SOU::tNoUnit myScaler  { 9.0 };
+   Metric::t_meter Meter  { 2.0 };
 	auto val = Meter * myScaler;
 	EXPECT_DOUBLE_EQ(val.amount(), 18.00);
 }
 
 TEST(Multiply, NoUnit_Const) {
-	Metric::t_meter Meter = 2.0;
+   Metric::t_meter Meter  { 2.0 };
 	auto val = Meter * SOU::tNoUnit(9.0);
 	EXPECT_DOUBLE_EQ(val.amount(), 18.00);
 }
 
 TEST(Multiply, Meter_double) {
-   Metric::t_meter M = 2.0;
+   Metric::t_meter M { 2.0 };
    auto val = M * 3;
    ASSERT_DOUBLE_EQ(val.amount(), 6.0);
    val = 3 * M;

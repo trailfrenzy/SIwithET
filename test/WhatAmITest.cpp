@@ -31,6 +31,12 @@ TEST(Diminsion, Inverse) {
 	EXPECT_EQ("1/[M]", SOU::Diminsion(inv));
 }
 
+TEST(Diminsion, InvSquared) {
+   Metric::t_gram const gram{ 444.5 };
+   auto inv = 1.0 / (gram*gram);
+   EXPECT_EQ("1/[M]^2", SOU::Diminsion(inv));
+}
+
 TEST(WhatAmITest, TestWithOneDim)
 {
 	/*

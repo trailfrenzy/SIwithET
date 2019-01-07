@@ -37,9 +37,9 @@ TEST(EnglishUnitTest, InchCubeConversion) {
 }
 
 TEST(EnglishUnitTest, SmallBox) {
-	t_Inch const W = 16 + (3.0 / 8);
-	t_Inch const L = 12 + (5.0 / 8);
-	t_Inch const H = 12 + (5.0 / 8);
+   t_Inch const W { 16 + (3.0 / 8) };
+   t_Inch const L { 12 + (5.0 / 8) };
+   t_Inch const H = t_Inch(12) + t_Inch(5.0 / 8.0 );
 
 	auto CubeInch = W * L * H;
 	using t_CubeFoot = English::MakeEnglish::MakeDim<3, 0, 0, 0, 0>::type;
@@ -51,8 +51,8 @@ TEST(EnglishUnitTest, SmallBox) {
 /// Test converting Feet per second from Feet / Second.
 TEST(EnglishUnitTest, TestFPS)
 {
-	English::t_foot Feet = 144;
-	English::t_second Second = 4;
+	English::t_foot Feet(144);
+	English::t_second Second(4);
 
 	English::t_FPS fps = Feet / Second;
 
@@ -66,7 +66,7 @@ TEST(EnglishUnitTest, TestLength)
 {
 	using namespace SOU;
 
-	English::t_mile mile = 1.0;
+   English::t_mile mile{ 1.0 };
 	English::t_foot feet = SOU::conversion_cast<English::t_foot>(mile);
 	EXPECT_DOUBLE_EQ(5280.0, feet.amount());
 
@@ -74,7 +74,7 @@ TEST(EnglishUnitTest, TestLength)
 	English::t_yard yard = conversion_cast<English::t_yard>(feet);
 	EXPECT_DOUBLE_EQ(5.0, yard.amount());
 
-	English::t_mph mph = 65.0;
+   English::t_mph mph{ 65.0 };
 	English::t_FPS fps = SOU::conversion_cast<English::t_FPS>(mph);
 	EXPECT_NEAR(95.333333333, fps.amount(), delta);
 }

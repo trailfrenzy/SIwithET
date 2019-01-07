@@ -94,13 +94,13 @@ TEST(Inserter, ShowDimMeterSqStringView) {
 }
 
 TEST(Inserter, ShowDimCubeSec) {
-   t_CubedPerSec mps = 1967.09;
+   t_CubedPerSec mps  { 1967.09 };
    std::stringstream strm;
    strm << SOU::dimension << mps;
    ASSERT_EQ(strm.str(), std::string_view("1967.09 [L]^3/[T]"));
 }
 TEST(Inserter, ShowUnitCubeSec) {
-   t_CubedPerSec mps = 1967.09;
+   t_CubedPerSec mps  { 1967.09 };
    std::stringstream strm;
    strm << SOU::units << mps;
    ASSERT_EQ(strm.str(), std::string_view("1967.09 meter^3*second^(-1)"));

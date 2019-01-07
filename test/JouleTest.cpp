@@ -19,7 +19,7 @@ using t_Joule = t_MakeType::MakeDim<2, -2, 1, 0, 0>::type;
 using t_kilogram = t_MakeType::MakeDim<0, 0, 1, 0, 0>::type;
 
 using t_Grav = t_MakeType::MakeDim< 3, -2, -1, 0, 0 >::type;
-const t_Grav GRAVITY = 6.6740831e-11;
+const t_Grav GRAVITY  { 6.6740831e-11 };
 
 TEST(Diminsion, Joule) {
 	t_Joule joule{ 45.033 };
@@ -63,7 +63,7 @@ using t_Second = t_MakeType::MakeDim<0, 1, 0, 0, 0>::type;
 
 TEST(Joule, Pressure) {
 	t_Newton N{ 45.0 };
-	t_MeterSq M2 = 9.0;
+   t_MeterSq M2{ 9.0 };
 	auto Pressure = N / M2;
 	EXPECT_DOUBLE_EQ(5.0, Pressure.amount()) << "Building up for the ideal gas law"; // kg/(m·s2)
 	//EXPECT_EQ( SystemOfUnits::WhatAmI( P ), "")
@@ -75,9 +75,9 @@ TEST(Joule, Watt) {
 }
 
 TEST(Joule, Gravity) {
-	t_kilogram const M1 = 5.0;
-	t_kilogram const M2 = 3.0;
-	t_Meter const r = 10.0;
+   t_kilogram const M1  { 5.0 };
+   t_kilogram const M2  { 3.0 };
+   t_Meter const r  { 10.0 };
 
 	auto F = GRAVITY * M1 * M2 / (r*r);
 	EXPECT_EQ(SystemOfUnits::Diminsion(F), SystemOfUnits::Diminsion(t_Newton(2.0)));

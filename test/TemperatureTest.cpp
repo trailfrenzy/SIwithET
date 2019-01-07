@@ -61,9 +61,9 @@ TEST(temerature, STATIC_Assert) {
 }
 
 TEST(temperature, Negative_conversion_cast) {
-   t_Kelvin K = 100;
-   t_Joule  J = 5000;
-   t_kilogram kg = 4.0;
+   t_Kelvin K{ 100 };
+   t_Joule  J{ 5000 };
+   t_kilogram kg{ 4.0 };
    auto HeatCapicity = J / K;
    ASSERT_DOUBLE_EQ(HeatCapicity.amount(), 50.0);
 
@@ -73,7 +73,7 @@ TEST(temperature, Negative_conversion_cast) {
 }
 
 TEST(Dimensions_same, Joule) {
-   constexpr t_Joule J = 5000;
+   constexpr t_Joule J(5000);
    SOU::dimensions_same< decltype(J), t_Joule >();
 }
 

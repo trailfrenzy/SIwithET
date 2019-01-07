@@ -18,7 +18,7 @@
 class conversion_castTest : public ::testing::Test //: public CppUnit::TestFixture
 {
 protected:
-	Metric::t_centimeter m_cent = 0.0;
+   Metric::t_centimeter m_cent = { 0.0 };
 public:
 	void SetUp() { m_cent = Metric::t_centimeter(0.0); }
 private:
@@ -65,7 +65,7 @@ private:
 	{
 		typedef SOU::MakeSQ< Metric::t_meter >::type t_meterSq;
 		typedef SOU::MakeSQ< Metric::t_centimeter >::type t_centSq;
-		t_centSq cent2 = 10000.0;
+      t_centSq cent2  { 10000.0 };
 
 		t_meterSq m2 = SOU::conversion_cast< t_meterSq >( cent2 );
 
@@ -96,7 +96,7 @@ private:
 		typedef SOU::MakeSQ<Metric::t_second>::type t_secSq;
 		typedef SOU::MakeSQ<Metric::t_minute>::type t_minSq;
 
-		t_minSq minSq = 2.0;
+      t_minSq minSq  { 2.0 };
 		t_secSq secSq = SOU::conversion_cast<t_secSq>(minSq);
 		EXPECT_DOUBLE_EQ( 7200.0, secSq.amount() );
 	}
@@ -113,7 +113,7 @@ private:
 			, Metric::AtomicUnit::coulomb,0
 			> ACCinKM;
 		
-		ACCinKM accKM1 = 2.0;
+      ACCinKM accKM1  { 2.0 };
 		ACCinM  accM1 = SOU::conversion_cast<ACCinM>(accKM1);
 		EXPECT_DOUBLE_EQ( 2000.0, accM1.amount() /*, 0.00001*/ );
 
@@ -132,7 +132,7 @@ private:
 	{
 		typedef SOU::MakeSQ< Metric::t_gram >::type t_gramSq;
 		typedef SOU::MakeSQ< Metric::t_kilogram >::type t_kiloSq;
-		t_kiloSq kiloSq = 1.0;
+      t_kiloSq kiloSq  { 1.0 };
 		t_gramSq gramSq = SOU::conversion_cast< t_gramSq >( kiloSq );
 		EXPECT_DOUBLE_EQ( 1e6, gramSq.amount() );
 	}

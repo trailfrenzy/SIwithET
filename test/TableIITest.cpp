@@ -36,8 +36,8 @@ namespace
 
 TEST(TableIITest, TestNewton)
 {
-	a acc = 9.81;
-	t_mass mass = 5.0;
+   a acc = a{ 9.81 };
+   t_mass mass{ 5.0 };
 
 	t_n const N = acc * mass;
 	EXPECT_DOUBLE_EQ(49.05, N.amount());
@@ -47,9 +47,9 @@ TEST(TableIITest, TestNewton)
 
 TEST(TableIITest, TestAcceleration)
 {
-	v V1 = 5.0;
-	v V2 = 3.0;
-	t_sec t = 2.0;
+   v V1{ 5.0 };
+   v V2{ 3.0 };
+   t_sec t{ 2.0 };
 	a acc = (V1 + V2) / t;
 	EXPECT_DOUBLE_EQ(4.0, acc.amount());
 
@@ -67,8 +67,8 @@ TEST(TableIITest, TestAcceleration)
 */
 TEST(TableIITest, TestWithlog)
 {
-	t_sec T1 = 80.0;
-	t_sec T2 = 8.0;
+   t_sec T1{ 80.0 };
+   t_sec T2{ 8.0 };
 
 	double x = log(T1 / T2);
 	EXPECT_DOUBLE_EQ(2.3025850929940456840179914546844, x) << "Test to see if a scalar value is produced";
