@@ -64,10 +64,17 @@ namespace SystemOfUnits /// covers the basics of the system
       unitType() {}
 
       /// constructor from a scalar
-      /** constructor from a scalar value
+      /** constructor from a scalar value.
+      Constructor from a double type is made explicit to prevent comparison of non-types.  Forces strong type comparison.
+      The non-explicit constructor allowed for comparison of unitType to built in type. Prevents implicit use.
+      Without the explicit a user could introduce a double to equation where only a unitType is correct.
        * @param a double is used to initialize the original value
       */
-      constexpr unitType( double m ) : m_amount(m){}
+      explicit constexpr unitType( double m ) : m_amount(m){}
+
+      /** constructor from the same unitType.
+      * @param a unitType of the same type.
+      */
       explicit constexpr unitType(unitType const &val ) : m_amount(val.m_amount) {}
       constexpr unitType(unitType &&val) = default; // : m_amount(std::move(val.m_amount)) {}
 
@@ -79,9 +86,11 @@ namespace SystemOfUnits /// covers the basics of the system
      
      constexpr unitType &operator=(unitType &&rt) && = default;
 
-     unitType& operator=(double m) = delete; /// prevent assigning scalar values to an existing unit but still allows assnment to a new type.
+     /// prevent assigning scalar values to an existing unit but still allows assnment to a new type.
+     unitType& operator=(double val) = delete; // { m_amount = val; return *this;  } // 
 
-      /** returns the scalar value of the object.  Would like to eliminate this method but is needed for testing currently.
+      /** returns the scalar value of the object.  Would like to eliminate this method but is needed for testing currently.  
+      TODO: Need a speacilized limits<> template prior to removal for use with gtest
         * @return the scalar value of the type. */
       constexpr auto amount()const { return m_amount; }
 
@@ -91,6 +100,8 @@ namespace SystemOfUnits /// covers the basics of the system
        * @return bool true if the left and right are equal, false if not
       */
       friend constexpr bool operator==( unitType const &lf, unitType const &rt ) { return lf.m_amount == rt.m_amount; }
+      friend constexpr bool operator==(unitType const &lf, double rt) { return lf.m_amount == rt; }
+      friend constexpr bool operator==(double lf, unitType const & rt) { return lf == rt.m_amount; }
 
       // not-comparison operator
       /** not-comparison operator
