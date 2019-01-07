@@ -125,7 +125,7 @@ namespace SystemOfUnits
       enum { VALUE = a::DIM > b::DIM };
    };
    
-   // NOTE: Not ready for use.
+   /// NOTE: Not ready for use.
    template< class T > inline std::string Dim( T const &)
    {
       if (!T::eL && !T::eM && !T::et && !T::eT && !T::eQ) return ""; // no dim, bale out fast!
