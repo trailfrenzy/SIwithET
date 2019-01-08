@@ -22,7 +22,7 @@ namespace SystemOfUnits
 {
    /// function returns true if both inputs have the same dimensions, else will crash.  Was in conversion_cast<> but pulled it out.
    template< typename LF, typename RT >
-   constexpr bool dimensions_same()
+   constexpr bool dimensions_same_assert()
    {
       /** Used in the static assertion to ensure that all types are of the same type.
       You would not want to compare meter^2 from feet^3.  The dimensions are not the same. */
@@ -34,13 +34,19 @@ namespace SystemOfUnits
       return true;
    }
 
+   template< typename LF, typename RT >
+   constexpr bool dimensions_same()
+   {
+      return (LF::eL == RT::eL && LF::et == RT::et && LF::eM == RT::eM && LF::eT == RT::eT && LF::eQ == RT::eQ);
+   }
+
 	/** Template used to convert between different types that have the same dimensions.
 	@param IN in is what will be converted
 	@return OUT the new type
 	*/
 	template< typename OUT, typename IN > OUT conversion_cast(IN const &in)
 	{
-      dimensions_same< OUT, IN >();
+      dimensions_same_assert< OUT, IN >();
 
 		/// Use the incoming types as the base types.
 		enum { eL = IN::eL, et = IN::et, eM = IN::eM, eT = IN::eT, eQ = IN::eQ };
