@@ -63,18 +63,25 @@ TEST(temerature, STATIC_Assert) {
 TEST(temperature, Negative_conversion_cast) {
    t_Kelvin K{ 100 };
    t_Joule  J{ 5000 };
-   t_kilogram kg{ 4.0 };
    auto HeatCapicity = J / K;
    ASSERT_DOUBLE_EQ(HeatCapicity.amount(), 50.0);
+   auto bAns = SOU::dimensions_same_assert< decltype(J), t_Joule >();
+   std::cout << SOU::dimension << HeatCapicity << '\n';
 
-   //ASSERT_TRUE(SOU::dimensions_same< decltype(J), t_Joule >() );
-   //SOU::dimensions_same< decltype(HeatCapicity), t_HeatFluxC >();
+   ASSERT_TRUE( bAns );
+   using tmp = decltype(HeatCapicity);
+   ASSERT_TRUE(tmp::et == -2 ) << "tmp::et=" << tmp::et << " t_HeatFluxC::et=" << t_HeatFluxC::et << '\n';
+   bAns = SOU::dimensions_same< decltype(HeatCapicity), t_HeatFluxC >();
+   ASSERT_FALSE(bAns) << "Heat flux is not the same as capacity you dummy";
+   // TODO: complete the negitive conversion cast
    //auto Flux = SOU::conversion_cast<t_HeatFluxC>(HeatCapicity);
+   ASSERT_TRUE(tmp::eT == -1) << "Proof of the neg Temp dim";
 }
 
 TEST(Dimensions_same, Joule) {
    constexpr t_Joule J(5000);
-   SOU::dimensions_same< decltype(J), t_Joule >();
+   constexpr bool bAns = SOU::dimensions_same< decltype(J), t_Joule >();
+   EXPECT_TRUE(bAns);
 }
 
 TEST(Diminsion, TEMPERATURE ) {
