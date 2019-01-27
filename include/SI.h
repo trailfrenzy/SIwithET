@@ -42,9 +42,11 @@ namespace SystemOfUnits /// covers the basics of the system
    class unitType
    {
       FRIEND_TEST(NoUnit, Value);  // for testing private attribute
-      double m_amount; /// the scalar value of the object
+      long double m_amount; /// the scalar value of the object
 
    public:
+      using t_float = long double;
+
       /// Dimensions as enum
       enum { eL = iL /*!< Dimension of Length */
          , et = it   /*!< Dimension of Time */
@@ -70,7 +72,7 @@ namespace SystemOfUnits /// covers the basics of the system
       Without the explicit a user could introduce a double to equation where only a unitType is correct.
        * @param a double is used to initialize the original value
       */
-      explicit constexpr unitType( double m ) : m_amount(m){}
+      explicit constexpr unitType( t_float m ) : m_amount(m){}
 
       /** constructor from the same unitType.
       * @param a unitType of the same type.

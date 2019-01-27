@@ -52,7 +52,7 @@ namespace SystemOfUnits
 		enum { eL = IN::eL, et = IN::et, eM = IN::eM, eT = IN::eT, eQ = IN::eQ };
 
 		// set the value to the incoming scaler before correcting the value
-      double out{ in.amount() };
+      typename OUT::t_float out{ in.amount() };
 
 		using namespace helpers;
 
