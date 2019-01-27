@@ -19,7 +19,20 @@ TEST(MetricUnitTest, BasicTestLength)
 	EXPECT_EQ(1000.0, km::toBase());
 }
 
-// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+TEST(UDL_Metric, meter)
+{
+   auto sq = 4.0_meter * 5.0_meter;
+   ASSERT_EQ(sq.amount(), 20.0);
+   ASSERT_STREQ(SOU::Diminsion(sq).c_str(), "[L]^2");
+}
+
+TEST(UDL_Metric, kph) {
+   auto val = 100.0_kph;
+   ASSERT_TRUE(val == 100.0);
+   ASSERT_STREQ(SOU::Diminsion(val).c_str(), "[L]/[T]");
+}
+
+// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any
