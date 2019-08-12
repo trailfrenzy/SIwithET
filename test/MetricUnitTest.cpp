@@ -32,6 +32,14 @@ TEST(UDL_Metric, kph) {
    ASSERT_STREQ(SOU::Diminsion(val).c_str(), "[L]/[T]");
 }
 
+TEST(UDL_Metric, kilometer) {
+   auto L1 = 1000.0_meter;
+   auto L2 = 1.0_kilometer;
+   //ASSERT_TRUE(L1 == L2) << "both values are equal";
+   ASSERT_TRUE(L1 == SOU::conversion_cast<Metric::t_meter>(L2) ) << "both values are equal, but need to convert km to m";
+   ASSERT_TRUE(SOU::conversion_cast<Metric::t_kilometer>(L1) == L2);
+}
+
 // Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //

@@ -51,7 +51,9 @@ constexpr Metric::t_meter operator"" _meter( long double d)
    return Metric::t_meter(d);
 }
 
+// Kilometer UDL
 constexpr Metric::t_kilometer operator"" _kilometer( long double d) { return Metric::t_kilometer{ static_cast<double>(d) }; }
+
 constexpr auto operator"" _kph( long double d)
 {
    typedef SOU::unitType< Metric::AU::Kilometer, 1, AT::hour, -1, Metric::AU::gram, 0, Metric::AU::kelvin, 0, Metric::AU::coulomb, 0 > t_kilometerPerHour;
