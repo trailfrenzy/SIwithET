@@ -11,6 +11,11 @@
 TEST(Diminsion, NoDim) {
 	EXPECT_EQ("", SOU::Diminsion(SOU::tNoUnit(2.0) ));
 }
+TEST(Diminsion, Double) {
+   double x = 3.5;
+   EXPECT_EQ("", SOU::Diminsion(x));
+   EXPECT_EQ("", SOU::Diminsion(4.5));
+}
 
 TEST(Diminsion, LEN) {
 	Metric::t_meter meter{ 444.5 };

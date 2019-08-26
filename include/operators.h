@@ -74,6 +74,7 @@ namespace SystemOfUnits
       Currently MAKE_ATRAIT is the only MACRO used in the SI Project.
 	  */
 
+      // TODO explore using std::enable_if<> with std::is_arithmetic<>
 #ifndef MAKE_ATRAIT
 #define MAKE_ATRAIT( XX ) template< typename T2 > struct A_Trait< XX, T2 >\
       {\

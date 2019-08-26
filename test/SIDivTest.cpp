@@ -120,7 +120,7 @@
 
 	  auto d3 = t_MeterCubed(24.0) / t_MeterCubed(12.0);
 	  EXPECT_DOUBLE_EQ(2.0, d3);
-     //EXPECT_EQ("", SOU::Diminsion(d3)) << "Caused a compile time failure";
+     EXPECT_EQ("", SOU::Diminsion(d3)) << "Caused a compile time failure";
    }
 
    TEST_F(DivisionFirst, DimensionLessDenom) {
@@ -260,7 +260,7 @@ REGISTER_TYPED_TEST_CASE_P(SOU_Division,
 typedef ::testing::Types< ARG<2, 1, 1>, ARG< 3, 2, 1>, ARG<5, 2, 3>, ARG<2, 2, 0>, ARG<2, 0, 2>, ARG<2, 4, -2> > MyTypes;
 INSTANTIATE_TYPED_TEST_CASE_P(My, SOU_Division, MyTypes);
 
-// Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

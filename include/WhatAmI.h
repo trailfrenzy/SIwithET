@@ -180,13 +180,21 @@ namespace SystemOfUnits
 	   return out.str();
    }
 
+//#include <type_traits>
+   /// Specialized template when the type is dimensionless.
+   template< typename char_type >
+   inline auto t_Diminsion(double const &)->std::basic_string<char_type>
+   {
+      return {};
+   }
+
    template<typename T > auto Diminsion(T const &val )
    {
       return t_Diminsion<char>(val);
    }
 
 }
-// Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any
