@@ -52,6 +52,8 @@ private:
 		Metric::t_centimeter cent(20.0);
 		Metric::t_meter meter = SOU::conversion_cast<Metric::t_meter>( cent );
 		EXPECT_DOUBLE_EQ( 0.20, meter.amount() );
+      EXPECT_EQ(0.20, meter.amount());
+      EXPECT_TRUE(0.20 == meter );
 
 		m_cent = Metric::t_centimeter(200.0);
 		Metric::t_kilometer kilo = SOU::conversion_cast<Metric::t_kilometer>( m_cent );
@@ -70,6 +72,8 @@ private:
 		t_meterSq m2 = SOU::conversion_cast< t_meterSq >( cent2 );
 
 		EXPECT_DOUBLE_EQ( 1.0, m2.amount() );
+      EXPECT_TRUE(1.0 == m2) 
+         << "works since the inside of EXPECT_DOUBLE_EQ expects both to be the same type";
 		//EXPECT_DOUBLE_EQ( 1.0, m2 );
 	}
 

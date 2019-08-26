@@ -41,7 +41,6 @@ namespace SystemOfUnits
        The @code A_Trait<T1,T2> @endcode templates are used during has hidden templates that are
        created during multiplication and division operations using the SI templates.  @code A_Trait<T1,T2> @endcode
        allows operators "*" and "/" to use references of the SI types and values for built in types.
-       
        */
       template < typename T, typename T2 > struct A_Trait
       {
@@ -51,7 +50,7 @@ namespace SystemOfUnits
          typedef T const &ExprRef;
 
          /// the dimensions of the trait
-         enum 
+         enum
          { eL = T::eL   /// Length Dimension 
          , et = T::et   /// Time Dimension
          , eM = T::eM   /// Mass Dimension
@@ -71,6 +70,8 @@ namespace SystemOfUnits
        Used to make multiplications of built in types against the types produced by SI template.
 	   For example \code meter = meter * 4;   \endcode or \code feet = feet * 5.0; \endcode
 	   It is not a good habit of using built in scalar types, but the option needs to be provided.
+      Not sure if there is another option to creating the specilized templates than using MACROS.
+      Currently MAKE_ATRAIT is the only MACRO used in the SI Project.
 	  */
 
 #ifndef MAKE_ATRAIT
@@ -89,31 +90,32 @@ namespace SystemOfUnits
       typedef typename T2::Charge Charge;\
       };
 
-	  /// creates struct A_Trait<double, typename T2>
-      MAKE_ATRAIT( double );        
+      /// creates struct A_Trait<double, typename T2>
+      MAKE_ATRAIT(double);
+      MAKE_ATRAIT(double long);
 
-	  /// creates struct A_Trait<float, typename T2>
-      MAKE_ATRAIT( float );         
+      /// creates struct A_Trait<float, typename T2>
+      MAKE_ATRAIT(float);
 
-	  /// creates struct A_Trait<int, typename T2>
-      MAKE_ATRAIT( int );           
+      /// creates struct A_Trait<int, typename T2>
+      MAKE_ATRAIT(int);
 
-	  /// creates struct A_Trait<unsigned, typename T2>
-      MAKE_ATRAIT( unsigned );      
+      /// creates struct A_Trait<unsigned, typename T2>
+      MAKE_ATRAIT(unsigned);
 
-	  /// creates struct A_Trait<long, typename T2>
-      MAKE_ATRAIT( long );
+      /// creates struct A_Trait<long, typename T2>
+      MAKE_ATRAIT(long);
 
-	  /// creates struct A_Trait<unsigned long, typename T2>
-      MAKE_ATRAIT( unsigned long );
+      /// creates struct A_Trait<unsigned long, typename T2>
+      MAKE_ATRAIT(unsigned long);
 
       /// creates struct A_Trait<short, typename T2>
-      MAKE_ATRAIT( short );
+      MAKE_ATRAIT(short);
 
       /// creates struct A_Trait<unsigned short, typename T2>
-      MAKE_ATRAIT( unsigned short ); 
-	  MAKE_ATRAIT(long long);
-	  MAKE_ATRAIT(unsigned long long);
+      MAKE_ATRAIT(unsigned short);
+      MAKE_ATRAIT(long long);
+      MAKE_ATRAIT(unsigned long long);
 #endif 
       /// base class to Mul_Result and Div_Result
       /** NOTE:
@@ -139,46 +141,46 @@ namespace SystemOfUnits
          };
 
       public:
-		  using R1 = A_Trait<T1, T2>; /// the type of the left side of the arg
-		  using R2 = A_Trait<T2, T1>; /// the type of the right side of the arg
-											   /// public enum is used to let users know that the types did not match
-         /// ie so feet and meters are not mixed up but both are base units
-		  enum class ALLTYPES_THE_SAME : bool {
-			  val =
-			  (is_same<R1::Length::Base, R2::Length::Base>::value
-				  && is_same<R1::Time::Base, R2::Time::Base >::value
-				  && is_same<R1::Mass::Base, R2::Mass::Base >::value
-				  && is_same<R1::Tempeture::Base, R2::Tempeture::Base >::value
-				  && is_same<R1::Charge::Base, R2::Charge::Base >::value
-				  )
-			  || (R1::eL == 0 && R1::et == 0 && R1::eM == 0 && R1::eT == 0 && R1::eQ == 0)
-			  || (R2::eL == 0 && R2::et == 0 && R2::eM == 0 && R2::eT == 0 && R2::eQ == 0)
-			  , T = true
+         using R1 = A_Trait<T1, T2>; /// the type of the left side of the arg
+         using R2 = A_Trait<T2, T1>; /// the type of the right side of the arg
+                                     /// public enum is used to let users know that the types did not match
+          /// ie so feet and meters are not mixed up but both are base units
+         enum class ALLTYPES_THE_SAME : bool {
+            val =
+            (is_same<R1::Length::Base, R2::Length::Base>::value
+               && is_same<R1::Time::Base, R2::Time::Base >::value
+               && is_same<R1::Mass::Base, R2::Mass::Base >::value
+               && is_same<R1::Tempeture::Base, R2::Tempeture::Base >::value
+               && is_same<R1::Charge::Base, R2::Charge::Base >::value
+               )
+            || (R1::eL == 0 && R1::et == 0 && R1::eM == 0 && R1::eT == 0 && R1::eQ == 0)
+            || (R2::eL == 0 && R2::et == 0 && R2::eM == 0 && R2::eT == 0 && R2::eQ == 0)
+            , T = true
          };
 
-		  //friend constexpr bool operator==(const enum ALLTYPES_THE_SAME lf, const bool rt) { return lf::val == rt;  } // used static_cast<> instead
+         //friend constexpr bool operator==(const enum ALLTYPES_THE_SAME lf, const bool rt) { return lf::val == rt;  } // used static_cast<> instead
 
          // Below is a compile time check to compare if the length as same type ie meter to meter, not meter to kilometer
-		   // enum value is true if the two types are the same.
-         enum{ IsLengthSame = is_same< typename R1::Length, typename R2::Length >::value };
-         enum{ IsTimeSame   = is_same< typename R1::Time,   typename R2::Time   >::value };
-         enum{ IsMassSame   = is_same< typename R1::Mass,   typename R2::Mass   >::value };
-         enum{ IsTempSame   = is_same< typename R1::Tempeture, typename R2::Tempeture >::value };
-         enum{ IsChargeSame = is_same< typename R1::Charge, typename R2::Charge >::value };
+         // enum value is true if the two types are the same.
+         enum { IsLengthSame = is_same< typename R1::Length, typename R2::Length >::value };
+         enum { IsTimeSame = is_same< typename R1::Time, typename R2::Time   >::value };
+         enum { IsMassSame = is_same< typename R1::Mass, typename R2::Mass   >::value };
+         enum { IsTempSame = is_same< typename R1::Tempeture, typename R2::Tempeture >::value };
+         enum { IsChargeSame = is_same< typename R1::Charge, typename R2::Charge >::value };
 
          /// need to know if BOTH the dimensions in the two operands are base
-         enum{ AreLengthsBase = R1::Length::IsBase && R2::Length::IsBase };
+         enum { AreLengthsBase = R1::Length::IsBase && R2::Length::IsBase };
          /// need to know if BOTH the dimensions in the two operands are base
-         enum{ AreTimeBase    = R1::Time::IsBase   && R2::Time::IsBase };
+         enum { AreTimeBase = R1::Time::IsBase   && R2::Time::IsBase };
          /// need to know if BOTH the dimensions in the two operands are base
-         enum{ AreMassBase    = R1::Mass::IsBase   && R2::Mass::IsBase };
+         enum { AreMassBase = R1::Mass::IsBase   && R2::Mass::IsBase };
          /// need to know if BOTH the dimensions in the two operands are base
-         enum{ AreTempBase    = R1::Tempeture::IsBase && R2::Tempeture::IsBase };
+         enum { AreTempBase = R1::Tempeture::IsBase && R2::Tempeture::IsBase };
          /// need to know if BOTH the dimensions in the two operands are base
-         enum{ AreChargeBase  = R1::Charge::IsBase && R2::Charge::IsBase };
+         enum { AreChargeBase = R1::Charge::IsBase && R2::Charge::IsBase };
 
-		 /* what are the 4 proposed traits used for */
-         /// the proposed length type of the result
+         /* what are the 4 proposed traits used for */
+           /// the proposed length type of the result
          typename typedef IF //boost::mpl::if_c
             < R1::eL == 0 || R2::eL == 0
             , NoDim
@@ -261,7 +263,7 @@ namespace SystemOfUnits
 
 		 //friend constexpr bool operator==(const Dim lf, const int rt) { return lf == rt;  }
 		 
-         /// informs us during the compile process that the result has no dimensions.
+         /// informs us during the compile process if the result has no dimensions.
          enum class isNoDim : bool { val = (Dim::eL==Dim::Z) && (Dim::et== Dim::Z) && (Dim::eM== Dim::Z) && (Dim::eQ== Dim::Z) && (Dim::eT== Dim::Z) };
 
          typename typedef IF< Dim::eL== Dim::Z, typename R1::Length,   typename IF<R1::eL!=0, typename R1::Length, typename R2::Length>::RET >::RET Length;
@@ -503,7 +505,7 @@ constexpr inline auto operator/( R1 const &r1, R2 const &r2 )
    return SOU::operators::Div_Result<R1,R2>(r1,r2).result();
 }
 
-// Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

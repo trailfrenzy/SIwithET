@@ -9,7 +9,7 @@ class NoUnit_Value_Test;  // need forward declaration prior to use as friend.
 
 namespace SystemOfUnits /// covers the basics of the system
 {
-   /// struct is used to create no dimension unit type
+   /// struct is used to create no dimension unit type. Used in the operators.h for (* /)
    struct NoDim
    {
       /// Lets using classes know if class is used as a base
@@ -89,19 +89,23 @@ namespace SystemOfUnits /// covers the basics of the system
      constexpr unitType &operator=(unitType &&rt) && = default;
 
      /// prevent assigning scalar values to an existing unit but still allows assnment to a new type.
+     /// Important to prevent novice users from assigning new amount to existing objects
      unitType& operator=(double val) = delete; // { m_amount = val; return *this;  } // 
 
-      /** returns the scalar value of the object.  Would like to eliminate this method but is needed for testing currently.  
-      TODO: Need a speacilized limits<> template prior to removal for use with gtest
+      /** returns the scalar value of the object.  Would like to eliminate this method but is needed for testing currently.
+          Method is a crutch for any novice of the library.
+      TODO: Use EXPECT_TRUE() instead of EXPECT_DOUBLE_EQ()
         * @return the scalar value of the type. */
-      constexpr auto amount()const { return m_amount; }
+      constexpr auto amount() const { return m_amount; }
 
-      /** comparison operator
+      /** comparison operator which enforces Dimensional Homogeneity
        * @param unitType (or numeric type) on the left hand side
        * @param unitType (or numeric type) on the right hand side
        * @return bool true if the left and right are equal, false if not
       */
       friend constexpr bool operator==( unitType const &lf, unitType const &rt ) { return lf.m_amount == rt.m_amount; }
+
+      /// provided to allow testing using ASSERT_TRUE() which will not use method amount()
       friend constexpr bool operator==(unitType const &lf, double rt) { return lf.m_amount == rt; }
       friend constexpr bool operator==(double lf, unitType const & rt) { return lf == rt.m_amount; }
 
@@ -207,11 +211,20 @@ namespace SystemOfUnits /// covers the basics of the system
         @param output stream which may be any type (i.e. wchar_t or char_t)
         @param unitType The value amount inserted into the stream.  See manipulators in operators.h for inserting dimensions into the stream.
         @return The same output stream which was passed as a input parameter.
+        Will work with any stream type which defines an inserter for a double.
       */
       template< typename TOUT> friend TOUT &operator<<(TOUT &out, unitType const &val)
       {
          out << val.m_amount;
          return out;
+      }
+
+      // TODO How to impliment a stream extractor
+      // ideally not used with a serilizer since the type is not extract from the stream only the built in type.
+      template< typename TIN> friend TIN &operator>>(TIN &in, unitType &val)
+      {
+         in >> val.m_amount;
+         return in;
       }
    };
 
@@ -273,7 +286,7 @@ namespace SOU = SystemOfUnits;
 /** 
  @mainpage My Personal Index Page
  @section copyright_sec Copyright
- Copyright © 2003-2018 "Curt" Leslie L. Martin, All rights reserved.
+ Copyright © 2003-2019 "Curt" Leslie L. Martin, All rights reserved.
  curt.leslie.lewis.martin@gmail.com
 
  Permission to use, copy, modify, and distribute this software for any

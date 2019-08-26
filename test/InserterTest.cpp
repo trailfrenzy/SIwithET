@@ -88,26 +88,33 @@ TEST(Inserter, ShowDimMeterSqString) {
 TEST(Inserter, ShowDimMeterSqStringView) {
    t_MeterSq m3(10.11);
    std::string_view s("44.6666");
-   std::stringstream strm;
+   std::ostringstream strm;
    strm << SOU::dimension << m3 << ' ' << s;
    EXPECT_EQ(strm.str(), std::string_view("10.11 [L]^2 44.6666"));
 }
 
 TEST(Inserter, ShowDimCubeSec) {
    t_CubedPerSec mps  { 1967.09 };
-   std::stringstream strm;
+   std::ostringstream strm;
    strm << SOU::dimension << mps;
    ASSERT_EQ(strm.str(), std::string_view("1967.09 [L]^3/[T]"));
 }
 TEST(Inserter, ShowUnitCubeSec) {
    t_CubedPerSec mps  { 1967.09 };
-   std::stringstream strm;
+   std::ostringstream strm;
    strm << SOU::units << mps;
    ASSERT_EQ(strm.str(), std::string_view("1967.09 meter^3*second^(-1)"));
 }
 
+TEST(Extractor, ConceptWork) {
+   std::stringstream strm("12.45");
+   t_CubedPerSec mps;
+   strm >> mps;
+   ASSERT_TRUE(mps == 12.45);
+}
 
-// Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
+
+// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

@@ -37,9 +37,9 @@ namespace Metric
    // 
    typedef AUMetric::MakeDim<1,1,0,0,0>::type t_metersecond; /// Meter * second type
 
-   // Velocity compound units
+// Velocity compound units
    typedef AUMetric::MakeDim<1,-1,0,0,0>::type t_velocity;
-   
+
    // Mass flow compound units
    typedef AUMetric::MakeDim<0,-1,1,0,0>::type t_gramPsec;
 

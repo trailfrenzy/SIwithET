@@ -2,7 +2,6 @@
 operator for the System of Units Template Class.
 */
 
-//#include <cppunit/extensions/HelperMacros.h>
 #include <gtest/gtest.h>
 #include "SI.h"
 #include "MetricTypes.h"
@@ -14,7 +13,7 @@ operator for the System of Units Template Class.
 #include <memory>
 
 // basic test on the multiplication operator
-class MultiplyFirst : public ::testing::Test //: public CppUnit::TestFixture
+class MultiplyFirst : public ::testing::Test
 {
 public:
 	typedef Metric::AtomicUnit::Meter Meter;
@@ -498,7 +497,7 @@ TYPED_TEST_P(SI_Multiply, TestMultipleShort)
 	EXPECT_DOUBLE_EQ(6.0, res2.amount());
 }
 
-/** Test A_Trait<short,T2> template created from macro.  Test needs to be in class template
+/** Test A_Trait<long,T2> template created from macro.  Test needs to be in class template
 to prove that T_Trait handles the different Types
  @see SystemOfUnits::operators::A_Trait<short,T2>
  */
