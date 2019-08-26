@@ -28,17 +28,20 @@
       Metric::t_meter Meter{ 27.0 };
       auto val = Meter / myScaler;
       EXPECT_DOUBLE_EQ(val.amount(), 3.00);
+      EXPECT_EQ("[L]", SOU::Diminsion(val)) << "Added as another check later on";
    }
    TEST_F(DivisionFirst, InverseNoUnit) {
       SOU::tNoUnit myScaler{ 27.0 };
       Metric::t_meter const Meter{ 9.0 };
       auto val = myScaler/Meter;
+      EXPECT_EQ("1/[L]", SOU::Diminsion(val)) << "Added as another check later on";
       EXPECT_DOUBLE_EQ(val.amount(), 3.00);
    }
    TEST_F(DivisionFirst, Constexpr) {
       constexpr t_Meter m1{ 4.0 };
       constexpr t_MeterSq mSq{ 32.0 };
       constexpr auto M = mSq / m1;
+      EXPECT_EQ("[L]", SOU::Diminsion(M));
       ASSERT_DOUBLE_EQ(M.amount(), 8.0);
    }
 
@@ -46,6 +49,7 @@
       constexpr t_Meter m1{ 36.0 };
       constexpr auto m = m1 / 9;
       ASSERT_DOUBLE_EQ(m.amount(), 4.0);
+      EXPECT_EQ("[L]", SOU::Diminsion(m));
    }
 
    /// Test division during assignement
@@ -59,46 +63,49 @@
 	  EXPECT_TRUE( m2 == 0.5 );
 
 	  auto m3 = t_MeterSq(1.0) / t_Meter(4.0);
-	  EXPECT_TRUE(m3 == 0.25);
+     EXPECT_EQ("[L]", SOU::Diminsion(m3));
+     EXPECT_TRUE(m3 == 0.25);
    }
 
    /// Test with cube
-   TEST_F(DivisionFirst, TestWithCube )
+   TEST_F(DivisionFirst, TestWithCube)
    {
       t_MeterSq sq1 = t_MeterCubed(9.0) / t_Meter(2.0);
-	  EXPECT_TRUE( sq1 == 4.5 );
-   
-      t_Meter m1 = t_MeterCubed(15.0) / t_MeterSq(5.0);
-	  EXPECT_TRUE( m1 == 3.0 );
-   
-      t_Meter m2 = t_MeterSq( 4.0 ) / t_Meter( 2.0 );
-	  EXPECT_TRUE( m2 == 2.0 );
+      EXPECT_TRUE(sq1 == 4.5);
 
-	  auto m3 = t_MeterCubed(15.0) / t_MeterSq(3.0);
-	  EXPECT_TRUE(m3 == 5.0) << "test with auto";
+      t_Meter m1 = t_MeterCubed(15.0) / t_MeterSq(5.0);
+      EXPECT_TRUE(m1 == 3.0);
+
+      t_Meter m2 = t_MeterSq(4.0) / t_Meter(2.0);
+      EXPECT_TRUE(m2 == 2.0);
+
+      auto m3 = t_MeterCubed(15.0) / t_MeterSq(3.0);
+      EXPECT_TRUE(m3 == 5.0) << "test with auto";
+      EXPECT_EQ("[L]", SOU::Diminsion(m3));
    }
    
    /// @code The SystemOfUnits::operators::Div_Result<T1,T2> @endcode must be able to handle chaining
    /// of division.
-   TEST_F(DivisionFirst, TestChaining )
+   TEST_F(DivisionFirst, TestChaining)
    {
       t_Meter m1 = t_Meter(2.0) * t_Meter(2.0) / t_Meter(2.0);
-	  EXPECT_TRUE( m1 == 2.0 );
-      
-      t_Meter m2 = t_MeterCubed( 27.0 ) / t_Meter(3.0) / t_Meter(3.0);
-	  EXPECT_TRUE( m2 == 3.0 );
-      
-      m2 = t_MeterCubed( 27.0 ) / t_Meter(3.0) / t_Meter(3.0) / 2;
-      EXPECT_DOUBLE_EQ( 1.5, m2.amount() ) << "test with operator=()";
+      EXPECT_TRUE(m1 == 2.0);
 
-      t_Meter m3 = (t_Meter(2.0) * t_Meter(9.0) ) / t_Meter(3.0);
-	  EXPECT_TRUE( m3 == 6.0 );
+      t_Meter m2 = t_MeterCubed(27.0) / t_Meter(3.0) / t_Meter(3.0);
+      EXPECT_TRUE(m2 == 3.0);
 
-      t_Meter const m4 = 2 * (t_Meter(2.0) * t_Meter(9.0) ) / t_Meter(3.0);
-	  EXPECT_DOUBLE_EQ( 12.0, m4.amount() );
+      m2 = t_MeterCubed(27.0) / t_Meter(3.0) / t_Meter(3.0) / 2;
+      EXPECT_DOUBLE_EQ(1.5, m2.amount()) << "test with operator=()";
 
-      t_Meter const m5 = ( 2 * t_Meter(2.0) * t_Meter(9.0) ) / t_Meter(3.0);
-	  EXPECT_DOUBLE_EQ( 12.0, m5.amount() );
+      t_Meter m3 = (t_Meter(2.0) * t_Meter(9.0)) / t_Meter(3.0);
+      EXPECT_TRUE(m3 == 6.0);
+
+      t_Meter const m4 = 2 * (t_Meter(2.0) * t_Meter(9.0)) / t_Meter(3.0);
+      EXPECT_DOUBLE_EQ(12.0, m4.amount());
+
+      auto const m5 = (2 * t_Meter(2.0) * t_Meter(9.0)) / t_Meter(3.0);
+      EXPECT_DOUBLE_EQ(12.0, m5.amount());
+      EXPECT_EQ("[L]", SOU::Diminsion(m5));
    }
 
    /// Test that the result can be diminsionless such as Mach or dB.
@@ -113,6 +120,7 @@
 
 	  auto d3 = t_MeterCubed(24.0) / t_MeterCubed(12.0);
 	  EXPECT_DOUBLE_EQ(2.0, d3);
+     //EXPECT_EQ("", SOU::Diminsion(d3)) << "Caused a compile time failure";
    }
 
    TEST_F(DivisionFirst, DimensionLessDenom) {
