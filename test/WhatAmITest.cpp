@@ -14,7 +14,7 @@ TEST(Diminsion, NoDim) {
 TEST(Diminsion, Double) {
    double x = 3.5;
    EXPECT_EQ("", SOU::Diminsion(x));
-   EXPECT_EQ("", SOU::Diminsion(4.5));
+   EXPECT_EQ("", SOU::Diminsion(4.5)) << "A float will cause a failure";
 }
 
 TEST(Diminsion, LEN) {
