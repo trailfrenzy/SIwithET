@@ -252,6 +252,19 @@ TEST(BasicSI, NoUnitValue) {
    EXPECT_EQ(val.amount(), 6.0);
 }
 
+//TEST(BasicSI, NULL_Value) {
+//   t_Meter M;
+//   M /= 2.0;
+//
+//   t_Meter M2(4.5);
+//   M += M2;
+//   M2 += M;
+//
+//   double t = 0.0 / 0.0;
+//   //EXPECT_LT(0.0, M.amount());
+//}
+
+
 TEST(BasicSI, Constexpr) {
    constexpr t_MeterSq const val(7.0);
    EXPECT_EQ(val.amount(), 7.0);
@@ -273,7 +286,7 @@ TEST(BasicSI, IsConstructable)
    //EXPECT_TRUE( std::is_constructible<t_MeterSq, t_MeterSq >::value );
    EXPECT_TRUE(std::is_copy_constructible<t_MeterSq>::value);
    //EXPECT_TRUE(std::is_trivially_copy_constructible<t_MeterSq>::value);
-   //EXPECT_TRUE(std::is_nothrow_copy_constructible<t_MeterSq>::value);
+   EXPECT_TRUE(std::is_nothrow_copy_constructible<t_MeterSq>::value);
 }
 
 TEST(BasicSI, IsPoly) {
