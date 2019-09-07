@@ -9,28 +9,6 @@ class NoUnit_Value_Test;  // need forward declaration prior to use as friend.
 
 namespace SystemOfUnits /// covers the basics of the system
 {
-   /// struct is used to create no dimension unit type. Used in the operators.h for (* /)
-   struct NoDim
-   {
-      /// Lets using classes know if class is used as a base
-      enum { IsBase = false, sym = ' ' };
-      /// Called by WhatAmI when creating the string describing the type.
-      static char const * str() noexcept { return ""; }
-      ///  Multiply by toBase() to get base value.
-      constexpr static double toBase() noexcept { return 1.0; }
-      /// Multiply by fromBase() to get diminsional value
-      constexpr static double fromBase() noexcept { return 1.0; }
-      /// Typedef of the actual base
-      typedef NoDim Base;
-   };
-
-   /// Used in making the dimensions
-   template< typename T, int D> struct t_BaseDim
-   {
-      using t_BaseUnit = T;
-      enum { DIM = D };
-   };
-
    /// the class which is the heart of this library
    template
       < typename L, int iL    // length
@@ -252,6 +230,28 @@ namespace SystemOfUnits /// covers the basics of the system
          , typename UNIT::Tempeture, UNIT::eT + UNIT::eT
          , typename UNIT::Charge, UNIT::eQ + UNIT::eQ
          > type;
+   };
+
+   /// struct is used to create no dimension unit type. Used in the operators.h for (* /)
+   struct NoDim
+   {
+      /// Lets using classes know if class is used as a base
+      enum { IsBase = false, sym = ' ' };
+      /// Called by WhatAmI when creating the string describing the type.
+      static char const * str() noexcept { return ""; }
+      ///  Multiply by toBase() to get base value.
+      constexpr static double toBase() noexcept { return 1.0; }
+      /// Multiply by fromBase() to get diminsional value
+      constexpr static double fromBase() noexcept { return 1.0; }
+      /// Typedef of the actual base
+      typedef NoDim Base;
+   };
+
+   /// Used in making the dimensions
+   template< typename T, int D> struct t_BaseDim
+   {
+      using t_BaseUnit = T;
+      enum { DIM = D };
    };
 
    /// Create a struct base on the quantity types.
