@@ -29,7 +29,7 @@ TEST(MetaList, UnSortedInt) {
 TEST(MetaList, SortedInt) {
    std::stringstream strm;
    Meta::ListPrinter< Meta::SORT< Meta::DIM_GT, myList>::TYPE >::print(strm);
-   EXPECT_EQ(strm.str(), "23, 10, 9, 4, 2");
+   EXPECT_EQ(strm.str(), "23, 10, 9, 4, 2") << "an example of sort at compile time";
 }
 
 using LENGTH = SystemOfUnits::helpers::T_Symbol<'L'>;

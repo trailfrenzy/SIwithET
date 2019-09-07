@@ -75,6 +75,27 @@ namespace SystemOfUnits
 	  */
 
       // TODO explore using std::enable_if<> with std::is_arithmetic<>
+
+      //template< typename T2 > struct A_Trait< XX, T2 >
+      //{
+      //   /** Used as the argument for the operators, with the built in types it is a pass by value.  */
+      //   using ArgRef = const XX;
+
+      //   /** For the built in types, still need to use a SI unit type, but one that is dimension less */
+      //   using ExprRef = const tNoUnit;
+
+      //   /** Keep the dimensions at zero */
+      //   enum { eL = 0, et = 0, eM = 0, eT = 0, eQ = 0 };
+
+      //   typedef typename T2::Length Length;
+      //   typedef typename T2::Time Time;
+      //   typedef typename T2::Mass Mass;
+      //   typedef typename T2::Tempeture Tempeture;
+      //   typedef typename T2::Charge Charge;
+      //};
+
+
+
 #ifndef MAKE_ATRAIT
 #define MAKE_ATRAIT( XX ) template< typename T2 > struct A_Trait< XX, T2 >\
       {\
@@ -396,19 +417,19 @@ namespace SystemOfUnits
    template< class TOUT >
    class ShowDim_t
    {
-      TOUT & ref;  /// TOUT can be std::cout, std::ofstream, std::stringstream, or anyother stream which uses insertors.
+      TOUT & out;  /// TOUT can be std::cout, std::ofstream, std::stringstream, or anyother stream which uses insertors.
    public:
-      ShowDim_t(TOUT &r) : ref(r) {} // TBD: Make private but will require the inster which calls it to be in the same namespace.
+      ShowDim_t(TOUT &r) : out(r) {} // TBD: Make private but will require the inserter which calls it in the same namespace.
 
       /// pass by value instead of reference.
-      ShowDim_t& operator<<(char c) { ref << c; return *this; }
-      ShowDim_t& operator<<(int i) { ref << i; return *this; }
-      ShowDim_t& operator<<(unsigned u) { ref << u; return *this; }
+      ShowDim_t& operator<<(char c) { out << c; return *this; }
+      ShowDim_t& operator<<(int i) { out << i; return *this; }
+      ShowDim_t& operator<<(unsigned u) { out << u; return *this; }
 
       /// Used by any type besides UnitType
       template< typename T > ShowDim_t& operator<<(const T& val)
       {
-         ref << val;
+         out << val;
          return *this;
       }
 
@@ -424,12 +445,12 @@ namespace SystemOfUnits
       {
          using t_unit = SOU::unitType<L, iL, t, it, M, iM, T, iT, Q, iQ>;
          using t_char = typename TOUT::char_type;  // will not compile if TOUT does not have char_type.
-         ref << unit << ' ' 
+         out << unit << ' ' 
             << t_Diminsion<t_char, t_unit>(unit);
          return *this;
       }
 
-      operator TOUT &() const { return ref; }
+      operator TOUT &() const { return out; }
    };
 
    /// Acutual menuplator used in the stream. The word "dimension" is more universally accepted in other languages besides English.  Replacement for ShowDim. Use of "dimension" is better than "dim" or "ShowDim".  
@@ -438,16 +459,17 @@ namespace SystemOfUnits
    template< class TOUT >
    class ShowUnits_t
    {
-      TOUT & ref;  /// TOUT can be std::cout, std::ofstream, std::stringstream, or anyother stream which uses insertors.
+      /// TOUT can be std::cout, std::ofstream, std::stringstream, or anyother stream which uses insertors.
+      TOUT & ref;
    public:
       ShowUnits_t(TOUT &r) : ref(r) {} // TBD: Make private but will require the inster which calls it to be in the same namespace.
 
-      /// pass by value instead of reference.
+      /// pass by value instead of reference. If in the same stream the user inserts one of these built in types.
       ShowUnits_t& operator<<(char c) { ref << c; return *this; }
       ShowUnits_t& operator<<(int i) { ref << i; return *this; }
       ShowUnits_t& operator<<(unsigned u) { ref << u; return *this; }
 
-      /// Used by any type besides UnitType
+      /// Used by any type besides UnitType. If in the same stream the user inserts an object not a SOU::UnitTypes
       template< typename T > ShowUnits_t& operator<<(const T& val)
       {
          ref << val;

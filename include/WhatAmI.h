@@ -39,7 +39,7 @@ namespace SystemOfUnits
                ret << "^(" << DIM << ')';
             }
 
-            ret << '*';
+            ret << '*'; // need to remove if last DIM
          }
       }
    }
@@ -63,6 +63,7 @@ namespace SystemOfUnits
       return buf.str().erase(buf.str().size() -1 ); // removes the last space char in the buffer
    }
 
+   /// Returns in std::string what the type the UnitType is.
    template< typename T > inline std::string WhatAmI(T const &val) {
       using t_char = std::ostringstream::char_type;
       return UnitName<t_char>(val);
@@ -73,27 +74,29 @@ namespace SystemOfUnits
 
    namespace helpers
    {
+      /// The pair stringstream is used to make the first numerator and second denominator in dimensions.
 	   using t_bufPair = std::pair< std::ostringstream, std::ostringstream >;
 	   enum { THETA = 233 }; // from www.asciitable.com
 
-	   template < char C, int T, typename T_BufPair > inline auto& OneDim(T_BufPair &buf)
-	   {
-		   if (T > 0) {
-			   buf.first << '[' << C << ']';
-			   if (T > 1) buf.first << '^' << T;
-		   }
-		   if (T < 0) {
-			   buf.second << '[' << C << ']';
-			   if (T < -1) buf.second << '^' << abs(T);
-		   }
-		   return buf;
-	   }
-
-      template < class UNIT > struct t_base
+      template < char C, int T, typename T_BufPair > inline auto& OneDim(T_BufPair &buf)
       {
-         using t_UNIT = UNIT;
-         typedef typename SystemOfUnits::t_BaseDim< typename t_UNIT::L, t_UNIT::iL > LEN;
-      };
+         // only the numerator or denomitator is used not both, if ZERO then none are used.
+         if (T > 0) {
+            buf.first << '[' << C << ']';
+            if (T > 1) buf.first << '^' << T;
+         }
+         if (T < 0) {
+            buf.second << '[' << C << ']';
+            if (T < -1) buf.second << '^' << abs(T);
+         }
+         return buf;
+      }
+
+      //template < class UNIT > struct t_base
+      //{
+      //   using t_UNIT = UNIT;
+      //   typedef typename SystemOfUnits::t_BaseDim< typename t_UNIT::L, t_UNIT::iL > LEN;
+      //};
  
       template< typename T, int D, typename char_type = char > struct t_SingleDim
       {
@@ -121,6 +124,7 @@ namespace SystemOfUnits
       using SOLIDUS = SystemOfUnits::helpers::T_Symbol<'/'>;
    }
    
+   /// Used in sorting the dimensions below.
    template <class a, class b> struct ORD {
       enum { VALUE = a::DIM > b::DIM };
    };
@@ -172,9 +176,11 @@ namespace SystemOfUnits
 
 	   std::basic_ostringstream<char_type> out;
 
+      // if numerator is empty insert a 1 into the stream.
 	   if (buf.first.tellp() != std::streampos(0) ) out << buf.first.str();
 	   else out << '1';
 
+      // if denominator has a value then insert a slash prior to the values.
 	   if (buf.second.tellp() != std::streampos(0)) out << '/' << buf.second.str();
 
 	   return out.str();

@@ -282,11 +282,21 @@ TEST(BasicSI, InserterNoUnit) {
 TEST(BasicSI, IsConstructable) 
 {
    EXPECT_TRUE(std::is_default_constructible<t_MeterSq>::value);
+   EXPECT_TRUE(std::is_nothrow_default_constructible<t_Meter>::value);
    EXPECT_TRUE(std::is_constructible<t_MeterSq >::value);
-   //EXPECT_TRUE( std::is_constructible<t_MeterSq, t_MeterSq >::value );
+   EXPECT_TRUE(std::is_nothrow_constructible<t_MeterCubed>::value);
+   //EXPECT_TRUE(std::is_trivially_constructible<t_MeterSq>::value);
+}
+
+TEST(BasicSI, IsCopyConstructible) {
    EXPECT_TRUE(std::is_copy_constructible<t_MeterSq>::value);
    //EXPECT_TRUE(std::is_trivially_copy_constructible<t_MeterSq>::value);
    EXPECT_TRUE(std::is_nothrow_copy_constructible<t_MeterSq>::value);
+}
+
+TEST(BasicSI, IsMovable) {
+   EXPECT_TRUE(std::is_move_constructible<t_MeterSq>::value);
+   EXPECT_TRUE(std::is_nothrow_move_constructible<t_MeterSq>::value);
 }
 
 TEST(BasicSI, IsPoly) {
@@ -296,7 +306,7 @@ TEST(BasicSI, IsClass) {
    EXPECT_TRUE(std::is_class<t_MeterSq>::value);
 }
 TEST(BasicSI, IsPOD) {
-   EXPECT_FALSE(std::is_pod<t_Meter>::value) << "Why is this false?";
+   EXPECT_FALSE(std::is_pod<t_Meter>::value) << "Not a POD since m_amound is private";
    EXPECT_TRUE(std::is_pod<t_Meter::Length>::value);
    EXPECT_TRUE(std::is_pod<t_Meter::Mass>::value);
    EXPECT_TRUE(std::is_pod<t_Meter::Time>::value);
@@ -304,7 +314,7 @@ TEST(BasicSI, IsPOD) {
    EXPECT_TRUE(std::is_pod<t_Meter::Charge>::value);
 }
 
-// Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

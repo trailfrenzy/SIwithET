@@ -4,6 +4,7 @@
 //#include "conditional.hpp"
 namespace Meta 
 {
+   /// compile time if-statement used in sorting inside of templates.
    template< bool CONDITION, class THEN, class ELSE > struct IF {};
 
    template<class THEN, class ELSE> struct IF< false, THEN, ELSE > {
@@ -14,6 +15,7 @@ namespace Meta
       using RET = THEN;
    };
 
+   /// compile time greater-than operator
    template <class a, class b> struct DIM_GT {
       enum { VALUE = a::DIM > b::DIM };
    };

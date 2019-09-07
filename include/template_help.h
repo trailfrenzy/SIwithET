@@ -1,4 +1,4 @@
-/** These helper structures for compile time branching were provided in the Boost libraries but did not want to include Boost in my build if only these features were required.
+/** These helper structures for compile time branching were provided in the Boost libraries but the author did not want to include Boost in the build for only these features were required.
 */
 #ifndef UNIT_TYPE_TEMPLATE_HELPER_INCLUDE_H_
 #define UNIT_TYPE_TEMPLATE_HELPER_INCLUDE_H_
