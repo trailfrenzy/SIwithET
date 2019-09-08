@@ -9,7 +9,7 @@ namespace AT = SOU::Time::AtomicUnit;
 /**
  @page page2 Metric Types
 
- @section MAD Predefined Metric types that can be used.
+ @section MAD Predefined Metric types that can be used. A small selection of UDL (User Defined Literals)
 
 */
 namespace Metric
@@ -19,12 +19,19 @@ namespace Metric
    typedef SOU::MakeType< AU::Meter, AT::second, AU::gram, AU::kelvin, AU::coulomb > AUMetric;
 
    /// Length compond units
-   typedef AUMetric::MakeDim<1,0,0,0,0>::type t_meter; ///< Meter type
-   typedef SOU::unitType< AU::Kilometer, 1, AT::second, 0, AU::gram, 0,AU::kelvin,0, AU::coulomb,0 > t_kilometer; /// Kilometer type
-   typedef SOU::unitType< AU::Centimeter, 1, AT::second, 0, AU::gram, 0,AU::kelvin,0, AU::coulomb,0 > t_centimeter; /// Centimeter type
-   typedef SOU::unitType< AU::Milimeter, 1, AT::second, 0, AU::gram, 0,AU::kelvin,0, AU::coulomb,0 > t_milimeter; /// Milimeter type
+   ///< Meter type
+   typedef AUMetric::MakeDim<1,0,0,0,0>::type t_meter;
+
+   /// Kilometer type
+   typedef SOU::unitType< AU::Kilometer, 1, AT::second, 0, AU::gram, 0,AU::kelvin,0, AU::coulomb,0 > t_kilometer;
+
+   /// Centimeter type
+   typedef SOU::unitType< AU::Centimeter, 1, AT::second, 0, AU::gram, 0,AU::kelvin,0, AU::coulomb,0 > t_centimeter;
+
+   /// Milimeter type
+   typedef SOU::unitType< AU::Milimeter, 1, AT::second, 0, AU::gram, 0,AU::kelvin,0, AU::coulomb,0 > t_milimeter; 
    
-   /// Time compond units
+   /// Time compond units (TODO look at replacing with std::chronos)
    typedef AUMetric::MakeDim<0,1,0,0,0>::type t_second; /// Seconds type
    typedef SOU::unitType< AU::Meter, 0, AT::minute, 1, AU::gram, 0,AU::kelvin,0, AU::coulomb,0 > t_minute;
    typedef SOU::unitType< AU::Meter, 0, AT::hour,   1, AU::gram, 0,AU::kelvin,0, AU::coulomb,0 > t_hour;
@@ -37,7 +44,7 @@ namespace Metric
    // 
    typedef AUMetric::MakeDim<1,1,0,0,0>::type t_metersecond; /// Meter * second type
 
-// Velocity compound units
+   // Velocity compound units
    typedef AUMetric::MakeDim<1,-1,0,0,0>::type t_velocity;
 
    // Mass flow compound units
@@ -46,21 +53,24 @@ namespace Metric
 } // end of namespace
 
 // Metric UDL's (User Defined Literals)
-constexpr Metric::t_meter operator"" _meter( long double d)
+constexpr Metric::t_meter operator"" _meter( long double d) noexcept
 {
    return Metric::t_meter(d);
 }
 
 // Kilometer UDL
-constexpr Metric::t_kilometer operator"" _kilometer( long double d) { return Metric::t_kilometer{ static_cast<double>(d) }; }
+constexpr Metric::t_kilometer operator"" _kilometer( long double d) noexcept
+{ return Metric::t_kilometer{ static_cast<double>(d) }; }
 
-constexpr auto operator"" _kph( long double d)
+constexpr auto operator"" _kph( long double d) noexcept
 {
    typedef SOU::unitType< Metric::AU::Kilometer, 1, AT::hour, -1, Metric::AU::gram, 0, Metric::AU::kelvin, 0, Metric::AU::coulomb, 0 > t_kilometerPerHour;
    return t_kilometerPerHour{ d };
 }
-constexpr Metric::t_centimeter operator"" _centimeter(long double d) { return Metric::t_centimeter{ d }; }
-constexpr Metric::t_milimeter operator"" _milimeter(long double d) { return Metric::t_milimeter{ d }; }
+constexpr Metric::t_centimeter operator"" _centimeter(long double d) noexcept
+{ return Metric::t_centimeter{ d }; }
+constexpr Metric::t_milimeter operator"" _milimeter(long double d) noexcept
+{ return Metric::t_milimeter{ d }; }
 
 // Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com

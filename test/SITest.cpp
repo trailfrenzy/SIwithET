@@ -314,6 +314,45 @@ TEST(BasicSI, IsPOD) {
    EXPECT_TRUE(std::is_pod<t_Meter::Charge>::value);
 }
 
+TEST(Exception, T_Symbols) {
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::CHARGE));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::LENGTH));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::MASS));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::TEMPERATURE));
+}
+
+TEST(Exception, Basic){
+   EXPECT_TRUE( noexcept( Metric::AtomicUnit::Meter));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::Centimeter));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::coulomb));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::gram));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::kelvin));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::kilogram));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::Kilometer));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::miligram));
+}
+
+TEST(Exception, Units){
+   EXPECT_TRUE(noexcept(Metric::t_centimeter));
+   EXPECT_TRUE(noexcept(Metric::t_gram));
+   EXPECT_TRUE(noexcept(Metric::t_gramPsec));
+   EXPECT_TRUE(noexcept(Metric::t_hour));
+   EXPECT_TRUE(noexcept(Metric::t_kilogram));
+   EXPECT_TRUE(noexcept(Metric::t_kilometer));
+   EXPECT_TRUE(noexcept(Metric::t_meter));
+   EXPECT_TRUE(noexcept(Metric::t_metersecond));
+
+}
+
+TEST(Exception, DimTypes)
+{
+   EXPECT_TRUE(noexcept( t_Meter::Length) );
+   EXPECT_TRUE(noexcept( t_Meter::Mass) );
+   EXPECT_TRUE(noexcept( t_Meter::Time));
+   EXPECT_TRUE(noexcept(t_Meter::Tempeture));
+   EXPECT_TRUE(noexcept(t_Meter::Charge));
+}
+
 // Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //

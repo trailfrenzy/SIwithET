@@ -13,7 +13,9 @@ namespace SystemOfUnits
    /// Namespace contains the tags used to identify time.
    namespace Time
    {
+      /// Provides the symbol for dimensions.
       using TIME = helpers::T_Symbol<'T'>;
+
       namespace AtomicUnit
       {
          /// tag class for time.  Base Unit for time.
@@ -21,32 +23,32 @@ namespace SystemOfUnits
          {
             enum { IsBase = true };
             typedef second Base;
-            static char const * str() { return "second"; }
-            static double toBase() { return 1.0; }
-            static double fromBase() { return 1.0; }
+            static char const * str() noexcept{ return "second"; }
+            static double toBase() noexcept { return 1.0; }
+            static double fromBase() noexcept { return 1.0; }
          };
          /// tag class for time.
          struct minute : TIME
          {
             enum { IsBase = false };
             typedef second Base;
-            static char const * str() { return "minute"; }
-            static double toBase() { return 60.0; }
-            static double fromBase() { return 1.0 / toBase(); }
+            static char const * str() noexcept { return "minute"; }
+            static double toBase() noexcept { return 60.0; }
+            static double fromBase() noexcept { return 1.0 / toBase(); }
          };
          /// tag clase for time.
          struct hour : TIME
          {
             enum { IsBase = false };
             typedef second Base;
-            static char const * str() { return "hour"; }
-            static double toBase() { return 60.0 * 60.0; }
-            static double fromBase() { return 1.0 / toBase(); }
+            static char const * str() noexcept { return "hour"; }
+            static double toBase() noexcept { return 60.0 * 60.0; }
+            static double fromBase() noexcept { return 1.0 / toBase(); }
          };
       }
    }
 }
-// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

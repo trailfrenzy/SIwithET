@@ -9,7 +9,7 @@ namespace SystemOfUnits {
 
             // ideally the function is used by the sorting template and its output.  Currently not used.
             template<typename t_char = char>
-            constexpr static inline auto Symstr() -> t_char const *
+            constexpr static inline auto Symstr() noexcept-> t_char const *
             {
                // creation of a static character string array.
                constexpr t_char static str[] = { '[', sym ,']', '\0' };

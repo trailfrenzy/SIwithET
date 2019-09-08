@@ -20,9 +20,9 @@
 
 namespace SystemOfUnits
 {
-   /// function returns true if both inputs have the same dimensions, else will crash.  Was in conversion_cast<> but pulled it out.
+   /// function returns true if both inputs have the same dimensions, else will compiler error.  Was in conversion_cast<> but pulled it out.
    template< typename LF, typename RT >
-   constexpr bool dimensions_same_assert()
+   constexpr bool dimensions_same_assert() noexcept
    {
       /** Used in the static assertion to ensure that all types are of the same type.
       You would not want to compare meter^2 from feet^3.  The dimensions are not the same. */
@@ -35,7 +35,7 @@ namespace SystemOfUnits
    }
 
    template< typename LF, typename RT >
-   constexpr bool dimensions_same()
+   constexpr bool dimensions_same() noexcept
    {
       return (LF::eL == RT::eL && LF::et == RT::et && LF::eM == RT::eM && LF::eT == RT::eT && LF::eQ == RT::eQ);
    }
@@ -45,6 +45,7 @@ namespace SystemOfUnits
 	@return OUT the new type
 	*/
 	template< typename OUT, typename IN > OUT conversion_cast(IN const &in)
+      noexcept(noexcept(OUT) && noexcept(IN))
 	{
       dimensions_same_assert< OUT, IN >();
 
@@ -92,7 +93,7 @@ namespace SystemOfUnits
       return OUT{ out };
 	}
 }
-// Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

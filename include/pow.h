@@ -27,7 +27,7 @@ namespace SystemOfUnits
          /// specialized version when the power is 1.
          template<> struct thePower<1>
          {
-            constexpr static double toBase()
+            constexpr static double toBase() noexcept( noexcept(T))
             {
                return T::toBase();
             }
@@ -36,7 +36,7 @@ namespace SystemOfUnits
          /// specialized class when the power is 0.
          template<> struct thePower<0>
          {
-            constexpr static double toBase()
+            constexpr static double toBase() noexcept
             {
                return 1.0;
             }
@@ -45,7 +45,7 @@ namespace SystemOfUnits
          /// specialized class when the power is -1.
          template<> struct thePower<-1>
          {
-            constexpr static double toBase()
+            constexpr static double toBase() noexcept(noexcept(T))
             {
                return 1.0 / T::toBase();
             }
@@ -54,7 +54,7 @@ namespace SystemOfUnits
          /// the generic version the struct. must be after the specialized versions.
          template< int E > struct thePower
          {
-            constexpr static double toBase()
+            constexpr static double toBase()noexcept(noexcept(T))
             {
                // it is safe to assume that E will be greater than +1 or 
                // less than -1 and not between
@@ -67,7 +67,7 @@ namespace SystemOfUnits
    }
 } // end of namespace SI
 
-// Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

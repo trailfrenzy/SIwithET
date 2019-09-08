@@ -26,6 +26,7 @@ namespace SystemOfUnits
       /// @prama std::stringstream is used to create the return stream
       //template< typename TYPE, int DIM > void printAtom( std::ostringstream &ret )
       template< typename TYPE, int DIM, typename TOUT > void printAtom(TOUT &ret)
+         noexcept( noexcept(TOUT) && noexcept(TYPE))
       {
          if( DIM ) // value known at compile time
          {
@@ -50,6 +51,7 @@ namespace SystemOfUnits
    /// @note future work is to remove the blank space after each string.
    template< typename char_type, typename T >
    inline auto UnitName( T const & )
+      noexcept(noexcept(std::basic_ostringstream<char_type>) && noexcept(T) )
    {
       std::basic_ostringstream<char_type> buf;
 
@@ -79,6 +81,7 @@ namespace SystemOfUnits
 	   enum { THETA = 233 }; // from www.asciitable.com
 
       template < char C, int T, typename T_BufPair > inline auto& OneDim(T_BufPair &buf)
+         noexcept( noexcept(t_bufPair::first_type)&&noexcept(t_bufPair::second_type) )
       {
          // only the numerator or denomitator is used not both, if ZERO then none are used.
          if (T > 0) {
@@ -104,7 +107,7 @@ namespace SystemOfUnits
          enum { DIM = D, CHAR = t_BaseUnit::sym };
          using string = typename std::basic_string<char_type>;
 
-         static auto c_str() -> string
+         static auto c_str() noexcept(noexcept(string) && noexcept(T) )-> string
          {
             string str;
             if (CHAR == SOLIDUS::sym) str = CHAR;

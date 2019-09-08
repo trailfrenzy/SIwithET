@@ -156,7 +156,7 @@ namespace SystemOfUnits
          /// private struct used in the the two operators (* / )
          template< typename A1, typename A2 > struct CombineBaseTypes
          {
-            constexpr static double toBase()
+            constexpr static double toBase() noexcept( noexcept(A1) && noexcept(A1) )
             { 
                return A1::toBase() * A2::toBase() * A1::fromBase() * A1::fromBase(); 
             }
@@ -310,11 +310,13 @@ namespace SystemOfUnits
          /// constructor initializes references to the operands.
          /// @param R1::ArgRef r1 is the right hand side.
          /// @param R2::ArgRef r2 is the left hand side.
-         constexpr Mul_Result( typename const R1::ArgRef r1, typename const R2::ArgRef r2 ) : m_r1(r1), m_r2(r2){}
+         constexpr Mul_Result( typename const R1::ArgRef r1, typename const R2::ArgRef r2 )
+            noexcept(noexcept(R1::ArgRef) && noexcept(R2::ArgRef ) )
+            : m_r1(r1), m_r2(r2){}
 
          /// computes when requested
          /// @return TResult which is found at compile time which is a double or UnitType<>
-         constexpr typename auto result() const
+         constexpr typename auto result() const noexcept(noexcept(m_r1) && noexcept(m_r2) )
          {
             using namespace SOU;
 
@@ -376,11 +378,13 @@ namespace SystemOfUnits
          /// constructor.
          /// @param R1::ArgRef r1 is the right hand side.
          /// @param R2::ArgRef r2 is the left hand side.
-         constexpr Div_Result( typename R1::ArgRef r1, typename R2::ArgRef r2 ) : m_r1(r1), m_r2(r2){}
+         constexpr Div_Result( typename R1::ArgRef r1, typename R2::ArgRef r2 )
+            noexcept(noexcept(R1::ArgRef) && noexcept(R2::ArgRef)) 
+            : m_r1(r1), m_r2(r2){}
 
          /// computes when requested
          /// @return TResult which is found at compile time
-         constexpr typename auto result() const
+         constexpr typename auto result() const noexcept( noexcept(m_r1) && noexcept(m_r2))
          {
             // line will compiler error if not the same compatible types
             static_assert( static_cast<bool>(t_base::ALLTYPES_THE_SAME::val), "line will compiler error if not the same compatible types" );
@@ -435,10 +439,10 @@ namespace SystemOfUnits
 
       /// for only UnitType only use only.
       template
-         < typename L, int iL    // length
-         , typename t, int it    // time
-         , typename M, int iM    // mass
-         , typename T, int iT    // temperature
+         < typename L, int iL  // length
+         , typename t, int it  // time
+         , typename M, int iM  // mass
+         , typename T, int iT  // temperature
          , typename Q, int iQ  // charge
          >
          ShowDim_t& operator<<(const SOU::unitType<L, iL, t, it, M, iM, T, iT, Q, iQ> &unit)
@@ -517,6 +521,7 @@ inline auto operator<<(TOUT & out, SOU::ShowUnits_t<TOUT>* (*)()) //-> SOU::Show
 /// template function which is multiplication operator of two different operands
 template < typename R1, typename R2 >
 constexpr inline auto operator*( R1 const &r1, R2 const &r2 )
+noexcept( noexcept(SOU::operators::Mul_Result<R1, R2>))
 {
    return SOU::operators::Mul_Result<R1,R2>(r1,r2).result();
 }
@@ -524,6 +529,7 @@ constexpr inline auto operator*( R1 const &r1, R2 const &r2 )
 /// template function which is divisional operator of two different operands
 template< typename R1, typename R2 >
 constexpr inline auto operator/( R1 const &r1, R2 const &r2 )
+noexcept(noexcept(SOU::operators::Div_Result<R1, R2>))
 {
    return SOU::operators::Div_Result<R1,R2>(r1,r2).result();
 }
@@ -537,7 +543,4 @@ constexpr inline auto operator/( R1 const &r1, R2 const &r2 )
 //
 // This software is provided "as is" without express or implied warranty.
 
-/**
-
-*/
 #endif
