@@ -15,7 +15,7 @@ namespace SystemOfUnits /// covers the basics of the system
       , typename t, int it    // time
       , typename M, int iM    // mass
       , typename T, int iT    // temperature
-      , typename Q, int iQ = 0 // charge
+      , typename Q, int iQ =0 // charge
    >
    class unitType
    {
@@ -56,20 +56,20 @@ namespace SystemOfUnits /// covers the basics of the system
       /** constructor from the same unitType.
       * @param a unitType of the same type.
       */
-      explicit constexpr unitType(unitType const &val ) noexcept(b_noexcept) : m_amount(val.m_amount) {}
-      constexpr unitType(unitType &&val) = default; // : m_amount(std::move(val.m_amount)) {}
+      explicit constexpr unitType(unitType const &val ) noexcept(b_noexcept) = default; //: m_amount(val.m_amount) {}
+      constexpr unitType(unitType &&val) noexcept(b_noexcept) = default;
 
 	  /** assignment operator
 	  * @param value which the left-handed object will be assigned
 	  * @return the current object
 	  */
-     constexpr unitType &operator=(unitType const &) & = default;
-     
-     constexpr unitType &operator=(unitType &&rt) && = default;
+     constexpr unitType &operator=(unitType const &) & noexcept(b_noexcept) = default;
+
+     constexpr unitType &operator=(unitType &&rt) && noexcept(b_noexcept) = default;
 
      /// prevent assigning scalar values to an existing unit but still allows assnment to a new type.
      /// Important to prevent novice users from assigning new amount to existing objects
-     unitType& operator=(t_float val) = delete; // { m_amount = val; return *this;  } // 
+     unitType& operator=(t_float val) = delete;
 
       /** returns the scalar value of the object.  Would like to eliminate this method but is needed for testing currently.
           Method is a crutch for any novice of the library.
