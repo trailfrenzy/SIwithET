@@ -1,4 +1,3 @@
-
 #ifndef SOU_TEMPETURE_INCLUDE_H
 #define SOU_TEMPETURE_INCLUDE_H
 #include "Struct_Symbol.h"
@@ -14,19 +13,19 @@ namespace SystemOfUnits
       struct kelvin : TEMPERATURE
       {
          enum { IsBase = true }; /// Lets using classes know if class is used as a base.
-         static char const * str() { return "Kelvin"; }/// Called by WhatAmI when creating the string describing the type.
-         static double toBase( double val) { return val; } 
-         static double fromBase( double val) { return val; }
-		 using Base = kelvin;
+         static char const * str() noexcept { return "Kelvin"; }/// Called by WhatAmI when creating the string describing the type.
+         static double toBase( double val) noexcept { return val; }
+         static double fromBase( double val) noexcept { return val; }
+         using Base = kelvin;
          //typedef Metric::AtomicUnit::Meter Base;/// Typedef of the actual base
       };
 
       struct celsius : TEMPERATURE
       {
          enum { IsBase = false }; /// Lets using classes know if class is used as a base.
-         static char const * str() { return "°C"; }/// Called by WhatAmI when creating the string describing the type.
-         static double toBase( double C ) { return C + 273.15; } // ex Kelvin = toBase(Celsius);
-         static double fromBase( double K ) { return K - 273.15; }
+         static char const * str() noexcept { return "°C"; }/// Called by WhatAmI when creating the string describing the type.
+         static double toBase( double C ) noexcept { return C + 273.15; } // ex Kelvin = toBase(Celsius);
+         static double fromBase( double K ) noexcept { return K - 273.15; }
 		 using Base = kelvin;
 		 //typedef Metric::AtomicUnit::Meter Base;/// Typedef of the actual base 
       };
@@ -34,15 +33,15 @@ namespace SystemOfUnits
 	  struct fahrenheit : TEMPERATURE
 	  {
 		  enum { IsBase = false }; /// Lets using classes know if class is used as a base.
-		  static char const * str() { return "°F"; }/// Called by WhatAmI when creating the string describing the type. K = 5/9 (° F - 32) + 273
-		  static double toBase(double F) { return (5.0/9.0)*(F - 32.0) + 273.15; }
-		  static double fromBase(double K) { return (9.0/5.0)*(K - 273.15) + 32.0; } // ° F = 9/5 (K - 273) + 32
+		  static char const * str() noexcept { return "°F"; }/// Called by WhatAmI when creating the string describing the type. K = 5/9 (° F - 32) + 273
+		  static double toBase(double F) noexcept { return (5.0/9.0)*(F - 32.0) + 273.15; }
+		  static double fromBase(double K) noexcept { return (9.0/5.0)*(K - 273.15) + 32.0; } // ° F = 9/5 (K - 273) + 32
 		  using Base = kelvin;
 	  };
    }
 
 }
-// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

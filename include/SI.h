@@ -71,7 +71,7 @@ namespace SystemOfUnits /// covers the basics of the system
      /// Important to prevent novice users from assigning new amount to existing objects
      unitType& operator=(t_float val) = delete;
 
-      /** returns the scalar value of the object.  Would like to eliminate this method but is needed for testing currently.
+      /** returns the scalar value of the object.  Would like to eliminate this method but is used by conversion_cast<> and testing.
           Method is a crutch for any novice of the library.
       TODO: Use EXPECT_TRUE() instead of EXPECT_DOUBLE_EQ()
         * @return the scalar value of the type. */
@@ -103,7 +103,7 @@ namespace SystemOfUnits /// covers the basics of the system
       * @param unitType on the right hand side
       * @return bool true if the left side is less than the right side
       */
-      friend constexpr bool operator< (unitType const &lf, unitType const &rt) noexcept(b_noexcept)
+      friend constexpr bool operator<(unitType const &lf, unitType const &rt) noexcept(b_noexcept)
       { return lf.m_amount < rt.m_amount; }
 
       /** greater than operator
@@ -111,7 +111,7 @@ namespace SystemOfUnits /// covers the basics of the system
       * @param unitType on the right hand side
       * @return bool true if the left side is greater than the right side
       */
-      friend constexpr bool operator> (unitType const &lf, unitType const &rt) noexcept(b_noexcept)
+      friend constexpr bool operator>(unitType const &lf, unitType const &rt) noexcept(b_noexcept)
       { return rt < lf; }
 
       /** less than equal operator
