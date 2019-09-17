@@ -44,6 +44,9 @@ namespace SystemOfUnits /// covers the basics of the system
       /// default constructor (does not initialize scalar with default value, just like a built in type).
       unitType() noexcept(b_noexcept) {}
 
+      /// rule of 6, provide a default destructor if one of the 6 is provided.
+      ~unitType() noexcept(b_noexcept) = default;
+
       /// constructor from a scalar
       /** constructor from a scalar value.
       Constructor from a double type is made explicit to prevent comparison of non-types.  Forces strong type comparison.
@@ -65,6 +68,7 @@ namespace SystemOfUnits /// covers the basics of the system
 	  */
      constexpr unitType &operator=(unitType const &) & noexcept(b_noexcept) = default;
 
+     /// default move-assignment operator
      constexpr unitType &operator=(unitType &&rt) && noexcept(b_noexcept) = default;
 
      /// prevent assigning scalar values to an existing unit but still allows assnment to a new type.
