@@ -23,27 +23,27 @@ namespace SystemOfUnits
          {
             enum { IsBase = true };
             typedef second Base;
-            static char const * str() noexcept{ return "second"; }
-            static double toBase() noexcept { return 1.0; }
-            static double fromBase() noexcept { return 1.0; }
+            constexpr static char const * str() noexcept{ return "second"; }
+            constexpr static double toBase() noexcept { return 1.0; }
+            constexpr static double fromBase() noexcept { return 1.0; }
          };
          /// tag class for time.
          struct minute : TIME
          {
             enum { IsBase = false };
             typedef second Base;
-            static char const * str() noexcept { return "minute"; }
-            static double toBase() noexcept { return 60.0; }
-            static double fromBase() noexcept { return 1.0 / toBase(); }
+            constexpr static char const * str() noexcept { return "minute"; }
+            constexpr static double toBase() noexcept { return 60.0; }
+            constexpr static double fromBase() noexcept { return 1.0 / toBase(); }
          };
          /// tag clase for time.
          struct hour : TIME
          {
             enum { IsBase = false };
             typedef second Base;
-            static char const * str() noexcept { return "hour"; }
-            static double toBase() noexcept { return 60.0 * 60.0; }
-            static double fromBase() noexcept { return 1.0 / toBase(); }
+            constexpr static char const * str() noexcept { return "hour"; }
+            constexpr static double toBase() noexcept { return 60.0 * 60.0; }
+            constexpr static double fromBase() noexcept { return 1.0 / toBase(); }
          };
       }
    }
