@@ -323,15 +323,7 @@ private:
 
 };
 
-//typedef SI_Multiply<2, 1, 1> t_myMul;
-//typedef testing::Types<2, 1, 1> t_arg;
-//typedef testing::Types<int, int, int> t_arg;
 TYPED_TEST_CASE_P(SI_Multiply);
-
-TYPED_TEST_P(SI_Multiply, NoTestHere)
-{
-   EXPECT_TRUE(true) << "Just set up to see if it would compile.";
-}
 
 /// Test the result type and shows that the result type is working correctly.
 TYPED_TEST_P(SI_Multiply, TestMul_Result)
@@ -350,7 +342,7 @@ TYPED_TEST_P(SI_Multiply, Test2)
 {
    using TAG = SI_Multiply<TypeParam >;
    // these test call internally Mul_Result
-   TAG::t_3 prod = *TAG::m_1 * *TAG::m_2;
+   typename TAG::t_3 prod = *TAG::m_1 * *TAG::m_2;
    EXPECT_TRUE(prod == *TAG::m_3);
    EXPECT_TRUE(*TAG::m_3 == *TAG::m_1 * *TAG::m_2);
 
@@ -407,10 +399,10 @@ TYPED_TEST_P(SI_Multiply, TestChainWithScaler)
    using TAG = SI_Multiply<TypeParam >;
    for (double x = 2.0; x < 12.0; x += 1.3)
    {
-      TAG::t_3 arg1 = *TAG::m_3 *x*x;
-      TAG::t_3 arg2 = (*TAG::m_1*x) *(*TAG::m_2 * x);
+      typename TAG::t_3 arg1 = *TAG::m_3 *x*x;
+      typename TAG::t_3 arg2 = (*TAG::m_1*x) *(*TAG::m_2 * x);
       EXPECT_DOUBLE_EQ(arg1.amount(), arg2.amount());
-      //EXPECT_DOUBLE_EQ(*TAG::m_3 *x*x, (*TAG::m_1*x) *( *TAG::m_2 * x) ) << "Why didn't it work";
+      ASSERT_TRUE(*TAG::m_3 *x*x == (*TAG::m_1*x) *( *TAG::m_2 * x) ) << "Why didn't it work";
    }
 }
 
@@ -445,8 +437,8 @@ TYPED_TEST_P(SI_Multiply, TestMultipleInt)
 {
    using TAG = SI_Multiply<TypeParam >;
    int const x = 2;
-   TAG::t_1 res1 = *TAG::m_1 * x;
-   TAG::t_1 const res2 = x * *TAG::m_1;
+   typename TAG::t_1 res1 = *TAG::m_1 * x;
+   typename TAG::t_1 const res2 = x * *TAG::m_1;
 
    EXPECT_DOUBLE_EQ(6.0, res1.amount());
    EXPECT_DOUBLE_EQ(6.0, res2.amount());
@@ -463,8 +455,8 @@ TYPED_TEST_P(SI_Multiply, TestMultipleUnsigned)
 {
    using TAG = SI_Multiply<TypeParam >;
    unsigned const x = 2;
-   TAG::t_1 res1 = *TAG::m_1 * x;
-   TAG::t_1 const res2 = x * *TAG::m_1;
+   typename TAG::t_1 res1 = *TAG::m_1 * x;
+   typename TAG::t_1 const res2 = x * *TAG::m_1;
 
    EXPECT_DOUBLE_EQ(6.0, res1.amount());
    EXPECT_DOUBLE_EQ(6.0, res2.amount());
@@ -478,8 +470,8 @@ TYPED_TEST_P(SI_Multiply, TestMultipleFloat)
 {
    using TAG = SI_Multiply<TypeParam >;
    float const x = 2.000f;
-   TAG::t_1 res1 = *TAG::m_1 * x;
-   TAG::t_1 const res2 = x * *TAG::m_1;
+   typename TAG::t_1 res1 = *TAG::m_1 * x;
+   typename TAG::t_1 const res2 = x * *TAG::m_1;
 
    EXPECT_DOUBLE_EQ(6.0, res1.amount());
    EXPECT_DOUBLE_EQ(6.0, res2.amount());
@@ -493,8 +485,8 @@ TYPED_TEST_P(SI_Multiply, TestMultipleShort)
 {
    using TAG = SI_Multiply<TypeParam >;
    short const x = 2;
-   TAG::t_1 res1 = *TAG::m_1 * x;
-   TAG::t_1 const res2 = x * *TAG::m_1;
+   typename TAG::t_1 res1 = *TAG::m_1 * x;
+   typename TAG::t_1 const res2 = x * *TAG::m_1;
 
    EXPECT_DOUBLE_EQ(6.0, res1.amount());
    EXPECT_DOUBLE_EQ(6.0, res2.amount());
@@ -509,14 +501,14 @@ TYPED_TEST_P(SI_Multiply, TestMultipleLong)
    using TAG = SI_Multiply<TypeParam >;
    long const x = 2;
    auto res1 = *TAG::m_1 * x;
-   TAG::t_1 const res2 = x * *TAG::m_1;
+   typename TAG::t_1 const res2 = x * *TAG::m_1;
 
    EXPECT_DOUBLE_EQ(6.0, res1.amount());
    EXPECT_DOUBLE_EQ(6.0, res2.amount());
 }
 
 REGISTER_TYPED_TEST_CASE_P(SI_Multiply
-   , NoTestHere, TestMul_Result, Test2, TestWithScaler, ScalerInteter, TestMultipleAssign, TestMultipleAssignInt, TestChainWithScaler, TestMultipleInt, TestMultipleUnsigned, TestMultipleFloat, TestMultipleShort, TestMultipleLong);
+   , TestMul_Result, Test2, TestWithScaler, ScalerInteter, TestMultipleAssign, TestMultipleAssignInt, TestChainWithScaler, TestMultipleInt, TestMultipleUnsigned, TestMultipleFloat, TestMultipleShort, TestMultipleLong);
 
 typedef ::testing::Types< ARG<1, 1, 2>, ARG< 2, 0, 2>, ARG< 2, 1, 3>, ARG<2, 3, 5>, ARG<-3, 5, 2>, ARG<3, -5, -2> > MyTypes;
 INSTANTIATE_TYPED_TEST_CASE_P(My, SI_Multiply, MyTypes);

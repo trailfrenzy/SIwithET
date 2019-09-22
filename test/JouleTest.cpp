@@ -25,7 +25,6 @@ TEST(Diminsion, Joule) {
 	t_Joule joule{ 45.033 };
 	EXPECT_EQ(SystemOfUnits::Diminsion(joule), "[L]^2[M]/[T]^2");
 	EXPECT_EQ(SystemOfUnits::WhatAmI(joule), "meter^2*second^(-2)*kilogram");
-	//EXPECT_TRUE(SystemOfUnits::Diminsion(joule) == std::string("L^2⋅t^-2⋅M"));
 }
 
 /*
@@ -87,7 +86,7 @@ TEST(Joule, GravityDim) {
 	EXPECT_EQ("[L]^3/[M][T]^2", SystemOfUnits::Diminsion(GRAVITY));
 }
 
-// Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

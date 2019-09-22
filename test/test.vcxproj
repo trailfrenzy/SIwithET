@@ -84,6 +84,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <AssemblerOutput>NoListing</AssemblerOutput>
+      <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>D:\Projects\googletest\googletest\msvc\2010\gtest\x64-Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -104,6 +105,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <AssemblerOutput>NoListing</AssemblerOutput>
+      <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>D:\Projects\googletest\googletest\msvc\2010\gtest\x64-Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -128,6 +130,7 @@
       <DebugInformationFormat>None</DebugInformationFormat>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -154,6 +157,7 @@
       <DebugInformationFormat>None</DebugInformationFormat>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

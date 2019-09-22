@@ -1,14 +1,14 @@
+// File contains the basic unit tests for SI.h
 #include "SI.h"
 #include <gtest/gtest.h>
 #include <type_traits>
-//#include <iostream>
 #include <sstream>
 #include <string>
 #include <memory>
 #include "MetricTypes.h"
 #include "template_help.h"
 
-template< class UNIT_TYPE >
+template< typename UNIT_TYPE >
 class SITest : public testing::Test
 {
 protected:
@@ -18,7 +18,8 @@ protected:
 	p_type m_3;
 	p_type m_4;
 
-	using t_type = UNIT_TYPE;
+	using t_type = typename UNIT_TYPE;
+
 	void SetUp()
 	{
 		m_1 = std::make_unique<t_type>(8.0);
@@ -36,17 +37,12 @@ TYPED_TEST_P(SITest, SizeOf)
 {
 	using TAG = SITest<TypeParam >;
 	EXPECT_TRUE(sizeof(double) == sizeof(TAG::t_type)) << "was not 64 bit";
+   ASSERT_TRUE(sizeof(double) == sizeof(long double)) << "if fail you are no longer on a long double is 64bit";
 }
-
-//#define ASSERT_UNITTYPE_EQ(val1, val2)\
-//  ASSERT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<decltype(val1)>, \
-//                      val1, val2)
-//   ASSERT_UNITTYPE_EQ(TAG::t_type(4.5), *TAG::m_1);
 
 TYPED_TEST_P(SITest, Comparison)
 {
 	using TAG = SITest<TypeParam >;
-	//using namespace SI;
 	*TAG::m_1 = TAG::t_type(4.5);
 	*TAG::m_2 = TAG::t_type(4.5);
 
@@ -108,7 +104,7 @@ TYPED_TEST_P(SITest, Assignment)
 {
 	using TAG = SITest<TypeParam >;
 	*TAG::m_1 = TAG::t_type(68.9);
-	EXPECT_TRUE(*TAG::m_1 == 68.9) << "operator=(double) is no longer availible";
+	EXPECT_TRUE(*TAG::m_1 == 68.9);
 
 	*TAG::m_2 = *TAG::m_1;
 	EXPECT_TRUE(*TAG::m_2 == 68.9);
@@ -126,23 +122,22 @@ TYPED_TEST_P(SITest, Addition)
 	//CPPUNIT_ASSERT_DOUBLES_EQUAL( *m_1, *m_4 + *m_4, 0.00000001 ); 
 }
 TYPED_TEST_P(SITest, Addition_constexp) {
-   using TAG = SITest<TypeParam >;
-   using t_type = TAG::t_type;
-   constexpr t_type a  { 2 };
-   constexpr t_type b  { 3.0 };
+   using TAG = SITest<TypeParam>;
+   constexpr TAG::t_type a{ 2 };
+   constexpr TAG::t_type b{ 3.0 };
    constexpr auto c = a + b;
    ASSERT_DOUBLE_EQ(c.amount(), 5.0);
 }
 TYPED_TEST_P(SITest, Subtraction_constexp) {
-   using t_type = SITest<TypeParam >::t_type;
-   constexpr t_type a{ 12 };
-   constexpr t_type b{ 5.0 };
+   using TAG = SITest<TypeParam>;
+   constexpr TAG::t_type a{ 12 };
+   constexpr TAG::t_type b{ 5.0 };
    constexpr auto c = a - b;
    ASSERT_DOUBLE_EQ(c.amount(), 7.0);
 }
 TYPED_TEST_P(SITest, AdditionAssignment)
 {
-	using TAG = SITest<TypeParam >;
+	using TAG = SITest<TypeParam>;
 	*TAG::m_2 += *TAG::m_3;
 	EXPECT_TRUE(*TAG::m_1 == *TAG::m_2);
    *TAG::m_2 += TAG::t_type(3.0);
@@ -164,8 +159,8 @@ TYPED_TEST_P(SITest, Chaining)
 	using TAG = SITest<TypeParam >;
 	EXPECT_TRUE(*TAG::m_4 + *TAG::m_4 - *TAG::m_2 == *TAG::m_3);
 
-	TAG::t_type u1(12.0);
-	TAG::t_type u2(6.0);
+   typename TAG::t_type u1(12.0);
+   typename TAG::t_type u2(6.0);
 	EXPECT_TRUE(u2 + u2 + u2 + u2 - u1 == u1);
 	EXPECT_TRUE(u2 + u2 + u2 + u2 - u1 - u2 == u1 - u2);
 	EXPECT_TRUE(TAG::t_type(2.0) + TAG::t_type(3.0) == TAG::t_type(5.0));
@@ -178,32 +173,33 @@ TYPED_TEST_P(SITest, DestructorNoThrow) {
 }
 
 TYPED_TEST_P(SITest, IsMovable) {
-   using TAG = SITest<TypeParam >::t_type;
-   EXPECT_TRUE(std::is_move_assignable<TAG>::value);
-   ASSERT_TRUE(std::is_move_constructible<TAG>::value);
+   using TAG = SITest<TypeParam>;
+   EXPECT_TRUE(std::is_move_assignable_v<TAG::t_type>);
+   ASSERT_TRUE(std::is_move_constructible<TAG::t_type>::value);
 }
 
 TYPED_TEST_P(SITest, IsCopyable) {
-   using TAG = SITest<TypeParam >::t_type;
-   //EXPECT_TRUE( std::is_assignable<TAG&, TAG >::value );
-   EXPECT_TRUE(std::is_copy_assignable<TAG>::value);
-   EXPECT_TRUE(std::is_trivially_copy_assignable<TAG>::value);
+   // typename using TAG = SITest<TypeParam >::t_type;  TODO why dose this not work?
+   using TAG = SITest<TypeParam>;
+   ASSERT_TRUE( (std::is_assignable<TAG::t_type, TAG::t_type >::value) );
+   EXPECT_TRUE(std::is_copy_assignable<TAG::t_type>::value);
+   EXPECT_TRUE(std::is_trivially_copy_assignable<TAG::t_type>::value);
 }
 
 TYPED_TEST_P(SITest, IsConstructible) 
 {
-   using TAG = SITest<TypeParam >::t_type;
-   EXPECT_TRUE(std::is_constructible<TAG >::value );
-   //EXPECT_TRUE( std::is_constructible<TAG, double >::value );
-   EXPECT_TRUE(std::is_copy_constructible<TAG>::value);
-   //EXPECT_TRUE(std::is_trivially_copy_constructible<TAG>::value);
-   //EXPECT_TRUE(std::is_nothrow_copy_constructible<TAG>::value);
+   using TAG = SITest<TypeParam>;
+   ASSERT_TRUE(std::is_constructible<TAG::t_type>::value );
+   ASSERT_TRUE( (std::is_constructible<TAG::t_type, long double >::value));
+   ASSERT_TRUE(std::is_copy_constructible<TAG::t_type>::value);
+   ASSERT_TRUE((std::is_trivially_copy_constructible<TAG::t_type>::value));
+   ASSERT_TRUE((std::is_nothrow_copy_constructible<TAG::t_type>::value));
 }
 
 TYPED_TEST_P(SITest, isUnitType) {
-   using TAG = SITest<TypeParam >::t_type;
-   ASSERT_TRUE(SOU::is_UnitType<TAG>::value ) << "why is it wrong?";
-   ASSERT_FALSE(SOU::is_UnitType<SITest<TypeParam >>::value);
+   using TAG = SITest<TypeParam>;
+   ASSERT_TRUE( SOU::is_UnitType<TAG::t_type>::value );
+   ASSERT_FALSE(SOU::is_UnitType<TAG>::value);
    ASSERT_FALSE(SOU::is_UnitType<double>::value);
    ASSERT_FALSE(SOU::is_UnitType<unsigned>::value);
 }
@@ -223,7 +219,6 @@ TEST(SITestSQ, Squaring)
 
 	enum { b = SystemOfUnits::is_same< gramSQ, typename t_gramPsecSQ >::value };
 	EXPECT_TRUE(b);
-
 }
 
 TEST(BasicSI, Size) {
@@ -279,18 +274,49 @@ TEST(BasicSI, InserterNoUnit) {
    EXPECT_EQ( strm.str(), std::string("9.78") );
 }
 
+TEST(BasicSI, IsTrivial)
+{
+   EXPECT_TRUE(std::is_trivial<t_MeterSq>::value);
+   EXPECT_TRUE(std::is_trivially_constructible<t_MeterSq>::value);
+   EXPECT_TRUE(std::is_trivially_copy_constructible<t_MeterSq>::value);
+   EXPECT_TRUE(std::is_trivially_copy_assignable<t_MeterSq>::value);
+   EXPECT_TRUE(std::is_trivially_copyable<t_MeterSq>::value);
+   EXPECT_TRUE(std::is_trivially_move_assignable<t_MeterSq>::value);
+   EXPECT_TRUE(std::is_nothrow_copy_assignable<t_MeterSq>::value);
+}
+
+TEST(BasicSI, IsFloat) {
+   ASSERT_FALSE(std::is_floating_point<t_MeterSq>::value);
+}
+
+TEST(BasicSI, IsAssignable)
+{
+   ASSERT_TRUE((std::is_assignable< t_MeterSq&, t_MeterSq >::value));
+   ASSERT_FALSE((std::is_assignable< t_MeterSq&, long double >::value)) << "do not allow an existing value to reassign";
+   ASSERT_FALSE((std::is_assignable< t_MeterSq&, double >::value)) << "do not allow an existing value to reassign";
+   ASSERT_FALSE((std::is_assignable< t_MeterSq&, float >::value)) << "do not allow an existing value to reassign";
+   ASSERT_FALSE((std::is_assignable< t_MeterSq&, int >::value)) << "do not allow an existing value to reassign";
+   ASSERT_FALSE((std::is_assignable< t_MeterSq&, t_Meter >::value)) << "do not assign one type to another";
+
+   ASSERT_TRUE((std::is_trivially_assignable< t_MeterSq&, t_MeterSq>::value));
+   ASSERT_FALSE((std::is_trivially_assignable< t_MeterSq&, double>::value));
+}
+
+TEST(BasicSI, IsNothrowAssignable)
+{
+   ASSERT_TRUE((std::is_nothrow_assignable< t_MeterSq, t_MeterSq>::value));
+}
+
 TEST(BasicSI, IsConstructable) 
 {
    EXPECT_TRUE(std::is_default_constructible<t_MeterSq>::value);
    EXPECT_TRUE(std::is_nothrow_default_constructible<t_Meter>::value);
    EXPECT_TRUE(std::is_constructible<t_MeterSq >::value);
    EXPECT_TRUE(std::is_nothrow_constructible<t_MeterCubed>::value);
-   //EXPECT_TRUE(std::is_trivially_constructible<t_MeterSq>::value);
 }
 
 TEST(BasicSI, IsCopyConstructible) {
    EXPECT_TRUE(std::is_copy_constructible<t_MeterSq>::value);
-   //EXPECT_TRUE(std::is_trivially_copy_constructible<t_MeterSq>::value);
    EXPECT_TRUE(std::is_nothrow_copy_constructible<t_MeterSq>::value);
 }
 
@@ -306,7 +332,8 @@ TEST(BasicSI, IsClass) {
    EXPECT_TRUE(std::is_class<t_MeterSq>::value);
 }
 TEST(BasicSI, IsPOD) {
-   EXPECT_FALSE(std::is_pod<t_Meter>::value) << "Not a POD since m_amound is private";
+   EXPECT_TRUE(std::is_pod<t_Meter>::value) << "Ensure default constructor is default";
+   EXPECT_TRUE(std::is_pod<t_MeterSq>::value);
    EXPECT_TRUE(std::is_pod<t_Meter::Length>::value);
    EXPECT_TRUE(std::is_pod<t_Meter::Mass>::value);
    EXPECT_TRUE(std::is_pod<t_Meter::Time>::value);
@@ -315,42 +342,42 @@ TEST(BasicSI, IsPOD) {
 }
 
 TEST(Exception, T_Symbols) {
-   EXPECT_TRUE(noexcept(Metric::AtomicUnit::CHARGE));
-   EXPECT_TRUE(noexcept(Metric::AtomicUnit::LENGTH));
-   EXPECT_TRUE(noexcept(Metric::AtomicUnit::MASS));
-   EXPECT_TRUE(noexcept(Metric::AtomicUnit::TEMPERATURE));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::CHARGE() ));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::LENGTH() ));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::MASS() ));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::TEMPERATURE()));
 }
 
 TEST(Exception, Basic){
-   EXPECT_TRUE( noexcept( Metric::AtomicUnit::Meter));
-   EXPECT_TRUE(noexcept(Metric::AtomicUnit::Centimeter));
-   EXPECT_TRUE(noexcept(Metric::AtomicUnit::coulomb));
-   EXPECT_TRUE(noexcept(Metric::AtomicUnit::gram));
-   EXPECT_TRUE(noexcept(Metric::AtomicUnit::kelvin));
-   EXPECT_TRUE(noexcept(Metric::AtomicUnit::kilogram));
-   EXPECT_TRUE(noexcept(Metric::AtomicUnit::Kilometer));
-   EXPECT_TRUE(noexcept(Metric::AtomicUnit::miligram));
+   EXPECT_TRUE( noexcept( Metric::AtomicUnit::Meter()));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::Centimeter()));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::coulomb()));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::gram()));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::kelvin()));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::kilogram()));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::Kilometer()));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::miligram()));
 }
 
 TEST(Exception, Units){
-   EXPECT_TRUE(noexcept(Metric::t_centimeter));
-   EXPECT_TRUE(noexcept(Metric::t_gram));
-   EXPECT_TRUE(noexcept(Metric::t_gramPsec));
-   EXPECT_TRUE(noexcept(Metric::t_hour));
-   EXPECT_TRUE(noexcept(Metric::t_kilogram));
-   EXPECT_TRUE(noexcept(Metric::t_kilometer));
-   EXPECT_TRUE(noexcept(Metric::t_meter));
-   EXPECT_TRUE(noexcept(Metric::t_metersecond));
+   EXPECT_TRUE(noexcept(Metric::t_centimeter()));
+   EXPECT_TRUE(noexcept(Metric::t_gram()));
+   EXPECT_TRUE(noexcept(Metric::t_gramPsec()));
+   EXPECT_TRUE(noexcept(Metric::t_hour()));
+   EXPECT_TRUE(noexcept(Metric::t_kilogram()));
+   EXPECT_TRUE(noexcept(Metric::t_kilometer()));
+   EXPECT_TRUE(noexcept(Metric::t_meter()));
+   EXPECT_TRUE(noexcept(Metric::t_metersecond()));
 
 }
 
 TEST(Exception, DimTypes)
 {
-   EXPECT_TRUE(noexcept( t_Meter::Length) );
-   EXPECT_TRUE(noexcept( t_Meter::Mass) );
-   EXPECT_TRUE(noexcept( t_Meter::Time));
-   EXPECT_TRUE(noexcept(t_Meter::Tempeture));
-   EXPECT_TRUE(noexcept(t_Meter::Charge));
+   EXPECT_TRUE(noexcept( t_Meter::Length()) );
+   EXPECT_TRUE(noexcept( t_Meter::Mass()) );
+   EXPECT_TRUE(noexcept( t_Meter::Time()));
+   EXPECT_TRUE(noexcept(t_Meter::Tempeture()));
+   EXPECT_TRUE(noexcept(t_Meter::Charge()));
 }
 
 // Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.

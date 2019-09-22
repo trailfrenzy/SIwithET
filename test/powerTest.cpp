@@ -11,6 +11,11 @@ namespace {
 	};
 }
 
+TEST(powerTest, NoExcept)
+{
+   ASSERT_TRUE(noexcept(helpers::P<Mock>::thePower<2>()));
+}
+
 TEST(powerTest, Zero)
 {
    ASSERT_DOUBLE_EQ(helpers::P<int>::thePower<0>::toBase(), 1.0) << "To the zeroth order is always 1.0";
@@ -50,7 +55,7 @@ TEST(powerTest, NegFour) {
 	ASSERT_DOUBLE_EQ(helpers::P<Mock>::thePower<-4>::toBase(), 0.0625) << "check the assembly to verify if was calc at compile time";
 }
 
-// Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

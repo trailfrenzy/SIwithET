@@ -1,3 +1,4 @@
+// class is for testing stream inserter and the manipulators which work with the inserter.
 #include "SI.h"
 #include "operators.h"
 #include <gtest/gtest.h>
@@ -73,8 +74,8 @@ TEST(Inserter, ShowDimMeterSqCstring) {
    t_MeterSq m3(10.11);
 
    std::stringstream strm;
-   strm << SOU::dimension << m3 << ' ' << "44.6666";
-   EXPECT_EQ(strm.str(), std::string_view("10.11 [L]^2 44.6666"));
+   strm << SOU::dimension << m3 << ' ' << "Hello, World";
+   EXPECT_EQ(strm.str(), std::string_view("10.11 [L]^2 Hello, World"));
 }
 
 TEST(Inserter, ShowDimMeterSqString) {
@@ -87,7 +88,7 @@ TEST(Inserter, ShowDimMeterSqString) {
 
 TEST(Inserter, ShowDimMeterSqStringView) {
    t_MeterSq m3(10.11);
-   std::string_view s("44.6666");
+   std::string_view s{"44.6666" };
    std::ostringstream strm;
    strm << SOU::dimension << m3 << ' ' << s;
    EXPECT_EQ(strm.str(), std::string_view("10.11 [L]^2 44.6666"));

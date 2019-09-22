@@ -28,14 +28,14 @@ namespace SystemOfUnits
       template< typename TYPE, int DIM, typename TOUT > void printAtom(TOUT &ret)
          noexcept( noexcept(TOUT) && noexcept(TYPE))
       {
-         if( DIM ) // value known at compile time
+         if constexpr( DIM != 0) // value known at compile time
          {
             ret << TYPE::str();
-   			if (DIM > 1) 
+   			if constexpr (DIM > 1)
             {
                ret << '^' << DIM;
 			   }
-            if (DIM < 0)
+            if constexpr (DIM < 0)
             {
                ret << "^(" << DIM << ')';
             }
@@ -84,11 +84,11 @@ namespace SystemOfUnits
          noexcept( noexcept(t_bufPair::first_type)&&noexcept(t_bufPair::second_type) )
       {
          // only the numerator or denomitator is used not both, if ZERO then none are used.
-         if (T > 0) {
+         if constexpr (T > 0) {
             buf.first << '[' << C << ']';
             if (T > 1) buf.first << '^' << T;
          }
-         if (T < 0) {
+         if constexpr (T < 0) {
             buf.second << '[' << C << ']';
             if (T < -1) buf.second << '^' << abs(T);
          }
@@ -129,67 +129,71 @@ namespace SystemOfUnits
    
    /// Used in sorting the dimensions below.
    template <class a, class b> struct ORD {
-      enum { VALUE = a::DIM > b::DIM };
+      enum:bool { VALUE = a::DIM > b::DIM };
    };
    
    /// NOTE: Not ready for use.
    template< class T > inline std::string Dim( T const &)
    {
-      if (!T::eL && !T::eM && !T::et && !T::eT && !T::eQ) return ""; // no dim, bale out fast!
-      using SystemOfUnits::helpers::t_SingleDim;
+      if constexpr(0==T::eL && 0 == T::eM && 0 == T::et && 0 == T::eT && 0 == T::eQ) return ""; // no dim, bale out fast!
+      else
+      {
+         using SystemOfUnits::helpers::t_SingleDim;
 
-     typedef typename Meta::LIST5< t_SingleDim< T::Length, T::eL>, t_SingleDim< T::Time, T::et>, t_SingleDim< T::Mass, T::eM>, t_SingleDim< T::Tempeture, T::eT>, t_SingleDim< T::Charge, T::eQ > >::TYPE t_List;
+         typedef typename Meta::LIST5< t_SingleDim< T::Length, T::eL>, t_SingleDim< T::Time, T::et>, t_SingleDim< T::Mass, T::eM>, t_SingleDim< T::Tempeture, T::eT>, t_SingleDim< T::Charge, T::eQ > >::TYPE t_List;
 
-      using  t_Sorted = typename Meta::SORT<ORD, t_List >::TYPE;
-      using DIM0 = typename Meta::At< t_Sorted, 0 >::RET;
-      using DIM1 = typename Meta::At< t_Sorted, 1 >::RET;
-      using DIM2 = typename Meta::At< t_Sorted, 2 >::RET;
-      using DIM3 = typename Meta::At< t_Sorted, 3 >::RET;
-      using DIM4 = typename Meta::At< t_Sorted, 4 >::RET;
+         using  t_Sorted = typename Meta::SORT<ORD, t_List >::TYPE;
+         using DIM0 = typename Meta::At< t_Sorted, 0 >::RET;
+         using DIM1 = typename Meta::At< t_Sorted, 1 >::RET;
+         using DIM2 = typename Meta::At< t_Sorted, 2 >::RET;
+         using DIM3 = typename Meta::At< t_Sorted, 3 >::RET;
+         using DIM4 = typename Meta::At< t_Sorted, 4 >::RET;
 
-      //enum{ isDIM0 = SystemOfUnits::IF<(DIM0::DIM < 0), true, false>::RET };
-      enum{ isDIM0_Neg = DIM0::DIM <= 0, isDIM4_Pos = DIM4::DIM >= 0 };
+         //enum{ isDIM0 = SystemOfUnits::IF<(DIM0::DIM < 0), true, false>::RET };
+         enum:bool { isDIM0_Neg = DIM0::DIM <= 0, isDIM4_Pos = DIM4::DIM >= 0 };
 
-      std::string retStr;
-      if (isDIM0_Neg) {
-         retStr += "1/";
-         if (DIM0::DIM) retStr += DIM0::c_str();
-         if (DIM1::DIM) retStr += DIM1::c_str();
-         if (DIM2::DIM) retStr += DIM2::c_str();
-         if (DIM3::DIM) retStr += DIM3::c_str();
-         if (DIM4::DIM) retStr += DIM4::c_str();
+         std::string retStr;
+         if constexpr(isDIM0_Neg) {
+            retStr += "1/";
+            if constexpr (0 != DIM0::DIM) retStr += DIM0::c_str();
+            if constexpr (0 != DIM1::DIM) retStr += DIM1::c_str();
+            if constexpr (0 != DIM2::DIM) retStr += DIM2::c_str();
+            if constexpr (0 != DIM3::DIM) retStr += DIM3::c_str();
+            if constexpr (0 != DIM4::DIM) retStr += DIM4::c_str();
+         }
+
+         return retStr;
       }
-
-      return retStr;
    };
 
    template< typename char_type, typename T >
    inline auto t_Diminsion(T const &) -> std::basic_string<char_type>
    {
-      if (!T::eL && !T::eM && !T::et && !T::eT && !T::eQ) return {}; // no dim, bale out fast!
+      if constexpr(!T::eL && !T::eM && !T::et && !T::eT && !T::eQ) return {}; // no dim, bale out fast!
+      else
+      {
+         std::pair< std::basic_ostringstream<char_type>, std::basic_ostringstream<char_type> > buf;
 
-      std::pair< std::basic_ostringstream<char_type>, std::basic_ostringstream<char_type> > buf;
-	   
-	   using namespace helpers;
-	   if( T::eL) OneDim<T::Length::sym, T::eL >(buf);
-	   if( T::eM) OneDim<T::Mass::sym, T::eM >(buf);
-	   if(T::et) OneDim<T::Time::sym, T::et >(buf);
-	   if(T::eT) OneDim<T::Tempeture::sym, T::eT >(buf);
-	   if(T::eQ) OneDim<T::Charge::sym, T::eQ >(buf);
+         using namespace helpers;
+         if constexpr (0 != T::eL) OneDim<T::Length::sym, T::eL >(buf);
+         if constexpr (0 != T::eM) OneDim<T::Mass::sym, T::eM >(buf);
+         if constexpr (0 != T::et) OneDim<T::Time::sym, T::et >(buf);
+         if constexpr (0 != T::eT) OneDim<T::Tempeture::sym, T::eT >(buf);
+         if constexpr (0 != T::eQ) OneDim<T::Charge::sym, T::eQ >(buf);
 
-	   std::basic_ostringstream<char_type> out;
+         std::basic_ostringstream<char_type> out;
 
-      // if numerator is empty insert a 1 into the stream.
-	   if (buf.first.tellp() != std::streampos(0) ) out << buf.first.str();
-	   else out << '1';
+         // if numerator is empty insert a 1 into the stream.
+         if (buf.first.tellp() != std::streampos(0)) out << buf.first.str();
+         else out << '1';
 
-      // if denominator has a value then insert a slash prior to the values.
-	   if (buf.second.tellp() != std::streampos(0)) out << '/' << buf.second.str();
+         // if denominator has a value then insert a slash prior to the values.
+         if (buf.second.tellp() != std::streampos(0)) out << '/' << buf.second.str();
 
-	   return out.str();
+         return out.str();
+      }
    }
 
-//#include <type_traits>
    /// Specialized template when the type is dimensionless.
    template< typename char_type >
    inline auto t_Diminsion(double const &)->std::basic_string<char_type>
@@ -197,11 +201,11 @@ namespace SystemOfUnits
       return {};
    }
 
+   /// Used to provide the diminsions of the SOU::UnitType
    template<typename T > auto Diminsion(T const &val )
    {
       return t_Diminsion<char>(val);
    }
-
 }
 // Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com

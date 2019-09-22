@@ -1,5 +1,4 @@
-// used to test the whatami method
-//#include "cppunit/extensions/HelperMacros.h" // the macros and headers needed by CPPUnit
+// used to test the WhatAmI() method
 #include <gtest/gtest.h>
 #include "SI.h"
 #include "MetricTypes.h"
@@ -15,6 +14,7 @@ TEST(Diminsion, Double) {
    double x = 3.5;
    EXPECT_EQ("", SOU::Diminsion(x));
    EXPECT_EQ("", SOU::Diminsion(4.5)) << "A float will cause a failure";
+   // TODO add test for a float
 }
 
 TEST(Diminsion, LEN) {
@@ -96,21 +96,18 @@ TEST(UnitNameWchar, Dim) {
 template< int SIZE > void MakeDimTest()
 {
 	namespace AU = Metric::AtomicUnit;
-	typedef SOU::MakeType< AU::Meter, AT::second, AU::gram, AU::kelvin, AU::coulomb > AUMetric;
+   enum:int{ eSIZE = SIZE };
 
-	// Length compound units
-	typedef AUMetric::MakeDim< SIZE, 0, 0, 0, 0>::type t_meter; //< Meter type
-	t_meter meter(4.2);
+   typedef SOU::unitType< AU::Meter, eSIZE, AT::second, 0, AU::gram, 0, AU::kelvin, 0, AU::coulomb, 0 > type;
+
+	type meter(4.2);
 
 	// Produce the string a different way to test it.
 	std::stringstream stream;
-	stream << "meter^";
-	stream << SIZE;
-	//stream << " "; // << std::endl;
+	stream << "meter^" << SIZE;
 	std::string const str = stream.str();
 
 	EXPECT_EQ(str, SOU::WhatAmI(meter));
-
 }
 
 TEST(WhatAmITest, TestWithTwoDim)
@@ -127,7 +124,6 @@ TEST(WhatAmITest, TestWithTwoDim)
 	typedef AUMetric::MakeDim<3, 0, 0, 0, 0>::type t_meterCu; //< Meter type
 	t_meterCu meterCu(4.2);
 	EXPECT_EQ(std::string("meter^3"), SOU::WhatAmI(meterCu));
-	// CPPUNIT_ASSERT_EQUAL( std::string("meter^2 "), SOU::WhatAmI(meterCu) );
 }
 
 TEST(WhatAmITest, TestMultipleDim)
@@ -171,8 +167,8 @@ TEST(Diminsion, Struct_Sym) {
    EXPECT_EQ('X', t_X::sym);
 }
 
-TEST(Dim, DISABLED_NoDiminsion) {
-   //EXPECT_EQ( SystemOfUnits::Dim(SystemOfUnits::tNoUnit() ), std::string("") );
+TEST(Dim, NoDiminsion) {
+   EXPECT_EQ( SystemOfUnits::Dim(SystemOfUnits::tNoUnit() ), std::string_view("") );
 }
 
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
