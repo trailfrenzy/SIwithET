@@ -350,7 +350,7 @@ TYPED_TEST_P(SI_Multiply, Test2)
 {
    using TAG = SI_Multiply<TypeParam >;
    // these test call internally Mul_Result
-   TAG::t_3 prod = *TAG::m_1 * *TAG::m_2;
+   typename TAG::t_3 prod = *TAG::m_1 * *TAG::m_2;
    EXPECT_TRUE(prod == *TAG::m_3);
    EXPECT_TRUE(*TAG::m_3 == *TAG::m_1 * *TAG::m_2);
 
@@ -407,8 +407,8 @@ TYPED_TEST_P(SI_Multiply, TestChainWithScaler)
    using TAG = SI_Multiply<TypeParam >;
    for (double x = 2.0; x < 12.0; x += 1.3)
    {
-      TAG::t_3 arg1 = *TAG::m_3 *x*x;
-      TAG::t_3 arg2 = (*TAG::m_1*x) *(*TAG::m_2 * x);
+      typename TAG::t_3 arg1 = *TAG::m_3 *x*x;
+      typename TAG::t_3 arg2 = (*TAG::m_1*x) *(*TAG::m_2 * x);
       EXPECT_DOUBLE_EQ(arg1.amount(), arg2.amount());
       //EXPECT_DOUBLE_EQ(*TAG::m_3 *x*x, (*TAG::m_1*x) *( *TAG::m_2 * x) ) << "Why didn't it work";
    }
@@ -445,8 +445,8 @@ TYPED_TEST_P(SI_Multiply, TestMultipleInt)
 {
    using TAG = SI_Multiply<TypeParam >;
    int const x = 2;
-   TAG::t_1 res1 = *TAG::m_1 * x;
-   TAG::t_1 const res2 = x * *TAG::m_1;
+   typename TAG::t_1 res1 = *TAG::m_1 * x;
+   typename TAG::t_1 const res2 = x * *TAG::m_1;
 
    EXPECT_DOUBLE_EQ(6.0, res1.amount());
    EXPECT_DOUBLE_EQ(6.0, res2.amount());
@@ -463,8 +463,8 @@ TYPED_TEST_P(SI_Multiply, TestMultipleUnsigned)
 {
    using TAG = SI_Multiply<TypeParam >;
    unsigned const x = 2;
-   TAG::t_1 res1 = *TAG::m_1 * x;
-   TAG::t_1 const res2 = x * *TAG::m_1;
+   typename TAG::t_1 res1 = *TAG::m_1 * x;
+   typename TAG::t_1 const res2 = x * *TAG::m_1;
 
    EXPECT_DOUBLE_EQ(6.0, res1.amount());
    EXPECT_DOUBLE_EQ(6.0, res2.amount());
@@ -478,8 +478,8 @@ TYPED_TEST_P(SI_Multiply, TestMultipleFloat)
 {
    using TAG = SI_Multiply<TypeParam >;
    float const x = 2.000f;
-   TAG::t_1 res1 = *TAG::m_1 * x;
-   TAG::t_1 const res2 = x * *TAG::m_1;
+   typename TAG::t_1 res1 = *TAG::m_1 * x;
+   typename TAG::t_1 const res2 = x * *TAG::m_1;
 
    EXPECT_DOUBLE_EQ(6.0, res1.amount());
    EXPECT_DOUBLE_EQ(6.0, res2.amount());
@@ -493,8 +493,8 @@ TYPED_TEST_P(SI_Multiply, TestMultipleShort)
 {
    using TAG = SI_Multiply<TypeParam >;
    short const x = 2;
-   TAG::t_1 res1 = *TAG::m_1 * x;
-   TAG::t_1 const res2 = x * *TAG::m_1;
+   typename TAG::t_1 res1 = *TAG::m_1 * x;
+   typename TAG::t_1 const res2 = x * *TAG::m_1;
 
    EXPECT_DOUBLE_EQ(6.0, res1.amount());
    EXPECT_DOUBLE_EQ(6.0, res2.amount());
@@ -509,7 +509,7 @@ TYPED_TEST_P(SI_Multiply, TestMultipleLong)
    using TAG = SI_Multiply<TypeParam >;
    long const x = 2;
    auto res1 = *TAG::m_1 * x;
-   TAG::t_1 const res2 = x * *TAG::m_1;
+   typename TAG::t_1 const res2 = x * *TAG::m_1;
 
    EXPECT_DOUBLE_EQ(6.0, res1.amount());
    EXPECT_DOUBLE_EQ(6.0, res2.amount());

@@ -96,21 +96,25 @@ TEST(UnitNameWchar, Dim) {
 template< int SIZE > void MakeDimTest()
 {
 	namespace AU = Metric::AtomicUnit;
-	typedef SOU::MakeType< AU::Meter, AT::second, AU::gram, AU::kelvin, AU::coulomb > AUMetric;
+	//typedef typename SOU::MakeType< AU::Meter, AT::second, AU::gram, AU::kelvin, AU::coulomb > AUMetric;
+   //using AUMetric = typename SOU::MakeType< AU::Meter, AT::second, AU::gram, AU::kelvin, AU::coulomb >;
+   enum:int{ eSIZE = SIZE };
 
 	// Length compound units
-	typedef AUMetric::MakeDim< SIZE, 0, 0, 0, 0>::type t_meter; //< Meter type
-	t_meter meter(4.2);
+	//using t_meter = typename AUMetric::MakeDim< eSIZE, 0, 0, 0, 0>::type; //< Meter type
+  // using t_make = AUMetric::MakeDim< 5, 0, 0, 0, 0>;
+   //typedef typename AUMetric::MakeDim< eSIZE, 0, 0, 0, 0>::type t_meter;
+
+   typedef SOU::unitType< AU::Meter, eSIZE, AT::second, 0, AU::gram, 0, AU::kelvin, 0, AU::coulomb, 0 > type;
+
+	type meter(4.2);
 
 	// Produce the string a different way to test it.
 	std::stringstream stream;
-	stream << "meter^";
-	stream << SIZE;
-	//stream << " "; // << std::endl;
+	stream << "meter^" << SIZE;
 	std::string const str = stream.str();
 
 	EXPECT_EQ(str, SOU::WhatAmI(meter));
-
 }
 
 TEST(WhatAmITest, TestWithTwoDim)
@@ -127,7 +131,6 @@ TEST(WhatAmITest, TestWithTwoDim)
 	typedef AUMetric::MakeDim<3, 0, 0, 0, 0>::type t_meterCu; //< Meter type
 	t_meterCu meterCu(4.2);
 	EXPECT_EQ(std::string("meter^3"), SOU::WhatAmI(meterCu));
-	// CPPUNIT_ASSERT_EQUAL( std::string("meter^2 "), SOU::WhatAmI(meterCu) );
 }
 
 TEST(WhatAmITest, TestMultipleDim)

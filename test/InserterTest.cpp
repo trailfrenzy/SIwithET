@@ -87,7 +87,7 @@ TEST(Inserter, ShowDimMeterSqString) {
 
 TEST(Inserter, ShowDimMeterSqStringView) {
    t_MeterSq m3(10.11);
-   std::string_view s("44.6666");
+   std::string_view s{"44.6666" };
    std::ostringstream strm;
    strm << SOU::dimension << m3 << ' ' << s;
    EXPECT_EQ(strm.str(), std::string_view("10.11 [L]^2 44.6666"));

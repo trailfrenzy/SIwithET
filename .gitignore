@@ -23,3 +23,7 @@ x64/Debug/test.ilk
 *.xml
 x64/Release/test.exe.gta.testdurations
 x64/Release/test.exe.lastcodeanalysissucceeded
+test/test.vcxproj
+test/test.vcxproj
+test/test.vcxproj.user
+test/test.vcxproj

@@ -233,7 +233,7 @@ TYPED_TEST_P(SOU_Division, TestWithScaler)
 	using TAG = SOU_Division<TypeParam >;
 	EXPECT_DOUBLE_EQ(12.0, TAG::m_1->amount()) << "Verify we are starting correctly";
 
-	TAG::t_1 const res = *TAG::m_1 / 4.0;
+   typename TAG::t_1 const res = *TAG::m_1 / 4.0;
 	EXPECT_DOUBLE_EQ(3.0, res.amount()) << SOU::WhatAmI(res);
 
 	auto res1 = 36.0 / (*TAG::m_3);

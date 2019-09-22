@@ -18,7 +18,7 @@
 class conversion_castTest : public ::testing::Test //: public CppUnit::TestFixture
 {
 protected:
-   Metric::t_centimeter m_cent = { 0.0 };
+   Metric::t_centimeter m_cent { 0.0 };
 public:
 	void SetUp() { m_cent = Metric::t_centimeter(0.0); }
 private:

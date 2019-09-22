@@ -29,7 +29,7 @@ namespace SystemOfUnits /// covers the basics of the system
          , eT = iT   /*!< Dimension of Tempeture */
          , eQ = iQ   /*!< Dimension of Charge */
       };
-      enum:bool{ b_noexcept = noexcept(L) && noexcept(t) && noexcept(M) && noexcept(T) && noexcept(Q) };
+      enum:bool{ b_noexcept = true /*noexcept(L) && noexcept(t) && noexcept(M) && noexcept(T) && noexcept(Q)*/ };
 
       // Quantity as typedefs
       typedef L Length;    /*!<  Quantity type for Length */
@@ -39,7 +39,7 @@ namespace SystemOfUnits /// covers the basics of the system
       typedef Q Charge;    /*!<  Quantity type for Charge */
 
       /// default constructor (does not initialize scalar with default value, just like a built in type).
-      unitType() noexcept(b_noexcept) {}
+      unitType() noexcept(b_noexcept) = default;
 
       /// rule of 6, provide a default destructor if one of the 6 is provided.
       ~unitType() noexcept(b_noexcept) = default;
@@ -215,7 +215,7 @@ namespace SystemOfUnits /// covers the basics of the system
    };
 
    /// Type trait struct which tests if the type is of UnitType class template above or not.
-   template< typename T > struct is_UnitType { enum { value = false }; }; // primary template for everything not a UnitType
+   template< typename T > struct is_UnitType { enum:bool{ value = false }; }; // primary template for everything not a UnitType
    template  /// for only UnitType only
       < typename L, int iL    // length
       , typename t, int it    // time
@@ -225,7 +225,7 @@ namespace SystemOfUnits /// covers the basics of the system
       >
       struct is_UnitType< unitType<L, iL, t, it, M, iM, T, iT, Q, iQ> >
    {
-      enum{ value = true};
+      enum:bool{ value = true};
    };
 
    /// template used to create a type has been squared
@@ -269,12 +269,12 @@ namespace SystemOfUnits /// covers the basics of the system
       /// template is used to create unitTypes with just the dimension types.
       template<int L, int t, int M, int T, int Q> struct MakeDim
       {
-         typedef unitType< LEN, L, TIM, t, MAS, M, TEM, T, CHR, Q > type;
+         typename typedef unitType< LEN, L, TIM, t, MAS, M, TEM, T, CHR, Q > type;
       };
 
       template<int L, int t, int M > struct MakeDim<L, t, M, 0, 0>
       {
-         typedef unitType< LEN, L, TIM, t, MAS, M, TEM, 0, CHR, 0 > type;
+         typename typedef unitType< LEN, L, TIM, t, MAS, M, TEM, 0, CHR, 0 > type;
       };
    };
 
