@@ -99,7 +99,6 @@ template< int SIZE > void MakeDimTest()
 {
 	namespace AU = Metric::AtomicUnit;
    enum:int{ eSIZE = SIZE };
-
    typedef SOU::unitType< AU::Meter, eSIZE, AT::second, 0, AU::gram, 0, AU::kelvin, 0, AU::coulomb, 0 > type;
 
 	type meter(4.2);

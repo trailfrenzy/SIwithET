@@ -182,6 +182,7 @@ TYPED_TEST_P(SITest, IsCopyable) {
    // typename using TAG = SITest<TypeParam >::t_type;  TODO why dose this not work?
    using TAG = SITest<TypeParam>;
    ASSERT_TRUE( (std::is_assignable<TAG::t_type, TAG::t_type >::value) );
+
    EXPECT_TRUE(std::is_copy_assignable<TAG::t_type>::value);
    EXPECT_TRUE(std::is_trivially_copy_assignable<TAG::t_type>::value);
 }
