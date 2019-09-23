@@ -1,5 +1,4 @@
-﻿
-#ifndef SI_WHATAMI_H_INCLUDE
+﻿#ifndef SI_WHATAMI_H_INCLUDE
 #define SI_WHATAMI_H_INCLUDE
 #pragma once
 #include <string>
@@ -7,14 +6,14 @@
 #include "SI.h"
 #include"Struct_Symbol.h"
 #include "list.hpp"
-//#include "template_help.h"
 
 /**
  @page page3 What am I
 
  @section WhatAmI()
  The function template provides a way to find out what the type is at run time.  It is
- used mainly for user debugging.
+ used mainly for user debugging.  Most of the work to produce the result of WhatAmI() is
+ completed at compile time. Only the connecting the strings is did at run time.
 
 */
 namespace SystemOfUnits
@@ -94,78 +93,16 @@ namespace SystemOfUnits
          }
          return buf;
       }
-
-      //template < class UNIT > struct t_base
-      //{
-      //   using t_UNIT = UNIT;
-      //   typedef typename SystemOfUnits::t_BaseDim< typename t_UNIT::L, t_UNIT::iL > LEN;
-      //};
- 
-      template< typename T, int D, typename char_type = char > struct t_SingleDim
-      {
-         using t_BaseUnit = T;
-         enum { DIM = D, CHAR = t_BaseUnit::sym };
-         using string = typename std::basic_string<char_type>;
-
-         static auto c_str() noexcept(noexcept(string) && noexcept(T) )-> string
-         {
-            string str;
-            if (CHAR == SOLIDUS::sym) str = CHAR;
-            else if (DIM == 0) {} //return "";
-            else if (DIM == 1 || DIM == -1) {
-               str = { '[', CHAR ,']' };
-            }
-            else {
-               enum { absDIM = (DIM < 0) ? -1 * DIM : DIM };
-               str = { '[', CHAR, ']', '^', '0' + absDIM };
-            }
-            return str;
-         }
-      };
-
-      /// Solidus is the name of the slash
-      using SOLIDUS = SystemOfUnits::helpers::T_Symbol<'/'>;
    }
-   
-   /// Used in sorting the dimensions below.
-   template <class a, class b> struct ORD {
-      enum:bool { VALUE = a::DIM > b::DIM };
-   };
-   
-   /// NOTE: Not ready for use.
-   template< class T > inline std::string Dim( T const &)
-   {
-      if constexpr(0==T::eL && 0 == T::eM && 0 == T::et && 0 == T::eT && 0 == T::eQ) return ""; // no dim, bale out fast!
-      else
-      {
-         using SystemOfUnits::helpers::t_SingleDim;
 
-         typedef typename Meta::LIST5< t_SingleDim< T::Length, T::eL>, t_SingleDim< T::Time, T::et>, t_SingleDim< T::Mass, T::eM>, t_SingleDim< T::Tempeture, T::eT>, t_SingleDim< T::Charge, T::eQ > >::TYPE t_List;
+   /**
+    @page page4 Diminsion
 
-         using  t_Sorted = typename Meta::SORT<ORD, t_List >::TYPE;
-         using DIM0 = typename Meta::At< t_Sorted, 0 >::RET;
-         using DIM1 = typename Meta::At< t_Sorted, 1 >::RET;
-         using DIM2 = typename Meta::At< t_Sorted, 2 >::RET;
-         using DIM3 = typename Meta::At< t_Sorted, 3 >::RET;
-         using DIM4 = typename Meta::At< t_Sorted, 4 >::RET;
-
-         //enum{ isDIM0 = SystemOfUnits::IF<(DIM0::DIM < 0), true, false>::RET };
-         enum:bool { isDIM0_Neg = DIM0::DIM <= 0, isDIM4_Pos = DIM4::DIM >= 0 };
-
-         std::string retStr;
-         if constexpr(isDIM0_Neg) {
-            retStr += "1/";
-            if constexpr (0 != DIM0::DIM) retStr += DIM0::c_str();
-            if constexpr (0 != DIM1::DIM) retStr += DIM1::c_str();
-            if constexpr (0 != DIM2::DIM) retStr += DIM2::c_str();
-            if constexpr (0 != DIM3::DIM) retStr += DIM3::c_str();
-            if constexpr (0 != DIM4::DIM) retStr += DIM4::c_str();
-         }
-
-         return retStr;
-      }
-   };
-
+    @section Diminsion
+    The function template provides a string of the UnitType's dimensions.  As in
+    a meter is [L] and a kilogram is a [M].  Most of the work of producing the 
+    result is completed at compile time.
+   */
    template< typename char_type, typename T >
    inline auto t_Diminsion(T const &) -> std::basic_string<char_type>
    {

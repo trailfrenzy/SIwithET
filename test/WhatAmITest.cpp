@@ -142,35 +142,6 @@ TEST(WhatAmITest, TestMultipleDim)
 
 }
 
-TEST(WhatAmITest, TestDouble)
-{
-	double val = 6.7888;
-	EXPECT_EQ(SOU::WhatAmI(val), std::string(""));
-}
-
-TEST(Diminsion, OneDimPrint1) {
-	SystemOfUnits::helpers::t_bufPair bufPair;
-	std::string temp{ SystemOfUnits::helpers::OneDim<'L', 1>(bufPair).first.str() };
-	EXPECT_EQ( temp , std::string("[L]") );
-	temp = SystemOfUnits::helpers::OneDim<'M', -1 >(bufPair).second.str();
-	EXPECT_EQ(temp, "[M]");
-}
-TEST(Diminsion, OneDimPrint2) {
-	SystemOfUnits::helpers::t_bufPair bufPair;
-	std::string temp = SystemOfUnits::helpers::OneDim<'L', 2>(bufPair).first.str();
-	EXPECT_EQ(temp, "[L]^2");
-	temp = SystemOfUnits::helpers::OneDim<'M', -3 >(bufPair).second.str();
-	EXPECT_EQ(temp, "[M]^3");
-}
-TEST(Diminsion, Struct_Sym) {
-   using t_X = SystemOfUnits::helpers::T_Symbol<'X'>;
-   EXPECT_EQ('X', t_X::sym);
-}
-
-TEST(Dim, NoDiminsion) {
-   EXPECT_EQ( SystemOfUnits::Dim(SystemOfUnits::tNoUnit() ), std::string_view("") );
-}
-
 // Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
