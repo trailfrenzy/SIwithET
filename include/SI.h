@@ -216,6 +216,7 @@ namespace SystemOfUnits /// covers the basics of the system
 
    /// Type trait struct which tests if the type is of UnitType class template above or not.
    template< typename T > struct is_UnitType { enum:bool{ value = false }; }; // primary template for everything not a UnitType
+
    template  /// for only UnitType only
       < typename L, int iL    // length
       , typename t, int it    // time

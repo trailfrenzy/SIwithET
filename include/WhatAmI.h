@@ -52,16 +52,20 @@ namespace SystemOfUnits
    inline auto UnitName( T const & )
       noexcept(noexcept(std::basic_ostringstream<char_type>) && noexcept(T) )
    {
-      std::basic_ostringstream<char_type> buf;
+      if constexpr (!is_UnitType<T>::value) return std::basic_string<char_type>{};
+      else
+      {
+         std::basic_ostringstream<char_type> buf;
 
-      // use a template map to sort these later
-      helpers::printAtom< T::Length, T::eL >( buf );
-      helpers::printAtom< T::Time,   T::et >( buf );
-      helpers::printAtom< T::Mass,   T::eM >( buf );
-      helpers::printAtom< T::Tempeture, T::eT >( buf );
-      helpers::printAtom< T::Charge, T::eQ >( buf );
+         // use a template map to sort these later
+         helpers::printAtom< T::Length, T::eL >(buf);
+         helpers::printAtom< T::Time, T::et >(buf);
+         helpers::printAtom< T::Mass, T::eM >(buf);
+         helpers::printAtom< T::Tempeture, T::eT >(buf);
+         helpers::printAtom< T::Charge, T::eQ >(buf);
 
-      return buf.str().erase(buf.str().size() -1 ); // removes the last space char in the buffer
+         return buf.str().erase(buf.str().size() - 1); // removes the last space char in the buffer
+      }
    }
 
    /// Returns in std::string what the type the UnitType is.
@@ -71,7 +75,7 @@ namespace SystemOfUnits
    }
 
    /// If user pushes a double into the template.
-   template<> inline std::string WhatAmI(double const &) { return ""; }
+   //template<> inline std::string WhatAmI(double const &) { return ""; }
 
    namespace helpers
    {
@@ -106,7 +110,9 @@ namespace SystemOfUnits
    template< typename char_type, typename T >
    inline auto t_Diminsion(T const &) -> std::basic_string<char_type>
    {
-      if constexpr(!T::eL && !T::eM && !T::et && !T::eT && !T::eQ) return {}; // no dim, bale out fast!
+      if constexpr (!is_UnitType<T>::value) return {}; // not a UnitType bale and get out.
+
+      else if constexpr(!T::eL && !T::eM && !T::et && !T::eT && !T::eQ) return {}; // no dim, bale out fast!
       else
       {
          std::pair< std::basic_ostringstream<char_type>, std::basic_ostringstream<char_type> > buf;
@@ -129,13 +135,6 @@ namespace SystemOfUnits
 
          return out.str();
       }
-   }
-
-   /// Specialized template when the type is dimensionless.
-   template< typename char_type >
-   inline auto t_Diminsion(double const &)->std::basic_string<char_type>
-   {
-      return {};
    }
 
    /// Used to provide the diminsions of the SOU::UnitType
