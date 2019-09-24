@@ -3,7 +3,6 @@
 */
 #ifndef SI_INCLUDE_H_07MAY2003
 #define SI_INCLUDE_H_07MAY2003
-#pragma once
 
 namespace SystemOfUnits /// covers the basics of the system
 {
@@ -29,14 +28,17 @@ namespace SystemOfUnits /// covers the basics of the system
          , eT = iT   /*!< Dimension of Tempeture */
          , eQ = iQ   /*!< Dimension of Charge */
       };
-      enum:bool{ b_noexcept = true /*noexcept(L) && noexcept(t) && noexcept(M) && noexcept(T) && noexcept(Q)*/ };
+
+      /// Used in all class methods and friend functions for their noexcept()
+      enum:bool{ b_noexcept = noexcept(L) && noexcept(t) && noexcept(M) && noexcept(T) && noexcept(Q) };
+      static_assert(b_noexcept, "Why is this false?");
 
       // Quantity as typedefs
-      typedef L Length;    /*!<  Quantity type for Length */
-      typedef t Time;      /*!<  Quantity type for Time */
-      typedef M Mass;      /*!<  Quantity type for Mass */
-      typedef T Tempeture; /*!<  Quantity type for Tempeture */
-      typedef Q Charge;    /*!<  Quantity type for Charge */
+      using Length = L;    /*!<  Quantity type for Length */
+      using Time = t;      /*!<  Quantity type for Time */
+      using Mass= M;      /*!<  Quantity type for Mass */
+      using Tempeture = T; /*!<  Quantity type for Tempeture */
+      using Charge = Q ;    /*!<  Quantity type for Charge */
 
       /// default constructor (does not initialize scalar with default value, just like a built in type).
       unitType() noexcept(b_noexcept) = default;
@@ -53,10 +55,11 @@ namespace SystemOfUnits /// covers the basics of the system
       */
       explicit constexpr unitType( t_float m ) noexcept(b_noexcept) : m_amount(m){}
 
-      /** constructor from the same unitType.
+      /** copy-constructor from the same unitType.
       * @param a unitType of the same type.
+        copy constructor was explicit but removed when testing for pass by value instread of pass by reference. One Less machine instruction when pass by ref.
       */
-      explicit constexpr unitType(unitType const &val ) noexcept(b_noexcept) = default; //: m_amount(val.m_amount) {}
+      constexpr unitType(unitType const &val ) noexcept(b_noexcept) = default;
       constexpr unitType(unitType &&val) noexcept(b_noexcept) = default;
 
 	  /** assignment operator
@@ -231,13 +234,13 @@ namespace SystemOfUnits /// covers the basics of the system
    /// template used to create a type has been squared
    template< typename UNIT > struct MakeSQ
    {
-      typename typedef unitType
+      using type = unitType
          < typename UNIT::Length, UNIT::eL + UNIT::eL // cannot use * , uses operator*
          , typename UNIT::Time,   UNIT::et + UNIT::et
          , typename UNIT::Mass,   UNIT::eM + UNIT::eM
          , typename UNIT::Tempeture, UNIT::eT + UNIT::eT
          , typename UNIT::Charge, UNIT::eQ + UNIT::eQ
-         > type;
+         >;
    };
 
    /// struct is used to create no dimension unit type. Used in the operators.h for (* /)
@@ -246,13 +249,13 @@ namespace SystemOfUnits /// covers the basics of the system
       /// Lets using classes know if class is used as a base
       enum { IsBase = false, sym = ' ' };
       /// Called by WhatAmI when creating the string describing the type.
-      static char const * str() noexcept { return ""; }
+      constexpr static char const * str() noexcept { return ""; }
       ///  Multiply by toBase() to get base value.
       constexpr static double toBase() noexcept { return 1.0; }
       /// Multiply by fromBase() to get diminsional value
       constexpr static double fromBase() noexcept { return 1.0; }
       /// Typedef of the actual base
-      typedef NoDim Base;
+      using  Base = NoDim;
    };
 
    /// Used in making the dimensions
@@ -269,17 +272,17 @@ namespace SystemOfUnits /// covers the basics of the system
       /// template is used to create unitTypes with just the dimension types.
       template<int L, int t, int M, int T, int Q> struct MakeDim
       {
-         typename typedef unitType< LEN, L, TIM, t, MAS, M, TEM, T, CHR, Q > type;
+         using type = unitType< LEN, L, TIM, t, MAS, M, TEM, T, CHR, Q >;
       };
 
       template<int L, int t, int M > struct MakeDim<L, t, M, 0, 0>
       {
-         typename typedef unitType< LEN, L, TIM, t, MAS, M, TEM, 0, CHR, 0 > type;
+         using type = unitType< LEN, L, TIM, t, MAS, M, TEM, 0, CHR, 0 >;
       };
    };
 
    /// a type with no dimensions or quantity types.  The same size as a double.
-   typedef unitType< NoDim,0, NoDim,0, NoDim,0, NoDim,0, NoDim,0 > tNoUnit;
+   using tNoUnit = unitType< NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0 >;
 
    /// used to call fromBase() while using the toBase() static method.  Used in conversion_cast<>.
    template< typename ARG > struct MakeFrom

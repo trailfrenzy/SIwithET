@@ -45,9 +45,9 @@ namespace SystemOfUnits
       template < typename T, typename T2 > struct A_Trait
       {
          /// used as the argument for the operators
-         typedef T const &ArgRef;
+         using ArgRef = T const &;
          /// constant reference
-         typedef T const &ExprRef;
+         using ExprRef = T const &;
 
          /// the dimensions of the trait
          enum
@@ -58,11 +58,11 @@ namespace SystemOfUnits
          , eQ = T::eQ   /// Charge Dimension
          };
 
-         typedef typename T::Length Length;        /// Length type of the incoming arg.
-         typedef typename T::Time Time;            /// Time type of the incoming arg.
-         typedef typename T::Mass Mass;            /// Mass type of the incoming arg.
-         typedef typename T::Tempeture Tempeture;  /// Tempeture of the incoming arg.
-         typedef typename T::Charge Charge;        /// Charge of the incoming arg.
+         using Length = typename T::Length;        /// Length type of the incoming arg.
+         using Time = typename T::Time;            /// Time type of the incoming arg.
+         using Mass = typename T::Mass;            /// Mass type of the incoming arg.
+         using Tempeture = typename T::Tempeture;  /// Tempeture of the incoming arg.
+         using Charge = typename T::Charge;        /// Charge of the incoming arg.
       };
 
       /** NOTE:
@@ -165,103 +165,101 @@ namespace SystemOfUnits
       public:
          using R1 = A_Trait<T1, T2>; /// the type of the left side of the arg
          using R2 = A_Trait<T2, T1>; /// the type of the right side of the arg
-                                     /// public enum is used to let users know that the types did not match
-          /// ie so feet and meters are not mixed up but both are base units
+
+         /// public enum is used to let users know that the types did not match
+         /// ie so feet and meters are not mixed up but both are base units
          enum class ALLTYPES_THE_SAME : bool {
             val =
-            (is_same<R1::Length::Base, R2::Length::Base>::value
-               && is_same<R1::Time::Base, R2::Time::Base >::value
-               && is_same<R1::Mass::Base, R2::Mass::Base >::value
-               && is_same<R1::Tempeture::Base, R2::Tempeture::Base >::value
-               && is_same<R1::Charge::Base, R2::Charge::Base >::value
-               )
+            (  is_same<R1::Length::Base, R2::Length::Base>::value
+            && is_same<R1::Time::Base, R2::Time::Base >::value
+            && is_same<R1::Mass::Base, R2::Mass::Base >::value
+            && is_same<R1::Tempeture::Base, R2::Tempeture::Base >::value
+            && is_same<R1::Charge::Base, R2::Charge::Base >::value
+            )
             || (R1::eL == 0 && R1::et == 0 && R1::eM == 0 && R1::eT == 0 && R1::eQ == 0)
             || (R2::eL == 0 && R2::et == 0 && R2::eM == 0 && R2::eT == 0 && R2::eQ == 0)
             , T = true
          };
 
-         //friend constexpr bool operator==(const enum ALLTYPES_THE_SAME lf, const bool rt) { return lf::val == rt;  } // used static_cast<> instead
-
          // Below is a compile time check to compare if the length as same type ie meter to meter, not meter to kilometer
          // enum value is true if the two types are the same.
-         enum { IsLengthSame = is_same< typename R1::Length, typename R2::Length >::value };
-         enum { IsTimeSame = is_same< typename R1::Time, typename R2::Time   >::value };
-         enum { IsMassSame = is_same< typename R1::Mass, typename R2::Mass   >::value };
-         enum { IsTempSame = is_same< typename R1::Tempeture, typename R2::Tempeture >::value };
-         enum { IsChargeSame = is_same< typename R1::Charge, typename R2::Charge >::value };
+         enum:bool { IsLengthSame = is_same< typename R1::Length, typename R2::Length >::value };
+         enum :bool { IsTimeSame = is_same< typename R1::Time, typename R2::Time   >::value };
+         enum :bool { IsMassSame = is_same< typename R1::Mass, typename R2::Mass   >::value };
+         enum :bool { IsTempSame = is_same< typename R1::Tempeture, typename R2::Tempeture >::value };
+         enum :bool { IsChargeSame = is_same< typename R1::Charge, typename R2::Charge >::value };
 
          /// need to know if BOTH the dimensions in the two operands are base
-         enum { AreLengthsBase = R1::Length::IsBase && R2::Length::IsBase };
+         enum :bool { AreLengthsBase = R1::Length::IsBase && R2::Length::IsBase };
          /// need to know if BOTH the dimensions in the two operands are base
-         enum { AreTimeBase = R1::Time::IsBase   && R2::Time::IsBase };
+         enum :bool { AreTimeBase = R1::Time::IsBase   && R2::Time::IsBase };
          /// need to know if BOTH the dimensions in the two operands are base
-         enum { AreMassBase = R1::Mass::IsBase   && R2::Mass::IsBase };
+         enum :bool { AreMassBase = R1::Mass::IsBase   && R2::Mass::IsBase };
          /// need to know if BOTH the dimensions in the two operands are base
-         enum { AreTempBase = R1::Tempeture::IsBase && R2::Tempeture::IsBase };
+         enum :bool { AreTempBase = R1::Tempeture::IsBase && R2::Tempeture::IsBase };
          /// need to know if BOTH the dimensions in the two operands are base
-         enum { AreChargeBase = R1::Charge::IsBase && R2::Charge::IsBase };
+         enum :bool { AreChargeBase = R1::Charge::IsBase && R2::Charge::IsBase };
 
          /* what are the 4 proposed traits used for */
            /// the proposed length type of the result
-         typename typedef IF //boost::mpl::if_c
+         using LenType = typename IF
             < R1::eL == 0 || R2::eL == 0
             , NoDim
-            , typename IF //boost::mpl::if_c
+            , typename IF
             < IsLengthSame
             , NoDim
-            , typename IF //boost::mpl::if_c
+            , typename IF
             < !R1::Length::IsBase && !R2::Length::IsBase
             , CombineBaseTypes<typename R1::Length, typename R2::Length>
             , typename IF<R2::Length::IsBase, typename SOU::MakeFrom<typename R1::Length>, typename R2::Length >::RET
             >::RET
             >::RET
-            >::RET LenType;
+            >::RET;
 
          /// the proposed time type of the result
-         typename typedef IF //boost::mpl::if_c
+         using TimeType = typename IF
             < R1::et == 0 || R2::et == 0
             , NoDim
-            , typename IF //boost::mpl::if_c
+            , typename IF
             < IsTimeSame
             , NoDim
-            , typename IF //boost::mpl::if_c
+            , typename IF
             < !R1::Time::IsBase && !R2::Time::IsBase
             , CombineBaseTypes<typename R1::Time, typename R2::Time>
             , typename IF<R2::Time::IsBase, SOU::MakeFrom<typename R1::Time>, typename R2::Time >::RET
             >::RET 
             >::RET
-            >::RET TimeType;
+            >::RET;
 
          /// the proposed mass type of the result
-         typename typedef IF //boost::mpl::if_c
+         using MassType = typename IF
             < R1::eM == 0 || R2::eM == 0
             , NoDim
-            , typename IF //boost::mpl::if_c
+            , typename IF
                < IsMassSame
                , NoDim
-               , typename IF //boost::mpl::if_c
+               , typename IF
                   < !R1::Mass::IsBase && !R2::Mass::IsBase
                   , CombineBaseTypes<typename R1::Mass, typename R2::Mass>
                   , typename IF<R2::Mass::IsBase, SOU::MakeFrom<typename R1::Mass>, typename R2::Mass >::RET
                   >::RET 
                >::RET
-            >::RET MassType;
+            >::RET;
 
          /// the proposed temperature type of the result
-         typename typedef IF //boost::mpl::if_c
+         using TempetureType = typename IF
             < R1::eT == 0 || R2::eT == 0
             , NoDim
-            , typename IF //boost::mpl::if_c
+            , typename IF
             < IsTempSame
             , NoDim
-            , typename IF //boost::mpl::if_c
+            , typename IF
             < !R1::Tempeture::IsBase && !R2::Tempeture::IsBase
             , CombineBaseTypes<typename R1::Tempeture, typename R2::Tempeture>
             , typename IF<R2::Tempeture::IsBase, SOU::MakeFrom<typename R1::Tempeture>, typename R2::Tempeture >::RET
             >::RET 
             >::RET
-            >::RET TempetureType;
-
+            >::RET;
       };
 
       /// a class for objects that represents the multiplication of two operands
@@ -269,39 +267,37 @@ namespace SystemOfUnits
       class Mul_Result : public operators::base< T1, T2 >
       {
 		  using t_base = base< T1, T2 >;
-		  //using R1 = A_Trait<T1, T2>;
-         typename const t_base::R1::ExprRef m_r1;    /// first operand reference
-         typename const t_base::R2::ExprRef m_r2;    /// second operand reference
+
+        typename const t_base::R1::ExprRef m_r1;    /// first operand reference
+        typename const t_base::R2::ExprRef m_r2;    /// second operand reference
       public:
 		  using R1 = t_base::R1;
 		  using R2 = t_base::R2;
          /// multiplication is addition of the powers 
          enum class Dim : int { Z = 0
-				, eL = R1::eL + R2::eL   /// Length Dimension 
+              , eL = R1::eL + R2::eL   /// Length Dimension 
               , et = R1::et + R2::et   /// Time Dimension 
               , eM = R1::eM + R2::eM   /// Mass Dimension 
               , eT = R1::eT + R2::eT   /// Tempeture Dimension 
               , eQ = R1::eQ + R2::eQ };/// Charge Dimension 
 
-		 //friend constexpr bool operator==(const Dim lf, const int rt) { return lf == rt;  }
-		 
-         /// informs us during the compile process if the result has no dimensions.
+         /// informs user during the compile process if the result has no dimensions.
          enum class isNoDim : bool { val = (Dim::eL==Dim::Z) && (Dim::et== Dim::Z) && (Dim::eM== Dim::Z) && (Dim::eQ== Dim::Z) && (Dim::eT== Dim::Z) };
 
-         typename typedef IF< Dim::eL== Dim::Z, typename R1::Length,   typename IF<R1::eL!=0, typename R1::Length, typename R2::Length>::RET >::RET Length;
-         typename typedef IF< Dim::et== Dim::Z, typename R1::Time  ,    typename IF<R1::et!=0, typename R1::Time  , typename R2::Time  >::RET >::RET Time;
-         typename typedef IF< Dim::eM== Dim::Z, typename R1::Mass,      typename IF<R1::eM!=0, typename R1::Mass  , typename R2::Mass  >::RET >::RET Mass;
-         typename typedef IF< Dim::eT== Dim::Z, typename R1::Tempeture, typename IF<R1::eT!=0, typename R1::Tempeture, typename R2::Tempeture>::RET >::RET Tempeture;
-         typename typedef IF< Dim::eQ== Dim::Z, typename R1::Charge   , typename IF<R1::eQ!=0, typename R1::Charge, typename R2::Charge>::RET >::RET Charge;
+         using Length = typename IF< Dim::eL== Dim::Z, typename R1::Length,   typename IF<R1::eL!=0, typename R1::Length, typename R2::Length>::RET >::RET;
+         using Time = typename IF< Dim::et== Dim::Z, typename R1::Time  ,    typename IF<R1::et!=0, typename R1::Time  , typename R2::Time  >::RET >::RET;
+         using Mass = typename IF< Dim::eM== Dim::Z, typename R1::Mass,      typename IF<R1::eM!=0, typename R1::Mass  , typename R2::Mass  >::RET >::RET;
+         using Tempeture = typename IF< Dim::eT== Dim::Z, typename R1::Tempeture, typename IF<R1::eT!=0, typename R1::Tempeture, typename R2::Tempeture>::RET >::RET;
+         using Charge = typename IF< Dim::eQ== Dim::Z, typename R1::Charge   , typename IF<R1::eQ!=0, typename R1::Charge, typename R2::Charge>::RET >::RET;
 
          /// all results are based on the first operands type, if NoDim then base on the second.
-         typedef SOU::unitType
+         using TBeforeResult = SOU::unitType
             < Length, (int)Dim::eL
             , Time, (int)Dim::et
             , Mass, (int)Dim::eM
             , Tempeture, (int)Dim::eT
             , Charge, (int)Dim::eQ
-            > TBeforeResult;
+            >;
 
       public:
          /// if not dimensions then the return type is double
@@ -321,9 +317,9 @@ namespace SystemOfUnits
             using namespace SOU;
 
             // line will compiler error if not the same compatible types
-            static_assert( static_cast<bool>(t_base::ALLTYPES_THE_SAME::val), "line will compiler error if not the same compatible types" );
+            static_assert( t_base::ALLTYPES_THE_SAME::val, "line will compiler error if not the same compatible types" );
             // temperature is not supported in more than 1 dimension
-            static_assert( static_cast<bool>( (int)Dim::eT == 0 || (int)Dim::eT == 1 || (int)Dim::eT == -1), "temperature is not supported in more than 1 dimension" );
+            static_assert((int)Dim::eT == 0 || (int)Dim::eT == 1 || (int)Dim::eT == -1, "temperature is not supported in more than 1 dimension" );
 
             return TResult
                ( m_r1.amount() 
@@ -339,32 +335,33 @@ namespace SystemOfUnits
       template< typename T1, typename T2 >
       class Div_Result : public operators::base< T1, T2 >
       {
-		  using t_base = base< T1, T2 >;
-		  typename t_base::R1::ExprRef m_r1;    /// first operand reference
+         using t_base = base< T1, T2 >;
+         typename t_base::R1::ExprRef m_r1;    /// first operand reference
          typename t_base::R2::ExprRef m_r2;    /// second operand reference
 
       public:
-		  using R1 = t_base::R1;
-		  using R2 = t_base::R2;
+         using R1 = t_base::R1;
+         using R2 = t_base::R2;
          /// division is based on subtracting the two dimensions of the operands
-         enum class Dim{ Z = 0
-			  ,eL = R1::eL - R2::eL   /// Length Dimension 
-              , et = R1::et - R2::et   /// Time Dimension 
-              , eM = R1::eM - R2::eM   /// Mass Dimension 
-              , eT = R1::eT - R2::eT   /// Tempeture Dimension 
-              , eQ = R1::eQ - R2::eQ };/// Charge Dimension 
+         enum class Dim { Z = 0
+            , eL = R1::eL - R2::eL   /// Length Dimension 
+            , et = R1::et - R2::et   /// Time Dimension 
+            , eM = R1::eM - R2::eM   /// Mass Dimension 
+            , eT = R1::eT - R2::eT   /// Tempeture Dimension 
+            , eQ = R1::eQ - R2::eQ
+         };/// Charge Dimension 
 
          /// informs us during the compile process that the result has no dimensions.
-		 enum class isNoDim : bool { val = (Dim::eL == Dim::Z) && (Dim::et == Dim::Z) && (Dim::eM == Dim::Z) && (Dim::eQ == Dim::Z) && (Dim::eT == Dim::Z) };
+		   enum class isNoDim : bool { val = (Dim::eL == Dim::Z) && (Dim::et == Dim::Z) && (Dim::eM == Dim::Z) && (Dim::eQ == Dim::Z) && (Dim::eT == Dim::Z) };
 
-		 typename typedef IF< Dim::eL==Dim::Z, typename R1::Length,    typename IF<R1::eL!=0, typename R1::Length, typename R2::Length>::RET >::RET  Length;
-         typename typedef IF< Dim::et==Dim::Z, typename R1::Time  ,    typename IF<R1::et!=0, typename R1::Time  , typename R2::Time  >::RET >::RET Time;
-         typename typedef IF< Dim::eM==Dim::Z, typename R1::Mass,      typename IF<R1::eM!=0, typename R1::Mass  , typename R2::Mass  >::RET >::RET Mass;
-         typename typedef IF< Dim::eT==Dim::Z, typename R1::Tempeture, typename IF<R1::eT!=0, typename R1::Tempeture, typename R2::Tempeture>::RET >::RET Tempeture;
-         typename typedef IF< Dim::eQ==Dim::Z, typename R1::Charge   , typename IF<R1::eQ!=0, typename R1::Charge, typename R2::Charge>::RET >::RET Charge;
+         using Length = typename IF< Dim::eL==Dim::Z, typename R1::Length,    typename IF<R1::eL!=0, typename R1::Length, typename R2::Length>::RET >::RET;
+         using  Time = typename IF< Dim::et==Dim::Z, typename R1::Time  ,    typename IF<R1::et!=0, typename R1::Time  , typename R2::Time  >::RET >::RET;
+         using Mass = typename IF< Dim::eM==Dim::Z, typename R1::Mass,      typename IF<R1::eM!=0, typename R1::Mass  , typename R2::Mass  >::RET >::RET;
+         using Tempeture = typename IF< Dim::eT==Dim::Z, typename R1::Tempeture, typename IF<R1::eT!=0, typename R1::Tempeture, typename R2::Tempeture>::RET >::RET;
+         using Charge = typename IF< Dim::eQ==Dim::Z, typename R1::Charge   , typename IF<R1::eQ!=0, typename R1::Charge, typename R2::Charge>::RET >::RET;
 
          /// the type it will be if the dims are not 0
-         using TBeforeResult  = SOU::unitType
+         using TBeforeResult = SOU::unitType
             < Length, static_cast<int>(Dim::eL)
             , Time, static_cast<int>(Dim::et)
             , Mass, static_cast<int>(Dim::eM)
@@ -433,24 +430,16 @@ namespace SystemOfUnits
       /// Used by any type besides UnitType
       template< typename T > ShowDim_t& operator<<(const T& val)
       {
-         out << val;
-         return *this;
-      }
-
-      /// for only UnitType only use only.
-      template
-         < typename L, int iL  // length
-         , typename t, int it  // time
-         , typename M, int iM  // mass
-         , typename T, int iT  // temperature
-         , typename Q, int iQ  // charge
-         >
-         ShowDim_t& operator<<(const SOU::unitType<L, iL, t, it, M, iM, T, iT, Q, iQ> &unit)
-      {
-         using t_unit = SOU::unitType<L, iL, t, it, M, iM, T, iT, Q, iQ>;
-         using t_char = typename TOUT::char_type;  // will not compile if TOUT does not have char_type.
-         out << unit << ' ' 
-            << t_Diminsion<t_char, t_unit>(unit);
+         if constexpr (is_UnitType<T>::value)
+         {
+            using t_unit = T; // SOU::unitType<L, iL, t, it, M, iM, T, iT, Q, iQ>;
+            using t_char = typename TOUT::char_type;  // will not compile if TOUT does not have char_type.
+            out << val << ' ' << t_Diminsion<t_char, t_unit>(val);
+         }
+         else
+         {
+            out << val;
+         }
          return *this;
       }
 
@@ -473,25 +462,17 @@ namespace SystemOfUnits
       ShowUnits_t& operator<<(int i) { ref << i; return *this; }
       ShowUnits_t& operator<<(unsigned u) { ref << u; return *this; }
 
-      /// Used by any type besides UnitType. If in the same stream the user inserts an object not a SOU::UnitTypes
+      /// Used by any type including UnitType. Compiler decides if a UnitType and to and names.
       template< typename T > ShowUnits_t& operator<<(const T& val)
       {
-         ref << val;
-         return *this;
-      }
-
-      /// for only UnitType only use only.
-      template
-         < typename L, int iL    // length
-         , typename t, int it    // time
-         , typename M, int iM    // mass
-         , typename T, int iT    // temperature
-         , typename Q, int iQ  // charge
-         >
-         ShowUnits_t& operator<<(const SOU::unitType<L, iL, t, it, M, iM, T, iT, Q, iQ> &unit)
-      {
-         using t_char = typename TOUT::char_type;  // will not compile if TOUT does not have char_type.
-         ref << unit << ' ' << SOU::UnitName<t_char>(unit);
+         if constexpr (is_UnitType<T>::value)
+         {
+            using t_char = typename TOUT::char_type;  // will not compile if TOUT does not have char_type.
+            ref << val << ' ' << SOU::UnitName<t_char>(val);
+         }
+         else{
+            ref << val;
+         }
          return *this;
       }
 

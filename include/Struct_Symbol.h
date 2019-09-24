@@ -5,7 +5,7 @@ namespace SystemOfUnits {
    namespace helpers {
          template<char C > struct T_Symbol 
          { 
-            enum { sym = C };  /// used on the input of template OneDim<>
+            enum:char{ sym = C };  /// used on the input of template OneDim<>
 
             // ideally the function is used by the sorting template and its output.  Currently not used.
             template<typename t_char = char>

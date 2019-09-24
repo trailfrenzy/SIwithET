@@ -8,10 +8,8 @@
 
 namespace AT = SOU::Time::AtomicUnit;
 // basic test on the multiplication operator
-class DivisionFirst : public ::testing::Test
+struct DivisionFirst : public ::testing::Test
 {
-public:
-   //using namespace Metric;
    typedef Metric::AtomicUnit::Meter Meter;
    typedef AT::second second;
    typedef Metric::AtomicUnit::gram gram;
@@ -37,6 +35,20 @@ TEST_F(DivisionFirst, InverseNoUnit) {
    EXPECT_EQ("1/[L]", SOU::Diminsion(val)) << "Added as another check later on";
    EXPECT_DOUBLE_EQ(val.amount(), 3.00);
 }
+TEST_F(DivisionFirst, InverseDouble){
+   double myScaler = 90.0;
+   Metric::t_meter const Meter{ 9.0 };
+   const auto val = myScaler / Meter;
+   ASSERT_TRUE(val == 10.0);
+}
+TEST_F(DivisionFirst, InverstInt) {
+   int myScaler = 81;
+   const t_MeterCubed M3{ 9.0 };
+   auto const val = myScaler / M3;
+   ASSERT_TRUE(val == 9.0);
+   ASSERT_TRUE(9.0 == 81 / M3);
+}
+
 TEST_F(DivisionFirst, Constexpr) {
    constexpr t_Meter m1{ 4.0 };
    constexpr t_MeterSq mSq{ 32.0 };
@@ -45,7 +57,7 @@ TEST_F(DivisionFirst, Constexpr) {
    ASSERT_DOUBLE_EQ(M.amount(), 8.0);
 }
 
-TEST_F(DivisionFirst, Constexpr_schaler) {
+TEST_F(DivisionFirst, Constexpr_scaler) {
    constexpr t_Meter m1{ 36.0 };
    constexpr auto m = m1 / 9;
    ASSERT_DOUBLE_EQ(m.amount(), 4.0);
