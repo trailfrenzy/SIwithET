@@ -21,7 +21,7 @@ namespace SystemOfUnits
          /// tag class for time.  Base Unit for time.
          struct second : TIME
          {
-            enum { IsBase = true };
+            enum:bool{ IsBase = true };
             typedef second Base;
             constexpr static char const * str() noexcept{ return "second"; }
             constexpr static double toBase() noexcept { return 1.0; }
@@ -30,7 +30,7 @@ namespace SystemOfUnits
          /// tag class for time.
          struct minute : TIME
          {
-            enum { IsBase = false };
+            enum:bool{ IsBase = false };
             typedef second Base;
             constexpr static char const * str() noexcept { return "minute"; }
             constexpr static double toBase() noexcept { return 60.0; }
@@ -39,7 +39,7 @@ namespace SystemOfUnits
          /// tag clase for time.
          struct hour : TIME
          {
-            enum { IsBase = false };
+            enum:bool{ IsBase = false };
             typedef second Base;
             constexpr static char const * str() noexcept { return "hour"; }
             constexpr static double toBase() noexcept { return 60.0 * 60.0; }

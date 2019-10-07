@@ -22,7 +22,8 @@ namespace SystemOfUnits /// covers the basics of the system
       using t_float = long double;
 
       /// Dimensions as enum
-      enum { eL = iL /*!< Dimension of Length */
+      enum:int
+         { eL = iL /*!< Dimension of Length */
          , et = it   /*!< Dimension of Time */
          , eM = iM   /*!< Dimension of Mass */
          , eT = iT   /*!< Dimension of Tempeture */
@@ -247,7 +248,8 @@ namespace SystemOfUnits /// covers the basics of the system
    struct NoDim
    {
       /// Lets using classes know if class is used as a base
-      enum { IsBase = false, sym = ' ' };
+      enum:bool{ IsBase = false};
+      enum:unsigned char{sym = ' ' };
       /// Called by WhatAmI when creating the string describing the type.
       constexpr static char const * str() noexcept { return ""; }
       ///  Multiply by toBase() to get base value.
@@ -262,7 +264,7 @@ namespace SystemOfUnits /// covers the basics of the system
    template< typename T, int D> struct t_BaseDim
    {
       using t_BaseUnit = T;
-      enum { DIM = D };
+      enum:int{ DIM = D };
    };
 
    /// Create a struct base on the quantity types.
@@ -306,6 +308,7 @@ namespace SOU = SystemOfUnits;
 
  This software is provided "as is" without express or implied warranty.
 
+ see https://www.nist.gov/pml/weights-and-measures/metric-si/si-units
  @section Introduction
  The Systems Of Units (SOU) Library was created out the author's desire to solve a problem where
  known engineering and scientific unit types will not mix to produce the wrong result type.  The library

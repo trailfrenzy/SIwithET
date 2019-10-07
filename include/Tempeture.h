@@ -4,7 +4,7 @@
 
 namespace SystemOfUnits 
 {
-   namespace Temperature  // Tempeture
+   namespace Temperature
    {
       enum:unsigned char{ THETA = 233 }; // from www.asciitable.com
       //constexpr char THETA = 233; // 'Ø';//L'\u0233'; 
@@ -12,30 +12,28 @@ namespace SystemOfUnits
       using TEMPERATURE = helpers::T_Symbol< THETA >;
       struct kelvin : TEMPERATURE
       {
-         enum { IsBase = true }; /// Lets using classes know if class is used as a base.
-         static char const * str() noexcept { return "Kelvin"; }/// Called by WhatAmI when creating the string describing the type.
-         static double toBase( double val) noexcept { return val; }
-         static double fromBase( double val) noexcept { return val; }
+         enum:bool{ IsBase = true }; /// Lets using classes know if class is used as a base.
+         constexpr static char const * str() noexcept { return "Kelvin"; }/// Called by WhatAmI when creating the string describing the type.
+         constexpr static double toBase( double val) noexcept { return val; }
+         constexpr static double fromBase( double val) noexcept { return val; }
          using Base = kelvin;
-         //typedef Metric::AtomicUnit::Meter Base;/// Typedef of the actual base
       };
 
       struct celsius : TEMPERATURE
       {
-         enum { IsBase = false }; /// Lets using classes know if class is used as a base.
-         static char const * str() noexcept { return "°C"; }/// Called by WhatAmI when creating the string describing the type.
-         static double toBase( double C ) noexcept { return C + 273.15; } // ex Kelvin = toBase(Celsius);
-         static double fromBase( double K ) noexcept { return K - 273.15; }
+         enum:bool{ IsBase = false }; /// Lets using classes know if class is used as a base.
+         constexpr static char const * str() noexcept { return "°C"; }/// Called by WhatAmI when creating the string describing the type.
+         constexpr static double toBase( double C ) noexcept { return C + 273.15; } // ex Kelvin = toBase(Celsius);
+         constexpr static double fromBase( double K ) noexcept { return K - 273.15; }
 		 using Base = kelvin;
-		 //typedef Metric::AtomicUnit::Meter Base;/// Typedef of the actual base 
       };
 
 	  struct fahrenheit : TEMPERATURE
 	  {
-		  enum { IsBase = false }; /// Lets using classes know if class is used as a base.
-		  static char const * str() noexcept { return "°F"; }/// Called by WhatAmI when creating the string describing the type. K = 5/9 (° F - 32) + 273
-		  static double toBase(double F) noexcept { return (5.0/9.0)*(F - 32.0) + 273.15; }
-		  static double fromBase(double K) noexcept { return (9.0/5.0)*(K - 273.15) + 32.0; } // ° F = 9/5 (K - 273) + 32
+		  enum:bool{ IsBase = false }; /// Lets using classes know if class is used as a base.
+        constexpr static char const * str() noexcept { return "°F"; }/// Called by WhatAmI when creating the string describing the type. K = 5/9 (° F - 32) + 273
+        constexpr static double toBase(double F) noexcept { return (5.0/9.0)*(F - 32.0) + 273.15; }
+        constexpr static double fromBase(double K) noexcept { return (9.0/5.0)*(K - 273.15) + 32.0; } // ° F = 9/5 (K - 273) + 32
 		  using Base = kelvin;
 	  };
    }

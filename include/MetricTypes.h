@@ -16,39 +16,39 @@ namespace Metric
 {
    namespace AU = AtomicUnit;
 
-   typedef SOU::MakeType< AU::Meter, AT::second, AU::gram, AU::kelvin, AU::coulomb > AUMetric;
+   using AUMetric=SOU::MakeType< AU::Meter, AT::second, AU::gram, AU::kelvin, AU::coulomb >;
 
    /// Length compond units
    ///< Meter type
-   typedef AUMetric::MakeDim<1,0,0,0,0>::type t_meter;
+   using t_meter = AUMetric::MakeDim<1,0,0,0,0>::type;
 
    /// Kilometer type
-   typedef SOU::unitType< AU::Kilometer, 1, AT::second, 0, AU::gram, 0,AU::kelvin,0, AU::coulomb,0 > t_kilometer;
+   using t_kilometer = SOU::unitType< AU::Kilometer, 1, AT::second, 0, AU::gram, 0,AU::kelvin,0, AU::coulomb,0 >;
 
    /// Centimeter type
-   typedef SOU::unitType< AU::Centimeter, 1, AT::second, 0, AU::gram, 0,AU::kelvin,0, AU::coulomb,0 > t_centimeter;
+   using t_centimeter = SOU::unitType< AU::Centimeter, 1, AT::second, 0, AU::gram, 0,AU::kelvin,0, AU::coulomb,0 >;
 
    /// Milimeter type
-   typedef SOU::unitType< AU::Milimeter, 1, AT::second, 0, AU::gram, 0,AU::kelvin,0, AU::coulomb,0 > t_milimeter; 
+   using t_milimeter = SOU::unitType< AU::Milimeter, 1, AT::second, 0, AU::gram, 0,AU::kelvin,0, AU::coulomb,0 >; 
    
    /// Time compond units (TODO look at replacing with std::chronos)
-   typedef AUMetric::MakeDim<0,1,0,0,0>::type t_second; /// Seconds type
-   typedef SOU::unitType< AU::Meter, 0, AT::minute, 1, AU::gram, 0,AU::kelvin,0, AU::coulomb,0 > t_minute;
-   typedef SOU::unitType< AU::Meter, 0, AT::hour,   1, AU::gram, 0,AU::kelvin,0, AU::coulomb,0 > t_hour;
+   using t_second = AUMetric::MakeDim<0,1,0,0,0>::type; /// Seconds type
+   using t_minute = SOU::unitType< AU::Meter, 0, AT::minute, 1, AU::gram, 0,AU::kelvin,0, AU::coulomb,0 >;
+   using t_hour = SOU::unitType< AU::Meter, 0, AT::hour,   1, AU::gram, 0,AU::kelvin,0, AU::coulomb,0 >;
 
    /// Mass compond units
-   typedef AUMetric::MakeDim<0,0,1,0,0>::type t_gram; /// Gram type
-   typedef SOU::unitType< AU::Meter, 0, AT::second, 0, AU::miligram, 1,AU::kelvin,0, AU::coulomb,0 > t_miligram;
-   typedef SOU::unitType< AU::Meter, 0, AT::second, 0, AU::kilogram, 1,AU::kelvin,0, AU::coulomb,0 > t_kilogram;
+   using t_gram = AUMetric::MakeDim<0,0,1,0,0>::type; /// Gram type
+   using t_miligram = SOU::unitType< AU::Meter, 0, AT::second, 0, AU::miligram, 1,AU::kelvin,0, AU::coulomb,0 >;
+   using t_kilogram = SOU::unitType< AU::Meter, 0, AT::second, 0, AU::kilogram, 1,AU::kelvin,0, AU::coulomb,0 >;
    
    // 
-   typedef AUMetric::MakeDim<1,1,0,0,0>::type t_metersecond; /// Meter * second type
+   using t_metersecond = AUMetric::MakeDim<1,1,0,0,0>::type; /// Meter * second type
 
    // Velocity compound units
-   typedef AUMetric::MakeDim<1,-1,0,0,0>::type t_velocity;
+   using t_velocity = AUMetric::MakeDim<1,-1,0,0,0>::type;
 
    // Mass flow compound units
-   typedef AUMetric::MakeDim<0,-1,1,0,0>::type t_gramPsec;
+   using t_gramPsec = AUMetric::MakeDim<0,-1,1,0,0>::type;
 
 } // end of namespace
 
@@ -64,7 +64,7 @@ constexpr Metric::t_kilometer operator"" _kilometer( long double d) noexcept
 
 constexpr auto operator"" _kph( long double d) noexcept
 {
-   typedef SOU::unitType< Metric::AU::Kilometer, 1, AT::hour, -1, Metric::AU::gram, 0, Metric::AU::kelvin, 0, Metric::AU::coulomb, 0 > t_kilometerPerHour;
+   using t_kilometerPerHour = SOU::unitType< Metric::AU::Kilometer, 1, AT::hour, -1, Metric::AU::gram, 0, Metric::AU::kelvin, 0, Metric::AU::coulomb, 0 >;
    return t_kilometerPerHour{ d };
 }
 constexpr Metric::t_centimeter operator"" _centimeter(long double d) noexcept
