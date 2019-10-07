@@ -19,8 +19,8 @@ public:
    typedef Metric::AtomicUnit::Meter Meter;
    typedef SOU::Time::AtomicUnit::second second;
    typedef Metric::AtomicUnit::gram gram;
-   //typedef SOU::MakeType< Meter, second, gram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::coulomb > t_Base;
-   //typedef SOU::MakeType< Meter, second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::coulomb > t_Base;
+   //typedef SOU::MakeType< Meter, second, gram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::ampere > t_Base;
+   //typedef SOU::MakeType< Meter, second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::ampere > t_Base;
    //typedef SI::unitType< Meter, 1, second, 0, gram, 0 > t_Meter;
    //typedef t_Base::MakeDim<1,0,0,0,0>::type t_Meter;
    typedef Metric::t_meter t_Meter;
@@ -226,7 +226,7 @@ TEST_F(MultiplyFirst, TestWithNonAtomicUnitUnitsMass)
 {
    using namespace Metric;
    namespace AU = AtomicUnit;
-   typedef SOU::unitType< AU::Meter, 0, SOU::Time::AtomicUnit::second, -1, AU::gram, 0, AU::kelvin, 0, AU::coulomb, 0 > t_Hertz;
+   typedef SOU::unitType< AU::Meter, 0, SOU::Time::AtomicUnit::second, -1, AU::gram, 0, AU::kelvin, 0, AU::ampere, 0 > t_Hertz;
 
    Metric::t_gram const g{ 25.0 };
    t_Hertz h{ 3.0 };
@@ -296,7 +296,7 @@ public:
    typedef Metric::AtomicUnit::Meter Meter;
    typedef SOU::Time::AtomicUnit::second second;
    typedef Metric::AtomicUnit::gram gram;
-   typedef Metric::AtomicUnit::coulomb coul;
+   typedef Metric::AtomicUnit::ampere coul;
    typedef Metric::AtomicUnit::kelvin kelvin;
    ///argument 1 for operator testing
    typedef SOU::unitType< Meter, MUL1, second, 0, gram, 0, kelvin, 0, coul, 0 > t_1;

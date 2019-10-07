@@ -99,7 +99,7 @@ template< int SIZE > void MakeDimTest()
 {
 	namespace AU = Metric::AtomicUnit;
    enum:int{ eSIZE = SIZE };
-   typedef SOU::unitType< AU::Meter, eSIZE, AT::second, 0, AU::gram, 0, AU::kelvin, 0, AU::coulomb, 0 > type;
+   typedef SOU::unitType< AU::Meter, eSIZE, AT::second, 0, AU::gram, 0, AU::kelvin, 0, AU::ampere, 0 > type;
 
 	type meter(4.2);
 
@@ -115,7 +115,7 @@ TEST(WhatAmITest, TestWithTwoDim)
 {
 
 	namespace AU = Metric::AtomicUnit;
-	typedef SOU::MakeType< AU::Meter, AT::second, AU::gram, AU::kelvin, AU::coulomb > AUMetric;
+	typedef SOU::MakeType< AU::Meter, AT::second, AU::gram, AU::kelvin, AU::ampere > AUMetric;
 
 	// Length compound units
 	typedef AUMetric::MakeDim<2, 0, 0, 0, 0>::type t_meterSq; //< Meter type

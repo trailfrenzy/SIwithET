@@ -18,7 +18,7 @@ namespace
 {
    namespace AT = SOU::Time::AtomicUnit;
 
-   typedef SOU::MakeType< Metric::AtomicUnit::Meter, AT::second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::coulomb > t_Base;
+   typedef SOU::MakeType< Metric::AtomicUnit::Meter, AT::second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::ampere > t_Base;
 
    typedef t_Base::MakeDim<0,1,0,0,0>::type t_sec;
    typedef t_Base::MakeDim<0,0,1,0,0>::type t_mass; // kilogram

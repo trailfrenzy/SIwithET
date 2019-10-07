@@ -26,7 +26,7 @@ TEST(helpUnitTest, MetricGram) {
 	EXPECT_FALSE((SystemOfUnits::is_same<Metric::t_gram, Metric::t_kilogram>::value));
 }
 
-using t_MakeType = SOU::MakeType< Metric::AtomicUnit::Meter, AT::second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::coulomb >;
+using t_MakeType = SOU::MakeType< Metric::AtomicUnit::Meter, AT::second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::ampere >;
 using t_Joule = t_MakeType::MakeDim<2, -2, 1, 0, 0>::type;
 
 TEST(Sort, DISABLED_UseTuple) { 

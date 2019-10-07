@@ -168,7 +168,7 @@ namespace SystemOfUnits
 
          /// public enum is used to let users know that the types did not match
          /// ie so feet and meters are not mixed up but both are base units
-         enum class ALLTYPES_THE_SAME : bool {
+         enum ALLTYPES_THE_SAME : bool {
             val =
             (  is_same<R1::Length::Base, R2::Length::Base>::value
             && is_same<R1::Time::Base, R2::Time::Base >::value
@@ -274,7 +274,7 @@ namespace SystemOfUnits
 		  using R1 = t_base::R1;
 		  using R2 = t_base::R2;
          /// multiplication is addition of the powers 
-         enum class Dim : int { Z = 0
+         enum Dim : int { Z = 0
               , eL = R1::eL + R2::eL   /// Length Dimension 
               , et = R1::et + R2::et   /// Time Dimension 
               , eM = R1::eM + R2::eM   /// Mass Dimension 
@@ -282,7 +282,7 @@ namespace SystemOfUnits
               , eQ = R1::eQ + R2::eQ };/// Charge Dimension 
 
          /// informs user during the compile process if the result has no dimensions.
-         enum class isNoDim : bool { val = (Dim::eL==Dim::Z) && (Dim::et== Dim::Z) && (Dim::eM== Dim::Z) && (Dim::eQ== Dim::Z) && (Dim::eT== Dim::Z) };
+         enum isNoDim : bool { val = (Dim::eL==Dim::Z) && (Dim::et== Dim::Z) && (Dim::eM== Dim::Z) && (Dim::eQ== Dim::Z) && (Dim::eT== Dim::Z) };
 
          using Length = typename IF< Dim::eL== Dim::Z, typename R1::Length,   typename IF<R1::eL!=0, typename R1::Length, typename R2::Length>::RET >::RET;
          using Time = typename IF< Dim::et== Dim::Z, typename R1::Time  ,    typename IF<R1::et!=0, typename R1::Time  , typename R2::Time  >::RET >::RET;
@@ -292,16 +292,16 @@ namespace SystemOfUnits
 
          /// all results are based on the first operands type, if NoDim then base on the second.
          using TBeforeResult = SOU::unitType
-            < Length, (int)Dim::eL
-            , Time, (int)Dim::et
-            , Mass, (int)Dim::eM
-            , Tempeture, (int)Dim::eT
-            , Charge, (int)Dim::eQ
+            < Length, Dim::eL
+            , Time, Dim::et
+            , Mass, Dim::eM
+            , Tempeture, Dim::eT
+            , Charge, Dim::eQ
             >;
 
       public:
          /// if not dimensions then the return type is double
-         using TResult = typename IF<static_cast<bool>(isNoDim::val), double, typename TBeforeResult >::RET;
+         using TResult = typename IF<isNoDim::val, tNoUnit::t_float, typename TBeforeResult >::RET;
 
          /// constructor initializes references to the operands.
          /// @param R1::ArgRef r1 is the right hand side.
@@ -319,7 +319,7 @@ namespace SystemOfUnits
             // line will compiler error if not the same compatible types
             static_assert( t_base::ALLTYPES_THE_SAME::val, "line will compiler error if not the same compatible types" );
             // temperature is not supported in more than 1 dimension
-            static_assert((int)Dim::eT == 0 || (int)Dim::eT == 1 || (int)Dim::eT == -1, "temperature is not supported in more than 1 dimension" );
+            static_assert(Dim::eT == 0 || Dim::eT == 1 || Dim::eT == -1, "temperature is not supported in more than 1 dimension" );
 
             return TResult
                ( m_r1.amount() 
@@ -343,7 +343,7 @@ namespace SystemOfUnits
          using R1 = t_base::R1;
          using R2 = t_base::R2;
          /// division is based on subtracting the two dimensions of the operands
-         enum class Dim { Z = 0
+         enum Dim:int{ Z = 0
             , eL = R1::eL - R2::eL   /// Length Dimension 
             , et = R1::et - R2::et   /// Time Dimension 
             , eM = R1::eM - R2::eM   /// Mass Dimension 
@@ -352,7 +352,7 @@ namespace SystemOfUnits
          };/// Charge Dimension 
 
          /// informs us during the compile process that the result has no dimensions.
-		   enum class isNoDim : bool { val = (Dim::eL == Dim::Z) && (Dim::et == Dim::Z) && (Dim::eM == Dim::Z) && (Dim::eQ == Dim::Z) && (Dim::eT == Dim::Z) };
+		   enum isNoDim : bool { val = (Dim::eL == Dim::Z) && (Dim::et == Dim::Z) && (Dim::eM == Dim::Z) && (Dim::eQ == Dim::Z) && (Dim::eT == Dim::Z) };
 
          using Length = typename IF< Dim::eL==Dim::Z, typename R1::Length,    typename IF<R1::eL!=0, typename R1::Length, typename R2::Length>::RET >::RET;
          using  Time = typename IF< Dim::et==Dim::Z, typename R1::Time  ,    typename IF<R1::et!=0, typename R1::Time  , typename R2::Time  >::RET >::RET;
@@ -362,15 +362,15 @@ namespace SystemOfUnits
 
          /// the type it will be if the dims are not 0
          using TBeforeResult = SOU::unitType
-            < Length, static_cast<int>(Dim::eL)
-            , Time, static_cast<int>(Dim::et)
-            , Mass, static_cast<int>(Dim::eM)
-            , Tempeture, static_cast<int>(Dim::eT)
-            , Charge, static_cast<int>(Dim::eQ)
-            > ;
+            < Length, Dim::eL
+            , Time, Dim::et
+            , Mass, Dim::eM
+            , Tempeture, Dim::eT
+            , Charge, Dim::eQ
+            >;
          /// enum is used so let user know that the types did not match
          /// all results are based on the first operands type, if NoDim then base on the second.
-         using TResult = typename IF<static_cast<bool>(isNoDim::val), double, typename TBeforeResult >::RET;
+         using TResult = typename IF<isNoDim::val, tNoUnit::t_float, typename TBeforeResult >::RET;
 
          /// constructor.
          /// @param R1::ArgRef r1 is the right hand side.
@@ -384,8 +384,8 @@ namespace SystemOfUnits
          constexpr typename auto result() const noexcept( noexcept(m_r1) && noexcept(m_r2))
          {
             // line will compiler error if not the same compatible types
-            static_assert( static_cast<bool>(t_base::ALLTYPES_THE_SAME::val), "line will compiler error if not the same compatible types" );
-            static_assert(static_cast<bool>(Dim::eT == Dim::Z || (int)Dim::eT == 1 || (int)Dim::eT == -1) ,"T must not be greater abs(1)");
+            static_assert(t_base::ALLTYPES_THE_SAME::val, "line will compiler error if not the same compatible types" );
+            static_assert(Dim::eT == Dim::Z || Dim::eT == 1 || Dim::eT == -1 ,"T must not be greater abs(1)");
 
             return TResult
                ( 

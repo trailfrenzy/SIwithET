@@ -13,7 +13,7 @@ struct DivisionFirst : public ::testing::Test
    typedef Metric::AtomicUnit::Meter Meter;
    typedef AT::second second;
    typedef Metric::AtomicUnit::gram gram;
-   typedef Metric::AtomicUnit::coulomb coul;
+   typedef Metric::AtomicUnit::ampere coul;
    typedef Metric::AtomicUnit::kelvin kelvin;
    typedef SOU::MakeType<Meter, second, gram, kelvin, coul> tMake;
    typedef tMake::MakeDim<1, 0, 0, 0, 0>::type t_Meter;
@@ -189,7 +189,7 @@ protected:
 	typedef Metric::AtomicUnit::Meter Meter;
 	typedef SOU::Time::AtomicUnit::second second;
 	typedef Metric::AtomicUnit::gram gram;
-	typedef Metric::AtomicUnit::coulomb coul;
+	typedef Metric::AtomicUnit::ampere coul;
 	typedef Metric::AtomicUnit::kelvin kelvin;
 
 	// build a type from the basics

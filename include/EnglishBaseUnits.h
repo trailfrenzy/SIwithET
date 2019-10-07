@@ -10,7 +10,7 @@ namespace English /// namespace than contains the English unit types.
    {
       struct Foot : Metric::AtomicUnit::LENGTH/// repesent quantity length of a foot.
       {
-         enum { IsBase = false }; /// Lets using classes know if class is used as a base.
+         enum:bool{ IsBase = false }; /// Lets using classes know if class is used as a base.
          constexpr static char const * str() noexcept { return "foot"; }/// Called by WhatAmI when creating the string describing the type.
          constexpr static double toBase() noexcept { return 0.3048; }///  Multiply by toBase() to get base value.
          constexpr static double fromBase() noexcept { return 1.0/toBase(); }/// Multiply by fromBase() to get diminsional value.
@@ -19,7 +19,7 @@ namespace English /// namespace than contains the English unit types.
 
       struct Inch : Metric::AtomicUnit::LENGTH/// represents the quantity length of an inch
       {
-         enum { IsBase = false }; /// Lets using classes know if class is used as a base
+         enum:bool{ IsBase = false }; /// Lets using classes know if class is used as a base
          constexpr static char const * str() noexcept { return "inch"; }/// Called by WhatAmI when creating the string describing the type.
          constexpr static double toBase() noexcept { return Foot::toBase() / 12.0; }///  Multiply by toBase() to get base value.
          constexpr static double fromBase() noexcept { return 1.0/toBase(); }/// Multiply by fromBase() to get diminsional value
@@ -28,7 +28,7 @@ namespace English /// namespace than contains the English unit types.
 
       struct Yard : Metric::AtomicUnit::LENGTH /// represents the quantity length of an yard
       {
-         enum { IsBase = false }; /// Lets using classes know if class is used as a base
+         enum:bool{ IsBase = false }; /// Lets using classes know if class is used as a base
          constexpr static char const * str() noexcept { return "yard"; }/// Called by WhatAmI when creating the string describing the type.
          constexpr static double toBase() noexcept { return Foot::toBase() * 3.0; }///  Multiply by toBase() to get base value.
          constexpr static double fromBase() noexcept { return 1.0/toBase(); }/// Multiply by fromBase() to get diminsional value
@@ -37,7 +37,7 @@ namespace English /// namespace than contains the English unit types.
 
       struct Mile : Metric::AtomicUnit::LENGTH /// represents the quantity length of a mile
       {
-         enum { IsBase = false }; /// Lets using classes know if class is used as a base
+         enum:bool { IsBase = false }; /// Lets using classes know if class is used as a base
          constexpr static char const * str() noexcept { return "mile"; }/// Called by WhatAmI when creating the string describing the type.
          constexpr static double toBase() noexcept { return 440.0 * 4.0 * Yard::toBase(); }///  Multiply by toBase() to get base value.
          constexpr static double fromBase() noexcept { return 1.0/toBase(); }/// Multiply by fromBase() to get diminsional value
@@ -48,7 +48,7 @@ namespace English /// namespace than contains the English unit types.
       a pound force. */
       struct poundMass : Metric::AtomicUnit::MASS
       {
-         enum { IsBase = false }; /// Lets using classes know if class is used as a base
+         enum :bool { IsBase = false }; /// Lets using classes know if class is used as a base
          constexpr static char const * str() noexcept { return "lbm"; }/// Called by WhatAmI when creating the string describing the type.
          constexpr static double toBase() noexcept { return 0.4536; }///  Multiply by toBase() to get base value.
          constexpr static double fromBase() noexcept { return 1.0/toBase(); }/// Multiply by fromBase() to get diminsional value
@@ -57,7 +57,7 @@ namespace English /// namespace than contains the English unit types.
 
       struct Slug : Metric::AtomicUnit::MASS /// represents the quantity wight of a slug
       {
-         enum { IsBase = false }; /// Lets using classes know if class is used as a base
+         enum :bool { IsBase = false }; /// Lets using classes know if class is used as a base
          constexpr static char const * str() noexcept { return "slug"; }/// Called by WhatAmI when creating the string describing the type.
          constexpr static double toBase() noexcept { return 32.174 * poundMass::toBase(); }///  Multiply by toBase() to get base value.
          constexpr static double fromBase() noexcept { return 1.0/toBase(); }/// Multiply by fromBase() to get diminsional value

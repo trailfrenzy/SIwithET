@@ -229,7 +229,7 @@ TEST(BasicSI, Size) {
 typedef Metric::AtomicUnit::Meter Meter;
 typedef SOU::Time::AtomicUnit::second second;
 typedef Metric::AtomicUnit::gram gram;
-typedef SOU::MakeType< Meter, second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::coulomb > t_Base;
+typedef SOU::MakeType< Meter, second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::ampere > t_Base;
 //typedef SI::unitType< Meter, 1, second, 0, gram, 0 > t_Meter;
 typedef t_Base::MakeDim<1,0,0,0,0>::type t_Meter;
 typedef t_Base::MakeDim<2,0,0,0,0>::type t_MeterSq;
@@ -343,7 +343,7 @@ TEST(BasicSI, IsPOD) {
 }
 
 TEST(Exception, T_Symbols) {
-   EXPECT_TRUE(noexcept(Metric::AtomicUnit::CHARGE() ));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::ELECTRIC_CURRENT() ));
    EXPECT_TRUE(noexcept(Metric::AtomicUnit::LENGTH() ));
    EXPECT_TRUE(noexcept(Metric::AtomicUnit::MASS() ));
    EXPECT_TRUE(noexcept(Metric::AtomicUnit::TEMPERATURE()));
@@ -352,7 +352,7 @@ TEST(Exception, T_Symbols) {
 TEST(Exception, Basic){
    EXPECT_TRUE( noexcept( Metric::AtomicUnit::Meter()));
    EXPECT_TRUE(noexcept(Metric::AtomicUnit::Centimeter()));
-   EXPECT_TRUE(noexcept(Metric::AtomicUnit::coulomb()));
+   EXPECT_TRUE(noexcept(Metric::AtomicUnit::ampere()));
    EXPECT_TRUE(noexcept(Metric::AtomicUnit::gram()));
    EXPECT_TRUE(noexcept(Metric::AtomicUnit::kelvin()));
    EXPECT_TRUE(noexcept(Metric::AtomicUnit::kilogram()));

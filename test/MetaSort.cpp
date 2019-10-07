@@ -159,7 +159,7 @@ TEST(MetaList, SizeSorted) {
 
 #include "MetricTypes.h"
 
-using t_MakeType = SOU::MakeType< Metric::AtomicUnit::Meter, AT::second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::coulomb >;
+using t_MakeType = SOU::MakeType< Metric::AtomicUnit::Meter, AT::second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::ampere >;
 using t_Joule = t_MakeType::MakeDim<2, -2, 1, 0, 0>::type;
 using t_kilogram = t_MakeType::MakeDim<0, 0, 1, 0, 0>::type;
 

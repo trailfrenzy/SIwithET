@@ -128,7 +128,7 @@
     <ClInclude Include="..\include\operators.h" />
     <ClInclude Include="..\include\pow.h" />
     <ClInclude Include="..\include\SI.h" />
-    <ClInclude Include="..\include\Tempeture.h" />
+    <ClInclude Include="..\include\Temperature.h" />
     <ClInclude Include="..\include\TimeAtomicUnits.h" />
     <ClInclude Include="..\include\WhatAmI.h" />
     <ClInclude Include="Struct_Symbol.h" />

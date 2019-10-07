@@ -100,14 +100,21 @@ namespace Metric
 		 using Base = kelvin;
       };
 
-      using CHARGE = SystemOfUnits::helpers::T_Symbol<'Q'>;
-      struct coulomb : CHARGE /// represents quantity charge coulomb.
+/*
+The ampere is defined by taking the fixed numerical value of the elementary charge e to be 1.602176634 × 10?19 when expressed in the unit C, which is equal to A s, where the second is defined in terms of ??Cs.
+
+The SI unit of electric potential difference is the volt (V) 1 V = 1 W/A.
+
+The SI unit of electric resistance is the ohm (?). 1 ? = 1 V/A.
+*/
+      using ELECTRIC_CURRENT = SystemOfUnits::helpers::T_Symbol<'A'>;
+      struct ampere : ELECTRIC_CURRENT /// represents quantity electric current.
       {
          enum:bool{ IsBase = true };/// Lets using classes know if class is used as a base.
-         constexpr static char const * str() noexcept { return "coulomb"; }/// Called by WhatAmI when creating the string describing the type.
+         constexpr static char const * str() noexcept { return "ampere"; }/// Called by WhatAmI when creating the string describing the type.
          constexpr static double toBase() noexcept { return 1.0; }///  Multiply by toBase() to get base value.
          constexpr static double fromBase() noexcept { return 1.0; }/// Multiply by fromBase() to get diminsional value.
-         typedef coulomb Base;/// Typedef of the actual base
+         using Base = ampere;/// Typedef of the actual base
       };
    }
 }
@@ -119,5 +126,18 @@ namespace Metric
 // permissions notice appear in all copies and derivatives.
 //
 // This software is provided "as is" without express or implied warranty.
+
+/* see https://www.nist.gov/pml/weights-and-measures/si-units-length
+The meter (m) is defined by taking the fixed numerical value of the speed of light in vacuum c to be 299,792,458 when expressed in the unit m s?1, where the second is defined in terms of ??Cs.
+
+The meter was once defined by a physical artifact - two marks inscribed on a platinum-iridium bar. The Length - Evolution from Measurement Standard to a Fundamental Constant explains the evolution of the definition of the meter. Follow these changes over time in the NIST Length Timeline .
+
+From the meter, several other units of measure are derived such as the:
+
+unit of speed is the meter per second (m/s). The speed of light in vacuum is 299 792 458 meters per second.
+unit of acceleration is the meter per second per second (m/s2).
+unit of area is the square meter (m2).
+unit of volume is the cubic meter (m3). The liter (1 cubic decimeter), although not an SI unit, is accepted for use with the SI and is commonly used to measure fluid volume.
+*/
 
 #endif

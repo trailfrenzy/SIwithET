@@ -1,6 +1,6 @@
 // file contains tests for tempeture which is different from other dimensions in its unique conversions it does.
 #include <gtest/gtest.h>
-#include "Tempeture.h"
+#include "Temperature.h"
 #include "MetricTypes.h"
 #include "conversion_cast.h"
 #include "operators.h"
@@ -13,9 +13,9 @@ using t_Kelvin = AUMetric::MakeDim<0, 0, 0, 1, 0>::type;
 using t_Joule = AUMetric::MakeDim<2, -2, 1, 0, 0>::type;
 using t_kilogram = AUMetric::MakeDim<0, 0, 1, 0, 0>::type;
 
-using t_Far = SOU::unitType< AU::Meter, 0, AT::minute, 0, AU::gram, 0, SOU::Temperature::fahrenheit, 1, AU::coulomb, 0 >;
-using t_Cel = SOU::unitType< AU::Meter, 0, AT::minute, 0, AU::gram, 0, SOU::Temperature::celsius, 1, AU::coulomb, 0 >;
-using t_HeatFluxC = SOU::unitType< AU::Meter, 2, AT::minute, -1, AU::gram, 1, SOU::Temperature::celsius, -1, AU::coulomb, 0 >;
+using t_Far = SOU::unitType< AU::Meter, 0, AT::minute, 0, AU::gram, 0, SOU::Temperature::fahrenheit, 1, AU::ampere, 0 >;
+using t_Cel = SOU::unitType< AU::Meter, 0, AT::minute, 0, AU::gram, 0, SOU::Temperature::celsius, 1, AU::ampere, 0 >;
+using t_HeatFluxC = SOU::unitType< AU::Meter, 2, AT::minute, -1, AU::gram, 1, SOU::Temperature::celsius, -1, AU::ampere, 0 >;
 
 TEST(temperature, ToBase) {
 	EXPECT_NEAR( t_Cel::Tempeture::toBase(0.0), 273.15, 0.01);  // to K

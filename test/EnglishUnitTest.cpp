@@ -19,7 +19,7 @@ TEST(EnglishUnitTest, CubeFoot) {
 
 namespace {
 	/// Using the Type factory where all the English types have the same base unit types.
-	typedef SOU::MakeType< English::AtomicUnit::Inch, AT::second, English::AtomicUnit::Slug, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::coulomb > MakeEnglishIn;
+	typedef SOU::MakeType< English::AtomicUnit::Inch, AT::second, English::AtomicUnit::Slug, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::ampere > MakeEnglishIn;
 
 	using t_Inch = MakeEnglishIn::MakeDim<1, 0, 0, 0, 0>::type;
 	//using t_cubeInch = MakeEnglishIn::MakeDim<3, 0, 0, 0, 0>::type;
