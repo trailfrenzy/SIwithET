@@ -31,7 +31,7 @@ namespace SystemOfUnits /// covers the basics of the system
       };
 
       /// Used in all class methods and friend functions for their noexcept()
-      enum:bool{ b_noexcept = noexcept(k,,L) && noexcept(t) && noexcept(M) && noexcept(T) && noexcept(Q) };
+      enum:bool{ b_noexcept = noexcept(L) && noexcept(t) && noexcept(M) && noexcept(T) && noexcept(Q) };
       static_assert(b_noexcept, "Why is this false?");
 
       // Quantity as typedefs
@@ -230,6 +230,24 @@ namespace SystemOfUnits /// covers the basics of the system
       struct is_UnitType< unitType<L, iL, t, it, M, iM, T, iT, Q, iQ> >
    {
       enum:bool{ value = true};
+   };
+
+   template< typename T, char const * NAME, char const * DIM >
+   struct SIwithDIM : T
+   {
+      //using t_unitType = t;
+      SIwithDIM(double val) : T(val) {
+         static_assert(is_UnitType::value);
+      }
+
+      static char const * unitName() noexcept { return NAME; }
+      static char const * unitDim()  noexcept { return DIM; }
+   };
+
+   template< typename T> struct is_SIwithDIM{ enum:bool{ value = false}; };
+   template< typename T, char const * N, char const * D > struct is_SIwithDIM< SIwithDIM<T, N, D > >
+   {
+      enum:bool{ value = true };
    };
 
    /// template used to create a type has been squared
