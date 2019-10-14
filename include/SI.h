@@ -232,20 +232,20 @@ namespace SystemOfUnits /// covers the basics of the system
       enum:bool{ value = true};
    };
 
-   template< typename T, char const * NAME, char const * DIM >
-   struct SIwithDIM : T
+   template< typename UNIT_TYPE, char const * NAME >
+   struct SIwithDIM : UNIT_TYPE
    {
       //using t_unitType = t;
-      SIwithDIM(double val) : T(val) {
-         static_assert(is_UnitType::value);
+      SIwithDIM(double val) : UNIT_TYPE(val) {
+         static_assert(is_UnitType< UNIT_TYPE>::value);
       }
 
       static char const * unitName() noexcept { return NAME; }
-      static char const * unitDim()  noexcept { return DIM; }
+      //static char const * unitDim()  noexcept { return DIM; }
    };
 
    template< typename T> struct is_SIwithDIM{ enum:bool{ value = false}; };
-   template< typename T, char const * N, char const * D > struct is_SIwithDIM< SIwithDIM<T, N, D > >
+   template< typename T, char const * N > struct is_SIwithDIM< SIwithDIM<T, N > >
    {
       enum:bool{ value = true };
    };

@@ -342,6 +342,19 @@ TEST(BasicSI, IsPOD) {
    EXPECT_TRUE(std::is_pod<t_Meter::Charge>::value);
 }
 
+static constexpr char const name[] = "Watt";
+using Watt = Metric::AUMetric::MakeDim<2, -3, 1, 0, 0>::type;
+using t_nameWatt = SystemOfUnits::SIwithDIM<Watt, name >;
+
+TEST(BasicSI, IsSIwithDim)
+{
+   EXPECT_FALSE(SystemOfUnits::is_SIwithDIM<double>::value);
+   EXPECT_FALSE(SystemOfUnits::is_SIwithDIM<t_Base>::value);
+
+   ASSERT_TRUE(SystemOfUnits::is_SIwithDIM< t_nameWatt>::value);
+}
+
+
 TEST(Exception, T_Symbols) {
    EXPECT_TRUE(noexcept(Metric::AtomicUnit::ELECTRIC_CURRENT() ));
    EXPECT_TRUE(noexcept(Metric::AtomicUnit::LENGTH() ));

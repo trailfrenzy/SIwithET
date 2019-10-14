@@ -73,16 +73,6 @@ constexpr auto operator"" _centimeter(long double d) noexcept
 constexpr auto operator"" _milimeter(long double d) noexcept
 { return Metric::t_milimeter{ d }; }
 
-//constexpr char const name[] = "Watt";
-//using t_nameWatt = SystemOfUnits::SIwithDIM<Watt, name >;
-//
-//constexpr t_nameWatt operator"" _watt(long double d)
-//{
-//   using Watt = Metric::AUMetric::MakeDim<2, -3, 1, 0, 0>::type;
-//
-//   return t_nameWatt(d);
-//}
-
 // Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //

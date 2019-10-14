@@ -17,6 +17,27 @@ TEST(Current, IsAmpere) {
    ASSERT_EQ("[A]", SystemOfUnits::Diminsion(amp));
 }
 
+// move to MetricTypes when done testing
+constexpr char const name[] = "Watt";
+using Watt = Metric::AUMetric::MakeDim<2, -3, 1, 0, 0>::type;
+using t_nameWatt = SystemOfUnits::SIwithDIM<Watt, name >;
+//constexpr t_nameWatt operator"" _watt(long double d)
+//{
+//   using Watt = Metric::AUMetric::MakeDim<2, -3, 1, 0, 0>::type;
+//
+//   return t_nameWatt(d);
+//}
+
+TEST(Current, IsWattType)
+{
+   t_nameWatt watt(4.5);
+   ASSERT_TRUE(SystemOfUnits::is_SIwithDIM< t_nameWatt>::value)<< "Tested in SITest.cpp too";
+
+   ASSERT_TRUE(watt == 4.5);
+   ASSERT_EQ("Watt", SystemOfUnits::WhatAmI(watt));
+
+}
+
 
 // Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
