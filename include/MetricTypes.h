@@ -54,13 +54,13 @@ namespace Metric
 } // end of namespace
 
 // Metric UDL's (User Defined Literals)
-constexpr Metric::t_meter operator"" _meter( long double d) noexcept
+constexpr auto operator"" _meter( long double d) noexcept
 {
    return Metric::t_meter(d);
 }
 
 // Kilometer UDL
-constexpr Metric::t_kilometer operator"" _kilometer( long double d) noexcept
+constexpr auto operator"" _kilometer( long double d) noexcept
 { return Metric::t_kilometer{ static_cast<double>(d) }; }
 
 constexpr auto operator"" _kph( long double d) noexcept
@@ -68,10 +68,20 @@ constexpr auto operator"" _kph( long double d) noexcept
    using t_kilometerPerHour = SOU::unitType< Metric::AU::Kilometer, 1, AT::hour, -1, Metric::AU::gram, 0, Metric::AU::kelvin, 0, Metric::AU::ampere, 0 >;
    return t_kilometerPerHour{ d };
 }
-constexpr Metric::t_centimeter operator"" _centimeter(long double d) noexcept
+constexpr auto operator"" _centimeter(long double d) noexcept
 { return Metric::t_centimeter{ d }; }
-constexpr Metric::t_milimeter operator"" _milimeter(long double d) noexcept
+constexpr auto operator"" _milimeter(long double d) noexcept
 { return Metric::t_milimeter{ d }; }
+
+//constexpr char const name[] = "Watt";
+//using t_nameWatt = SystemOfUnits::SIwithDIM<Watt, name >;
+//
+//constexpr t_nameWatt operator"" _watt(long double d)
+//{
+//   using Watt = Metric::AUMetric::MakeDim<2, -3, 1, 0, 0>::type;
+//
+//   return t_nameWatt(d);
+//}
 
 // Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
