@@ -26,7 +26,7 @@ namespace SystemOfUnits /// covers the basics of the system
          { eL = iL /*!< Dimension of Length */
          , et = it   /*!< Dimension of Time */
          , eM = iM   /*!< Dimension of Mass */
-         , eT = iT   /*!< Dimension of Tempeture */
+         , eT = iT   /*!< Dimension of Temperature */
          , eQ = iQ   /*!< Dimension of Charge */
       };
 
@@ -38,7 +38,7 @@ namespace SystemOfUnits /// covers the basics of the system
       using Length = L;    /*!<  Quantity type for Length */
       using Time = t;      /*!<  Quantity type for Time */
       using Mass= M;      /*!<  Quantity type for Mass */
-      using Tempeture = T; /*!<  Quantity type for Tempeture */
+      using Temperature = T; /*!<  Quantity type for Temperature */
       using Charge = Q ;    /*!<  Quantity type for Charge */
 
       /// default constructor (does not initialize scalar with default value, just like a built in type).
@@ -259,7 +259,7 @@ namespace SystemOfUnits /// covers the basics of the system
          < typename UNIT::Length, UNIT::eL + UNIT::eL // cannot use * , uses operator*
          , typename UNIT::Time,   UNIT::et + UNIT::et
          , typename UNIT::Mass,   UNIT::eM + UNIT::eM
-         , typename UNIT::Tempeture, UNIT::eT + UNIT::eT
+         , typename UNIT::Temperature, UNIT::eT + UNIT::eT
          , typename UNIT::Charge, UNIT::eQ + UNIT::eQ
          >;
    };

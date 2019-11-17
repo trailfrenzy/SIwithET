@@ -80,11 +80,11 @@ namespace SystemOfUnits
 		}
 		// need a correct the temperature
 		if constexpr (eT == 1) {
-			out =  IN::Tempeture::toBase(out);  // to K
-			out = OUT::Tempeture::fromBase(out); // from K
+			out =  IN::Temperature::toBase(out);  // to K
+			out = OUT::Temperature::fromBase(out); // from K
 		}
       //else if (eT == -1) {}  // TODO: look at this in the future.
-		static_assert( eT== 0 || eT==1, "Tempeture dimension may only be 1 or 0" );  // TODO: correct so it may be negitive 1.
+		static_assert( eT== 0 || eT==1, "Temperature dimension may only be 1 or 0" );  // TODO: correct so it may be negitive 1.
 
 		// correct the charge
 		if constexpr (0 != eQ) {

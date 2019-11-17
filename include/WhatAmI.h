@@ -62,7 +62,7 @@ namespace SystemOfUnits
          helpers::printAtom< T::Length, T::eL >(buf);
          helpers::printAtom< T::Time, T::et >(buf);
          helpers::printAtom< T::Mass, T::eM >(buf);
-         helpers::printAtom< T::Tempeture, T::eT >(buf);
+         helpers::printAtom< T::Temperature, T::eT >(buf);
          helpers::printAtom< T::Charge, T::eQ >(buf);
 
          return buf.str().erase(buf.str().size() - 1); // removes the last space char in the buffer
@@ -122,7 +122,7 @@ namespace SystemOfUnits
          if constexpr (0 != T::eL) OneDim<T::Length::sym, T::eL >(buf);
          if constexpr (0 != T::eM) OneDim<T::Mass::sym, T::eM >(buf);
          if constexpr (0 != T::et) OneDim<T::Time::sym, T::et >(buf);
-         if constexpr (0 != T::eT) OneDim<T::Tempeture::sym, T::eT >(buf);
+         if constexpr (0 != T::eT) OneDim<T::Temperature::sym, T::eT >(buf);
          if constexpr (0 != T::eQ) OneDim<T::Charge::sym, T::eQ >(buf);
 
          std::basic_ostringstream<char_type> out;
