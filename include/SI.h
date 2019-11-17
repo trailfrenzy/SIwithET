@@ -236,14 +236,16 @@ namespace SystemOfUnits /// covers the basics of the system
    struct SIwithDIM : UNIT_TYPE
    {
       //using t_unitType = t;
-      SIwithDIM(double val) : UNIT_TYPE(val) {
+      constexpr SIwithDIM(double val) noexcept : UNIT_TYPE(val)
+      {
          static_assert(is_UnitType< UNIT_TYPE>::value);
       }
 
-      static char const * unitName() noexcept { return NAME; }
+      static constexpr char const * unitName() noexcept { return NAME; }
       //static char const * unitDim()  noexcept { return DIM; }
    };
 
+   /// Used at compile time to find if type is SIwithDIM<>
    template< typename T> struct is_SIwithDIM{ enum:bool{ value = false}; };
    template< typename T, char const * N > struct is_SIwithDIM< SIwithDIM<T, N > >
    {
