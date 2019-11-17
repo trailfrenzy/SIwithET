@@ -81,7 +81,7 @@ namespace Metric
       enum { THETA = 233 }; // from www.asciitable.com
       using TEMPERATURE = SystemOfUnits::helpers::T_Symbol< char(THETA) >;
 
-      struct kelvin : TEMPERATURE /// represents quantity tempeture of kelvin
+      struct kelvin : TEMPERATURE /// represents quantity Temperature of kelvin
       {
          enum:bool{ IsBase = true };/// Lets using classes know if class is used as a base.
          constexpr static char const * str() noexcept { return "Kelvin"; }/// Called by WhatAmI when creating the string describing the type.
@@ -90,11 +90,11 @@ namespace Metric
 		 typedef kelvin Base;/// Typedef of the actual base
       };
       /// @warning Do not use
-      struct celsius : TEMPERATURE/// represents quanity tempeture celsius.
+      struct celsius : TEMPERATURE/// represents quanity Temperature celsius.
       {
          enum:bool{ IsBase = false };/// Lets using classes know if class is used as a base.
          constexpr static char const * str()  noexcept { return "°C"; }/// Called by WhatAmI when creating the string describing the type.
-         // currently only kelvin is the only tempeture offered in compound
+         // currently only kelvin is the only Temperature offered in compound
          constexpr static double toBase( double C ) noexcept { return C + 273.15; }///  Multiply by toBase() to get base value.
          constexpr static double fromBase( double K ) noexcept { return K - 273.15; }/// Multiply by fromBase() to get diminsional value.
 		 using Base = kelvin;

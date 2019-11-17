@@ -338,7 +338,7 @@ TEST(BasicSI, IsPOD) {
    EXPECT_TRUE(std::is_pod<t_Meter::Length>::value);
    EXPECT_TRUE(std::is_pod<t_Meter::Mass>::value);
    EXPECT_TRUE(std::is_pod<t_Meter::Time>::value);
-   EXPECT_TRUE(std::is_pod<t_Meter::Tempeture>::value);
+   EXPECT_TRUE(std::is_pod<t_Meter::Temperature>::value);
    EXPECT_TRUE(std::is_pod<t_Meter::Charge>::value);
 }
 
@@ -390,7 +390,7 @@ TEST(Exception, DimTypes)
    EXPECT_TRUE(noexcept( t_Meter::Length()) );
    EXPECT_TRUE(noexcept( t_Meter::Mass()) );
    EXPECT_TRUE(noexcept( t_Meter::Time()));
-   EXPECT_TRUE(noexcept(t_Meter::Tempeture()));
+   EXPECT_TRUE(noexcept(t_Meter::Temperature()));
    EXPECT_TRUE(noexcept(t_Meter::Charge()));
 }
 

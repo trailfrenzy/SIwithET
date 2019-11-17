@@ -18,17 +18,17 @@ using t_Cel = SOU::unitType< AU::Meter, 0, AT::minute, 0, AU::gram, 0, SOU::Temp
 using t_HeatFluxC = SOU::unitType< AU::Meter, 2, AT::minute, -1, AU::gram, 1, SOU::Temperature::celsius, -1, AU::ampere, 0 >;
 
 TEST(temperature, ToBase) {
-	EXPECT_NEAR( t_Cel::Tempeture::toBase(0.0), 273.15, 0.01);  // to K
-	EXPECT_NEAR(t_Kelvin::Tempeture::toBase(0.0), 0.0, 0.01);
+	EXPECT_NEAR( t_Cel::Temperature::toBase(0.0), 273.15, 0.01);  // to K
+	EXPECT_NEAR(t_Kelvin::Temperature::toBase(0.0), 0.0, 0.01);
 }
 TEST(temperature, FromBase) {
-	EXPECT_NEAR(t_Kelvin::Tempeture::fromBase(0.0), 0.0, 0.01);
-	EXPECT_NEAR(t_Cel::Tempeture::fromBase(273.15), 0.0, 0.01);
+	EXPECT_NEAR(t_Kelvin::Temperature::fromBase(0.0), 0.0, 0.01);
+	EXPECT_NEAR(t_Cel::Temperature::fromBase(273.15), 0.0, 0.01);
 }
 TEST(temperature, ToFromBase) {
-	auto out = t_Cel::Tempeture::toBase(0.0);
+	auto out = t_Cel::Temperature::toBase(0.0);
 	EXPECT_DOUBLE_EQ(out, 273.15);
-	out = t_Kelvin::Tempeture::fromBase(out);
+	out = t_Kelvin::Temperature::fromBase(out);
 	EXPECT_DOUBLE_EQ(out, 273.15) << "worked but the one below doesn't";
 }
 

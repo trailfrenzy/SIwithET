@@ -77,7 +77,7 @@ namespace SystemOfUnits
       {
          using SystemOfUnits::helpers::t_SingleDim;
 
-         typedef typename Meta::LIST5< t_SingleDim< T::Length, T::eL>, t_SingleDim< T::Time, T::et>, t_SingleDim< T::Mass, T::eM>, t_SingleDim< T::Tempeture, T::eT>, t_SingleDim< T::Charge, T::eQ > >::TYPE t_List;
+         typedef typename Meta::LIST5< t_SingleDim< T::Length, T::eL>, t_SingleDim< T::Time, T::et>, t_SingleDim< T::Mass, T::eM>, t_SingleDim< T::Temperature, T::eT>, t_SingleDim< T::Charge, T::eQ > >::TYPE t_List;
 
          using  t_Sorted = typename Meta::SORT<ORD, t_List >::TYPE;
          using DIM0 = typename Meta::At< t_Sorted, 0 >::RET;
@@ -170,7 +170,7 @@ TEST(MetaList, BuildListWithUnit) {
    using T = t_Joule;
    using SystemOfUnits::t_BaseDim;
 
-   using t_List = Meta::LIST5< t_BaseDim< typename T::Length, T::eL>, t_BaseDim< T::Time, T::et>, t_BaseDim< T::Mass, T::eM>, t_BaseDim< T::Tempeture, T::eT>, t_BaseDim< T::Charge, T::eQ > >;
+   using t_List = Meta::LIST5< t_BaseDim< typename T::Length, T::eL>, t_BaseDim< T::Time, T::et>, t_BaseDim< T::Mass, T::eM>, t_BaseDim< T::Temperature, T::eT>, t_BaseDim< T::Charge, T::eQ > >;
    EXPECT_EQ(t_List::TYPE::LENGTH, 5);
 }
 
@@ -178,7 +178,7 @@ TEST(MetaList, SortWithUnit) {
    using T = t_Joule;
    using SystemOfUnits::t_BaseDim;
 
-   using t_List = Meta::LIST5< t_BaseDim< t_Joule::Length, T::eL>, t_BaseDim< T::Time, T::et>, t_BaseDim< T::Mass, T::eM>, t_BaseDim< T::Tempeture, T::eT>, t_BaseDim< T::Charge, T::eQ > >::TYPE;
+   using t_List = Meta::LIST5< t_BaseDim< t_Joule::Length, T::eL>, t_BaseDim< T::Time, T::et>, t_BaseDim< T::Mass, T::eM>, t_BaseDim< T::Temperature, T::eT>, t_BaseDim< T::Charge, T::eQ > >::TYPE;
 
    //using myListA = Meta::LIST5< t_BaseDim< T::Length, T::eL>, t_Test<23>, t_Test<4>, t_Test<2>, t_Test<9> >::TYPE;
 
@@ -193,7 +193,7 @@ TEST(Dim, CharFromSingleString) {
    using SystemOfUnits::helpers::t_SingleDim;
    EXPECT_EQ(T::et, -2);
 
-   using t_List = Meta::LIST5< t_SingleDim< T::Length, T::eL>, t_SingleDim< T::Time, T::et>, t_SingleDim< T::Mass, T::eM>, t_SingleDim< T::Tempeture, T::eT>, t_SingleDim< T::Charge, T::eQ > >::TYPE;
+   using t_List = Meta::LIST5< t_SingleDim< T::Length, T::eL>, t_SingleDim< T::Time, T::et>, t_SingleDim< T::Mass, T::eM>, t_SingleDim< T::Temperature, T::eT>, t_SingleDim< T::Charge, T::eQ > >::TYPE;
    using t_Sorted = Meta::SORT< Meta::DIM_GT, t_List >::TYPE;
 
    //std::string const retStr = Meta::At< t_Sorted, 0 >::RET::c_str();

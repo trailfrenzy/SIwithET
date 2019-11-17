@@ -54,14 +54,14 @@ namespace SystemOfUnits
          { eL = T::eL   /// Length Dimension 
          , et = T::et   /// Time Dimension
          , eM = T::eM   /// Mass Dimension
-         , eT = T::eT   /// Tempeture Dimension
+         , eT = T::eT   /// Temperature Dimension
          , eQ = T::eQ   /// Charge Dimension
          };
 
          using Length = typename T::Length;        /// Length type of the incoming arg.
          using Time = typename T::Time;            /// Time type of the incoming arg.
          using Mass = typename T::Mass;            /// Mass type of the incoming arg.
-         using Tempeture = typename T::Tempeture;  /// Tempeture of the incoming arg.
+         using Temperature = typename T::Temperature;  /// Temperature of the incoming arg.
          using Charge = typename T::Charge;        /// Charge of the incoming arg.
       };
 
@@ -90,7 +90,7 @@ namespace SystemOfUnits
       //   typedef typename T2::Length Length;
       //   typedef typename T2::Time Time;
       //   typedef typename T2::Mass Mass;
-      //   typedef typename T2::Tempeture Tempeture;
+      //   typedef typename T2::Temperature Temperature;
       //   typedef typename T2::Charge Charge;
       //};
 
@@ -108,7 +108,7 @@ namespace SystemOfUnits
       typedef typename T2::Length Length;\
       typedef typename T2::Time Time;\
       typedef typename T2::Mass Mass;\
-      typedef typename T2::Tempeture Tempeture;\
+      typedef typename T2::Temperature Temperature;\
       typedef typename T2::Charge Charge;\
       };
 
@@ -173,7 +173,7 @@ namespace SystemOfUnits
             (  is_same<R1::Length::Base, R2::Length::Base>::value
             && is_same<R1::Time::Base, R2::Time::Base >::value
             && is_same<R1::Mass::Base, R2::Mass::Base >::value
-            && is_same<R1::Tempeture::Base, R2::Tempeture::Base >::value
+            && is_same<R1::Temperature::Base, R2::Temperature::Base >::value
             && is_same<R1::Charge::Base, R2::Charge::Base >::value
             )
             || (R1::eL == 0 && R1::et == 0 && R1::eM == 0 && R1::eT == 0 && R1::eQ == 0)
@@ -186,7 +186,7 @@ namespace SystemOfUnits
          enum:bool { IsLengthSame = is_same< typename R1::Length, typename R2::Length >::value };
          enum :bool { IsTimeSame = is_same< typename R1::Time, typename R2::Time   >::value };
          enum :bool { IsMassSame = is_same< typename R1::Mass, typename R2::Mass   >::value };
-         enum :bool { IsTempSame = is_same< typename R1::Tempeture, typename R2::Tempeture >::value };
+         enum :bool { IsTempSame = is_same< typename R1::Temperature, typename R2::Temperature >::value };
          enum :bool { IsChargeSame = is_same< typename R1::Charge, typename R2::Charge >::value };
 
          /// need to know if BOTH the dimensions in the two operands are base
@@ -196,7 +196,7 @@ namespace SystemOfUnits
          /// need to know if BOTH the dimensions in the two operands are base
          enum :bool { AreMassBase = R1::Mass::IsBase   && R2::Mass::IsBase };
          /// need to know if BOTH the dimensions in the two operands are base
-         enum :bool { AreTempBase = R1::Tempeture::IsBase && R2::Tempeture::IsBase };
+         enum :bool { AreTempBase = R1::Temperature::IsBase && R2::Temperature::IsBase };
          /// need to know if BOTH the dimensions in the two operands are base
          enum :bool { AreChargeBase = R1::Charge::IsBase && R2::Charge::IsBase };
 
@@ -254,9 +254,9 @@ namespace SystemOfUnits
             < IsTempSame
             , NoDim
             , typename IF
-            < !R1::Tempeture::IsBase && !R2::Tempeture::IsBase
-            , CombineBaseTypes<typename R1::Tempeture, typename R2::Tempeture>
-            , typename IF<R2::Tempeture::IsBase, SOU::MakeFrom<typename R1::Tempeture>, typename R2::Tempeture >::RET
+            < !R1::Temperature::IsBase && !R2::Temperature::IsBase
+            , CombineBaseTypes<typename R1::Temperature, typename R2::Temperature>
+            , typename IF<R2::Temperature::IsBase, SOU::MakeFrom<typename R1::Temperature>, typename R2::Temperature >::RET
             >::RET 
             >::RET
             >::RET;
@@ -278,7 +278,7 @@ namespace SystemOfUnits
               , eL = R1::eL + R2::eL   /// Length Dimension 
               , et = R1::et + R2::et   /// Time Dimension 
               , eM = R1::eM + R2::eM   /// Mass Dimension 
-              , eT = R1::eT + R2::eT   /// Tempeture Dimension 
+              , eT = R1::eT + R2::eT   /// Temperature Dimension 
               , eQ = R1::eQ + R2::eQ };/// Charge Dimension 
 
          /// informs user during the compile process if the result has no dimensions.
@@ -287,7 +287,7 @@ namespace SystemOfUnits
          using Length = typename IF< Dim::eL== Dim::Z, typename R1::Length,   typename IF<R1::eL!=0, typename R1::Length, typename R2::Length>::RET >::RET;
          using Time = typename IF< Dim::et== Dim::Z, typename R1::Time  ,    typename IF<R1::et!=0, typename R1::Time  , typename R2::Time  >::RET >::RET;
          using Mass = typename IF< Dim::eM== Dim::Z, typename R1::Mass,      typename IF<R1::eM!=0, typename R1::Mass  , typename R2::Mass  >::RET >::RET;
-         using Tempeture = typename IF< Dim::eT== Dim::Z, typename R1::Tempeture, typename IF<R1::eT!=0, typename R1::Tempeture, typename R2::Tempeture>::RET >::RET;
+         using Temperature = typename IF< Dim::eT== Dim::Z, typename R1::Temperature, typename IF<R1::eT!=0, typename R1::Temperature, typename R2::Temperature>::RET >::RET;
          using Charge = typename IF< Dim::eQ== Dim::Z, typename R1::Charge   , typename IF<R1::eQ!=0, typename R1::Charge, typename R2::Charge>::RET >::RET;
 
          /// all results are based on the first operands type, if NoDim then base on the second.
@@ -295,7 +295,7 @@ namespace SystemOfUnits
             < Length, Dim::eL
             , Time, Dim::et
             , Mass, Dim::eM
-            , Tempeture, Dim::eT
+            , Temperature, Dim::eT
             , Charge, Dim::eQ
             >;
 
@@ -325,7 +325,7 @@ namespace SystemOfUnits
                ( m_r1.amount() 
                * t_base::LenType::toBase()
                * t_base::TimeType::toBase()
-               * t_base::MassType::toBase()  // TODO: what about tempeture and charge?
+               * t_base::MassType::toBase()  // TODO: what about Temperature and charge?
                * m_r2.amount()
                );
          }
@@ -347,7 +347,7 @@ namespace SystemOfUnits
             , eL = R1::eL - R2::eL   /// Length Dimension 
             , et = R1::et - R2::et   /// Time Dimension 
             , eM = R1::eM - R2::eM   /// Mass Dimension 
-            , eT = R1::eT - R2::eT   /// Tempeture Dimension 
+            , eT = R1::eT - R2::eT   /// Temperature Dimension 
             , eQ = R1::eQ - R2::eQ
          };/// Charge Dimension 
 
@@ -357,7 +357,7 @@ namespace SystemOfUnits
          using Length = typename IF< Dim::eL==Dim::Z, typename R1::Length,    typename IF<R1::eL!=0, typename R1::Length, typename R2::Length>::RET >::RET;
          using  Time = typename IF< Dim::et==Dim::Z, typename R1::Time  ,    typename IF<R1::et!=0, typename R1::Time  , typename R2::Time  >::RET >::RET;
          using Mass = typename IF< Dim::eM==Dim::Z, typename R1::Mass,      typename IF<R1::eM!=0, typename R1::Mass  , typename R2::Mass  >::RET >::RET;
-         using Tempeture = typename IF< Dim::eT==Dim::Z, typename R1::Tempeture, typename IF<R1::eT!=0, typename R1::Tempeture, typename R2::Tempeture>::RET >::RET;
+         using Temperature = typename IF< Dim::eT==Dim::Z, typename R1::Temperature, typename IF<R1::eT!=0, typename R1::Temperature, typename R2::Temperature>::RET >::RET;
          using Charge = typename IF< Dim::eQ==Dim::Z, typename R1::Charge   , typename IF<R1::eQ!=0, typename R1::Charge, typename R2::Charge>::RET >::RET;
 
          /// the type it will be if the dims are not 0
@@ -365,7 +365,7 @@ namespace SystemOfUnits
             < Length, Dim::eL
             , Time, Dim::et
             , Mass, Dim::eM
-            , Tempeture, Dim::eT
+            , Temperature, Dim::eT
             , Charge, Dim::eQ
             >;
          /// enum is used so let user know that the types did not match
