@@ -27,3 +27,7 @@ test/test.vcxproj
 test/test.vcxproj
 test/test.vcxproj.user
 test/test.vcxproj
+.vs/slnx.sqlite
+.vs/ProjectSettings.json
+.vs/SIwithET_git/v15/.suo
+.vs/VSWorkspaceState.json

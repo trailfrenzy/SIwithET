@@ -1,11 +1,12 @@
 // Struct supports the dimensional function. Used internally, not for use outside of SOU.
 #ifndef SYSTEM_OF_UNITS_HELPERS_STRUCT_T_SYMBOL_H
 #define SYSTEM_OF_UNITS_HELPERS_STRUCT_T_SYMBOL_H
+#include <cstdint>
 namespace SystemOfUnits {
    namespace helpers {
          template<unsigned char C > struct T_Symbol 
          { 
-            enum:unsigned char{ sym = C };  /// used on the input of template OneDim<>
+            enum:uint8_t{ sym = C };  /// used on the input of template OneDim<>
 
             // ideally the function is used by the sorting template and its output.  Currently not used.
             template<typename t_char = char>
@@ -17,6 +18,29 @@ namespace SystemOfUnits {
             }
          };
    }
+
+   template< typename BASE_UNIT > struct is_LENGTH
+   {
+      enum :bool { value = BASE_UNIT::sym == 'L' };
+   };
+
+   template<typename BASE_UNIT > struct is_TIME
+   {
+      enum:bool{ value = BASE_UNIT::sym == 'T' };
+   };
+   template<typename BASE_UNIT > struct is_MASS
+   {
+      enum :bool { value = BASE_UNIT::sym == 'M' };
+   };
+   template<typename BASE_UNIT > struct is_TEMPERATURE
+   {
+      enum :bool { value = BASE_UNIT::sym == 233 };
+   };
+   template<typename BASE_UNIT > struct is_CURRENT
+   {
+      enum :bool { value = BASE_UNIT::sym == 'A' };
+   };
+
 }
 #endif
 
