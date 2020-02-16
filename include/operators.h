@@ -196,22 +196,11 @@ namespace SystemOfUnits
 
          // Below is a compile time check to compare if the length as same type ie meter to meter, not meter to kilometer
          // enum value is true if the two types are the same.
-         enum:bool { IsLengthSame = std::is_same< typename R1::Length, typename R2::Length >::value };
+         enum :bool { IsLengthSame = std::is_same< typename R1::Length, typename R2::Length >::value };
          enum :bool { IsTimeSame = std::is_same< typename R1::Time, typename R2::Time   >::value };
          enum :bool { IsMassSame = std::is_same< typename R1::Mass, typename R2::Mass   >::value };
          enum :bool { IsTempSame = std::is_same< typename R1::Temperature, typename R2::Temperature >::value };
          enum :bool { IsChargeSame = std::is_same< typename R1::Charge, typename R2::Charge >::value };
-
-         /// need to know if BOTH the dimensions in the two operands are base
-         enum :bool { AreLengthsBase = R1::Length::IsBase && R2::Length::IsBase };
-         /// need to know if BOTH the dimensions in the two operands are base
-         enum :bool { AreTimeBase = R1::Time::IsBase   && R2::Time::IsBase };
-         /// need to know if BOTH the dimensions in the two operands are base
-         enum :bool { AreMassBase = R1::Mass::IsBase   && R2::Mass::IsBase };
-         /// need to know if BOTH the dimensions in the two operands are base
-         enum :bool { AreTempBase = R1::Temperature::IsBase && R2::Temperature::IsBase };
-         /// need to know if BOTH the dimensions in the two operands are base
-         enum :bool { AreChargeBase = R1::Charge::IsBase && R2::Charge::IsBase };
 
          /* what are the 4 proposed traits used for */
            /// the proposed length type of the result
