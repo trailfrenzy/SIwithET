@@ -37,6 +37,18 @@ namespace SystemOfUnits
 {
    namespace operators
    {
+      template< typename R1, typename R2 >
+      struct is_same_BASE {
+         enum : bool {
+            value =
+            std::is_same<R1::Length::Base, R2::Length::Base>::value
+            && std::is_same<R1::Time::Base, R2::Time::Base >::value
+            && std::is_same<R1::Mass::Base, R2::Mass::Base >::value
+            && std::is_same<R1::Temperature::Base, R2::Temperature::Base >::value
+            && std::is_same<R1::Charge::Base, R2::Charge::Base >::value
+         };
+      };
+
       /** \brief The trait idea came from "C++ Templates", pg 332.
        trait is used to allow built in types to be used as args in operator's mul and div 
        The @code A_Trait<T1,T2> @endcode templates are used during has hidden templates that are
@@ -172,13 +184,13 @@ namespace SystemOfUnits
          /// public enum is used to let users know that the types did not match
          /// ie so feet and meters are not mixed up but both are base units
          enum ALLTYPES_THE_SAME : bool {
-            val =
-            (  std::is_same<R1::Length::Base, R2::Length::Base>::value
-            && std::is_same<R1::Time::Base, R2::Time::Base >::value
-            && std::is_same<R1::Mass::Base, R2::Mass::Base >::value
-            && std::is_same<R1::Temperature::Base, R2::Temperature::Base >::value
-            && std::is_same<R1::Charge::Base, R2::Charge::Base >::value
-            )
+            val = is_same_BASE<R1, R2 >::value
+            //(  std::is_same<R1::Length::Base, R2::Length::Base>::value
+            //&& std::is_same<R1::Time::Base, R2::Time::Base >::value
+            //&& std::is_same<R1::Mass::Base, R2::Mass::Base >::value
+            //&& std::is_same<R1::Temperature::Base, R2::Temperature::Base >::value
+            //&& std::is_same<R1::Charge::Base, R2::Charge::Base >::value
+            //)
             || (R1::eL == 0 && R1::et == 0 && R1::eM == 0 && R1::eT == 0 && R1::eQ == 0)
             || (R2::eL == 0 && R2::et == 0 && R2::eM == 0 && R2::eT == 0 && R2::eQ == 0)
             , T = true
