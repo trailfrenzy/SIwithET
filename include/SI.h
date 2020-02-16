@@ -235,6 +235,7 @@ namespace SystemOfUnits /// covers the basics of the system
       >
       struct is_UnitType< unitType<L, iL, t, it, M, iM, T, iT, Q, iQ> >
    {
+      // Quantity base types are already checked inside of UnitType
       enum:bool{ value = true};
    };
 

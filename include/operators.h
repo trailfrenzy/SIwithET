@@ -31,6 +31,7 @@ itself.
 #include "SI.h"                           /// why we are here
 #include "template_help.h"
 #include "WhatAmI.h"
+#include <type_traits>
 
 namespace SystemOfUnits
 {
@@ -44,6 +45,8 @@ namespace SystemOfUnits
        */
       template < typename T, typename T2 > struct A_Trait
       {
+         static_assert(SOU::is_UnitType<T>::value, "Must be a SOU::UnitType");
+         static_assert(SOU::is_UnitType<T2>::value || std::is_arithmetic<T2>::value, "Must be a SOU::UnitType or arithmetic type");
          /// used as the argument for the operators
          using ArgRef = T const &;
          /// constant reference
