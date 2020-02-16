@@ -3,6 +3,7 @@
 #ifndef UNIT_TYPE_TEMPLATE_HELPER_INCLUDE_H_
 #define UNIT_TYPE_TEMPLATE_HELPER_INCLUDE_H_
 #pragma warning( disable : 4091 )  
+#include <type_traits>
 //#include <tuple>
 //#include <utility> // for tuple_sort
 
@@ -18,16 +19,6 @@ namespace SystemOfUnits
 	  template<typename THEN, typename ELSE>struct IF<false, THEN, ELSE >
 	  {
 		  using RET = ELSE;
-	  };
-
-	  template<class T, class U> struct is_same 
-	  {
-		  enum{ value = false };
-	  };
-
-	  template<class T> struct is_same<T, T> 
-	  {
-		  enum{ value = true };
 	  };
 
 	  /// pre C++ version 11 struct which is still used.

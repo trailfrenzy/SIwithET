@@ -150,8 +150,8 @@ TEST_F(MultiplyFirst, TestWithNonAtomicUnitUnitsLength)
    EXPECT_TRUE(t_Mul::AreLengthsBase == false);
 
    using t_MulR = t_Mul::TResult;
-   enum { b = SOU::is_same< t_MulR::Length, Metric::AtomicUnit::Centimeter >::value };
-   enum { c = SOU::is_same< t_MulR::Length, Metric::AtomicUnit::Meter >::value };
+   enum { b = std::is_same< t_MulR::Length, Metric::AtomicUnit::Centimeter >::value };
+   enum { c = std::is_same< t_MulR::Length, Metric::AtomicUnit::Meter >::value };
    EXPECT_TRUE(c);
    EXPECT_FALSE(b) << "this is correct Length should not be a Centimeter";
 

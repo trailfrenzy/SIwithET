@@ -5,6 +5,7 @@
 #include <sstream>
 #include <string>
 #include <memory>
+#include <type_traits>
 #include "MetricTypes.h"
 #include "template_help.h"
 
@@ -218,7 +219,7 @@ TEST(SITestSQ, Squaring)
 
 	typedef SOU::MakeSQ<t_gramPsec>::type gramSQ;
 
-	enum { b = SystemOfUnits::is_same< gramSQ, typename t_gramPsecSQ >::value };
+	enum { b = std::is_same< gramSQ, t_gramPsecSQ >::value };
 	EXPECT_TRUE(b);
 }
 
