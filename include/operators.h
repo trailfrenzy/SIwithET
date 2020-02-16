@@ -300,9 +300,10 @@ namespace SystemOfUnits
               , eQ = R1::eQ + R2::eQ };/// Charge Dimension 
 
          /// informs user during the compile process if the result has no dimensions.
-         enum isNoDim : bool { val = (Dim::eL==Dim::Z) && (Dim::et== Dim::Z) && (Dim::eM== Dim::Z) && (Dim::eQ== Dim::Z) && (Dim::eT== Dim::Z) };
+         enum isNoDim : bool { val = is_zero_dimensions<Dim>::value };
 
          using Length = typename IF< Dim::eL== Dim::Z, typename R1::Length,   typename IF<R1::eL!=0, typename R1::Length, typename R2::Length>::RET >::RET;
+
          using Time = typename IF< Dim::et== Dim::Z, typename R1::Time  ,    typename IF<R1::et!=0, typename R1::Time  , typename R2::Time  >::RET >::RET;
          using Mass = typename IF< Dim::eM== Dim::Z, typename R1::Mass,      typename IF<R1::eM!=0, typename R1::Mass  , typename R2::Mass  >::RET >::RET;
          using Temperature = typename IF< Dim::eT== Dim::Z, typename R1::Temperature, typename IF<R1::eT!=0, typename R1::Temperature, typename R2::Temperature>::RET >::RET;
@@ -371,10 +372,10 @@ namespace SystemOfUnits
          };/// Charge Dimension 
 
          /// informs us during the compile process that the result has no dimensions.
-		   enum isNoDim : bool { val = (Dim::eL == Dim::Z) && (Dim::et == Dim::Z) && (Dim::eM == Dim::Z) && (Dim::eQ == Dim::Z) && (Dim::eT == Dim::Z) };
+         enum isNoDim : bool { val = is_zero_dimensions<Dim>::value };
 
          using Length = typename IF< Dim::eL==Dim::Z, typename R1::Length,    typename IF<R1::eL!=0, typename R1::Length, typename R2::Length>::RET >::RET;
-         using  Time = typename IF< Dim::et==Dim::Z, typename R1::Time  ,    typename IF<R1::et!=0, typename R1::Time  , typename R2::Time  >::RET >::RET;
+         using  Time = typename IF< Dim::et==Dim::Z, typename R1::Time,     typename IF<R1::et!=0, typename R1::Time  , typename R2::Time  >::RET >::RET;
          using Mass = typename IF< Dim::eM==Dim::Z, typename R1::Mass,      typename IF<R1::eM!=0, typename R1::Mass  , typename R2::Mass  >::RET >::RET;
          using Temperature = typename IF< Dim::eT==Dim::Z, typename R1::Temperature, typename IF<R1::eT!=0, typename R1::Temperature, typename R2::Temperature>::RET >::RET;
          using Charge = typename IF< Dim::eQ==Dim::Z, typename R1::Charge   , typename IF<R1::eQ!=0, typename R1::Charge, typename R2::Charge>::RET >::RET;
@@ -403,7 +404,7 @@ namespace SystemOfUnits
          constexpr typename auto result() const noexcept( noexcept(m_r1) && noexcept(m_r2))
          {
             // line will compiler error if not the same compatible types
-            static_assert(t_base::ALLTYPES_THE_SAME::val, "line will compiler error if not the same compatible types" );
+            static_assert(t_base::ALLTYPES_THE_SAME::val, "line will compile error if not the same compatible types" );
             static_assert(Dim::eT == Dim::Z || Dim::eT == 1 || Dim::eT == -1 ,"T must not be greater abs(1)");
 
             return TResult
