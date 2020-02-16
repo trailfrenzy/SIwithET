@@ -3,6 +3,7 @@
 */
 #ifndef SI_INCLUDE_H_07MAY2003
 #define SI_INCLUDE_H_07MAY2003
+#include "Struct_Symbol.h"
 
 namespace SystemOfUnits /// covers the basics of the system
 {
@@ -17,9 +18,9 @@ namespace SystemOfUnits /// covers the basics of the system
    class unitType
    {
       long double m_amount; /// the scalar value of the object
-
+      //static_assert( is_LENGTH<L>::value, "Can only be a Length type");
    public:
-      using t_float = long double;
+      using t_float = decltype(m_amount);//long double;
 
       /// Dimensions as enum
       enum:int
@@ -232,18 +233,21 @@ namespace SystemOfUnits /// covers the basics of the system
       enum:bool{ value = true};
    };
 
+   /// Specialized class which is-a UnitType but with specal name.
    template< typename UNIT_TYPE, char const * NAME >
    struct SIwithDIM : UNIT_TYPE
    {
+      static const char * name;
       //using t_unitType = t;
       constexpr SIwithDIM(double val) noexcept : UNIT_TYPE(val)
       {
          static_assert(is_UnitType< UNIT_TYPE>::value);
       }
 
-      static constexpr char const * unitName() noexcept { return NAME; }
-      //static char const * unitDim()  noexcept { return DIM; }
+      static constexpr char const * unitName() noexcept { return name; }
+      //static char const * unitDim()  noexcept { return DIM; } // TODO Add later
    };
+   template< typename UNIT_TYPE, char const * NAME > const char * SIwithDIM<UNIT_TYPE, NAME>::name{ NAME };
 
    /// Used at compile time to find if type is SIwithDIM<>
    template< typename T> struct is_SIwithDIM{ enum:bool{ value = false}; };
@@ -265,11 +269,12 @@ namespace SystemOfUnits /// covers the basics of the system
    };
 
    /// struct is used to create no dimension unit type. Used in the operators.h for (* /)
-   struct NoDim
+   using NO_DIM = SystemOfUnits::helpers::T_Symbol<' '>;
+   struct NoDim : NO_DIM
    {
       /// Lets using classes know if class is used as a base
       enum:bool{ IsBase = false};
-      enum:unsigned char{sym = ' ' };
+      //enum:unsigned char{sym = ' ' };
       /// Called by WhatAmI when creating the string describing the type.
       constexpr static char const * str() noexcept { return ""; }
       ///  Multiply by toBase() to get base value.
