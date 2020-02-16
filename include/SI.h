@@ -18,9 +18,14 @@ namespace SystemOfUnits /// covers the basics of the system
    class unitType
    {
       long double m_amount; /// the scalar value of the object
-      //static_assert( is_LENGTH<L>::value, "Can only be a Length type");
+
+      static_assert( is_LENGTH<L>::value, "Can only be a Length type");
+      static_assert(is_TIME<t>::value, "Can only be a Time type");
+      static_assert(is_MASS<M>::value, "Can only be a Mass type");
+      static_assert(is_TEMPERATURE<T>::value, "Can only be a Temperature type");
+      static_assert(is_CURRENT<Q>::value, "Can only be a Current type");
    public:
-      using t_float = decltype(m_amount);//long double;
+      using t_float = decltype(m_amount);///< Others may want to know this information
 
       /// Dimensions as enum
       enum:int

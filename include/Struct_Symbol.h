@@ -1,12 +1,12 @@
 // Struct supports the dimensional function. Used internally, not for use outside of SOU.
 #ifndef SYSTEM_OF_UNITS_HELPERS_STRUCT_T_SYMBOL_H
 #define SYSTEM_OF_UNITS_HELPERS_STRUCT_T_SYMBOL_H
-#include <cstdint>
+//#include <cstdint>
 namespace SystemOfUnits {
    namespace helpers {
          template<unsigned char C > struct T_Symbol 
          { 
-            enum:uint8_t{ sym = C };  /// used on the input of template OneDim<>
+            enum:char unsigned{ sym = C };  /// used on the input of template OneDim<>
 
             // ideally the function is used by the sorting template and its output.  Currently not used.
             template<typename t_char = char>
@@ -21,24 +21,24 @@ namespace SystemOfUnits {
 
    template< typename BASE_UNIT > struct is_LENGTH
    {
-      enum :bool { value = BASE_UNIT::sym == 'L' };
+      enum :bool { value = BASE_UNIT::sym == 'L' || BASE_UNIT::sym == ' ' };
    };
 
    template<typename BASE_UNIT > struct is_TIME
    {
-      enum:bool{ value = BASE_UNIT::sym == 'T' };
+      enum:bool{ value = BASE_UNIT::sym == 'T' || BASE_UNIT::sym == ' ' };
    };
    template<typename BASE_UNIT > struct is_MASS
    {
-      enum :bool { value = BASE_UNIT::sym == 'M' };
+      enum :bool { value = BASE_UNIT::sym == 'M' || BASE_UNIT::sym == ' ' };
    };
    template<typename BASE_UNIT > struct is_TEMPERATURE
    {
-      enum :bool { value = BASE_UNIT::sym == 233 };
+      enum :bool { value = BASE_UNIT::sym == 233 || BASE_UNIT::sym == ' ' };
    };
    template<typename BASE_UNIT > struct is_CURRENT
    {
-      enum :bool { value = BASE_UNIT::sym == 'A' };
+      enum :bool { value = BASE_UNIT::sym == 'A' || BASE_UNIT::sym == ' ' };
    };
 
 }
