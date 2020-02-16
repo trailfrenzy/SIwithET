@@ -262,6 +262,22 @@ namespace SystemOfUnits
             >::RET 
             >::RET
             >::RET;
+
+         /// the proposed mass type of the result
+         using ChargeType = typename IF
+            < R1::eQ == 0 || R2::eQ == 0
+            , NoDim
+            , typename IF
+            < IsChargeSame
+            , NoDim
+            , typename IF
+            < !R1::Charge::IsBase && !R2::Charge::IsBase
+            , CombineBaseTypes<typename R1::Charge, typename R2::Charge>
+            , typename IF<R2::Charge::IsBase, SOU::MakeFrom<typename R1::Charge>, typename R2::Charge >::RET
+            >::RET
+            >::RET
+            >::RET;
+
       };
 
       /// a class for objects that represents the multiplication of two operands
@@ -328,6 +344,7 @@ namespace SystemOfUnits
                * t_base::LenType::toBase()
                * t_base::TimeType::toBase()
                * t_base::MassType::toBase()  // TODO: what about Temperature and charge?
+               * t_base::ChargeType::toBase()
                * m_r2.amount()
                );
          }
@@ -395,6 +412,7 @@ namespace SystemOfUnits
                / t_base::LenType::toBase()
                / t_base::TimeType::toBase()
                / t_base::MassType::toBase()
+               / t_base::ChargeType::toBase()
                / m_r2.amount() 
                );
          }
