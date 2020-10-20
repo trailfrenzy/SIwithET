@@ -81,16 +81,17 @@ TEST(EnglishUnitTest, TestLength)
 
 TEST(EnglishUnitTest, IsPod)
 {
-   EXPECT_TRUE(std::is_pod< English::AtomicUnit::Foot>::value);
-   EXPECT_TRUE(std::is_pod< English::AtomicUnit::Inch>::value);
-   EXPECT_TRUE(std::is_pod< English::AtomicUnit::Mile>::value);
-   EXPECT_TRUE(std::is_pod< English::AtomicUnit::poundMass>::value);
-   EXPECT_TRUE(std::is_pod< English::AtomicUnit::Slug>::value);
-   EXPECT_TRUE(std::is_pod< English::AtomicUnit::Yard>::value);
+	// Note: std::is_pod<> was depricated as of v20.
+   EXPECT_TRUE(std::is_standard_layout< English::AtomicUnit::Foot>::value);
+   EXPECT_TRUE(std::is_standard_layout< English::AtomicUnit::Inch>::value);
+   EXPECT_TRUE(std::is_standard_layout< English::AtomicUnit::Mile>::value);
+   EXPECT_TRUE(std::is_standard_layout< English::AtomicUnit::poundMass>::value);
+   EXPECT_TRUE(std::is_standard_layout< English::AtomicUnit::Slug>::value);
+   EXPECT_TRUE(std::is_standard_layout< English::AtomicUnit::Yard>::value);
    EXPECT_TRUE(std::is_standard_layout<English::AtomicUnit::Foot>::value);
 }
 
-// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

@@ -30,7 +30,7 @@ protected:
 	}
 };
 
-TYPED_TEST_CASE_P(SITest);
+TYPED_TEST_SUITE_P(SITest);
 
 /// All types should be the same as a double
 /// Size is needed to show that unitType<> is the same size as a double
@@ -52,15 +52,16 @@ TYPED_TEST_P(SITest, Comparison)
 
 	// testing with one side double the other side unitType
 	EXPECT_TRUE(*TAG::m_1 == 4.5)  << "Use to have three different comparison operators, now only one";
-   EXPECT_TRUE(TAG::t_type{ 4.5 } == *TAG::m_1);
+   auto b = TAG::t_type( 4.5 ) == *TAG::m_1;
+   EXPECT_TRUE(b);
 }
 
 TYPED_TEST_P(SITest, NotEqual)
 {
 	using TAG = SITest<TypeParam >;
 	EXPECT_TRUE(*TAG::m_1 != *TAG::m_2);
-   EXPECT_TRUE(TAG::t_type{ 4.5 } != *TAG::m_2) << "Use to have three types now only have one";
-   EXPECT_TRUE(*TAG::m_2 != TAG::t_type{ 4.5 });
+   EXPECT_TRUE(TAG::t_type( 4.5 ) != *TAG::m_2) << "Use to have three types now only have one";
+   EXPECT_TRUE(*TAG::m_2 != TAG::t_type( 4.5 ));
 }
 
 TYPED_TEST_P(SITest, LessThan)
@@ -98,7 +99,7 @@ TYPED_TEST_P(SITest, LessThanEqual )
    EXPECT_TRUE(*TAG::m_3 <= *TAG::m_4);
    EXPECT_TRUE(*TAG::m_3 <= TAG::t_type(20) ) << "uses the constructor to convert the 20 to a UnitType";
    EXPECT_TRUE(TAG::t_type(1) <= *TAG::m_3);
-   EXPECT_TRUE(TAG::t_type{ 3.0 } <= *TAG::m_3);
+   EXPECT_TRUE(TAG::t_type( 3.0 ) <= *TAG::m_3);
 }
 
 TYPED_TEST_P(SITest, Assignment)
@@ -207,7 +208,7 @@ TYPED_TEST_P(SITest, isUnitType) {
 }
 
 
-REGISTER_TYPED_TEST_CASE_P(SITest
+REGISTER_TYPED_TEST_SUITE_P(SITest
 	, SizeOf, Assignment, NotEqual, LessThan, LessThanEqual, GreaterThan, GreaterThanEqual, Comparison, Addition, Addition_constexp, AdditionAssignment, Subtraction, Subtraction_constexp, SubtractionAssignment, Chaining, DestructorNoThrow, IsMovable, IsCopyable, IsConstructible, isUnitType);
 
 TEST(SITestSQ, Squaring)
@@ -237,7 +238,7 @@ typedef t_Base::MakeDim<2,0,0,0,0>::type t_MeterSq;
 typedef t_Base::MakeDim<3,0,0,0,0>::type t_MeterCubed;
 
 typedef ::testing::Types< Metric::t_meter, Metric::t_metersecond, Metric::t_second, Metric::t_velocity, Metric::t_gramPsec, t_MeterSq, t_MeterCubed > MyTypes;
-INSTANTIATE_TYPED_TEST_CASE_P(My, SITest, MyTypes);
+INSTANTIATE_TYPED_TEST_SUITE_P(My, SITest, MyTypes);
 
 TEST( BasicSI, NoUnitValueZero ) {
    SOU::tNoUnit val( 0.0 );
@@ -334,13 +335,13 @@ TEST(BasicSI, IsClass) {
    EXPECT_TRUE(std::is_class<t_MeterSq>::value);
 }
 TEST(BasicSI, IsPOD) {
-   EXPECT_TRUE(std::is_pod<t_Meter>::value) << "Ensure default constructor is default";
-   EXPECT_TRUE(std::is_pod<t_MeterSq>::value);
-   EXPECT_TRUE(std::is_pod<t_Meter::Length>::value);
-   EXPECT_TRUE(std::is_pod<t_Meter::Mass>::value);
-   EXPECT_TRUE(std::is_pod<t_Meter::Time>::value);
-   EXPECT_TRUE(std::is_pod<t_Meter::Temperature>::value);
-   EXPECT_TRUE(std::is_pod<t_Meter::Charge>::value);
+   EXPECT_TRUE(std::is_standard_layout<t_Meter>::value) << "Ensure default constructor is default";
+   EXPECT_TRUE(std::is_standard_layout<t_MeterSq>::value);
+   EXPECT_TRUE(std::is_standard_layout<t_Meter::Length>::value);
+   EXPECT_TRUE(std::is_standard_layout<t_Meter::Mass>::value);
+   EXPECT_TRUE(std::is_standard_layout<t_Meter::Time>::value);
+   EXPECT_TRUE(std::is_standard_layout<t_Meter::Temperature>::value);
+   EXPECT_TRUE(std::is_standard_layout<t_Meter::Charge>::value);
 }
 
 static constexpr char const name[] = "Watt";

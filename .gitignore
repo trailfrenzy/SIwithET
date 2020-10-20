@@ -31,3 +31,12 @@ test/test.vcxproj
 .vs/ProjectSettings.json
 .vs/SIwithET_git/v15/.suo
 .vs/VSWorkspaceState.json
+*.db-shm
+*.db-wal
+.vs/SIwithET/v16/.suo
+SIwithET/SIwithET.vcxproj.user
+SIwithET/x64/Release/SIwithET.exe.recipe
+SIwithET/x64/Release/SIwithET.vcxproj.FileListAbsolute.txt
+test/x64/Release/test.exe.recipe
+test/x64/Release/test.vcxproj.FileListAbsolute.txt
+UpgradeLog2.htm

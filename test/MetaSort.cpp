@@ -38,15 +38,18 @@ namespace SystemOfUnits
 {
    namespace helpers
    {
+      /// Solidus is the name of the slash
+      using SOLIDUS = SystemOfUnits::helpers::T_Symbol<'/'>;
+
       template< typename T, int D, typename char_type = char > struct t_SingleDim
       {
          using t_BaseUnit = T;
          enum { DIM = D, CHAR = t_BaseUnit::sym };
-         using string = typename std::basic_string<char_type>;
+         using Tstring = typename std::basic_string<char_type>;
 
-         static auto c_str() noexcept(noexcept(string) && noexcept(T))-> string
+         static auto c_str() noexcept(noexcept(Tstring) && noexcept(T))-> Tstring
          {
-            string str;
+            Tstring str;
             if (CHAR == SOLIDUS::sym) str = CHAR;
             else if (DIM == 0) {} //return "";
             else if (DIM == 1 || DIM == -1) {
@@ -59,9 +62,6 @@ namespace SystemOfUnits
             return str;
          }
       };
-
-      /// Solidus is the name of the slash
-      using SOLIDUS = SystemOfUnits::helpers::T_Symbol<'/'>;
 
    } // end of namespace helpers
       /// Used in sorting the dimensions below.

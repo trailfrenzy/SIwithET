@@ -323,7 +323,7 @@ private:
 
 };
 
-TYPED_TEST_CASE_P(SI_Multiply);
+TYPED_TEST_SUITE_P(SI_Multiply);
 
 /// Test the result type and shows that the result type is working correctly.
 TYPED_TEST_P(SI_Multiply, TestMul_Result)
@@ -507,11 +507,11 @@ TYPED_TEST_P(SI_Multiply, TestMultipleLong)
    EXPECT_DOUBLE_EQ(6.0, res2.amount());
 }
 
-REGISTER_TYPED_TEST_CASE_P(SI_Multiply
+REGISTER_TYPED_TEST_SUITE_P(SI_Multiply
    , TestMul_Result, Test2, TestWithScaler, ScalerInteter, TestMultipleAssign, TestMultipleAssignInt, TestChainWithScaler, TestMultipleInt, TestMultipleUnsigned, TestMultipleFloat, TestMultipleShort, TestMultipleLong);
 
 typedef ::testing::Types< ARG<1, 1, 2>, ARG< 2, 0, 2>, ARG< 2, 1, 3>, ARG<2, 3, 5>, ARG<-3, 5, 2>, ARG<3, -5, -2> > MyTypes;
-INSTANTIATE_TYPED_TEST_CASE_P(My, SI_Multiply, MyTypes);
+INSTANTIATE_TYPED_TEST_SUITE_P(My, SI_Multiply, MyTypes);
 using t_myArg = ARG<1, 1, 2>;
 //INSTANTIATE_TYPED_TEST_CASE_P(My, SI_Multiply, t_myArg );
 

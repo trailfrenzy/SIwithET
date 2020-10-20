@@ -215,7 +215,7 @@ protected:
 private:
 };
 
-TYPED_TEST_CASE_P(SOU_Division);
+TYPED_TEST_SUITE_P(SOU_Division);
 
 /** Early test to show how @code SOU::operators::Div_Result< T1, T2 >
 @endcode worked
@@ -270,11 +270,11 @@ TYPED_TEST_P(SOU_Division, TestDivideAssign)
 	EXPECT_DOUBLE_EQ(60.0, TAG::m_1->amount());
 }
 
-REGISTER_TYPED_TEST_CASE_P(SOU_Division,
+REGISTER_TYPED_TEST_SUITE_P(SOU_Division,
 	TestDiv_Result, Test2, TestWithScaler, TestDivideAssign);
 
 typedef ::testing::Types< ARG<2, 1, 1>, ARG< 3, 2, 1>, ARG<5, 2, 3>, ARG<2, 2, 0>, ARG<2, 0, 2>, ARG<2, 4, -2> > MyTypes;
-INSTANTIATE_TYPED_TEST_CASE_P(My, SOU_Division, MyTypes);
+INSTANTIATE_TYPED_TEST_SUITE_P(My, SOU_Division, MyTypes);
 
 // Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com

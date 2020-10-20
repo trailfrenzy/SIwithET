@@ -88,7 +88,8 @@ TEST(Diminsion, TEMPERATURE ) {
 	t_Cel C{ 100.0 };
 	EXPECT_EQ(SOU::WhatAmI(C), "°C") << "May need to comeback to see why the dot is not displayed";
 
-   constexpr char const *cTHETA = u8"\u0233";
+   //constexpr char const* cTHETA = u8'0xAC'; //u8"\u0233"; or 0xAC or 172
+   unsigned char cTHETA = 172;
    std::wcout << "THEATA is " << cTHETA << '\n';
    std::wcout << "THEATA is " << SOU::helpers::THETA << '\n';
 
