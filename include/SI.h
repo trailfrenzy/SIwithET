@@ -1,6 +1,7 @@
 /** @file SI.h https://github.com/trailfrenzy/SIwithET
   * contains the the class template which represent any different unit type to enforce Dimensional Homogeneity.
 */
+//import StructSymbols;
 #ifndef SI_INCLUDE_H_07MAY2003
 #define SI_INCLUDE_H_07MAY2003
 #include "Struct_Symbol.h"
@@ -10,21 +11,21 @@ namespace SystemOfUnits /// covers the basics of the system
 {
    /// the class which is the heart of this library
    template
-      < typename L, int iL    // length
-      , typename t, int it    // time
-      , typename M, int iM    // mass
-      , typename T, int iT    // temperature
-      , typename Q, int iQ =0 // charge
+      < LENGTH L,      int iL    // length
+      , TIME t,        int it    // time
+      , MASS M,        int iM    // mass
+      , TEMPERATURE T, int iT    // temperature
+      , CURRENT Q,     int iQ =0 // charge
    >
    class unitType
    {
       long double m_amount; /// the scalar value of the object
 
       static_assert( is_LENGTH<L>::value, "Can only be a Length type");
-      static_assert(is_TIME<t>::value, "Can only be a Time type");
+      //static_assert(is_TIME<t>::value, "Can only be a Time type");
       static_assert(is_MASS<M>::value, "Can only be a Mass type");
-      static_assert(is_TEMPERATURE<T>::value, "Can only be a Temperature type");
-      static_assert(is_CURRENT<Q>::value, "Can only be a Current type");
+      //static_assert(is_TEMPERATURE<T>::value, "Can only be a Temperature type");
+      //static_assert(is_CURRENT<Q>::value, "Can only be a Current type");
    public:
       using t_float = decltype(m_amount);///< Others may want to know this information
 
@@ -39,6 +40,7 @@ namespace SystemOfUnits /// covers the basics of the system
 
       /// Used in all class methods and friend functions for their noexcept()
       enum:bool{ b_noexcept = noexcept(L) && noexcept(t) && noexcept(M) && noexcept(T) && noexcept(Q) };
+      //enum: bool{ b_noexcept = true };
       static_assert(b_noexcept, "Why is this false?");
 
       // Quantity as typedefs
@@ -228,11 +230,11 @@ namespace SystemOfUnits /// covers the basics of the system
    /// Type trait struct which tests if the type is of UnitType class template above or not.
    template< typename T > struct is_UnitType { enum:bool{ value = false }; }; // primary template for everything not a UnitType
    template  /// for only UnitType only
-      < typename L, int iL    // length
-      , typename t, int it    // time
-      , typename M, int iM    // mass
-      , typename T, int iT    // temperature
-      , typename Q, int iQ  // charge
+      < LENGTH      L, int iL    // length
+      , TIME        t, int it    // time
+      , MASS        M, int iM    // mass
+      , TEMPERATURE T, int iT    // temperature
+      , CURRENT     Q, int iQ  // charge
       >
       struct is_UnitType< unitType<L, iL, t, it, M, iM, T, iT, Q, iQ> >
    {
@@ -264,7 +266,7 @@ namespace SystemOfUnits /// covers the basics of the system
    };
 
    /// <summary>
-   ///  Concept for waht a SI Unit is.
+   ///  Concept for what a SI Unit is.
    /// </summary>
    template< typename T> concept KindOfQuantity = is_SIwithDIM<T>::value; 
    
@@ -306,7 +308,7 @@ namespace SystemOfUnits /// covers the basics of the system
 
    /// Create a struct base on the quantity types.
    /// Used as a builder to create different types with the same quantities.  See builder pattern.
-   template< typename LEN, typename TIM, typename MAS, typename TEM = NoDim, typename CHR = NoDim > struct MakeType
+   template< LENGTH LEN, TIME TIM, MASS MAS, TEMPERATURE TEM = NoDim, CURRENT CHR = NoDim > struct MakeType
    {
       /// template is used to create unitTypes with just the dimension types.
       template<int L, int t, int M, int T, int Q> struct MakeDim

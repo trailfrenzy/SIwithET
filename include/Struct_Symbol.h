@@ -1,7 +1,10 @@
 // Struct supports the dimensional function. Used internally, not for use outside of SOU.
+/// File contains the consepts used to define a SI::Units
 #ifndef SYSTEM_OF_UNITS_HELPERS_STRUCT_T_SYMBOL_H
 #define SYSTEM_OF_UNITS_HELPERS_STRUCT_T_SYMBOL_H
-//#include <cstdint>
+
+#include <concepts>
+
 namespace SystemOfUnits {
    namespace helpers {
          template<unsigned char C > struct T_Symbol 
@@ -21,30 +24,49 @@ namespace SystemOfUnits {
 
    template< typename BASE_UNIT > struct is_LENGTH
    {
-      enum :bool { value = BASE_UNIT::sym == 'L' || BASE_UNIT::sym == ' ' };
+      //enum :bool { value = BASE_UNIT::sym == 'L' || BASE_UNIT::sym == ' ' };
+      constexpr static bool value = BASE_UNIT::sym == 'L' || BASE_UNIT::sym == ' ';
    };
 
    template<typename BASE_UNIT > struct is_TIME
    {
-      enum:bool{ value = BASE_UNIT::sym == 'T' || BASE_UNIT::sym == ' ' };
+      //enum:bool{ value = BASE_UNIT::sym == 'T' || BASE_UNIT::sym == ' ' };
+      constexpr static bool value = BASE_UNIT::sym == 'T' || BASE_UNIT::sym == ' ';
    };
+
    template<typename BASE_UNIT > struct is_MASS
    {
-      enum :bool { value = BASE_UNIT::sym == 'M' || BASE_UNIT::sym == ' ' };
+      //enum :bool { value = BASE_UNIT::sym == 'M' || BASE_UNIT::sym == ' ' };
+      constexpr static bool value = BASE_UNIT::sym == 'M' || BASE_UNIT::sym == ' ';
    };
+
    template<typename BASE_UNIT > struct is_TEMPERATURE
    {
-      enum :bool { value = BASE_UNIT::sym == 233 || BASE_UNIT::sym == ' ' };
+      //enum :bool { value = BASE_UNIT::sym == 233 || BASE_UNIT::sym == ' ' };
+      constexpr static bool value = BASE_UNIT::sym == 233 || BASE_UNIT::sym == ' ';
    };
+
    template<typename BASE_UNIT > struct is_CURRENT
    {
-      enum :bool { value = BASE_UNIT::sym == 'A' || BASE_UNIT::sym == ' ' };
+      //enum :bool { value = BASE_UNIT::sym == 'A' || BASE_UNIT::sym == ' ' };
+      constexpr static bool value = BASE_UNIT::sym == 'A' || BASE_UNIT::sym == ' ';
    };
+
+   // Concepts used as the rules in building SI::Units
+   template<typename T> concept LENGTH = is_LENGTH<T>::value && sizeof(T) == 1;
+
+   template<typename T> concept TIME = is_TIME<T>::value && sizeof(T) == 1;
+
+   template<typename T> concept MASS = is_MASS<T>::value && sizeof(T) == 1;
+
+   template<typename T> concept TEMPERATURE = is_TEMPERATURE<T>::value && sizeof(T) == 1;
+
+   template<typename T> concept CURRENT = is_CURRENT<T>::value && sizeof(T) == 1;
 
 }
 #endif
 
-// Copyright © 2005-2018 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

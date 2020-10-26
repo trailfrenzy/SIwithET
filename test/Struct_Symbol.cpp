@@ -4,10 +4,19 @@
 #include "TimeAtomicUnits.h"
 #include "Temperature.h"
 
+TEST(Struct_Symbol, SizeOf)
+{
+   static_assert(sizeof(Metric::AtomicUnit::Meter) == 1);
+   static_assert(sizeof(Metric::AtomicUnit::ampere) == 1);
+}
+
 TEST(Struct_Symbol, isLENGHT) {
-   EXPECT_TRUE(SystemOfUnits::is_LENGTH< Metric::AtomicUnit::Meter >::value) << "Suppose to be Lenght";
+   EXPECT_TRUE(SystemOfUnits::is_LENGTH< Metric::AtomicUnit::Meter >::value);
+   static_assert(SystemOfUnits::is_LENGTH< Metric::AtomicUnit::Meter >::value, "Suppose to be Lenght");
+
    EXPECT_TRUE(SystemOfUnits::is_LENGTH< Metric::AtomicUnit::Centimeter >::value);
    EXPECT_FALSE(SystemOfUnits::is_LENGTH< SystemOfUnits::Time::AtomicUnit::second>::value);
+   static_assert(!SystemOfUnits::is_LENGTH< SystemOfUnits::Time::AtomicUnit::second>::value);
 }
 
 TEST(Struct_Symbol, isTIME) {

@@ -396,6 +396,20 @@ TEST(Exception, DimTypes)
    EXPECT_TRUE(noexcept(t_Meter::Charge()));
 }
 
+TEST(BasicSI, Concepts_CompileError )
+{
+   namespace AT = SOU::Time::AtomicUnit;
+   using namespace Metric::AtomicUnit;
+
+   // supposed to cause a compile error here!  Concept is not implimented correctly if compiles.
+   /*
+   typedef SOU::unitType< Meter, 0, AT::second, -1, Meter, 1, SOU::NoDim, 0, SOU::NoDim > t_gramPsec;
+   */
+   //t_gramPsec gramO{ 4.0 };
+
+   typedef SOU::unitType< Meter, 0, AT::second, -2, gram, 2, SOU::NoDim, 0, SOU::NoDim > t_gramPsecSQ;
+
+}
 // Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
