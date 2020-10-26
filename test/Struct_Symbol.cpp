@@ -25,4 +25,5 @@ TEST(Struct_Symbol, isTEMPERATURE) {
 }
 TEST(Struct_Symbol, isCURRENT) {
    EXPECT_TRUE(SystemOfUnits::is_CURRENT< Metric::AtomicUnit::ampere>::value);
+   EXPECT_FALSE(SystemOfUnits::is_LENGTH< SystemOfUnits::Time::AtomicUnit::second>::value);
 }

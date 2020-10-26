@@ -179,6 +179,7 @@
     <ClCompile Include="SIDivTest.cpp" />
     <ClCompile Include="SIMulTest.cpp" />
     <ClCompile Include="SITest.cpp" />
+    <ClCompile Include="Struct_Symbol.cpp" />
     <ClCompile Include="TableIITest.cpp" />
     <ClCompile Include="TemperatureTest.cpp" />
     <ClCompile Include="template_helpUnitTest.cpp">
@@ -187,7 +188,6 @@
       <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Speed</FavorSizeOrSpeed>
       <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Speed</FavorSizeOrSpeed>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdcpp14</LanguageStandard>
-      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp14</LanguageStandard>
     </ClCompile>
     <ClCompile Include="WhatAmITest.cpp" />
   </ItemGroup>
