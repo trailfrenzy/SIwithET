@@ -4,6 +4,7 @@
 #ifndef SI_INCLUDE_H_07MAY2003
 #define SI_INCLUDE_H_07MAY2003
 #include "Struct_Symbol.h"
+#include <concepts>
 
 namespace SystemOfUnits /// covers the basics of the system
 {
@@ -262,6 +263,11 @@ namespace SystemOfUnits /// covers the basics of the system
       enum:bool{ value = true };
    };
 
+   /// <summary>
+   ///  Concept for waht a SI Unit is.
+   /// </summary>
+   template< typename T> concept KindOfQuantity = is_SIwithDIM<T>::value; 
+   
    /// template used to create a type has been squared
    template< typename UNIT > struct MakeSQ
    {
