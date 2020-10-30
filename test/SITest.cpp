@@ -250,6 +250,9 @@ TEST(BasicSI, NoUnitValue) {
    EXPECT_EQ(val.amount(), 6.0);
 }
 
+TEST(BasicSI, Mult_float) {
+   t_Meter km = 3.0 * t_Meter(1.0);
+}
 //TEST(BasicSI, NULL_Value) {
 //   t_Meter M;
 //   M /= 2.0;

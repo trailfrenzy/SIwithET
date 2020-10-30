@@ -35,23 +35,11 @@ itself.
 
 namespace SystemOfUnits
 {
+   template<typename T> concept UnitSerial = SOU::is_UnitType<T>::value;
+
    namespace operators
    {
-      template< typename R1, typename R2 >
-      struct is_same_BASE {
-         enum : bool {
-            value =
-            std::is_same<R1::Length::Base, R2::Length::Base>::value
-            && std::is_same<R1::Time::Base, R2::Time::Base >::value
-            && std::is_same<R1::Mass::Base, R2::Mass::Base >::value
-            && std::is_same<R1::Temperature::Base, R2::Temperature::Base >::value
-            && std::is_same<R1::Charge::Base, R2::Charge::Base >::value
-         };
-      };
-      template< typename R1 > struct is_zero_dimensions
-      {
-         enum : bool { value = R1::eL == 0 && R1::et == 0 && R1::eM == 0 && R1::eT == 0 && R1::eQ == 0 };
-      };
+      template<typename T> concept Arithmetic = std::is_arithmetic<T>::value;
 
       /** \brief The trait idea came from "C++ Templates", pg 332.
        trait is used to allow built in types to be used as args in operator's mul and div 
@@ -59,7 +47,7 @@ namespace SystemOfUnits
        created during multiplication and division operations using the SI templates.  @code A_Trait<T1,T2> @endcode
        allows operators "*" and "/" to use references of the SI types and values for built in types.
        */
-      template < typename T, typename T2 > struct A_Trait
+      template < UnitSerial T, UnitSerial T2 > struct A_Trait
       {
          static_assert(SOU::is_UnitType<T>::value, "Must be a SOU::UnitType");
          static_assert(SOU::is_UnitType<T2>::value || std::is_arithmetic<T2>::value, "Must be a SOU::UnitType or arithmetic type");
@@ -114,14 +102,14 @@ namespace SystemOfUnits
       //};
 
 
-
+#define MAKE_ATRAIT
 #ifndef MAKE_ATRAIT
 #define MAKE_ATRAIT( XX ) template< typename T2 > struct A_Trait< XX, T2 >\
       {\
       /** Used as the argument for the operators, with the built in types it is a pass by value.  */\
-      using ArgRef = const XX;\
+      using ArgRef = const NoUnit;\
       /** For the built in types, still need to use a SI unit type, but one that is dimension less */\
-      using ExprRef = const tNoUnit; \
+      using ExprRef = const NoUnit; \
       /** Keep the dimensions at zero */\
       enum { eL = 0, et = 0, eM = 0, eT=0, eQ=0 };\
       typedef typename T2::Length Length;\
@@ -136,28 +124,45 @@ namespace SystemOfUnits
       MAKE_ATRAIT(double long);
 
       /// creates struct A_Trait<float, typename T2>
-      MAKE_ATRAIT(float);
+      //MAKE_ATRAIT(float);
 
       /// creates struct A_Trait<int, typename T2>
-      MAKE_ATRAIT(int);
+      //MAKE_ATRAIT(int);
 
       /// creates struct A_Trait<unsigned, typename T2>
-      MAKE_ATRAIT(unsigned);
+      //MAKE_ATRAIT(unsigned);
 
       /// creates struct A_Trait<long, typename T2>
-      MAKE_ATRAIT(long);
+      //MAKE_ATRAIT(long);
 
       /// creates struct A_Trait<unsigned long, typename T2>
-      MAKE_ATRAIT(unsigned long);
+      //MAKE_ATRAIT(unsigned long);
 
       /// creates struct A_Trait<short, typename T2>
-      MAKE_ATRAIT(short);
+      //MAKE_ATRAIT(short);
 
       /// creates struct A_Trait<unsigned short, typename T2>
-      MAKE_ATRAIT(unsigned short);
-      MAKE_ATRAIT(long long);
-      MAKE_ATRAIT(unsigned long long);
+      //MAKE_ATRAIT(unsigned short);
+      //MAKE_ATRAIT(long long);
+      //MAKE_ATRAIT(unsigned long long);
 #endif 
+
+      template< typename R1, typename R2 >
+      struct is_same_BASE {
+         enum : bool {
+            value =
+            std::is_same<R1::Length::Base, R2::Length::Base>::value
+            && std::is_same<R1::Time::Base, R2::Time::Base >::value
+            && std::is_same<R1::Mass::Base, R2::Mass::Base >::value
+            && std::is_same<R1::Temperature::Base, R2::Temperature::Base >::value
+            && std::is_same<R1::Charge::Base, R2::Charge::Base >::value
+         };
+      };
+      template< typename R1 > struct is_zero_dimensions
+      {
+         enum : bool { value = R1::eL == 0 && R1::et == 0 && R1::eM == 0 && R1::eT == 0 && R1::eQ == 0 };
+      };
+
       /// base class to Mul_Result and Div_Result
       /** NOTE:
       "Expression Templates, Chap 18", C++ Templates The Complete Guide, Addison-Wesley,
@@ -521,11 +526,21 @@ inline auto operator<<(TOUT & out, SOU::ShowUnits_t<TOUT>* (*)()) //-> SOU::Show
 }
 
 /// template function which is multiplication operator of two different operands
-template < typename R1, typename R2 >
+template < SOU::UnitSerial R1, SOU::UnitSerial R2 >
 constexpr inline auto operator*( R1 const &r1, R2 const &r2 )
 noexcept( noexcept(SOU::operators::Mul_Result<R1, R2>))
 {
-   return SOU::operators::Mul_Result<R1,R2>(r1,r2).result();
+   //if constexpr (SOU::is_UnitType<R1>::value && SOU::is_UnitType<R2>::value)
+   {
+      return SOU::operators::Mul_Result<R1, R2>(r1, r2).result();
+   }
+   //if constexpr (std::is_arithmetic<R1>::value && SOU::is_UnitType<R2>::value )
+   //{
+   //   return SOU::operators::Mul_Result< SOU::tNoUnit, R2>( SOU::tNoUnit(r1), r2).result();
+   //}
+   //if constexpr (SOU::is_UnitType<R1>::value and std::is_arithmetic<R2>::value) {
+   //   return SOU::operators::Mul_Result< R1, SOU::tNoUnit >(r1, SOU::tNoUnit(r2) ).result();
+   //}
 }
 
 /// template function which is divisional operator of two different operands
@@ -533,7 +548,15 @@ template< typename R1, typename R2 >
 constexpr inline auto operator/( R1 const &r1, R2 const &r2 )
 noexcept(noexcept(SOU::operators::Div_Result<R1, R2>))
 {
-   return SOU::operators::Div_Result<R1,R2>(r1,r2).result();
+   if constexpr (SOU::is_UnitType<R1>::value && SOU::is_UnitType<R2>::value)
+   {
+      return SOU::operators::Div_Result<R1, R2>(r1, r2).result();
+   }
+   if constexpr (std::is_arithmetic<R1>::value && SOU::is_UnitType<R2>::value)
+   {
+      return SOU::operators::Div_Result< SOU::tNoUnit, R2>(SOU::tNoUnit(r1), r2).result();
+   }
+   //return SOU::operators::Div_Result<R1,R2>(r1,r2).result();
 }
 
 // Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.

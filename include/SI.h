@@ -206,6 +206,16 @@ namespace SystemOfUnits /// covers the basics of the system
          return unitType( lf.m_amount - rt.m_amount);
       }
 
+      friend constexpr auto operator*(t_float lf, unitType const& rt) noexcept
+      {
+         return unitType(lf * rt.m_amount);
+      }
+
+      friend constexpr unitType operator*(unitType const& lf, t_float rt)
+      {
+         return unitType(lf.m_amount * rt);
+      }
+
       /** stream inserter operator
         @param output stream which may be any type (i.e. wchar_t or char_t)
         @param unitType The value amount inserted into the stream.  See manipulators in operators.h for inserting dimensions into the stream.
@@ -228,7 +238,8 @@ namespace SystemOfUnits /// covers the basics of the system
    };
 
    /// Type trait struct which tests if the type is of UnitType class template above or not.
-   template< typename T > struct is_UnitType { enum:bool{ value = false }; }; // primary template for everything not a UnitType
+   template< typename T > struct is_UnitType { constexpr static bool value = false; }; // primary template for everything not a UnitType
+
    template  /// for only UnitType only
       < LENGTH      L, int iL    // length
       , TIME        t, int it    // time
@@ -238,8 +249,9 @@ namespace SystemOfUnits /// covers the basics of the system
       >
       struct is_UnitType< unitType<L, iL, t, it, M, iM, T, iT, Q, iQ> >
    {
-      // Quantity base types are already checked inside of UnitType
-      enum:bool{ value = true};
+      // Quantity base types are already checked inside of UnitType.
+      //enum:bool{ value = true};
+      constexpr static bool value = true;
    };
 
    /// Specialized class which is-a UnitType but with specal name.
@@ -260,15 +272,18 @@ namespace SystemOfUnits /// covers the basics of the system
 
    /// Used at compile time to find if type is SIwithDIM<>
    template< typename T> struct is_SIwithDIM{ enum:bool{ value = false}; };
+
    template< typename T, char const * N > struct is_SIwithDIM< SIwithDIM<T, N > >
    {
       enum:bool{ value = true };
    };
 
    /// <summary>
-   ///  Concept for what a SI Unit is.
+   ///  Concept for what a SI Unit is. The name 'UnitSpecies' is from "Elements of Programming" , Alexander Stepanove, Paul McJones, Semigroup Press, Sec 1.7. 
+   /// We call a collection of requirments a concpet, Tyeps represent spcies, concpts reprsents genera.
+   /// All of the different UnitType's which are defined by the template above belong to the species of UnitSpecies.
    /// </summary>
-   template< typename T> concept KindOfQuantity = is_SIwithDIM<T>::value; 
+   template< typename T> concept UnitSpecies = is_UnitType<T>::value; 
    
    /// template used to create a type has been squared
    template< typename UNIT > struct MakeSQ
@@ -324,6 +339,11 @@ namespace SystemOfUnits /// covers the basics of the system
 
    /// a type with no dimensions or quantity types.  The same size as a double.
    using tNoUnit = unitType< NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0 >;
+   struct NoUnit : public tNoUnit
+   {
+      NoUnit(t_float val) : tNoUnit(val) {} /// Needed since unitType has an explicit constructor.
+      //NoUnit(float val) : tNoUnit(val) {}
+   };
 
    /// used to call fromBase() while using the toBase() static method.  Used in conversion_cast<>.
    template< typename ARG > struct MakeFrom

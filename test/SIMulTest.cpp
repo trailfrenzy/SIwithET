@@ -266,6 +266,7 @@ TEST_F(MultiplyFirst, TestWithNonDimension)
    EXPECT_TRUE(0.0 == meter * 0.0);
 
    Metric::t_kilometer km = 3.0 * Metric::t_kilometer(1.0);
+
    EXPECT_DOUBLE_EQ(3.0, km.amount());
    km = Metric::t_kilometer(1.0) * 3;
    EXPECT_DOUBLE_EQ(3.0, km.amount());
