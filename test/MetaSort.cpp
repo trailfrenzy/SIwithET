@@ -39,7 +39,7 @@ namespace SystemOfUnits
    namespace helpers
    {
       /// Solidus is the name of the slash
-      using SOLIDUS = SystemOfUnits::helpers::T_Symbol<'/'>;
+      using SOLIDUS = SystemOfUnits::helpers::SymbolForDimension<'/'>;
 
       template< typename T, int D, typename char_type = char > struct t_SingleDim
       {
@@ -105,8 +105,8 @@ namespace SystemOfUnits
 
 }
 
-using LENGTH = SystemOfUnits::helpers::T_Symbol<'L'>;
-using MASS = SystemOfUnits::helpers::T_Symbol<'M'>;
+using LENGTH = SystemOfUnits::helpers::SymbolForDimension<'L'>;
+using MASS = SystemOfUnits::helpers::SymbolForDimension<'M'>;
 using Len1 = SystemOfUnits::helpers::t_SingleDim< LENGTH, 1 >;
 
 TEST(MetaList, PrintSymbol) {
@@ -232,7 +232,7 @@ TEST(Diminsion, OneDimPrint2) {
    EXPECT_EQ(temp, "[M]^3");
 }
 TEST(Diminsion, Struct_Sym) {
-   using t_X = SystemOfUnits::helpers::T_Symbol<'X'>;
+   using t_X = SystemOfUnits::helpers::SymbolForDimension<'X'>;
    EXPECT_EQ('X', t_X::sym);
 }
 

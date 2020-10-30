@@ -15,7 +15,7 @@ namespace Metric
    */
    namespace AtomicUnit
    {
-      using LENGTH = SystemOfUnits::helpers::T_Symbol<'L'>;
+      using LENGTH = SystemOfUnits::helpers::SymbolForDimension<'L'>;
 
       struct Meter : LENGTH /// @anchor repesent quantity length of a meter.
       {
@@ -52,7 +52,7 @@ namespace Metric
          typedef Meter Base;/// Typedef of the actual base
       };
 
-      using MASS = SystemOfUnits::helpers::T_Symbol<'M'>;
+      using MASS = SystemOfUnits::helpers::SymbolForDimension<'M'>;
       struct gram : MASS /// represents quantity mass of a gram
       {
          enum:bool{ IsBase = true };/// Lets using classes know if class is used as a base.
@@ -79,7 +79,7 @@ namespace Metric
       };
 
       enum { THETA = 233 }; // from www.asciitable.com
-      using TEMPERATURE = SystemOfUnits::helpers::T_Symbol< char(THETA) >;
+      using TEMPERATURE = SystemOfUnits::helpers::SymbolForDimension< char(THETA) >;
 
       struct kelvin : TEMPERATURE /// represents quantity Temperature of kelvin
       {
@@ -107,7 +107,7 @@ The SI unit of electric potential difference is the volt (V) 1 V = 1 W/A.
 
 The SI unit of electric resistance is the ohm (?). 1 ? = 1 V/A.
 */
-      using ELECTRIC_CURRENT = SystemOfUnits::helpers::T_Symbol<'A'>;
+      using ELECTRIC_CURRENT = SystemOfUnits::helpers::SymbolForDimension<'A'>;
       struct ampere : ELECTRIC_CURRENT /// represents quantity electric current.
       {
          enum:bool{ IsBase = true };/// Lets using classes know if class is used as a base.

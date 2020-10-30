@@ -16,7 +16,7 @@ namespace SystemOfUnits
    namespace Time
    {
       /// Provides the symbol for dimensions.
-      using TIME = helpers::T_Symbol<'T'>;
+      using TIME = helpers::SymbolForDimension<'T'>;
 
       namespace AtomicUnit
       {

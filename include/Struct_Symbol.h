@@ -10,9 +10,9 @@ namespace SystemOfUnits {
 
          /// T_Symbol is the base class for all the Base Types used in building a UnitType.
          /// Pass the dimension as a single letter as the template argument. The single letter is represent the base unit diminsion.
-         /// Use the typical symbol found from https://www.bipm.org/en/measurement-units/.
+         /// Use the typical symbol found from https://www.bipm.org/en/measurement-units/ "The International System of Units(SI), 9th edition 2019, pg 136 section 2.3.3, Table 3.
          /// 
-         template<unsigned char C > struct T_Symbol 
+         template<unsigned char C > struct SymbolForDimension
          { 
             enum:char unsigned{ sym = C };  /// used on the input of template OneDim<>
 
