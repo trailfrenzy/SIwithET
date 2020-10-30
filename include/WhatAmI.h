@@ -75,9 +75,6 @@ namespace SystemOfUnits
       return UnitName<t_char>(val);
    }
 
-   /// If user pushes a double into the template.
-   //template<> inline std::string WhatAmI(double const &) { return ""; }
-
    namespace helpers
    {
       /// The pair stringstream is used to make the first numerator and second denominator in dimensions.

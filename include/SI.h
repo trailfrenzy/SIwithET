@@ -226,12 +226,22 @@ namespace SystemOfUnits /// covers the basics of the system
          return unitType(lf.m_amount * rt);
       }
 
+      /** ratio operator
+         @param Numerator unitType left-handed side
+         @param Deonminator float type defined in the class
+         @return the same type which was passed as the Numberator.
+      */
       friend constexpr unitType operator/(unitType const& lf, t_float rt) noexcept
       {
          return unitType(lf.m_amount / rt);
       }
 
-      friend constexpr auto operator/(t_float lf, unitType rt)
+      /** ratio operator or inverse operator
+         @param Numerator float type defined in the class
+         @param Deonminator unitType right-handed side
+         @return the same type which was passed as the Numberator.
+      */
+      friend constexpr auto operator/(t_float lf, unitType rt) noexcept
       {
          using RT = decltype(rt);
 
@@ -366,11 +376,6 @@ namespace SystemOfUnits /// covers the basics of the system
 
    /// a type with no dimensions or quantity types.  The same size as a double.
    using tNoUnit = unitType< NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0 >;
-   struct NoUnit : public tNoUnit
-   {
-      NoUnit(t_float val) : tNoUnit(val) {} /// Needed since unitType has an explicit constructor.
-      //NoUnit(float val) : tNoUnit(val) {}
-   };
 
    /// used to call fromBase() while using the toBase() static method.  Used in conversion_cast<>.
    template< typename ARG > struct MakeFrom
@@ -400,6 +405,7 @@ namespace SOU = SystemOfUnits;
 
  This software is provided "as is" without express or implied warranty.
 
+ see https://www.bipm.org/en/measurement-units/
  see https://www.nist.gov/pml/weights-and-measures/metric-si/si-units
  @section Introduction
  The Systems Of Units (SOU) Library was created out the author's desire to solve a problem where

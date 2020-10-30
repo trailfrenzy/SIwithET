@@ -40,3 +40,4 @@ SIwithET/x64/Release/SIwithET.vcxproj.FileListAbsolute.txt
 test/x64/Release/test.exe.recipe
 test/x64/Release/test.vcxproj.FileListAbsolute.txt
 UpgradeLog2.htm
+*.i

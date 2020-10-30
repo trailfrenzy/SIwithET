@@ -70,80 +70,6 @@ namespace SystemOfUnits
          using Charge = typename T::Charge;        /// Charge of the incoming arg.
       };
 
-      /** NOTE:
-       #define MAKE_ATRAIT() is use to make specilized templated of built in types
-       Used to make multiplications of built in types against the types produced by SI template.
-	   For example \code meter = meter * 4;   \endcode or \code feet = feet * 5.0; \endcode
-	   It is not a good habit of using built in scalar types, but the option needs to be provided.
-      Not sure if there is another option to creating the specilized templates than using MACROS.
-      Currently MAKE_ATRAIT is the only MACRO used in the SI Project.
-	  */
-
-      // TODO explore using std::enable_if<> with std::is_arithmetic<>
-
-      //template< typename T2 > struct A_Trait< XX, T2 >
-      //{
-      //   /** Used as the argument for the operators, with the built in types it is a pass by value.  */
-      //   using ArgRef = const XX;
-
-      //   /** For the built in types, still need to use a SI unit type, but one that is dimension less */
-      //   using ExprRef = const tNoUnit;
-
-      //   /** Keep the dimensions at zero */
-      //   enum { eL = 0, et = 0, eM = 0, eT = 0, eQ = 0 };
-
-      //   typedef typename T2::Length Length;
-      //   typedef typename T2::Time Time;
-      //   typedef typename T2::Mass Mass;
-      //   typedef typename T2::Temperature Temperature;
-      //   typedef typename T2::Charge Charge;
-      //};
-
-
-#define MAKE_ATRAIT
-#ifndef MAKE_ATRAIT
-#define MAKE_ATRAIT( XX ) template< typename T2 > struct A_Trait< XX, T2 >\
-      {\
-      /** Used as the argument for the operators, with the built in types it is a pass by value.  */\
-      using ArgRef = const NoUnit;\
-      /** For the built in types, still need to use a SI unit type, but one that is dimension less */\
-      using ExprRef = const NoUnit; \
-      /** Keep the dimensions at zero */\
-      enum { eL = 0, et = 0, eM = 0, eT=0, eQ=0 };\
-      typedef typename T2::Length Length;\
-      typedef typename T2::Time Time;\
-      typedef typename T2::Mass Mass;\
-      typedef typename T2::Temperature Temperature;\
-      typedef typename T2::Charge Charge;\
-      };
-
-      /// creates struct A_Trait<double, typename T2>
-      MAKE_ATRAIT(double);
-      MAKE_ATRAIT(double long);
-
-      /// creates struct A_Trait<float, typename T2>
-      //MAKE_ATRAIT(float);
-
-      /// creates struct A_Trait<int, typename T2>
-      //MAKE_ATRAIT(int);
-
-      /// creates struct A_Trait<unsigned, typename T2>
-      //MAKE_ATRAIT(unsigned);
-
-      /// creates struct A_Trait<long, typename T2>
-      //MAKE_ATRAIT(long);
-
-      /// creates struct A_Trait<unsigned long, typename T2>
-      //MAKE_ATRAIT(unsigned long);
-
-      /// creates struct A_Trait<short, typename T2>
-      //MAKE_ATRAIT(short);
-
-      /// creates struct A_Trait<unsigned short, typename T2>
-      //MAKE_ATRAIT(unsigned short);
-      //MAKE_ATRAIT(long long);
-      //MAKE_ATRAIT(unsigned long long);
-#endif 
 
       template< typename R1, typename R2 >
       struct is_same_BASE {
@@ -156,6 +82,8 @@ namespace SystemOfUnits
             && std::is_same<R1::Charge::Base, R2::Charge::Base >::value
          };
       };
+
+      // Used below to test if it the unitType as zero dimensions.
       template< typename R1 > struct is_zero_dimensions
       {
          enum : bool { value = R1::eL == 0 && R1::et == 0 && R1::eM == 0 && R1::eT == 0 && R1::eQ == 0 };
@@ -525,6 +453,11 @@ inline auto operator<<(TOUT & out, SOU::ShowUnits_t<TOUT>* (*)()) //-> SOU::Show
 
 /// template function which is multiplication operator of two different operands
 template < SOU::UnitSerial R1, SOU::UnitSerial R2 >
+/** product operator
+   @param unitType left-handed side
+   @param unitType right-handed side
+   @return the same type is the product of the left and right hand side UnitType.
+*/
 constexpr inline auto operator*( R1 const &r1, R2 const &r2 )
 noexcept( noexcept(SOU::operators::Mul_Result<R1, R2>))
 {
@@ -533,18 +466,15 @@ noexcept( noexcept(SOU::operators::Mul_Result<R1, R2>))
 
 /// template function which is divisional operator of two different operands
 template< SOU::UnitSerial R1, SOU::UnitSerial R2 >
+/** ratio operator
+   @param Numerator unitType left-handed side
+   @param Deonminator unitType left-handed side
+   @return the ratio of the Numerator type by the Deonminator type.
+*/
 constexpr inline auto operator/( R1 const &r1, R2 const &r2 )
 noexcept(noexcept(SOU::operators::Div_Result<R1, R2>))
 {
-   //if constexpr (SOU::is_UnitType<R1>::value && SOU::is_UnitType<R2>::value)
-   {
-      return SOU::operators::Div_Result<R1, R2>(r1, r2).result();
-   }
-   //if constexpr (std::is_arithmetic<R1>::value && SOU::is_UnitType<R2>::value)
-   //{
-   //   return SOU::operators::Div_Result< SOU::tNoUnit, R2>(SOU::tNoUnit(r1), r2).result();
-   //}
-   //return SOU::operators::Div_Result<R1,R2>(r1,r2).result();
+   return SOU::operators::Div_Result<R1, R2>(r1, r2).result();
 }
 
 // Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.

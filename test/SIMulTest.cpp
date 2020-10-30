@@ -40,23 +40,21 @@ TEST_F(MultiplyFirst, TestAssignment)
 {
    using namespace SOU::operators;
 
-   EXPECT_TRUE(t_MeterSq::eL == 2);
-   EXPECT_TRUE(t_MeterSq::et == 0);
-   EXPECT_TRUE(t_MeterSq::eM == 0);
-   EXPECT_TRUE(t_MeterSq::eT == 0);
-   EXPECT_TRUE(t_MeterSq::eQ == 0);
+   static_assert(t_MeterSq::eL == 2);
+   static_assert(t_MeterSq::et == 0);
+   static_assert(t_MeterSq::eM == 0);
+   static_assert(t_MeterSq::eT == 0);
+   static_assert(t_MeterSq::eQ == 0);
 
    typedef Mul_Result<t_Meter, t_Meter> tMulSq;
-   EXPECT_TRUE(tMulSq::ALLTYPES_THE_SAME::val == tMulSq::ALLTYPES_THE_SAME::T);
-   EXPECT_TRUE(tMulSq::TResult::eL == t_MeterSq::eL);//good
-   EXPECT_TRUE(tMulSq::TResult::et == t_MeterSq::et);
-   EXPECT_TRUE(tMulSq::TResult::eM == t_MeterSq::eM);
-   EXPECT_TRUE(tMulSq::TResult::eT == t_MeterSq::eT);
-   EXPECT_TRUE(tMulSq::TResult::eQ == t_MeterSq::eQ);
-   //STATIC_ASSERTION_FAILURE(( boost::is_same<tMulSq::TResult::Length, SI::NoDim>::value ));
+   static_assert(tMulSq::ALLTYPES_THE_SAME::val == tMulSq::ALLTYPES_THE_SAME::T);
+   static_assert(tMulSq::TResult::eL == t_MeterSq::eL);//good
+   static_assert(tMulSq::TResult::et == t_MeterSq::et);
+   static_assert(tMulSq::TResult::eM == t_MeterSq::eM);
+   static_assert(tMulSq::TResult::eT == t_MeterSq::eT);
+   static_assert(tMulSq::TResult::eQ == t_MeterSq::eQ);
 
    tMulSq mulSq(t_Meter(1.0), t_Meter(1.0));
-   //STATIC_ASSERTION_FAILURE(( boost::is_same< t_MeterSq, tMulSq::TResult >::value ));
 
    tMulSq::TResult sq = mulSq.result();
    t_MeterSq sq1 = mulSq.result();
@@ -73,11 +71,11 @@ TEST_F(MultiplyFirst, TestMul_Result)
    EXPECT_UNIT_EQ(sq, 1.0);
 
    t_MeterSq sq2 = t_Meter(1.0) * t_Meter(2.0);
-   EXPECT_TRUE(sq2 == 2.0);
-   EXPECT_TRUE(2.0 == sq2) << "not implemented yet";
+   EXPECT_UNIT_EQ(sq2, 2.0);
+   EXPECT_UNIT_EQ(2.0, sq2);
 
    auto sq3 = t_Meter(4.5) * t_Meter(5.5);
-   EXPECT_DOUBLE_EQ(24.75, sq3.amount());
+   EXPECT_UNIT_EQ(24.75, sq3 );
    EXPECT_EQ("[L]^2", SOU::Diminsion(sq3));
 }
 
@@ -129,38 +127,35 @@ TEST_F(MultiplyFirst, TestALLTYPES_THE_SAME)
 {
    using namespace SOU;
    using namespace SOU::operators;
-   //typedef Mul_Result<t_Meter, t_Meter> tMulSq;
-   //CPPUNIT_ASSERT( tMulSq::eALLTYPES_THE_SAME == true );
-   EXPECT_TRUE(static_cast<bool>(Mul_Result<t_Meter, t_Meter>::ALLTYPES_THE_SAME::val) == true);
-   EXPECT_TRUE(static_cast<bool>(Mul_Result<t_Meter, t_MeterSq>::ALLTYPES_THE_SAME::val) == true);
-   EXPECT_TRUE(static_cast<bool>(Mul_Result<t_MeterCubed, t_Meter>::ALLTYPES_THE_SAME::val) == true);
 
-   EXPECT_TRUE(static_cast<bool>(Mul_Result<t_centimeter, t_Meter>::ALLTYPES_THE_SAME::val) == true);
-   EXPECT_TRUE(static_cast<bool>(Mul_Result<t_centimeter, t_MeterCubed>::ALLTYPES_THE_SAME::val) == true);
+   static_assert(static_cast<bool>(Mul_Result<t_Meter, t_Meter>::ALLTYPES_THE_SAME::val) == true);
+   static_assert(static_cast<bool>(Mul_Result<t_Meter, t_MeterSq>::ALLTYPES_THE_SAME::val) == true);
+   static_assert(static_cast<bool>(Mul_Result<t_MeterCubed, t_Meter>::ALLTYPES_THE_SAME::val) == true);
 
-   EXPECT_TRUE(static_cast<bool>(Mul_Result<t_Meter, tNoUnit>::ALLTYPES_THE_SAME::val) == true);
-   EXPECT_TRUE(static_cast<bool>(Mul_Result<t_Meter, Metric::t_gramPsec>::ALLTYPES_THE_SAME::val) == true);
+   static_assert(static_cast<bool>(Mul_Result<t_centimeter, t_Meter>::ALLTYPES_THE_SAME::val) == true);
+   static_assert(static_cast<bool>(Mul_Result<t_centimeter, t_MeterCubed>::ALLTYPES_THE_SAME::val) == true);
+
+   static_assert(static_cast<bool>(Mul_Result<t_Meter, tNoUnit>::ALLTYPES_THE_SAME::val) == true);
+   static_assert(static_cast<bool>(Mul_Result<t_Meter, Metric::t_gramPsec>::ALLTYPES_THE_SAME::val) == true);
+   SUCCEED();
    // not implemented yet!!
 }
 ///Basic test with Length types
 TEST_F(MultiplyFirst, TestWithNonAtomicUnitUnitsLength)
 {
    using t_Mul = SOU::operators::Mul_Result<t_Meter, Metric::t_centimeter >;
-   EXPECT_TRUE(t_Mul::IsLengthSame == false);
-   EXPECT_TRUE(t_Mul::IsTimeSame == true);
-   EXPECT_TRUE(t_Mul::IsMassSame == true);
-   //EXPECT_TRUE(t_Mul::AreLengthsBase == false);
+   static_assert(t_Mul::IsLengthSame == false);
+   static_assert(t_Mul::IsTimeSame == true);
+   static_assert(t_Mul::IsMassSame == true);
 
    using t_MulR = t_Mul::TResult;
    enum { b = std::is_same< t_MulR::Length, Metric::AtomicUnit::Centimeter >::value };
    enum { c = std::is_same< t_MulR::Length, Metric::AtomicUnit::Meter >::value };
-   EXPECT_TRUE(c);
-   EXPECT_FALSE(b) << "this is correct Length should not be a Centimeter";
+   static_assert(c);
+   static_assert(!b, "this is correct Length should not be a Centimeter");
 
    t_Mul mul(t_Meter(7.0), Metric::t_centimeter(200.0));
-   //CPPUNIT_ASSERT_DOUBLES_EQUAL( 14.0, mul.result().amount(), 0.0001 );
    t_MeterSq meterSq2 = mul.result();
-   //CPPUNIT_ASSERT_DOUBLES_EQUAL( 14.0, meterSq2.amount(), 0.0001 );
 
    const Metric::t_centimeter cent(200.0);
    EXPECT_DOUBLE_EQ(200.0, cent.amount());
@@ -443,8 +438,8 @@ TYPED_TEST_P(SI_Multiply, TestMultipleInt)
    typename TAG::t_1 res1 = *TAG::m_1 * x;
    typename TAG::t_1 const res2 = x * *TAG::m_1;
 
-   EXPECT_DOUBLE_EQ(6.0, res1.amount());
-   EXPECT_DOUBLE_EQ(6.0, res2.amount());
+   EXPECT_UNIT_EQ(6.0, res1);
+   EXPECT_UNIT_EQ(6.0, res2);
 }
 
 /** Test A_Trait<unsigned,T2> template created from macro.  Test needs to be in class template
@@ -461,8 +456,8 @@ TYPED_TEST_P(SI_Multiply, TestMultipleUnsigned)
    typename TAG::t_1 res1 = *TAG::m_1 * x;
    typename TAG::t_1 const res2 = x * *TAG::m_1;
 
-   EXPECT_DOUBLE_EQ(6.0, res1.amount());
-   EXPECT_DOUBLE_EQ(6.0, res2.amount());
+   EXPECT_UNIT_EQ(6.0, res1);
+   EXPECT_UNIT_EQ(6.0, res2);
 }
 
 /** Test A_Trait<float,T2> template created from macro.  Test needs to be in class template
@@ -476,8 +471,8 @@ TYPED_TEST_P(SI_Multiply, TestMultipleFloat)
    typename TAG::t_1 res1 = *TAG::m_1 * x;
    typename TAG::t_1 const res2 = x * *TAG::m_1;
 
-   EXPECT_DOUBLE_EQ(6.0, res1.amount());
-   EXPECT_DOUBLE_EQ(6.0, res2.amount());
+   EXPECT_UNIT_EQ(6.0, res1);
+   EXPECT_UNIT_EQ(6.0, res2);
 }
 
 /** Test A_Trait<short,T2> template created from macro.  Test needs to be in class template
@@ -491,8 +486,8 @@ TYPED_TEST_P(SI_Multiply, TestMultipleShort)
    typename TAG::t_1 res1 = *TAG::m_1 * x;
    typename TAG::t_1 const res2 = x * *TAG::m_1;
 
-   EXPECT_DOUBLE_EQ(6.0, res1.amount());
-   EXPECT_DOUBLE_EQ(6.0, res2.amount());
+   EXPECT_UNIT_EQ(6.0, res1);
+   EXPECT_UNIT_EQ(6.0, res2);
 }
 
 /** Test A_Trait<long,T2> template created from macro.  Test needs to be in class template
@@ -506,8 +501,8 @@ TYPED_TEST_P(SI_Multiply, TestMultipleLong)
    auto res1 = *TAG::m_1 * x;
    typename TAG::t_1 const res2 = x * *TAG::m_1;
 
-   EXPECT_DOUBLE_EQ(6.0, res1.amount());
-   EXPECT_DOUBLE_EQ(6.0, res2.amount());
+   EXPECT_UNIT_EQ(6.0, res1);
+   EXPECT_UNIT_EQ(6.0, res2);
 }
 
 REGISTER_TYPED_TEST_SUITE_P(SI_Multiply
@@ -522,21 +517,21 @@ TEST(Multiply, NoUnit_Meter) {
    SOU::tNoUnit myScaler{ 9.0 };
    Metric::t_meter Meter{ 2.0 };
    auto val = Meter * myScaler;
-   EXPECT_DOUBLE_EQ(val.amount(), 18.00);
+   EXPECT_UNIT_EQ(val, 18.00);
 }
 
 TEST(Multiply, NoUnit_Const) {
    Metric::t_meter Meter{ 2.0 };
    auto val = Meter * SOU::tNoUnit(9.0);
-   EXPECT_DOUBLE_EQ(val.amount(), 18.00);
+   EXPECT_UNIT_EQ(val, 18.00);
 }
 
 TEST(Multiply, Meter_double) {
    Metric::t_meter M{ 2.0 };
    auto val = M * 3;
-   ASSERT_DOUBLE_EQ(val.amount(), 6.0);
+   EXPECT_UNIT_EQ(val, 6.0);
    val = 3 * M;
-   ASSERT_DOUBLE_EQ(val.amount(), 6.0);
+   EXPECT_UNIT_EQ(val, 6.0);
 }
 
 typedef Metric::AUMetric::MakeDim<1, 0, 0, 0, 0>::type t_Meter;
@@ -547,9 +542,9 @@ TEST(Multiply, Const) {
    const t_Meter M1{ 2.0 };
    t_Meter M2{ 3.0 };
    auto mSq = M1 * M2;
-   ASSERT_DOUBLE_EQ(mSq.amount(), 6.0);
+   EXPECT_UNIT_EQ(mSq, 6.0);
    auto val = M2 * M1;
-   ASSERT_DOUBLE_EQ(val.amount(), 6.0);
+   EXPECT_UNIT_EQ(val, 6.0);
 }
 
 TEST(Multiply, constexpr_Mul) {

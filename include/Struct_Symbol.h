@@ -7,6 +7,11 @@
 
 namespace SystemOfUnits {
    namespace helpers {
+
+         /// T_Symbol is the base class for all the Base Types used in building a UnitType.
+         /// Pass the dimension as a single letter as the template argument. The single letter is represent the base unit diminsion.
+         /// Use the typical symbol found from https://www.bipm.org/en/measurement-units/.
+         /// 
          template<unsigned char C > struct T_Symbol 
          { 
             enum:char unsigned{ sym = C };  /// used on the input of template OneDim<>
@@ -53,14 +58,20 @@ namespace SystemOfUnits {
    };
 
    // Concepts used as the rules in building SI::Units
+
+   /// Constrait for Length to ensure only a Length type is passed for an arugment.
    template<typename T> concept LENGTH = is_LENGTH<T>::value && sizeof(T) == 1;
 
+   /// Constrait for Time to ensure only a Time type is passed for an arugment.
    template<typename T> concept TIME = is_TIME<T>::value && sizeof(T) == 1;
 
+   /// Constrait for Mass to ensure only a Mass type is passed for an arugment.
    template<typename T> concept MASS = is_MASS<T>::value && sizeof(T) == 1;
 
+   /// Constrait for Temperature to ensure only a Temperature type is passed for an arugment.
    template<typename T> concept TEMPERATURE = is_TEMPERATURE<T>::value && sizeof(T) == 1;
 
+   /// Constrait for Current to ensure only a Current type is passed for an arugment.
    template<typename T> concept CURRENT = is_CURRENT<T>::value && sizeof(T) == 1;
 
 }

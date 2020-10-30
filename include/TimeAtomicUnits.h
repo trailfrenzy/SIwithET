@@ -11,6 +11,8 @@ by both libraries it is indepent of both.
 namespace SystemOfUnits
 {
    /// Namespace contains the tags used to identify time.
+   ///  Currently non of the time in this file is associated with the time provided in the C++ std <chrono>.
+   /// All times are based from the second and this does not stop a user from defining their own time types.
    namespace Time
    {
       /// Provides the symbol for dimensions.
@@ -36,7 +38,7 @@ namespace SystemOfUnits
             constexpr static double toBase() noexcept { return 60.0; }
             constexpr static double fromBase() noexcept { return 1.0 / toBase(); }
          };
-         /// tag clase for time.
+         /// tag class for time.
          struct hour : TIME
          {
             enum:bool{ IsBase = false };
