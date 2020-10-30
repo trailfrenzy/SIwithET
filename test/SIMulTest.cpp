@@ -2,15 +2,17 @@
 operator for the System of Units Template Class.
 */
 
-#include <gtest/gtest.h>
 #include "SI.h"
 #include "MetricTypes.h"
 #include "operators.h"
 #include "conversion_cast.h"	/// helps out during one of the test
 #include "template_help.h"
 #include "WhatAmI.h"
+#include "ExpectUnitTest.h"
+#include <gtest/gtest.h>
 
 #include <memory>
+
 
 // basic test on the multiplication operator
 class MultiplyFirst : public ::testing::Test
@@ -68,7 +70,7 @@ TEST_F(MultiplyFirst, TestMul_Result)
 
    // test basic 1x1 and if the dim is correct
    t_MeterSq sq(t_Meter(1.0) * t_Meter(1.0));
-   EXPECT_TRUE(sq == 1.0);
+   EXPECT_UNIT_EQ(sq, 1.0);
 
    t_MeterSq sq2 = t_Meter(1.0) * t_Meter(2.0);
    EXPECT_TRUE(sq2 == 2.0);

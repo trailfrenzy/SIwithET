@@ -206,14 +206,41 @@ namespace SystemOfUnits /// covers the basics of the system
          return unitType( lf.m_amount - rt.m_amount);
       }
 
+      /** product operator
+         @param float type defined in the class
+         @param unitType right-handed side
+         @return the same type which was passed as the right side parameter.
+      */
       friend constexpr auto operator*(t_float lf, unitType const& rt) noexcept
       {
          return unitType(lf * rt.m_amount);
       }
 
-      friend constexpr unitType operator*(unitType const& lf, t_float rt)
+      /** product operator
+         @param unitType left-handed side
+         @param float type defined in the class
+         @return the same type which was passed as the left side parameter.
+      */
+      friend constexpr unitType operator*(unitType const& lf, t_float rt) noexcept
       {
          return unitType(lf.m_amount * rt);
+      }
+
+      friend constexpr unitType operator/(unitType const& lf, t_float rt) noexcept
+      {
+         return unitType(lf.m_amount / rt);
+      }
+
+      friend constexpr auto operator/(t_float lf, unitType rt)
+      {
+         using RT = decltype(rt);
+
+         return unitType< RT::Length, -1*RT::eL
+                        , RT::Time, -1 * RT::et
+                        , RT::Mass, -1 * RT::eM
+                        , RT::Temperature, -1 * RT::eT
+                        , RT::Charge, -1 * RT::eQ >
+            (lf / rt.m_amount);
       }
 
       /** stream inserter operator
@@ -351,6 +378,12 @@ namespace SystemOfUnits /// covers the basics of the system
       /// inverse of fromBase()
       constexpr static double toBase() noexcept(noexcept(ARG)) { return ARG::fromBase(); }
    };
+
+   /// <summary>
+   ///  Constraint used for Template arguments for templates only for UnitTypes. Called Serial since serial is a group of types.
+   /// </summary>
+   template<typename T> concept UnitSerial = is_UnitType<T>::value;
+
 } /// end of namespace SystemOfUnits
 
 namespace SOU = SystemOfUnits;

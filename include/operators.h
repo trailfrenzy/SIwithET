@@ -35,8 +35,6 @@ itself.
 
 namespace SystemOfUnits
 {
-   template<typename T> concept UnitSerial = SOU::is_UnitType<T>::value;
-
    namespace operators
    {
       template<typename T> concept Arithmetic = std::is_arithmetic<T>::value;
@@ -530,36 +528,26 @@ template < SOU::UnitSerial R1, SOU::UnitSerial R2 >
 constexpr inline auto operator*( R1 const &r1, R2 const &r2 )
 noexcept( noexcept(SOU::operators::Mul_Result<R1, R2>))
 {
-   //if constexpr (SOU::is_UnitType<R1>::value && SOU::is_UnitType<R2>::value)
-   {
-      return SOU::operators::Mul_Result<R1, R2>(r1, r2).result();
-   }
-   //if constexpr (std::is_arithmetic<R1>::value && SOU::is_UnitType<R2>::value )
-   //{
-   //   return SOU::operators::Mul_Result< SOU::tNoUnit, R2>( SOU::tNoUnit(r1), r2).result();
-   //}
-   //if constexpr (SOU::is_UnitType<R1>::value and std::is_arithmetic<R2>::value) {
-   //   return SOU::operators::Mul_Result< R1, SOU::tNoUnit >(r1, SOU::tNoUnit(r2) ).result();
-   //}
+   return SOU::operators::Mul_Result<R1, R2>(r1, r2).result();
 }
 
 /// template function which is divisional operator of two different operands
-template< typename R1, typename R2 >
+template< SOU::UnitSerial R1, SOU::UnitSerial R2 >
 constexpr inline auto operator/( R1 const &r1, R2 const &r2 )
 noexcept(noexcept(SOU::operators::Div_Result<R1, R2>))
 {
-   if constexpr (SOU::is_UnitType<R1>::value && SOU::is_UnitType<R2>::value)
+   //if constexpr (SOU::is_UnitType<R1>::value && SOU::is_UnitType<R2>::value)
    {
       return SOU::operators::Div_Result<R1, R2>(r1, r2).result();
    }
-   if constexpr (std::is_arithmetic<R1>::value && SOU::is_UnitType<R2>::value)
-   {
-      return SOU::operators::Div_Result< SOU::tNoUnit, R2>(SOU::tNoUnit(r1), r2).result();
-   }
+   //if constexpr (std::is_arithmetic<R1>::value && SOU::is_UnitType<R2>::value)
+   //{
+   //   return SOU::operators::Div_Result< SOU::tNoUnit, R2>(SOU::tNoUnit(r1), r2).result();
+   //}
    //return SOU::operators::Div_Result<R1,R2>(r1,r2).result();
 }
 
-// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

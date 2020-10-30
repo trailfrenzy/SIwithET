@@ -1,10 +1,11 @@
-#include <gtest/gtest.h>
-#include <memory>
+#include "operators.h"
 #include "SI.h"
 #include "MetricTypes.h"
 #include "TimeAtomicUnits.h"  // contains the time atomic units
-#include "operators.h"
 #include "WhatAmI.h"
+#include "ExpectUnitTest.h"
+#include <gtest/gtest.h>
+#include <memory>
 
 namespace AT = SOU::Time::AtomicUnit;
 // basic test on the multiplication operator
@@ -255,7 +256,8 @@ TYPED_TEST_P(SOU_Division, TestWithScaler)
    // TODO: Correct this, compile error in gtest.h 
    //auto ans = res1.amount();
 	//ASSERT_TRUE(res1.amount() == 12.0 ) << SOU::WhatAmI(res1);
-   std::cout << SOU::WhatAmI(res1);
+   EXPECT_UNIT_EQ(res1, 12.0);
+   //std::cout << SOU::WhatAmI(res1) << '\n';
 }
 
 TYPED_TEST_P(SOU_Division, TestDivideAssign)

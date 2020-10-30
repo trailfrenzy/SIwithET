@@ -150,7 +150,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\..\googletest\googletest\include;$(SolutionDir)\include;$(SolutionDir)\..\cppunit\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableParallelCodeGeneration>false</EnableParallelCodeGeneration>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <EnableModules>false</EnableModules>
+      <EnableModules>true</EnableModules>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -167,6 +167,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="A_Traits.cpp" />
     <ClCompile Include="conversion_castTest.cpp" />
     <ClCompile Include="ElectricCurrentTest.cpp" />
     <ClCompile Include="EnglishUnitTest.cpp" />
@@ -175,6 +176,7 @@
     <ClCompile Include="main01.cpp" />
     <ClCompile Include="MetaSort.cpp" />
     <ClCompile Include="MetricUnitTest.cpp" />
+    <ClCompile Include="NoUnit.cpp" />
     <ClCompile Include="powerTest.cpp" />
     <ClCompile Include="SIDivTest.cpp" />
     <ClCompile Include="SIMulTest.cpp" />
@@ -192,6 +194,7 @@
     <ClCompile Include="WhatAmITest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ExpectUnitTest.h" />
     <ClInclude Include="template_help.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

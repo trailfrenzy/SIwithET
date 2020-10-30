@@ -8,6 +8,7 @@
 #include <type_traits>
 #include "MetricTypes.h"
 #include "template_help.h"
+#include "ExpectUnitTest.h"
 
 template< typename UNIT_TYPE >
 class SITest : public testing::Test
@@ -250,9 +251,18 @@ TEST(BasicSI, NoUnitValue) {
    EXPECT_EQ(val.amount(), 6.0);
 }
 
-TEST(BasicSI, Mult_float) {
+TEST(BasicSI, Mult_float)
+{
    t_Meter km = 3.0 * t_Meter(1.0);
+   EXPECT_EQ(km.amount(), 3.0);
 }
+
+TEST(BasicSI, Div_float)
+{
+   auto m = 9.0 / t_Meter(3.0);
+   EXPECT_UNIT_EQ(m, 3.0);
+}
+
 //TEST(BasicSI, NULL_Value) {
 //   t_Meter M;
 //   M /= 2.0;
