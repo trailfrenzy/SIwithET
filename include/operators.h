@@ -40,6 +40,7 @@ namespace SystemOfUnits
    namespace operators
    {
       /** \brief The trait idea came from "C++ Templates", pg 332.
+       The main reason for the template A_Trait was when using the 32-bit compiler and passing built in types.
        trait is used to allow built in types to be used as args in operator's mul and div 
        The @code A_Trait<T1,T2> @endcode templates are used during has hidden templates that are
        created during multiplication and division operations using the SI templates.  @code A_Trait<T1,T2> @endcode
@@ -376,9 +377,6 @@ namespace SystemOfUnits
 
       /// pass by value instead of reference for built in types.
       template< Arithmetic A> ShowDim_t operator<<(A a) { out << a; return *this; }
-      //ShowDim_t& operator<<(char c) { out << c; return *this; }
-      //ShowDim_t& operator<<(int i) { out << i; return *this; }
-      //ShowDim_t& operator<<(unsigned u) { out << u; return *this; }
 
       /// Used by the UnitType to display the acutal diminsion
       template< UnitSerial S > ShowDim_t operator<<(S val)
@@ -457,7 +455,7 @@ template < SOU::UnitSerial R1, SOU::UnitSerial R2 >
    @param unitType right-handed side
    @return the same type is the product of the left and right hand side UnitType.
 */
-constexpr inline auto operator*( R1 const &r1, R2 const &r2 )
+constexpr inline auto operator*( R1 const &r1, R2 const &r2 ) // TODO: write tests for constexpr
 noexcept( noexcept(SOU::operators::Mul_Result<R1, R2>))
 {
    return SOU::operators::Mul_Result<R1, R2>(r1, r2).result();
@@ -467,8 +465,8 @@ noexcept( noexcept(SOU::operators::Mul_Result<R1, R2>))
 template< SOU::UnitSerial R1, SOU::UnitSerial R2 >
 /** ratio operator
    @param Numerator unitType left-handed side
-   @param Deonminator unitType left-handed side
-   @return the ratio of the Numerator type by the Deonminator type.
+   @param Denominator unitType left-handed side
+   @return the ratio of the Numerator type by the Denominator type.
 */
 constexpr inline auto operator/( R1 const &r1, R2 const &r2 )
 noexcept(noexcept(SOU::operators::Div_Result<R1, R2>))

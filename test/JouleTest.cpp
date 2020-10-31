@@ -1,5 +1,4 @@
-﻿
-#include <gtest/gtest.h>
+﻿#include <gtest/gtest.h>
 #include "MetricTypes.h"
 #include "WhatAmI.h"
 #include "operators.h"
@@ -47,6 +46,56 @@ TEST(Joule, Product) {
 	EXPECT_EQ(SystemOfUnits::Diminsion(J), "[L]^2[M]/[T]^2");
 	EXPECT_EQ(SystemOfUnits::WhatAmI(J), "meter^2*second^(-2)*kilogram");
 	EXPECT_DOUBLE_EQ(225.0, J.amount());
+}
+
+// TODO: Not ready for implimentation.
+namespace SystemOfUnits
+{
+	template< SOU::UnitSerial T, SOU::UnitSerial U >
+	struct is_same
+	{
+		static_assert(std::is_same_v< T::Length, U::Length >);
+		static_assert(std::is_same_v< T::Time, U::Time >);
+		static_assert(std::is_same_v< T::Mass, U::Mass >);
+		static_assert(std::is_same_v< T::Temperature, U::Temperature >);
+		static_assert(std::is_same_v< T::Charge, U::Charge >);
+
+		static constexpr bool value =
+			std::is_same_v< T::Length, U::Length > &&
+			std::is_same_v< T::Time, U::Time > &&
+			std::is_same_v< T::Mass, U::Mass > &&
+			std::is_same_v< T::Temperature, U::Temperature > &&
+			std::is_same_v< T::Charge, U::Charge > &&
+			T::eL == U::eL && T::et == U::et && T::eM == U::eM && T::eT == U::eT && T::eQ == U::eQ;
+	};
+}
+
+TEST(Joule, MakeNewtonThroughAuto)
+{
+	constexpr Metric::t_meter m{ 5.0 };
+	constexpr Metric::t_second s(0.5);
+	constexpr Metric::t_kilogram kg{ 4.0 };
+	auto const joule = m * m * kg / (s * s);
+
+	t_Joule J = m * m * kg / (s * s);
+
+	std::cout << SOU::units << joule << "  " << t_Joule(4.5) << '\n';
+
+	//static_assert(SOU::is_UnitType<decltype(joule)>::value );
+
+	static_assert(std::is_same_v< decltype(joule)::Length, t_Joule::Length >);
+	static_assert(std::is_same_v< decltype(joule)::Time, t_Joule::Time >);
+	static_assert(std::is_same_v< decltype(joule)::Mass, t_Joule::Mass >);
+	static_assert(std::is_same_v< decltype(joule)::Temperature, t_Joule::Temperature >);
+	static_assert(std::is_same_v< decltype(joule)::Charge, t_Joule::Charge >);
+
+	static_assert( decltype(joule)::eL == t_Joule::eL );
+	static_assert( decltype(joule)::et == t_Joule::et );
+	static_assert( decltype(joule)::eM == t_Joule::eM );
+	static_assert( decltype(joule)::eT == t_Joule::eT );
+	static_assert( decltype(joule)::eQ == t_Joule::eQ );
+
+	//static_assert( SOU::is_same<decltype(joule), t_Joule >::value, "See how the compiler generated Joule is the same" );
 }
 
 TEST(Joule, Ratio) {

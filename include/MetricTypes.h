@@ -17,6 +17,8 @@ namespace Metric
 {
    namespace AU = AtomicUnit;
 
+   // TODO: change AU::gram to kilogram.
+   /// Used in makeing other metric types.
    using AUMetric=SOU::MakeType< AU::Meter, AT::second, AU::gram, AU::kelvin, AU::ampere >;
 
    /// Length compond units
@@ -59,7 +61,7 @@ constexpr auto operator"" _meter( long double d) noexcept
    return Metric::t_meter(d);
 }
 
-// Kilometer UDL
+// Kilometer UDL (User Definded Literals)
 constexpr auto operator"" _kilometer( long double d) noexcept
 { return Metric::t_kilometer{ static_cast<double>(d) }; }
 
