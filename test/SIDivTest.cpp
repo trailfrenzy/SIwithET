@@ -26,7 +26,7 @@ TEST_F(DivisionFirst, NoUnit) {
    SOU::tNoUnit myScaler{ 9.0 };
    Metric::t_meter Meter{ 27.0 };
    auto val = Meter / myScaler;
-   EXPECT_DOUBLE_EQ(val.amount(), 3.00);
+   EXPECT_UNIT_EQ(val, 3.00);
    EXPECT_EQ("[L]", SOU::Diminsion(val)) << "Added as another check later on";
 }
 TEST_F(DivisionFirst, InverseNoUnit) {
@@ -34,20 +34,20 @@ TEST_F(DivisionFirst, InverseNoUnit) {
    Metric::t_meter const Meter{ 9.0 };
    auto val = myScaler / Meter;
    EXPECT_EQ("1/[L]", SOU::Diminsion(val)) << "Added as another check later on";
-   EXPECT_DOUBLE_EQ(val.amount(), 3.00);
+   EXPECT_UNIT_EQ(val, 3.00);
 }
 TEST_F(DivisionFirst, InverseDouble){
    double myScaler = 90.0;
    Metric::t_meter const Meter{ 9.0 };
    const auto val = myScaler / Meter;
-   ASSERT_TRUE(val == 10.0);
+   EXPECT_UNIT_EQ(val, 10.0);
 }
 TEST_F(DivisionFirst, InverstInt) {
    int myScaler = 81;
    const t_MeterCubed M3{ 9.0 };
    auto const val = myScaler / M3;
-   ASSERT_TRUE(val == 9.0);
-   ASSERT_TRUE(9.0 == 81 / M3);
+   EXPECT_UNIT_EQ(val, 9.0);
+   EXPECT_UNIT_EQ(9.0, 81 / M3);
 }
 
 TEST_F(DivisionFirst, Constexpr) {
@@ -55,13 +55,13 @@ TEST_F(DivisionFirst, Constexpr) {
    constexpr t_MeterSq mSq{ 32.0 };
    constexpr auto M = mSq / m1;
    EXPECT_EQ("[L]", SOU::Diminsion(M));
-   ASSERT_DOUBLE_EQ(M.amount(), 8.0);
+   EXPECT_UNIT_EQ(M, 8.0);
 }
 
 TEST_F(DivisionFirst, Constexpr_scaler) {
    constexpr t_Meter m1{ 36.0 };
    constexpr auto m = m1 / 9;
-   ASSERT_DOUBLE_EQ(m.amount(), 4.0);
+   EXPECT_UNIT_EQ(m, 4.0);
    EXPECT_EQ("[L]", SOU::Diminsion(m));
 }
 
@@ -70,30 +70,30 @@ TEST_F(DivisionFirst, TestDiv_Result)
 {
    // division during intialization
    t_Meter m(t_MeterSq(1.0) / t_Meter(1.0));
-   EXPECT_TRUE(m == 1.0);
+   EXPECT_UNIT_EQ(m, 1.0);
 
    t_Meter m2 = t_MeterSq(1.0) / t_Meter(2.0);
-   EXPECT_TRUE(m2 == 0.5);
+   EXPECT_UNIT_EQ(m2, 0.5);
 
    auto m3 = t_MeterSq(1.0) / t_Meter(4.0);
    EXPECT_EQ("[L]", SOU::Diminsion(m3));
-   EXPECT_TRUE(m3 == 0.25);
+   EXPECT_UNIT_EQ(m3, 0.25);
 }
 
 /// Test with cube
 TEST_F(DivisionFirst, TestWithCube)
 {
    t_MeterSq sq1 = t_MeterCubed(9.0) / t_Meter(2.0);
-   EXPECT_TRUE(sq1 == 4.5);
+   EXPECT_UNIT_EQ(sq1, 4.5);
 
    t_Meter m1 = t_MeterCubed(15.0) / t_MeterSq(5.0);
-   EXPECT_TRUE(m1 == 3.0);
+   EXPECT_UNIT_EQ(m1, 3.0);
 
    t_Meter m2 = t_MeterSq(4.0) / t_Meter(2.0);
-   EXPECT_TRUE(m2 == 2.0);
+   EXPECT_UNIT_EQ(m2, 2.0);
 
-   auto m3 = t_MeterCubed(15.0) / t_MeterSq(3.0);
-   EXPECT_TRUE(m3 == 5.0) << "test with auto";
+   auto m3 = t_MeterCubed(15.0) / t_MeterSq(3.0); // test with auto
+   EXPECT_UNIT_EQ(m3, 5.0);
    EXPECT_EQ("[L]", SOU::Diminsion(m3));
 }
 
@@ -102,22 +102,22 @@ TEST_F(DivisionFirst, TestWithCube)
 TEST_F(DivisionFirst, TestChaining)
 {
    t_Meter m1 = t_Meter(2.0) * t_Meter(2.0) / t_Meter(2.0);
-   EXPECT_TRUE(m1 == 2.0);
+   EXPECT_UNIT_EQ(m1, 2.0);
 
    t_Meter m2 = t_MeterCubed(27.0) / t_Meter(3.0) / t_Meter(3.0);
-   EXPECT_TRUE(m2 == 3.0);
+   EXPECT_UNIT_EQ(m2, 3.0);
 
    m2 = t_MeterCubed(27.0) / t_Meter(3.0) / t_Meter(3.0) / 2;
    EXPECT_DOUBLE_EQ(1.5, m2.amount()) << "test with operator=()";
 
    t_Meter m3 = (t_Meter(2.0) * t_Meter(9.0)) / t_Meter(3.0);
-   EXPECT_TRUE(m3 == 6.0);
+   EXPECT_UNIT_EQ(m3, 6.0);
 
    t_Meter const m4 = 2 * (t_Meter(2.0) * t_Meter(9.0)) / t_Meter(3.0);
-   EXPECT_DOUBLE_EQ(12.0, m4.amount());
+   EXPECT_UNIT_EQ(12.0, m4 );
 
    auto const m5 = (2 * t_Meter(2.0) * t_Meter(9.0)) / t_Meter(3.0);
-   EXPECT_DOUBLE_EQ(12.0, m5.amount());
+   EXPECT_UNIT_EQ(12.0, m5 );
    EXPECT_EQ("[L]", SOU::Diminsion(m5));
 }
 
@@ -144,7 +144,7 @@ TEST_F(DivisionFirst, DimensionLessDenom) {
 
 TEST_F(DivisionFirst, DimensionlessNum) {
    auto res = 36.0 / t_MeterSq(12.0);
-   EXPECT_DOUBLE_EQ(3.0, res.amount());
+   EXPECT_UNIT_EQ(3.0, res );
    ASSERT_EQ(SOU::Diminsion(res), std::string("1/[L]^2"));
 }
 
@@ -160,16 +160,16 @@ TEST_F(DivisionFirst, TestWithNonAtomicUnitUnitsLength)
    EXPECT_TRUE(static_cast<bool>(t_result::ALLTYPES_THE_SAME::val) == true);
 
    meter = meterSq / cent;
-   EXPECT_DOUBLE_EQ(7.0, meter.amount());
+   EXPECT_UNIT_EQ(7.0, meter );
 
    typedef SOU::MakeSQ< Metric::t_centimeter >::type t_centSq;
    t_centSq centSq = t_centimeter(600) * meter;
    t_centimeter cent2 = centSq / meter;
-   EXPECT_DOUBLE_EQ(600.0, cent2.amount());
+   EXPECT_UNIT_EQ(600.0, cent2 );
 
    typedef SOU::MakeSQ< Metric::t_kilometer >::type t_kiloSQ;
    Metric::t_kilometer kilo = t_kiloSQ(12.0) / cent2;
-   EXPECT_DOUBLE_EQ(2000.0, kilo.amount());
+   EXPECT_UNIT_EQ(2000.0, kilo );
 }
 
 template< int NUMERATOR, int DENOMINATOR, int RATIO > struct ARG {
@@ -226,7 +226,7 @@ TYPED_TEST_P(SOU_Division, TestDiv_Result)
 	using TAG = SOU_Division<TypeParam >;
 
 	SOU::operators::Div_Result< TAG::t_1, TAG::t_2 > res(*TAG::m_1, *TAG::m_2);
-	EXPECT_TRUE(res.result() == *TAG::m_3);
+   EXPECT_UNIT_EQ(res.result(), *TAG::m_3 );
 }
 
 /// early test show that a simple division could work.
@@ -235,12 +235,12 @@ TYPED_TEST_P(SOU_Division, Test2)
 	using TAG = SOU_Division<TypeParam >;
 
 	auto /*TAG::t_3*/ res = *TAG::m_1 / *TAG::m_2;
-	EXPECT_TRUE(res == *TAG::m_3);
+   EXPECT_UNIT_EQ(res, *TAG::m_3);
 	//EXPECT_DOUBLE_EQ( res.amount(), *TAG::m_3.amount() ) << "need to write an comparison for episoln";
-	EXPECT_TRUE(*TAG::m_3 == *TAG::m_1 / *TAG::m_2);
+   EXPECT_UNIT_EQ(*TAG::m_3, *TAG::m_1 / *TAG::m_2);
 
 	auto res2 = *TAG::m_1 / *TAG::m_3;
-	EXPECT_TRUE(res2 == *TAG::m_2);
+   EXPECT_UNIT_EQ(res2, *TAG::m_2);
 }
 
 /// Did operator/() work with scalar values?
@@ -269,7 +269,7 @@ TYPED_TEST_P(SOU_Division, TestDivideAssign)
 	EXPECT_DOUBLE_EQ(6.0, TAG::m_1->amount()) << "12/2 is 6";
 
 	*TAG::m_1 /= 0.1;
-	EXPECT_DOUBLE_EQ(60.0, TAG::m_1->amount());
+   EXPECT_UNIT_EQ(60.0, *TAG::m_1 );
 }
 
 REGISTER_TYPED_TEST_SUITE_P(SOU_Division,
@@ -278,7 +278,7 @@ REGISTER_TYPED_TEST_SUITE_P(SOU_Division,
 typedef ::testing::Types< ARG<2, 1, 1>, ARG< 3, 2, 1>, ARG<5, 2, 3>, ARG<2, 2, 0>, ARG<2, 0, 2>, ARG<2, 4, -2> > MyTypes;
 INSTANTIATE_TYPED_TEST_SUITE_P(My, SOU_Division, MyTypes);
 
-// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

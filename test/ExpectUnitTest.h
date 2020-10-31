@@ -11,7 +11,7 @@ template< SOU::UnitSerial T, SOU::UnitSerial U > auto EXPECT_UNIT_EQ(T t, U u)
 {
    static_assert(std::is_same< T, U>::value, "These two types must be the same, if not do not compile");
 
-   EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<T>, t, u);
+   EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<double>, t.amount(), u.amount() );
 }
 
 template< SOU::UnitSerial T > auto EXPECT_UNIT_EQ(T t, double u)

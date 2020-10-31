@@ -1,10 +1,13 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2003
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SIwithET", "SIwithET\SIwithET.vcxproj", "{0BDB13C2-BBDC-4A21-BBA8-F159DA2423FE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj", "{C5DB876B-10EE-43A2-B829-45D9B152AF53}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0BDB13C2-BBDC-4A21-BBA8-F159DA2423FE} = {0BDB13C2-BBDC-4A21-BBA8-F159DA2423FE}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

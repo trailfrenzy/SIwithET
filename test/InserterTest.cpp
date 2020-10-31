@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 #include <sstream>
 #include "MetricTypes.h"
+#include "ExpectUnitTest.h"
 #include <string_view>
 
 typedef Metric::AtomicUnit::Meter Meter;
@@ -111,7 +112,7 @@ TEST(Extractor, ConceptWork) {
    std::stringstream strm("12.45");
    t_CubedPerSec mps;
    strm >> mps;
-   ASSERT_TRUE(mps == 12.45);
+   EXPECT_UNIT_EQ(mps, 12.45);
 }
 
 

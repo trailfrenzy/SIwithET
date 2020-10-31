@@ -1,4 +1,4 @@
-// Struct supports the dimensional function. Used internally, not for use outside of SOU.
+﻿// Struct supports the dimensional function. Used internally, not for use outside of SOU.
 /// File contains the consepts used to define a SI::Units
 #ifndef SYSTEM_OF_UNITS_HELPERS_STRUCT_T_SYMBOL_H
 #define SYSTEM_OF_UNITS_HELPERS_STRUCT_T_SYMBOL_H
@@ -6,25 +6,40 @@
 #include <concepts>
 
 namespace SystemOfUnits {
-   namespace helpers {
+   namespace helpers
+   {
+      /**
+      @page 6 Dimensions of quantities.
+      Physical quantities can be organized in a system of dimensions, where the system used is
+      decided by convention. Each of the seven base quantities used in the SI is regarded as
+      having its own dimension. The symbols used for the base quantities and the symbols used
+      to denote their dimension are represented by the class template below..
 
-         /// T_Symbol is the base class for all the Base Types used in building a UnitType.
-         /// Pass the dimension as a single letter as the template argument. The single letter is represent the base unit diminsion.
-         /// Use the typical symbol found from https://www.bipm.org/en/measurement-units/ "The International System of Units(SI), 9th edition 2019, pg 136 section 2.3.3, Table 3.
-         /// 
-         template<unsigned char C > struct SymbolForDimension
-         { 
-            enum:char unsigned{ sym = C };  /// used on the input of template OneDim<>
+      SymbolForDimension is the base class for all the Base Types used in building a UnitType.
+      Pass the dimension as a single letter as the template argument. The single letter is represent the base unit diminsion.
+      Use the typical symbol found from https://www.bipm.org/en/measurement-units/ "The International System of Units(SI), 9th edition 2019, pg 136 section 2.3.3, Table 3.
 
-            // ideally the function is used by the sorting template and its output.  Currently not used.
-            template<typename t_char = char>
-            constexpr static inline auto Symstr() noexcept-> t_char const *
-            {
-               // creation of a static character string array.
-               constexpr t_char static str[] = { '[', sym ,']', '\0' };
-               return str;
-            }
-         };
+      All other quantities, with the exception of counts, are derived quantities, which may be
+      written in terms of base quantities according to the equations of physics. The dimensions of
+      the derived quantities are written as products of powers of the dimensions of the base
+      quantities using the equations that relate the derived quantities to the base quantities.
+      In general the dimension of any quantity Q is written in the form of a dimensional product,
+
+                  dim Q = T^α L^β M^γ I^δ Θ^ε N^ζ J^η
+      */
+      template<unsigned char C > struct SymbolForDimension
+      {
+         enum :char unsigned { sym = C };  /// used on the input of template OneDim<>
+
+         // ideally the function is used by the sorting template and its output.  Currently not used.
+         template<typename t_char = char>
+         constexpr static inline auto Symstr() noexcept-> t_char const*
+         {
+            // creation of a static character string array.
+            constexpr t_char static str[] = { '[', sym ,']', '\0' };
+            return str;
+         }
+      };
    }
 
    template< typename BASE_UNIT > struct is_LENGTH
@@ -77,7 +92,7 @@ namespace SystemOfUnits {
 }
 #endif
 
-// Copyright � 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

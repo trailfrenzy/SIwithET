@@ -7,7 +7,7 @@ typedef Metric::t_meter t_Meter;
 
 TEST(A_Traits, Mul_Reslut_builtins)
 {
-   EXPECT_TRUE(std::is_arithmetic<double>::value);
+   static_assert(std::is_arithmetic<double>::value);
    using type1 = SOU::operators::A_Trait< t_Meter, SOU::tNoUnit>;
    //static_assert(type1::trait_type == SOU::operators::trait_UA, "Is the UnitType with Arithmetic");
    //static_assert(sizeof(type1) == 1u);
