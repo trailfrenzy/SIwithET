@@ -35,10 +35,10 @@ itself.
 
 namespace SystemOfUnits
 {
+   template<typename T> concept Arithmetic = std::is_arithmetic<T>::value;
+
    namespace operators
    {
-      template<typename T> concept Arithmetic = std::is_arithmetic<T>::value;
-
       /** \brief The trait idea came from "C++ Templates", pg 332.
        trait is used to allow built in types to be used as args in operator's mul and div 
        The @code A_Trait<T1,T2> @endcode templates are used during has hidden templates that are
@@ -374,24 +374,25 @@ namespace SystemOfUnits
    public:
       ShowDim_t(TOUT &r) : out(r){} // TBD: Make private but will require the inserter which calls it in the same namespace.
 
-      /// pass by value instead of reference.
-      ShowDim_t& operator<<(char c) { out << c; return *this; }
-      ShowDim_t& operator<<(int i) { out << i; return *this; }
-      ShowDim_t& operator<<(unsigned u) { out << u; return *this; }
+      /// pass by value instead of reference for built in types.
+      template< Arithmetic A> ShowDim_t operator<<(A a) { out << a; return *this; }
+      //ShowDim_t& operator<<(char c) { out << c; return *this; }
+      //ShowDim_t& operator<<(int i) { out << i; return *this; }
+      //ShowDim_t& operator<<(unsigned u) { out << u; return *this; }
 
-      /// Used by any type besides UnitType
+      /// Used by the UnitType to display the acutal diminsion
+      template< UnitSerial S > ShowDim_t operator<<(S val)
+      {
+         using t_unit = S; // SOU::unitType<L, iL, t, it, M, iM, T, iT, Q, iQ>;
+         using t_char = typename TOUT::char_type;  // will not compile if TOUT does not have char_type.
+         out << val << ' ' << t_Diminsion<t_char, t_unit>(val);
+         return *this;
+      }
+
+      /// Used by any type besides UnitType and Arithmetic types
       template< typename T > ShowDim_t& operator<<(const T& val)
       {
-         if constexpr (is_UnitType<T>::value)
-         {
-            using t_unit = T; // SOU::unitType<L, iL, t, it, M, iM, T, iT, Q, iQ>;
-            using t_char = typename TOUT::char_type;  // will not compile if TOUT does not have char_type.
-            out << val << ' ' << t_Diminsion<t_char, t_unit>(val);
-         }
-         else
-         {
-            out << val;
-         }
+         out << val;
          return *this;
       }
 
@@ -409,22 +410,20 @@ namespace SystemOfUnits
    public:
       ShowUnits_t(TOUT &r) : ref(r){} // TBD: Make private but will require the inserter which calls it to be in the same namespace.
 
-      /// pass by value instead of reference. If in the same stream the user inserts one of these built in types.
-      ShowUnits_t& operator<<(char c) { ref << c; return *this; }
-      ShowUnits_t& operator<<(int i) { ref << i; return *this; }
-      ShowUnits_t& operator<<(unsigned u) { ref << u; return *this; }
+      ///  The built-in types are arithmetic so pass by value and not by reference.
+      template< Arithmetic A> ShowUnits_t& operator<<(A a) { ref << a; return *this; }
 
-      /// Used by any type including UnitType. Compiler decides if a UnitType and to and names.
+      template< UnitSpecies S> ShowUnits_t& operator<<(S val) 
+      {
+         using t_char = typename TOUT::char_type;  // will not compile if TOUT does not have char_type.
+         ref << val << ' ' << SOU::UnitName<t_char>(val);
+         return *this;
+      }
+
+      /// Used by any type which is not a builtin or UnitType
       template< typename T > ShowUnits_t& operator<<(const T& val)
       {
-         if constexpr (is_UnitType<T>::value)
-         {
-            using t_char = typename TOUT::char_type;  // will not compile if TOUT does not have char_type.
-            ref << val << ' ' << SOU::UnitName<t_char>(val);
-         }
-         else{
-            ref << val;
-         }
+         ref << val;
          return *this;
       }
 
