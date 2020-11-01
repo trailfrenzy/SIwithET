@@ -24,7 +24,7 @@ namespace SystemOfUnits
       /// used by what am i
       /// @prama std::stringstream is used to create the return stream
       //template< typename TYPE, int DIM > void printAtom( std::ostringstream &ret )
-      template< typename TYPE, int DIM, typename TOUT > void printAtom(TOUT &ret)
+      template< DIMENSION TYPE, int DIM, typename TOUT > void printAtom(TOUT &ret)
          noexcept( noexcept(TOUT) && noexcept(TYPE))
       {
          if constexpr( DIM != 0) // value known at compile time

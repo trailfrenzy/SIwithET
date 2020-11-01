@@ -36,3 +36,11 @@ TEST(Struct_Symbol, isCURRENT) {
    EXPECT_TRUE(SystemOfUnits::is_CURRENT< Metric::AtomicUnit::ampere>::value);
    EXPECT_FALSE(SystemOfUnits::is_LENGTH< SystemOfUnits::Time::AtomicUnit::second>::value);
 }
+
+TEST(Struct_Symbol, is_SymbolForDimensionTest)
+{
+   static_assert(std::is_base_of< SystemOfUnits::helpers::SymbolForDimension<'L'>, Metric::AtomicUnit::Meter>::value);
+   static_assert( SystemOfUnits::helpers::is_SymbolForDimension< Metric::AtomicUnit::Meter >::value );
+   static_assert(SystemOfUnits::helpers::is_SymbolForDimension< SystemOfUnits::Temperature::celsius >::value);
+   static_assert( !SystemOfUnits::helpers::is_SymbolForDimension< double >::value);
+}

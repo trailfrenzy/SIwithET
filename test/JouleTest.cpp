@@ -2,6 +2,8 @@
 #include "MetricTypes.h"
 #include "WhatAmI.h"
 #include "operators.h"
+#include "ExpectUnitTest.h"
+
 /*
 The joule is a derived unit of energy in the International System of Units. It is equal to the energy transferred to an object when a force of one newton acts on that object in the direction of its motion through a distance of one metre. Wikipedia
 SI base units: kg⋅m2⋅s−2
@@ -45,7 +47,7 @@ TEST(Joule, Product) {
 	auto J = N * M;
 	EXPECT_EQ(SystemOfUnits::Diminsion(J), "[L]^2[M]/[T]^2");
 	EXPECT_EQ(SystemOfUnits::WhatAmI(J), "meter^2*second^(-2)*kilogram");
-	EXPECT_DOUBLE_EQ(225.0, J.amount());
+	EXPECT_UNIT_EQ(225.0, J );
 }
 
 // TODO: Not ready for implimentation.
@@ -59,6 +61,11 @@ namespace SystemOfUnits
 		static_assert(std::is_same_v< T::Mass, U::Mass >);
 		static_assert(std::is_same_v< T::Temperature, U::Temperature >);
 		static_assert(std::is_same_v< T::Charge, U::Charge >);
+		static_assert(T::eL == U::eL);
+		static_assert(T::et == U::et);
+		static_assert(T::eM == U::eM);
+		static_assert(T::eT == U::eT);
+		static_assert(T::eQ == U::eQ);
 
 		static constexpr bool value =
 			std::is_same_v< T::Length, U::Length > &&
@@ -79,9 +86,12 @@ TEST(Joule, MakeNewtonThroughAuto)
 
 	t_Joule J = m * m * kg / (s * s);
 
+	EXPECT_UNIT_EQ(joule, J);
+	EXPECT_UNIT_EQ(400.0, joule);
+
 	std::cout << SOU::units << joule << "  " << t_Joule(4.5) << '\n';
 
-	//static_assert(SOU::is_UnitType<decltype(joule)>::value );
+	static_assert(SOU::is_UnitType<decltype(joule)>::value );
 
 	static_assert(std::is_same_v< decltype(joule)::Length, t_Joule::Length >);
 	static_assert(std::is_same_v< decltype(joule)::Time, t_Joule::Time >);
@@ -95,7 +105,9 @@ TEST(Joule, MakeNewtonThroughAuto)
 	static_assert( decltype(joule)::eT == t_Joule::eT );
 	static_assert( decltype(joule)::eQ == t_Joule::eQ );
 
-	//static_assert( SOU::is_same<decltype(joule), t_Joule >::value, "See how the compiler generated Joule is the same" );
+	static_assert(SOU::is_same<t_Joule, t_Joule >::value);
+	static_assert(SOU::is_same<decltype(joule), decltype(joule) >::value, "If this fails shows the concept failing");
+	static_assert( SOU::is_same<decltype(joule), t_Joule >::value, "See how the compiler generated Joule is the same" );
 }
 
 TEST(Joule, Ratio) {

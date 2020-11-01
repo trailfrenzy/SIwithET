@@ -17,7 +17,7 @@ namespace SystemOfUnits /// covers the basics of the system
       , TEMPERATURE T, int iT    // temperature
       , CURRENT Q,     int iQ =0 // charge
    >
-   class unitType
+   class unitType : public Trait_Unit
    {
       long double m_amount; /// the scalar value of the object. On the Microsoft compiler the double and long double are the same.
 
@@ -270,35 +270,38 @@ namespace SystemOfUnits /// covers the basics of the system
    };
 
    /// Type trait struct which tests if the type is of UnitType class template above or not.
-   template< typename T > struct is_UnitType { constexpr static bool value = false; }; // primary template for everything not a UnitType
+   //template< typename T > struct is_UnitType { constexpr static bool value = false; }; // primary template for everything not a UnitType
 
-   template  /// for only UnitType only
-      < LENGTH      L, int iL    // length
-      , TIME        t, int it    // time
-      , MASS        M, int iM    // mass
-      , TEMPERATURE T, int iT    // temperature
-      , CURRENT     Q, int iQ  // charge
-      >
-      struct is_UnitType< unitType<L, iL, t, it, M, iM, T, iT, Q, iQ> >
+   template< typename T > struct is_UnitType : std::integral_constant<bool, std::is_base_of< Trait_Unit, T>::value > //{};
    {
-      // Quantity base types are already checked inside of UnitType.
-      //enum:bool{ value = true};
-      constexpr static bool value = true;
+      //constexpr static bool value = std::is_base_of< Trait_Unit, T>::value;
    };
+
+   //template  /// for only UnitType only
+   //   < LENGTH      L, int iL    // length
+   //   , TIME        t, int it    // time
+   //   , MASS        M, int iM    // mass
+   //   , TEMPERATURE T, int iT    // temperature
+   //   , CURRENT     Q, int iQ  // charge
+   //   >
+   //   struct is_UnitType< unitType<L, iL, t, it, M, iM, T, iT, Q, iQ> >
+   //{
+   //   // Quantity base types are already checked inside of UnitType.
+   //   constexpr static bool value = true;
+   //};
 
    /// Specialized class which is-a UnitType but with specal name.
    template< typename UNIT_TYPE, char const * NAME >
    struct SIwithDIM : UNIT_TYPE
    {
       static const char * name;
-      //using t_unitType = t;
+
       constexpr SIwithDIM(double val) noexcept : UNIT_TYPE(val)
       {
          static_assert(is_UnitType< UNIT_TYPE>::value);
       }
 
       static constexpr char const * unitName() noexcept { return name; }
-      //static char const * unitDim()  noexcept { return DIM; } // TODO Add later
    };
    template< typename UNIT_TYPE, char const * NAME > const char * SIwithDIM<UNIT_TYPE, NAME>::name{ NAME };
 
@@ -335,7 +338,7 @@ namespace SystemOfUnits /// covers the basics of the system
    {
       /// Lets using classes know if class is used as a base
       enum:bool{ IsBase = false};
-      //enum:unsigned char{sym = ' ' };
+
       /// Called by WhatAmI when creating the string describing the type.
       constexpr static char const * str() noexcept { return ""; }
       ///  Multiply by toBase() to get base value.
@@ -379,9 +382,7 @@ namespace SystemOfUnits /// covers the basics of the system
       constexpr static double toBase() noexcept(noexcept(ARG)) { return ARG::fromBase(); }
    };
 
-   /// <summary>
    ///  Constraint used for Template arguments for templates only for UnitTypes. Called Serial since serial is a group of types.
-   /// </summary>
    template<typename T> concept UnitSerial = is_UnitType<T>::value;
 
 } /// end of namespace SystemOfUnits

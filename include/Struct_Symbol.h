@@ -4,6 +4,7 @@
 #define SYSTEM_OF_UNITS_HELPERS_STRUCT_T_SYMBOL_H
 
 #include <concepts>
+#include <type_traits>
 
 namespace SystemOfUnits {
    namespace helpers
@@ -27,9 +28,11 @@ namespace SystemOfUnits {
 
                   dim Q = T^α L^β M^γ I^δ Θ^ε N^ζ J^η
       */
-      template<unsigned char C > struct SymbolForDimension
+
+      struct Trait_SymbolForDimension {}; // exists only for use in the concept below.
+      template<unsigned char C > struct SymbolForDimension : public Trait_SymbolForDimension
       {
-         enum :char unsigned { sym = C };  /// used on the input of template OneDim<>
+         constexpr static char unsigned sym = C;
 
          // ideally the function is used by the sorting template and its output.  Currently not used.
          template<typename t_char = char>
@@ -40,35 +43,43 @@ namespace SystemOfUnits {
             return str;
          }
       };
+
+      /// <summary>
+      /// Uses the Trait to verify if template paramater is actually a SymbolForDimension type.
+      /// </summary>
+      /// <typeparam name="T"></typeparam>
+      template< typename T > struct is_SymbolForDimension // : public std::false_type {};
+      {
+         constexpr static bool value = std::is_base_of< SystemOfUnits::helpers::Trait_SymbolForDimension, T > ::value;
+      };
+
    }
 
-   template< typename BASE_UNIT > struct is_LENGTH
+   // Contrait for one of the type Dimensions.
+   template< typename T > concept DIMENSION = helpers::is_SymbolForDimension<T>::value;
+
+   template< DIMENSION BASE_UNIT > struct is_LENGTH //: std::is_integral<bool, std::is_base_of< SystemOfUnits::helpers::SymbolForDimension<'L'>, T>::value >::value;
    {
-      //enum :bool { value = BASE_UNIT::sym == 'L' || BASE_UNIT::sym == ' ' };
       constexpr static bool value = BASE_UNIT::sym == 'L' || BASE_UNIT::sym == ' ';
    };
 
-   template<typename BASE_UNIT > struct is_TIME
+   template<DIMENSION BASE_UNIT > struct is_TIME
    {
-      //enum:bool{ value = BASE_UNIT::sym == 'T' || BASE_UNIT::sym == ' ' };
       constexpr static bool value = BASE_UNIT::sym == 'T' || BASE_UNIT::sym == ' ';
    };
 
-   template<typename BASE_UNIT > struct is_MASS
+   template<DIMENSION BASE_UNIT > struct is_MASS
    {
-      //enum :bool { value = BASE_UNIT::sym == 'M' || BASE_UNIT::sym == ' ' };
       constexpr static bool value = BASE_UNIT::sym == 'M' || BASE_UNIT::sym == ' ';
    };
 
-   template<typename BASE_UNIT > struct is_TEMPERATURE
+   template<DIMENSION BASE_UNIT > struct is_TEMPERATURE
    {
-      //enum :bool { value = BASE_UNIT::sym == 233 || BASE_UNIT::sym == ' ' };
       constexpr static bool value = BASE_UNIT::sym == 233 || BASE_UNIT::sym == ' ';
    };
 
-   template<typename BASE_UNIT > struct is_CURRENT
+   template<DIMENSION BASE_UNIT > struct is_CURRENT
    {
-      //enum :bool { value = BASE_UNIT::sym == 'A' || BASE_UNIT::sym == ' ' };
       constexpr static bool value = BASE_UNIT::sym == 'A' || BASE_UNIT::sym == ' ';
    };
 
@@ -88,6 +99,8 @@ namespace SystemOfUnits {
 
    /// Constrait for Current to ensure only a Current type is passed for an arugment.
    template<typename T> concept CURRENT = is_CURRENT<T>::value && sizeof(T) == 1;
+
+   struct Trait_Unit {};
 
 }
 #endif

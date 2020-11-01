@@ -10,7 +10,7 @@ namespace SystemOfUnits {
    };
 }
 
-static_assert( !SOU::is_UnitType< SOU::NoUnit>::value , "NoUnit is suppose to be a UnitType" );
+static_assert( SOU::is_UnitType< SOU::NoUnit>::value , "NoUnit is suppose to be a UnitType" );
 static_assert(SOU::is_UnitType< SOU::tNoUnit>::value, "tNoUnit is a UnitType");
 
 TEST(NoUnit, Constructor_tNoUnit)
@@ -39,7 +39,7 @@ TEST(NoUnit, Constructor_NoUnit)
 //   auto val = noDim1 + 7.0;
 //}
 
-// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any
