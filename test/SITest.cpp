@@ -359,7 +359,7 @@ TEST(BasicSI, IsPOD) {
 
 static constexpr char const name[] = "Watt";
 using Watt = Metric::AUMetric::MakeDim<2, -3, 1, 0, 0>::type;
-using t_nameWatt = SystemOfUnits::SIwithDIM<Watt, name >;
+using t_nameWatt = SystemOfUnits::CoherentUnit<Watt, name >;
 
 TEST(BasicSI, IsSIwithDim)
 {

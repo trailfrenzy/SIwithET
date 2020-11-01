@@ -270,45 +270,40 @@ namespace SystemOfUnits /// covers the basics of the system
    };
 
    /// Type trait struct which tests if the type is of UnitType class template above or not.
-   //template< typename T > struct is_UnitType { constexpr static bool value = false; }; // primary template for everything not a UnitType
-
    template< typename T > struct is_UnitType : std::integral_constant<bool, std::is_base_of< Trait_Unit, T>::value > //{};
    {
       //constexpr static bool value = std::is_base_of< Trait_Unit, T>::value;
    };
 
-   //template  /// for only UnitType only
-   //   < LENGTH      L, int iL    // length
-   //   , TIME        t, int it    // time
-   //   , MASS        M, int iM    // mass
-   //   , TEMPERATURE T, int iT    // temperature
-   //   , CURRENT     Q, int iQ  // charge
-   //   >
-   //   struct is_UnitType< unitType<L, iL, t, it, M, iM, T, iT, Q, iQ> >
-   //{
-   //   // Quantity base types are already checked inside of UnitType.
-   //   constexpr static bool value = true;
-   //};
+   ///  Constraint used for Template arguments for templates only for UnitTypes. Called Serial since serial is a group of types.
+   template<typename T> concept UnitSerial = is_UnitType<T>::value;
 
-   /// Specialized class which is-a UnitType but with specal name.
-   template< typename UNIT_TYPE, char const * NAME >
-   struct SIwithDIM : UNIT_TYPE
+
+   /// Derived units. Derived units are defined as products of powers of the base units. When the numerical
+   /// factor of this product is one, the derived units are called coherent derived units.The base
+   /// and coherent derived units of the SI form a coherent set, designated the set of coherent SI
+   /// units.The word “coherent” here means that equations between the numerical values of
+   /// quantities take exactly the same form as the equations between the quantities themselves.
+   /// Some of the coherent derived units in the SI are given special names.
+   template< UnitSerial UNIT_TYPE, char const * NAME >
+   struct CoherentUnit : UNIT_TYPE
    {
       static const char * name;
 
-      constexpr SIwithDIM(double val) noexcept : UNIT_TYPE(val)
+      constexpr CoherentUnit(double val) noexcept : UNIT_TYPE(val)
       {
          static_assert(is_UnitType< UNIT_TYPE>::value);
       }
 
       static constexpr char const * unitName() noexcept { return name; }
    };
-   template< typename UNIT_TYPE, char const * NAME > const char * SIwithDIM<UNIT_TYPE, NAME>::name{ NAME };
+
+   template< UnitSerial UNIT_TYPE, char const * NAME > const char * CoherentUnit<UNIT_TYPE, NAME>::name{ NAME };
 
    /// Used at compile time to find if type is SIwithDIM<>
    template< typename T> struct is_SIwithDIM{ enum:bool{ value = false}; };
 
-   template< typename T, char const * N > struct is_SIwithDIM< SIwithDIM<T, N > >
+   template< typename T, char const * N > struct is_SIwithDIM< CoherentUnit<T, N > >
    {
       enum:bool{ value = true };
    };
@@ -381,9 +376,6 @@ namespace SystemOfUnits /// covers the basics of the system
       /// inverse of fromBase()
       constexpr static double toBase() noexcept(noexcept(ARG)) { return ARG::fromBase(); }
    };
-
-   ///  Constraint used for Template arguments for templates only for UnitTypes. Called Serial since serial is a group of types.
-   template<typename T> concept UnitSerial = is_UnitType<T>::value;
 
 } /// end of namespace SystemOfUnits
 

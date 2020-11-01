@@ -47,7 +47,7 @@ static constexpr char const Watt_str[] = "Watt";
 constexpr auto operator"" _watt(long double d)
 {
    using Watt = Metric::AUMetric::MakeDim<2, -3, 1, 0, 0>::type;
-   using t_nameWatt = SystemOfUnits::SIwithDIM<Watt, Watt_str >;
+   using t_nameWatt = SystemOfUnits::CoherentUnit<Watt, Watt_str >;
 
    return t_nameWatt(d);
 }
@@ -57,7 +57,7 @@ static constexpr char const name[] = "Watt"; // must be global
 TEST(Current, IsWattType)
 {
    using Watt = Metric::AUMetric::MakeDim<2, -3, 1, 0, 0>::type;
-   using t_nameWatt = SystemOfUnits::SIwithDIM<Watt, name >;
+   using t_nameWatt = SystemOfUnits::CoherentUnit<Watt, name >;
 
    t_nameWatt watt(4.5);
    ASSERT_TRUE(SystemOfUnits::is_SIwithDIM< t_nameWatt>::value)<< "Tested in SITest.cpp too";
