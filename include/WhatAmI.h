@@ -135,7 +135,7 @@ namespace SystemOfUnits
       }
    }
 
-   /// Used to provide the diminsions of the SOU::UnitType
+   /// Used to provide the diminsions of the SystemOfUnits::UnitType
    template<typename T > auto Diminsion(T const &val )
    {
       return t_Diminsion<char>(val);

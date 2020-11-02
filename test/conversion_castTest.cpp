@@ -135,7 +135,7 @@ TEST_F(conversion_castTest, TestInverseTimeSq)
    typedef Metric::AUMetric::MakeDim<1, -2, 0, 0, 0>::type ACCinM;
    typedef SOU::unitType
       < Metric::AtomicUnit::Kilometer, 1
-      , SOU::Time::AtomicUnit::second, -2
+      , Metric::AtomicUnit::second, -2
       , Metric::AtomicUnit::gram, 0
       , Metric::AtomicUnit::kelvin, 0
       , Metric::AtomicUnit::ampere, 0

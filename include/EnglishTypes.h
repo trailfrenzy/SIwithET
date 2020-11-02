@@ -6,18 +6,17 @@
 #include "SI.h"
 #pragma once
 
-namespace AT = SystemOfUnits::Time::AtomicUnit;
-
 // contains units based on the tradional unit types
 namespace English
 {
    namespace AU = AtomicUnit;
+   namespace AT = Metric::AtomicUnit;
 
    typedef Metric::AtomicUnit::kelvin K;
    typedef Metric::AtomicUnit::ampere ampere;
 
    /// Using the Type factory where all the English types have the same base unit types.
-   typedef SOU::MakeType< AU::Foot, AT::second, AU::Slug, K , ampere > MakeEnglish;
+   typedef SystemOfUnits::MakeType< AU::Foot, AT::second, AU::Slug, K , ampere > MakeEnglish;
 
    typedef MakeEnglish::MakeDim<1, 0, 0,0,0>::type t_foot; /// Foot type
    typedef MakeEnglish::MakeDim<0, 1, 0,0,0>::type t_second; /// Second type (test should be made against Metric type)
@@ -25,11 +24,11 @@ namespace English
    typedef MakeEnglish::MakeDim<1,-1, 0,0,0>::type t_FPS;   /// Feet per second.  First order deriviative
    typedef MakeEnglish::MakeDim<1,-2, 0,0,0>::type t_FPSS; /// Feet per second second.  Second order derviative
 
-   typedef SOU::unitType< AU::Mile, 1, AT::second, 0, AU::Slug, 0, K, 0, ampere, 0 > t_mile; /// Mile Type
-   typedef SOU::unitType< AU::Mile, 1, AT::second,-1, AU::Slug, 0, K, 0, ampere, 0 > t_mps; /// Miles per Second Type
-   typedef SOU::unitType< AU::Mile, 1, AT::hour, -1, AU::Slug, 0, K, 0, ampere, 0 > t_mph;/// Miles per Hour Type
+   typedef SystemOfUnits::unitType< AU::Mile, 1, AT::second, 0, AU::Slug, 0, K, 0, ampere, 0 > t_mile; /// Mile Type
+   typedef SystemOfUnits::unitType< AU::Mile, 1, AT::second,-1, AU::Slug, 0, K, 0, ampere, 0 > t_mps; /// Miles per Second Type
+   typedef SystemOfUnits::unitType< AU::Mile, 1, AT::hour, -1, AU::Slug, 0, K, 0, ampere, 0 > t_mph;/// Miles per Hour Type
 
-   typedef SOU::unitType< AU::Yard, 1, AT::hour, 0, AU::Slug, 0, K, 0, ampere, 0 > t_yard; /// Yard Type
+   typedef SystemOfUnits::unitType< AU::Yard, 1, AT::hour, 0, AU::Slug, 0, K, 0, ampere, 0 > t_yard; /// Yard Type
 
 }
 #endif

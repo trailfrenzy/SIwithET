@@ -16,7 +16,7 @@ Used these quantities and dimensions to test how well template unitType held up.
 
 namespace
 {
-   namespace AT = SOU::Time::AtomicUnit;
+   namespace AT = Metric::AtomicUnit;
 
    typedef SOU::MakeType< Metric::AtomicUnit::Meter, AT::second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::ampere > t_Base;
 

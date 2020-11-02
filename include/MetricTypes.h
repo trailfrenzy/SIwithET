@@ -6,7 +6,7 @@
 #include "TimeAtomicUnits.h"  ///< contains the time atomic units
 #include "WhatAmI.h"
 
-namespace AT = SOU::Time::AtomicUnit;
+namespace AT = Metric::AtomicUnit;
 /**
  @page page2 Metric Types
 
@@ -19,30 +19,30 @@ namespace Metric
 
    // TODO: change AU::gram to kilogram.
    /// Used in makeing other metric types.
-   using AUMetric=SOU::MakeType< AU::Meter, AT::second, AU::kilogram, AU::kelvin, AU::ampere >;
+   using AUMetric=SystemOfUnits::MakeType< AU::Meter, AT::second, AU::kilogram, AU::kelvin, AU::ampere >;
 
    /// Length compond units
    ///< Meter type
    using t_meter = AUMetric::MakeDim<1,0,0,0,0>::type;
 
    /// Kilometer type
-   using t_kilometer = SOU::unitType< AU::Kilometer, 1, AT::second, 0, AU::kilogram, 0,AU::kelvin,0, AU::ampere,0 >;
+   using t_kilometer = SystemOfUnits::unitType< AU::Kilometer, 1, AT::second, 0, AU::kilogram, 0,AU::kelvin,0, AU::ampere,0 >;
 
    /// Centimeter type
-   using t_centimeter = SOU::unitType< AU::Centimeter, 1, AT::second, 0, AU::kilogram, 0,AU::kelvin,0, AU::ampere,0 >;
+   using t_centimeter = SystemOfUnits::unitType< AU::Centimeter, 1, AT::second, 0, AU::kilogram, 0,AU::kelvin,0, AU::ampere,0 >;
 
    /// Milimeter type
-   using t_milimeter = SOU::unitType< AU::Milimeter, 1, AT::second, 0, AU::kilogram, 0,AU::kelvin,0, AU::ampere,0 >;
+   using t_milimeter = SystemOfUnits::unitType< AU::Milimeter, 1, AT::second, 0, AU::kilogram, 0,AU::kelvin,0, AU::ampere,0 >;
    
    /// Time compond units (TODO look at replacing with std::chronos)
    using t_second = AUMetric::MakeDim<0,1,0,0,0>::type; /// Seconds type
-   using t_minute = SOU::unitType< AU::Meter, 0, AT::minute, 1, AU::kilogram, 0,AU::kelvin,0, AU::ampere,0 >;
-   using t_hour = SOU::unitType< AU::Meter, 0, AT::hour,   1, AU::kilogram, 0,AU::kelvin,0, AU::ampere,0 >;
+   using t_minute = SystemOfUnits::unitType< AU::Meter, 0, AT::minute, 1, AU::kilogram, 0,AU::kelvin,0, AU::ampere,0 >;
+   using t_hour = SystemOfUnits::unitType< AU::Meter, 0, AT::hour,   1, AU::kilogram, 0,AU::kelvin,0, AU::ampere,0 >;
 
    /// Mass compond units
-   using t_gram = SOU::unitType< AU::Meter, 0, AT::second, 0, AU::gram, 1, AU::kelvin, 0, AU::ampere, 0 >; /// Gram type
-   using t_miligram = SOU::unitType< AU::Meter, 0, AT::second, 0, AU::miligram, 1,AU::kelvin,0, AU::ampere,0 >;
-   using t_kilogram = SOU::unitType< AU::Meter, 0, AT::second, 0, AU::kilogram, 1,AU::kelvin,0, AU::ampere,0 >;
+   using t_gram = SystemOfUnits::unitType< AU::Meter, 0, AT::second, 0, AU::gram, 1, AU::kelvin, 0, AU::ampere, 0 >; /// Gram type
+   using t_miligram = SystemOfUnits::unitType< AU::Meter, 0, AT::second, 0, AU::miligram, 1,AU::kelvin,0, AU::ampere,0 >;
+   using t_kilogram = SystemOfUnits::unitType< AU::Meter, 0, AT::second, 0, AU::kilogram, 1,AU::kelvin,0, AU::ampere,0 >;
    
    // 
    using t_metersecond = AUMetric::MakeDim<1,1,0,0,0>::type; /// Meter * second type
@@ -71,7 +71,7 @@ constexpr auto operator"" _kilometer( long double d) noexcept
 
 constexpr auto operator"" _kph( long double d) noexcept
 {
-   using t_kilometerPerHour = SOU::unitType< Metric::AU::Kilometer, 1, AT::hour, -1, Metric::AU::gram, 0, Metric::AU::kelvin, 0, Metric::AU::ampere, 0 >;
+   using t_kilometerPerHour = SystemOfUnits::unitType< Metric::AU::Kilometer, 1, AT::hour, -1, Metric::AU::gram, 0, Metric::AU::kelvin, 0, Metric::AU::ampere, 0 >;
    return t_kilometerPerHour{ d };
 }
 constexpr auto operator"" _centimeter(long double d) noexcept

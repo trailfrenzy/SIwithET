@@ -76,8 +76,15 @@ namespace SystemOfUnits {
       {
          constexpr static bool value = std::is_base_of< SystemOfUnits::helpers::Trait_SymbolForDimension, T > ::value;
       };
-
    }
+
+   enum { THETA = 233 }; // from www.asciitable.com
+   /// Base classes for the dimensions of the base units
+   using Length          = helpers::SymbolForDimension<'L'>;
+   using Mass            = helpers::SymbolForDimension<'M'>;
+   using Time            = helpers::SymbolForDimension<'T'>;
+   using Temperature     = helpers::SymbolForDimension< char(THETA) >;
+   using ElectricCurrent = helpers::SymbolForDimension<'C'>;
 
    // Contrait for one of the type Dimensions.
    template< typename T > concept DIMENSION = helpers::is_SymbolForDimension<T>::value;
@@ -124,8 +131,8 @@ namespace SystemOfUnits {
    /// Constrait for Current to ensure only a Current type is passed for an arugment.
    template<typename T> concept CURRENT = is_CURRENT<T>::value && sizeof(T) == 1;
 
+   /// Used as the base class for UnitTypes for use in the identity template.
    struct Trait_Unit {};
-
 }
 #endif
 

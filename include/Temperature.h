@@ -1,16 +1,14 @@
-#ifndef SOU_TEMPETURE_INCLUDE_H
-#define SOU_TEMPETURE_INCLUDE_H
+#ifndef SystemOfUnits_TEMPETURE_INCLUDE_H
+#define SystemOfUnits_TEMPETURE_INCLUDE_H
 #include "Struct_Symbol.h"
 
 namespace SystemOfUnits 
 {
-   namespace Temperature
+   namespace AtomicUnit
    {
-      enum:unsigned char{ THETA = 233 }; // from www.asciitable.com
-      //constexpr char THETA = 233; // 'Ø';//L'\u0233'; 
+      //enum:unsigned char{ THETA = 233 }; // from www.asciitable.com // 'Ø';//L'\u0233'; 
 
-      using TEMPERATURE = helpers::SymbolForDimension< THETA >;
-      struct kelvin : TEMPERATURE
+      struct kelvin : SystemOfUnits::Temperature
       {
          enum:bool{ IsBase = true }; /// Lets using classes know if class is used as a base.
          constexpr static char const * str() noexcept { return "Kelvin"; }/// Called by WhatAmI when creating the string describing the type.
@@ -19,7 +17,7 @@ namespace SystemOfUnits
          using Base = kelvin;
       };
 
-      struct celsius : TEMPERATURE
+      struct celsius : SystemOfUnits::Temperature
       {
          enum:bool{ IsBase = false }; /// Lets using classes know if class is used as a base.
          constexpr static char const * str() noexcept { return "°C"; }/// Called by WhatAmI when creating the string describing the type.
@@ -28,7 +26,7 @@ namespace SystemOfUnits
 		 using Base = kelvin;
       };
 
-	  struct fahrenheit : TEMPERATURE
+	  struct fahrenheit : SystemOfUnits::Temperature
 	  {
 		  enum:bool{ IsBase = false }; /// Lets using classes know if class is used as a base.
         constexpr static char const * str() noexcept { return "°F"; }/// Called by WhatAmI when creating the string describing the type. K = 5/9 (° F - 32) + 273

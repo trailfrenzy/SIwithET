@@ -48,8 +48,8 @@ namespace SystemOfUnits
        */
       template < UnitSerial T, UnitSerial T2 > struct A_Trait
       {
-         static_assert(SOU::is_UnitType<T>::value, "Must be a SOU::UnitType");
-         static_assert(SOU::is_UnitType<T2>::value || std::is_arithmetic<T2>::value, "Must be a SOU::UnitType or arithmetic type");
+         static_assert(SystemOfUnits::is_UnitType<T>::value, "Must be a SystemOfUnits::UnitType");
+         static_assert(SystemOfUnits::is_UnitType<T2>::value || std::is_arithmetic<T2>::value, "Must be a SystemOfUnits::UnitType or arithmetic type");
          /// used as the argument for the operators
          using ArgRef = T const &;
          /// constant reference
@@ -145,7 +145,7 @@ namespace SystemOfUnits
             , typename IF
             < !R1::Length::IsBase && !R2::Length::IsBase
             , CombineBaseTypes<typename R1::Length, typename R2::Length>
-            , typename IF<R2::Length::IsBase, typename SOU::MakeFrom<typename R1::Length>, typename R2::Length >::RET
+            , typename IF<R2::Length::IsBase, typename SystemOfUnits::MakeFrom<typename R1::Length>, typename R2::Length >::RET
             >::RET
             >::RET
             >::RET;
@@ -160,7 +160,7 @@ namespace SystemOfUnits
             , typename IF
             < !R1::Time::IsBase && !R2::Time::IsBase
             , CombineBaseTypes<typename R1::Time, typename R2::Time>
-            , typename IF<R2::Time::IsBase, SOU::MakeFrom<typename R1::Time>, typename R2::Time >::RET
+            , typename IF<R2::Time::IsBase, SystemOfUnits::MakeFrom<typename R1::Time>, typename R2::Time >::RET
             >::RET 
             >::RET
             >::RET;
@@ -175,7 +175,7 @@ namespace SystemOfUnits
                , typename IF
                   < !R1::Mass::IsBase && !R2::Mass::IsBase
                   , CombineBaseTypes<typename R1::Mass, typename R2::Mass>
-                  , typename IF<R2::Mass::IsBase, SOU::MakeFrom<typename R1::Mass>, typename R2::Mass >::RET
+                  , typename IF<R2::Mass::IsBase, SystemOfUnits::MakeFrom<typename R1::Mass>, typename R2::Mass >::RET
                   >::RET 
                >::RET
             >::RET;
@@ -190,7 +190,7 @@ namespace SystemOfUnits
             , typename IF
             < !R1::Temperature::IsBase && !R2::Temperature::IsBase
             , CombineBaseTypes<typename R1::Temperature, typename R2::Temperature>
-            , typename IF<R2::Temperature::IsBase, SOU::MakeFrom<typename R1::Temperature>, typename R2::Temperature >::RET
+            , typename IF<R2::Temperature::IsBase, SystemOfUnits::MakeFrom<typename R1::Temperature>, typename R2::Temperature >::RET
             >::RET 
             >::RET
             >::RET;
@@ -205,7 +205,7 @@ namespace SystemOfUnits
             , typename IF
             < !R1::Charge::IsBase && !R2::Charge::IsBase
             , CombineBaseTypes<typename R1::Charge, typename R2::Charge>
-            , typename IF<R2::Charge::IsBase, SOU::MakeFrom<typename R1::Charge>, typename R2::Charge >::RET
+            , typename IF<R2::Charge::IsBase, SystemOfUnits::MakeFrom<typename R1::Charge>, typename R2::Charge >::RET
             >::RET
             >::RET
             >::RET;
@@ -242,7 +242,7 @@ namespace SystemOfUnits
          using Charge = typename IF< Dim::eQ== Dim::Z, typename R1::Charge   , typename IF<R1::eQ!=0, typename R1::Charge, typename R2::Charge>::RET >::RET;
 
          /// all results are based on the first operands type, if NoDim then base on the second.
-         using TBeforeResult = SOU::unitType
+         using TBeforeResult = SystemOfUnits::unitType
             < Length, Dim::eL
             , Time, Dim::et
             , Mass, Dim::eM
@@ -265,7 +265,7 @@ namespace SystemOfUnits
          /// @return TResult which is found at compile time which is a double or UnitType<>
          constexpr typename auto result() const noexcept(noexcept(m_r1) && noexcept(m_r2) )
          {
-            using namespace SOU;
+            using namespace SystemOfUnits;
 
             // line will compiler error if not the same compatible types
             static_assert( t_base::ALLTYPES_THE_SAME::val, "line will compiler error if not the same compatible types" );
@@ -313,7 +313,7 @@ namespace SystemOfUnits
          using Charge = typename IF< Dim::eQ==Dim::Z, typename R1::Charge   , typename IF<R1::eQ!=0, typename R1::Charge, typename R2::Charge>::RET >::RET;
 
          /// the type it will be if the dims are not 0
-         using TBeforeResult = SOU::unitType
+         using TBeforeResult = SystemOfUnits::unitType
             < Length, Dim::eL
             , Time, Dim::et
             , Mass, Dim::eM
@@ -381,7 +381,7 @@ namespace SystemOfUnits
       /// Used by the UnitType to display the acutal diminsion
       template< UnitSerial S > ShowDim_t operator<<(S val)
       {
-         using t_unit = S; // SOU::unitType<L, iL, t, it, M, iM, T, iT, Q, iQ>;
+         using t_unit = S; // SystemOfUnits::unitType<L, iL, t, it, M, iM, T, iT, Q, iQ>;
          using t_char = typename TOUT::char_type;  // will not compile if TOUT does not have char_type.
          out << val << ' ' << t_Diminsion<t_char, t_unit>(val);
          return *this;
@@ -414,7 +414,7 @@ namespace SystemOfUnits
       template< UnitSpecies S> ShowUnits_t& operator<<(S val) 
       {
          using t_char = typename TOUT::char_type;  // will not compile if TOUT does not have char_type.
-         ref << val << ' ' << SOU::UnitName<t_char>(val);
+         ref << val << ' ' << SystemOfUnits::UnitName<t_char>(val);
          return *this;
       }
 
@@ -435,43 +435,43 @@ namespace SystemOfUnits
 
 /// The functions below require their presence in the global namespace. The alternative is to provide the namespace each time these functions are used.
 
-/// function is used to impliment the stream manipulator SOU::UnitType dimensions.  
+/// function is used to impliment the stream manipulator SystemOfUnits::UnitType dimensions.  
 template< class TOUT >
-inline auto operator<<(TOUT & out, SOU::ShowDim_t<TOUT>* (*)() ) // -> SOU::ShowDim_t<TOUT>
+inline auto operator<<(TOUT & out, SystemOfUnits::ShowDim_t<TOUT>* (*)() ) // -> SystemOfUnits::ShowDim_t<TOUT>
 {
-   return SOU::ShowDim_t<TOUT>(out);
+   return SystemOfUnits::ShowDim_t<TOUT>(out);
 }
 
 template< class TOUT >
-inline auto operator<<(TOUT & out, SOU::ShowUnits_t<TOUT>* (*)()) //-> SOU::ShowDim_t<TOUT>
+inline auto operator<<(TOUT & out, SystemOfUnits::ShowUnits_t<TOUT>* (*)()) //-> SystemOfUnits::ShowDim_t<TOUT>
 {
-   return SOU::ShowUnits_t<TOUT>(out);
+   return SystemOfUnits::ShowUnits_t<TOUT>(out);
 }
 
 /// template function which is multiplication operator of two different operands
-template < SOU::UnitSerial R1, SOU::UnitSerial R2 >
+template < SystemOfUnits::UnitSerial R1, SystemOfUnits::UnitSerial R2 >
 /** product operator
    @param unitType left-handed side
    @param unitType right-handed side
    @return the same type is the product of the left and right hand side UnitType.
 */
 constexpr inline auto operator*( R1 const &r1, R2 const &r2 ) // TODO: write tests for constexpr
-noexcept( noexcept(SOU::operators::Mul_Result<R1, R2>))
+noexcept( noexcept(SystemOfUnits::operators::Mul_Result<R1, R2>))
 {
-   return SOU::operators::Mul_Result<R1, R2>(r1, r2).result();
+   return SystemOfUnits::operators::Mul_Result<R1, R2>(r1, r2).result();
 }
 
 /// template function which is divisional operator of two different operands
-template< SOU::UnitSerial R1, SOU::UnitSerial R2 >
+template< SystemOfUnits::UnitSerial R1, SystemOfUnits::UnitSerial R2 >
 /** ratio operator
    @param Numerator unitType left-handed side
    @param Denominator unitType left-handed side
    @return the ratio of the Numerator type by the Denominator type.
 */
 constexpr inline auto operator/( R1 const &r1, R2 const &r2 )
-noexcept(noexcept(SOU::operators::Div_Result<R1, R2>))
+noexcept(noexcept(SystemOfUnits::operators::Div_Result<R1, R2>))
 {
-   return SOU::operators::Div_Result<R1, R2>(r1, r2).result();
+   return SystemOfUnits::operators::Div_Result<R1, R2>(r1, r2).result();
 }
 
 // Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.

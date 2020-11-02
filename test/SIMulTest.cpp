@@ -19,7 +19,7 @@ class MultiplyFirst : public ::testing::Test
 {
 public:
    typedef Metric::AtomicUnit::Meter Meter;
-   typedef SOU::Time::AtomicUnit::second second;
+   typedef Metric::AtomicUnit::second second;
    typedef Metric::AtomicUnit::gram gram;
    //typedef SOU::MakeType< Meter, second, gram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::ampere > t_Base;
    //typedef SOU::MakeType< Meter, second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::ampere > t_Base;
@@ -223,7 +223,7 @@ TEST_F(MultiplyFirst, TestWithNonAtomicUnitUnitsMass)
 {
    using namespace Metric;
    namespace AU = AtomicUnit;
-   typedef SOU::unitType< AU::Meter, 0, SOU::Time::AtomicUnit::second, -1, AU::kilogram, 0, AU::kelvin, 0, AU::ampere, 0 > t_Hertz;
+   typedef SOU::unitType< AU::Meter, 0, Metric::AtomicUnit::second, -1, AU::kilogram, 0, AU::kelvin, 0, AU::ampere, 0 > t_Hertz;
 
    Metric::t_kilogram const kg{ 25.0 };
    t_Hertz hz{ 3.0 };
@@ -292,7 +292,7 @@ public:
 
    //using namespace Metric;
    typedef Metric::AtomicUnit::Meter Meter;
-   typedef SOU::Time::AtomicUnit::second second;
+   typedef Metric::AtomicUnit::second second;
    typedef Metric::AtomicUnit::gram gram;
    typedef Metric::AtomicUnit::ampere coul;
    typedef Metric::AtomicUnit::kelvin kelvin;

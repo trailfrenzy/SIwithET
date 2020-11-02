@@ -13,9 +13,9 @@ using t_Kelvin = AUMetric::MakeDim<0, 0, 0, 1, 0>::type;
 using t_Joule = AUMetric::MakeDim<2, -2, 1, 0, 0>::type;
 using t_kilogram = AUMetric::MakeDim<0, 0, 1, 0, 0>::type;
 
-using t_Far = SOU::unitType< AU::Meter, 0, AT::minute, 0, AU::gram, 0, SOU::Temperature::fahrenheit, 1, AU::ampere, 0 >;
-using t_Cel = SOU::unitType< AU::Meter, 0, AT::minute, 0, AU::gram, 0, SOU::Temperature::celsius, 1, AU::ampere, 0 >;
-using t_HeatFluxC = SOU::unitType< AU::Meter, 2, AT::minute, -1, AU::gram, 1, SOU::Temperature::celsius, -1, AU::ampere, 0 >;
+using t_Far = SOU::unitType< AU::Meter, 0, AT::minute, 0, AU::gram, 0, SOU::AtomicUnit::fahrenheit, 1, AU::ampere, 0 >;
+using t_Cel = SOU::unitType< AU::Meter, 0, AT::minute, 0, AU::gram, 0, SOU::AtomicUnit::celsius, 1, AU::ampere, 0 >;
+using t_HeatFluxC = SOU::unitType< AU::Meter, 2, AT::minute, -1, AU::gram, 1, SOU::AtomicUnit::celsius, -1, AU::ampere, 0 >;
 
 TEST(temperature, ToBase) {
 	EXPECT_NEAR( t_Cel::Temperature::toBase(0.0), 273.15, 0.01);  // to K
@@ -35,23 +35,23 @@ TEST(temperature, ToFromBase) {
 TEST(temperature, StartKtoC_conversion_cast) {
 	t_Kelvin K(0.0);
 	t_Cel C = SOU::conversion_cast<t_Cel>(K);
-	EXPECT_NEAR(C.amount(), -273.15, 0.01) << "is it close?";
+	EXPECT_NEAR(C.amount(), -273.15, 0.0001) << "is it close?";
 }
 TEST(temperature, StartCtoK_conversion_cast) {
 	t_Cel C(0.0);
 	EXPECT_DOUBLE_EQ(C.amount(), 0.0);
 	t_Kelvin K = SOU::conversion_cast<t_Kelvin>(C);
-	EXPECT_NEAR(K.amount(), 273.15, 0.01);
+	EXPECT_NEAR(K.amount(), 273.15, 0.0001);
 }
 TEST(temperature, FtoC_conversion_cast) {
 	t_Far F(32.0);
 	t_Cel C = SOU::conversion_cast<t_Cel>(F);
-	EXPECT_NEAR(C.amount(), (0.0), 0.01);
+	EXPECT_NEAR(C.amount(), (0.0), 0.0001);
 }
 TEST(temperature, CtoF_conversion_cast) {
 	t_Cel C{ 100.0 };
 	t_Far F = SOU::conversion_cast<t_Far>(C);
-	EXPECT_NEAR(F.amount(), 212.0, 0.01);
+	EXPECT_NEAR(F.amount(), 212.0, 0.0001);
 }
 
 TEST(temerature, STATIC_Assert) {

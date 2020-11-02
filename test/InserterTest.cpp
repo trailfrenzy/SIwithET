@@ -8,7 +8,7 @@
 #include <string_view>
 
 typedef Metric::AtomicUnit::Meter Meter;
-typedef SOU::Time::AtomicUnit::second second;
+typedef Metric::AtomicUnit::second second;
 typedef Metric::AtomicUnit::gram gram;
 typedef SOU::MakeType< Meter, second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::ampere > t_Base;
 typedef t_Base::MakeDim<2, 0, 0, 0, 0>::type t_MeterSq;

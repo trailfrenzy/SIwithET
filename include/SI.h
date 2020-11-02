@@ -379,7 +379,7 @@ namespace SystemOfUnits /// covers the basics of the system
 
 } /// end of namespace SystemOfUnits
 
-namespace SOU = SystemOfUnits;
+namespace SOU = SystemOfUnits; ///< Shortcut to the namespace.
 
 /** 
  @mainpage My Personal Index Page
@@ -397,7 +397,7 @@ namespace SOU = SystemOfUnits;
  see https://www.nist.gov/pml/weights-and-measures/metric-si/si-units
  @section Introduction
  
- The Systems Of Units (SOU) Library was created out the author's desire to solve a problem where
+ The Systems Of Units (SystemOfUnits) Library was created out the author's desire to solve a problem where
  known engineering and scientific unit types will not mix to produce the wrong result type.  The library
  automatically does unit conversions during compile time or will produce a compile time error if types
  are mixed incorrectly.

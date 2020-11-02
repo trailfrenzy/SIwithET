@@ -214,7 +214,7 @@ REGISTER_TYPED_TEST_SUITE_P(SITest
 
 TEST(SITestSQ, Squaring)
 {
-	namespace AT = SOU::Time::AtomicUnit;
+	namespace AT = Metric::AtomicUnit;
 	using namespace Metric::AtomicUnit;
 	typedef SOU::unitType< Meter, 0, AT::second, -1, gram, 1, SOU::NoDim, 0, SOU::NoDim > t_gramPsec;
 	typedef SOU::unitType< Meter, 0, AT::second, -2, gram, 2, SOU::NoDim, 0, SOU::NoDim > t_gramPsecSQ;
@@ -230,7 +230,7 @@ TEST(BasicSI, Size) {
 }
 
 typedef Metric::AtomicUnit::Meter Meter;
-typedef SOU::Time::AtomicUnit::second second;
+typedef Metric::AtomicUnit::second second;
 typedef Metric::AtomicUnit::gram gram;
 typedef SOU::MakeType< Meter, second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::ampere > t_Base;
 //typedef SI::unitType< Meter, 1, second, 0, gram, 0 > t_Meter;
@@ -371,10 +371,10 @@ TEST(BasicSI, IsSIwithDim)
 
 
 TEST(Exception, T_Symbols) {
-   EXPECT_TRUE(noexcept(Metric::AtomicUnit::ELECTRIC_CURRENT() ));
-   EXPECT_TRUE(noexcept(Metric::AtomicUnit::LENGTH() ));
-   EXPECT_TRUE(noexcept(Metric::AtomicUnit::MASS() ));
-   EXPECT_TRUE(noexcept(Metric::AtomicUnit::TEMPERATURE()));
+   EXPECT_TRUE(noexcept(SOU::ElectricCurrent() ));
+   EXPECT_TRUE(noexcept(SOU::Length() ));
+   EXPECT_TRUE(noexcept(SOU::Mass() ));
+   EXPECT_TRUE(noexcept(SOU::Temperature()));
 }
 
 TEST(Exception, Basic){
@@ -411,7 +411,7 @@ TEST(Exception, DimTypes)
 
 TEST(BasicSI, Concepts_CompileError )
 {
-   namespace AT = SOU::Time::AtomicUnit;
+   namespace AT = Metric::AtomicUnit;
    using namespace Metric::AtomicUnit;
 
    // supposed to cause a compile error here!  Concept is not implimented correctly if compiles.

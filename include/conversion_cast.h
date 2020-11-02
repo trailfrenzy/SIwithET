@@ -5,7 +5,7 @@
 
    For example:@code
    Metric::t_centimeter cent(20.0);
-	Metric::t_meter meter = SOU::conversion_cast<Metric::t_meter>( cent ); @endcode
+	Metric::t_meter meter = SystemOfUnits::conversion_cast<Metric::t_meter>( cent ); @endcode
 
    The above is an example on how to convert from 20 centimeters to 0.2 meters.
 
@@ -45,7 +45,7 @@ namespace SystemOfUnits
 	@param IN in is what will be converted
 	@return OUT the new type
 	*/
-	template< SOU::UnitSerial OUT, SOU::UnitSerial IN > OUT conversion_cast(IN const &in)
+	template< SystemOfUnits::UnitSerial OUT, SystemOfUnits::UnitSerial IN > OUT conversion_cast(IN const &in)
       noexcept(noexcept(OUT) && noexcept(IN))
 	{
       static_assert( dimensions_same_assert< OUT, IN >(), "Dimensions of the two types are not the same");

@@ -15,9 +15,7 @@ namespace Metric
    */
    namespace AtomicUnit
    {
-      using LENGTH = SystemOfUnits::helpers::SymbolForDimension<'L'>;
-
-      struct Meter : LENGTH /// @anchor repesent quantity length of a meter.
+      struct Meter : SystemOfUnits::Length /// @anchor repesent quantity length of a meter.
       {
          enum:bool{ IsBase = true };/// Lets using classes know if class is used as a base.
          constexpr static char const * str() noexcept { return "meter"; }/// Called by WhatAmI when creating the string describing the type.
@@ -25,7 +23,7 @@ namespace Metric
          constexpr static double fromBase() noexcept { return 1.0; }/// Multiply by fromBase() to get diminsional value.
          typedef Meter Base;/// Typedef of the actual base
       };
-      struct Kilometer : LENGTH /// represents quantity length of a kilometer
+      struct Kilometer : SystemOfUnits::Length /// represents quantity length of a kilometer
       {
          enum:bool{ IsBase = false };/// Lets using classes know if class is used as a base.
          constexpr static char const * str() noexcept { return "kilometer"; }/// Called by WhatAmI when creating the string describing the type.
@@ -34,7 +32,7 @@ namespace Metric
          constexpr static double fromBase() noexcept { return 1.0 / toBase(); }/// Multiply by fromBase() to get diminsional value.
          typedef Meter Base;/// Typedef of the actual base
       };
-      struct Centimeter : LENGTH /// represents quantity length of a centimeter
+      struct Centimeter : SystemOfUnits::Length /// represents quantity length of a centimeter
       {
          enum:bool{ IsBase = false };/// Lets using classes know if class is used as a base.
          constexpr static char const * str() noexcept { return "centimeter"; }/// Called by WhatAmI when creating the string describing the type.
@@ -43,7 +41,7 @@ namespace Metric
          constexpr static double toBase() noexcept { return 1.0/100.0; }///  Multiply by toBase() to get base value.
          typedef Meter Base;/// Typedef of the actual base
       };
-      struct Milimeter : LENGTH /// represents quantity length of a milimeter
+      struct Milimeter : SystemOfUnits::Length /// represents quantity length of a milimeter
       {
          enum:bool{ IsBase = false };/// Lets using classes know if class is used as a base.
          constexpr static char const * str() noexcept { return "milimeter";}/// Called by WhatAmI when creating the string describing the type.
@@ -51,8 +49,6 @@ namespace Metric
          constexpr static double toBase() noexcept { return 1.0/fromBase(); }///  Multiply by toBase() to get base value.
          typedef Meter Base;/// Typedef of the actual base
       };
-
-      using MASS = SystemOfUnits::helpers::SymbolForDimension<'M'>;
       
       /**  (from "The International System of Units (SI)" )
       The kilogram is the only coherent SI unit, whose nameand symbol, for historical reasons,
@@ -61,7 +57,7 @@ namespace Metric
          unit symbol “g” respectively.For example, 10−6 kg is written as milligram, mg, not as
          microkilogram, μkg.
       */
-      struct kilogram : MASS /// represents quantity mass of a kilogram.
+      struct kilogram : SystemOfUnits::Mass /// represents quantity mass of a kilogram.
       {
          enum :bool { IsBase = true };/// Lets using classes know if class is used as a base.
          constexpr static char const* str() noexcept { return "kilogram"; }/// Called by WhatAmI when creating the string describing the type.
@@ -72,7 +68,7 @@ namespace Metric
          using Base = kilogram;
       };
 
-      struct gram : MASS /// represents quantity mass of a gram
+      struct gram : SystemOfUnits::Mass /// represents quantity mass of a gram
       {
          enum:bool{ IsBase = false };/// Lets using classes know if class is used as a base.
          constexpr static char const * str() noexcept { return "gram"; }/// Called by WhatAmI when creating the string describing the type.
@@ -81,7 +77,7 @@ namespace Metric
          using Base = kilogram;
       };
 
-      struct miligram : MASS /// represents quantity mass of miligram.
+      struct miligram : SystemOfUnits::Mass /// represents quantity mass of miligram.
       {
          enum:bool{ IsBase = false };/// Lets using classes know if class is used as a base.
          constexpr static char const * str() noexcept { return "miligram"; }/// Called by WhatAmI when creating the string describing the type.
@@ -90,10 +86,7 @@ namespace Metric
          using Base = kilogram;
       };
 
-      enum { THETA = 233 }; // from www.asciitable.com
-      using TEMPERATURE = SystemOfUnits::helpers::SymbolForDimension< char(THETA) >;
-
-      struct kelvin : TEMPERATURE /// represents quantity Temperature of kelvin
+      struct kelvin : SystemOfUnits::Temperature /// represents quantity Temperature of kelvin
       {
          enum:bool{ IsBase = true };/// Lets using classes know if class is used as a base.
          constexpr static char const * str() noexcept { return "Kelvin"; }/// Called by WhatAmI when creating the string describing the type.
@@ -102,7 +95,7 @@ namespace Metric
 		 typedef kelvin Base;/// Typedef of the actual base
       };
       /// @warning Do not use
-      struct celsius : TEMPERATURE/// represents quanity Temperature celsius.
+      struct celsius : SystemOfUnits::Temperature/// represents quanity Temperature celsius.
       {
          enum:bool{ IsBase = false };/// Lets using classes know if class is used as a base.
          constexpr static char const * str()  noexcept { return "°C"; }/// Called by WhatAmI when creating the string describing the type.
@@ -119,8 +112,7 @@ The SI unit of electric potential difference is the volt (V) 1 V = 1 W/A.
 
 The SI unit of electric resistance is the ohm (?). 1 ? = 1 V/A.
 */
-      using ELECTRIC_CURRENT = SystemOfUnits::helpers::SymbolForDimension<'C'>;
-      struct ampere : ELECTRIC_CURRENT /// represents quantity electric current.
+      struct ampere : SystemOfUnits::ElectricCurrent /// represents quantity electric current.
       {
          enum:bool{ IsBase = true };/// Lets using classes know if class is used as a base.
          constexpr static char const * str() noexcept { return "ampere"; }/// Called by WhatAmI when creating the string describing the type.

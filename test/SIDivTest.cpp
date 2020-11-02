@@ -7,7 +7,7 @@
 #include <gtest/gtest.h>
 #include <memory>
 
-namespace AT = SOU::Time::AtomicUnit;
+//namespace AT = Metric::AtomicUnit;
 // basic test on the multiplication operator
 struct DivisionFirst : public ::testing::Test
 {
@@ -188,7 +188,7 @@ protected:
 	enum { eNUM = T_ARG::eN, eDEN = T_ARG::eD, eRATIO = T_ARG::eR };
 	// define the basic types that will be used here.
 	typedef Metric::AtomicUnit::Meter Meter;
-	typedef SOU::Time::AtomicUnit::second second;
+	typedef Metric::AtomicUnit::second second;
 	typedef Metric::AtomicUnit::gram gram;
 	typedef Metric::AtomicUnit::ampere coul;
 	typedef Metric::AtomicUnit::kelvin kelvin;

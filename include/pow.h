@@ -15,7 +15,7 @@
 
 namespace SystemOfUnits
 {
-   /// namespace helpers is not intended to be used outside of namespace SOU
+   /// namespace helpers is not intended to be used outside of namespace SystemOfUnits
    namespace helpers
    {
       /// container struct that contains the nested structs.

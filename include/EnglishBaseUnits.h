@@ -8,7 +8,7 @@ namespace English /// namespace than contains the English unit types.
 {
    namespace AtomicUnit /// namespace of the quantity types
    {
-      struct Foot : Metric::AtomicUnit::LENGTH/// repesent quantity length of a foot.
+      struct Foot : SystemOfUnits::Length /// repesent quantity length of a foot.
       {
          enum:bool{ IsBase = false }; /// Lets using classes know if class is used as a base.
          constexpr static char const * str() noexcept { return "foot"; }/// Called by WhatAmI when creating the string describing the type.
@@ -17,7 +17,7 @@ namespace English /// namespace than contains the English unit types.
          typedef Metric::AtomicUnit::Meter Base;/// Typedef of the actual base
       };
 
-      struct Inch : Metric::AtomicUnit::LENGTH/// represents the quantity length of an inch
+      struct Inch : SystemOfUnits::Length /// represents the quantity length of an inch
       {
          enum:bool{ IsBase = false }; /// Lets using classes know if class is used as a base
          constexpr static char const * str() noexcept { return "inch"; }/// Called by WhatAmI when creating the string describing the type.
@@ -26,7 +26,7 @@ namespace English /// namespace than contains the English unit types.
          typedef Metric::AtomicUnit::Meter Base;/// Typedef of the actual base
       };
 
-      struct Yard : Metric::AtomicUnit::LENGTH /// represents the quantity length of an yard
+      struct Yard : SystemOfUnits::Length  /// represents the quantity length of an yard
       {
          enum:bool{ IsBase = false }; /// Lets using classes know if class is used as a base
          constexpr static char const * str() noexcept { return "yard"; }/// Called by WhatAmI when creating the string describing the type.
@@ -35,7 +35,7 @@ namespace English /// namespace than contains the English unit types.
          typedef Metric::AtomicUnit::Meter Base;/// Typedef of the actual base
       };
 
-      struct Mile : Metric::AtomicUnit::LENGTH /// represents the quantity length of a mile
+      struct Mile : SystemOfUnits::Length  /// represents the quantity length of a mile
       {
          enum:bool { IsBase = false }; /// Lets using classes know if class is used as a base
          constexpr static char const * str() noexcept { return "mile"; }/// Called by WhatAmI when creating the string describing the type.
@@ -46,7 +46,7 @@ namespace English /// namespace than contains the English unit types.
 
       /** represents the quantity wieght of a pound.  Note that this is not the same as
       a pound force. */
-      struct poundMass : Metric::AtomicUnit::MASS
+      struct poundMass : SystemOfUnits::Mass
       {
          enum :bool { IsBase = false }; /// Lets using classes know if class is used as a base
          constexpr static char const * str() noexcept { return "lbm"; }/// Called by WhatAmI when creating the string describing the type.
@@ -55,7 +55,7 @@ namespace English /// namespace than contains the English unit types.
          typedef Metric::AtomicUnit::gram Base;/// Typedef of the actual base
       };
 
-      struct Slug : Metric::AtomicUnit::MASS /// represents the quantity wight of a slug
+      struct Slug : SystemOfUnits::Mass /// represents the quantity wight of a slug
       {
          enum :bool { IsBase = false }; /// Lets using classes know if class is used as a base
          constexpr static char const * str() noexcept { return "slug"; }/// Called by WhatAmI when creating the string describing the type.

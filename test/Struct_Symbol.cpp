@@ -15,13 +15,13 @@ TEST(Struct_Symbol, isLENGHT) {
    static_assert(SystemOfUnits::is_LENGTH< Metric::AtomicUnit::Meter >::value, "Suppose to be Lenght");
 
    EXPECT_TRUE(SystemOfUnits::is_LENGTH< Metric::AtomicUnit::Centimeter >::value);
-   EXPECT_FALSE(SystemOfUnits::is_LENGTH< SystemOfUnits::Time::AtomicUnit::second>::value);
-   static_assert(!SystemOfUnits::is_LENGTH< SystemOfUnits::Time::AtomicUnit::second>::value);
+   EXPECT_FALSE(SystemOfUnits::is_LENGTH< Metric::AtomicUnit::second>::value);
+   static_assert(!SystemOfUnits::is_LENGTH< Metric::AtomicUnit::second>::value);
 }
 
 TEST(Struct_Symbol, isTIME) {
-   EXPECT_TRUE(SystemOfUnits::is_TIME< SystemOfUnits::Time::AtomicUnit::second>::value);
-   EXPECT_TRUE(SystemOfUnits::is_TIME< SystemOfUnits::Time::AtomicUnit::hour>::value);
+   EXPECT_TRUE(SystemOfUnits::is_TIME< Metric::AtomicUnit::second>::value);
+   EXPECT_TRUE(SystemOfUnits::is_TIME< Metric::AtomicUnit::hour>::value);
    EXPECT_FALSE(SystemOfUnits::is_TIME< Metric::AtomicUnit::Centimeter >::value);
 }
 TEST(Struct_Symbol, isMASS) {
@@ -29,18 +29,18 @@ TEST(Struct_Symbol, isMASS) {
    EXPECT_FALSE(SystemOfUnits::is_MASS< Metric::AtomicUnit::ampere>::value);
 }
 TEST(Struct_Symbol, isTEMPERATURE) {
-   EXPECT_TRUE(SystemOfUnits::is_TEMPERATURE< SystemOfUnits::Temperature::kelvin>::value);
-   EXPECT_TRUE(SystemOfUnits::is_TEMPERATURE< SystemOfUnits::Temperature::celsius>::value);
+   EXPECT_TRUE(SystemOfUnits::is_TEMPERATURE< Metric::AtomicUnit::kelvin>::value);
+   EXPECT_TRUE(SystemOfUnits::is_TEMPERATURE< Metric::AtomicUnit::celsius>::value);
 }
 TEST(Struct_Symbol, isCURRENT) {
    EXPECT_TRUE(SystemOfUnits::is_CURRENT< Metric::AtomicUnit::ampere>::value);
-   EXPECT_FALSE(SystemOfUnits::is_LENGTH< SystemOfUnits::Time::AtomicUnit::second>::value);
+   EXPECT_FALSE(SystemOfUnits::is_LENGTH< Metric::AtomicUnit::second>::value);
 }
 
 TEST(Struct_Symbol, is_SymbolForDimensionTest)
 {
    static_assert(std::is_base_of< SystemOfUnits::helpers::SymbolForDimension<'L'>, Metric::AtomicUnit::Meter>::value);
    static_assert( SystemOfUnits::helpers::is_SymbolForDimension< Metric::AtomicUnit::Meter >::value );
-   static_assert(SystemOfUnits::helpers::is_SymbolForDimension< SystemOfUnits::Temperature::celsius >::value);
+   static_assert(SystemOfUnits::helpers::is_SymbolForDimension< SystemOfUnits::AtomicUnit::celsius >::value);
    static_assert( !SystemOfUnits::helpers::is_SymbolForDimension< double >::value);
 }
