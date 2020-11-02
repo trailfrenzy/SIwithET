@@ -223,13 +223,13 @@ TEST_F(MultiplyFirst, TestWithNonAtomicUnitUnitsMass)
 {
    using namespace Metric;
    namespace AU = AtomicUnit;
-   typedef SOU::unitType< AU::Meter, 0, SOU::Time::AtomicUnit::second, -1, AU::gram, 0, AU::kelvin, 0, AU::ampere, 0 > t_Hertz;
+   typedef SOU::unitType< AU::Meter, 0, SOU::Time::AtomicUnit::second, -1, AU::kilogram, 0, AU::kelvin, 0, AU::ampere, 0 > t_Hertz;
 
-   Metric::t_gram const g{ 25.0 };
-   t_Hertz h{ 3.0 };
-   EXPECT_EQ("1/[T]", SOU::Diminsion(h));
+   Metric::t_kilogram const kg{ 25.0 };
+   t_Hertz hz{ 3.0 };
+   EXPECT_EQ("1/[T]", SOU::Diminsion(hz));
 
-   Metric::t_gramPsec gps = g * h;
+   Metric::t_gramPsec gps = kg * hz;
    EXPECT_DOUBLE_EQ(75.0, gps.amount());
    EXPECT_EQ("[M]/[T]", SOU::Diminsion(gps));
 }

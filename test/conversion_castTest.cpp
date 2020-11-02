@@ -8,12 +8,13 @@
 
 	Think of the this file as a contract for what file conversion_cast.h has.
 */
-#include <gtest\gtest.h>
 #include "SI.h"
 #include "operators.h" // needed for multiplications
 #include "MetricTypes.h"
 #include "conversion_cast.h"
 #include "pow.h"
+#include "ExpectUnitTest.h"
+#include <gtest\gtest.h>
 
 class conversion_castTest : public ::testing::Test
 {
@@ -47,12 +48,34 @@ TEST_F(conversion_castTest, TestPow)
    EXPECT_DOUBLE_EQ(10000.0, P< SOU::MakeFrom<Metric::AtomicUnit::Centimeter> >::thePower<2>::toBase());
 }
 
+TEST_F(conversion_castTest, MakeFrom)
+{
+   EXPECT_DOUBLE_EQ( 1.0, SOU::MakeFrom< Metric::AtomicUnit::kilogram >::toBase() );
+   EXPECT_DOUBLE_EQ(1000, SOU::MakeFrom<Metric::AtomicUnit::gram>::toBase());
+
+   double out = 2.0;
+
+   using OUT = Metric::t_gram;
+   using IN = Metric::t_kilogram;
+   enum {eM = 1};
+
+   EXPECT_DOUBLE_EQ(SOU::MakeFrom<OUT::Mass>::toBase(), 1000);
+
+   //out *=
+   //   SOU::helpers::P< SOU::MakeFrom<OUT::Mass> >::thePower<eM>::toBase()
+   //   * SOU::helpers::P< IN::Mass >::thePower<eM>::toBase();
+
+   out *= SOU::MakeFrom<OUT::Mass>::toBase() *  IN::Mass::toBase();
+
+   EXPECT_DOUBLE_EQ(out, 2000);
+}
+
 /// Test basic length conversions
 TEST_F(conversion_castTest, TestLength)
 {
    Metric::t_centimeter cent(20.0);
    Metric::t_meter meter = SOU::conversion_cast<Metric::t_meter>(cent);
-   EXPECT_DOUBLE_EQ(0.20, meter.amount());
+   EXPECT_UNIT_EQ(0.20, meter );
    EXPECT_EQ(0.20, meter.amount());
    EXPECT_TRUE(0.20 == meter);
 
@@ -125,6 +148,15 @@ TEST_F(conversion_castTest, TestInverseTimeSq)
 }
 
 /// Test the Mass
+
+TEST_F(conversion_castTest, Kilogram2gram)
+{
+   Metric::t_kilogram kg(1);
+
+   auto g = SOU::conversion_cast<Metric::t_gram>(kg);
+   EXPECT_UNIT_EQ(g, 1000.0);
+}
+
 TEST_F(conversion_castTest, TestMass)
 {
    Metric::t_gram g(400.0);

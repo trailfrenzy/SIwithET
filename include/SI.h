@@ -286,19 +286,19 @@ namespace SystemOfUnits /// covers the basics of the system
    /// quantities take exactly the same form as the equations between the quantities themselves.
    /// Some of the coherent derived units in the SI are given special names.
    template< UnitSerial UNIT_TYPE, char const * NAME >
-   struct CoherentUnit : UNIT_TYPE
+   struct CoherentUnit : public UNIT_TYPE
    {
-      static const char * name;
+      using Base_Type = UNIT_TYPE;
 
       constexpr CoherentUnit(double val) noexcept : UNIT_TYPE(val)
       {
          static_assert(is_UnitType< UNIT_TYPE>::value);
       }
 
-      static constexpr char const * unitName() noexcept { return name; }
+      /// The specialized name for the coherent unit type.
+      /// @return char const name of the coherent type.
+      static constexpr auto unitName() noexcept { return NAME; }
    };
-
-   template< UnitSerial UNIT_TYPE, char const * NAME > const char * CoherentUnit<UNIT_TYPE, NAME>::name{ NAME };
 
    /// Used at compile time to find if type is SIwithDIM<>
    template< typename T> struct is_SIwithDIM{ enum:bool{ value = false}; };
@@ -371,7 +371,7 @@ namespace SystemOfUnits /// covers the basics of the system
    using tNoUnit = unitType< NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0 >;
 
    /// used to call fromBase() while using the toBase() static method.  Used in conversion_cast<>.
-   template< typename ARG > struct MakeFrom
+   template< DIMENSION ARG > struct MakeFrom
    {
       /// inverse of fromBase()
       constexpr static double toBase() noexcept(noexcept(ARG)) { return ARG::fromBase(); }

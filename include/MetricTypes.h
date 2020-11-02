@@ -19,28 +19,28 @@ namespace Metric
 
    // TODO: change AU::gram to kilogram.
    /// Used in makeing other metric types.
-   using AUMetric=SOU::MakeType< AU::Meter, AT::second, AU::gram, AU::kelvin, AU::ampere >;
+   using AUMetric=SOU::MakeType< AU::Meter, AT::second, AU::kilogram, AU::kelvin, AU::ampere >;
 
    /// Length compond units
    ///< Meter type
    using t_meter = AUMetric::MakeDim<1,0,0,0,0>::type;
 
    /// Kilometer type
-   using t_kilometer = SOU::unitType< AU::Kilometer, 1, AT::second, 0, AU::gram, 0,AU::kelvin,0, AU::ampere,0 >;
+   using t_kilometer = SOU::unitType< AU::Kilometer, 1, AT::second, 0, AU::kilogram, 0,AU::kelvin,0, AU::ampere,0 >;
 
    /// Centimeter type
-   using t_centimeter = SOU::unitType< AU::Centimeter, 1, AT::second, 0, AU::gram, 0,AU::kelvin,0, AU::ampere,0 >;
+   using t_centimeter = SOU::unitType< AU::Centimeter, 1, AT::second, 0, AU::kilogram, 0,AU::kelvin,0, AU::ampere,0 >;
 
    /// Milimeter type
-   using t_milimeter = SOU::unitType< AU::Milimeter, 1, AT::second, 0, AU::gram, 0,AU::kelvin,0, AU::ampere,0 >; 
+   using t_milimeter = SOU::unitType< AU::Milimeter, 1, AT::second, 0, AU::kilogram, 0,AU::kelvin,0, AU::ampere,0 >;
    
    /// Time compond units (TODO look at replacing with std::chronos)
    using t_second = AUMetric::MakeDim<0,1,0,0,0>::type; /// Seconds type
-   using t_minute = SOU::unitType< AU::Meter, 0, AT::minute, 1, AU::gram, 0,AU::kelvin,0, AU::ampere,0 >;
-   using t_hour = SOU::unitType< AU::Meter, 0, AT::hour,   1, AU::gram, 0,AU::kelvin,0, AU::ampere,0 >;
+   using t_minute = SOU::unitType< AU::Meter, 0, AT::minute, 1, AU::kilogram, 0,AU::kelvin,0, AU::ampere,0 >;
+   using t_hour = SOU::unitType< AU::Meter, 0, AT::hour,   1, AU::kilogram, 0,AU::kelvin,0, AU::ampere,0 >;
 
    /// Mass compond units
-   using t_gram = AUMetric::MakeDim<0,0,1,0,0>::type; /// Gram type
+   using t_gram = SOU::unitType< AU::Meter, 0, AT::second, 0, AU::gram, 1, AU::kelvin, 0, AU::ampere, 0 >; /// Gram type
    using t_miligram = SOU::unitType< AU::Meter, 0, AT::second, 0, AU::miligram, 1,AU::kelvin,0, AU::ampere,0 >;
    using t_kilogram = SOU::unitType< AU::Meter, 0, AT::second, 0, AU::kilogram, 1,AU::kelvin,0, AU::ampere,0 >;
    
@@ -56,9 +56,13 @@ namespace Metric
 } // end of namespace
 
 // Metric UDL's (User Defined Literals)
-constexpr auto operator"" _meter( long double d) noexcept
+inline constexpr auto operator"" _meter( long double d) noexcept
 {
    return Metric::t_meter(d);
+}
+
+constexpr auto operator"" _kilogram(long double d) noexcept {
+   return Metric::t_kilometer(d);
 }
 
 // Kilometer UDL (User Definded Literals)

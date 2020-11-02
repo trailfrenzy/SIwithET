@@ -45,11 +45,9 @@ namespace SystemOfUnits
 	@param IN in is what will be converted
 	@return OUT the new type
 	*/
-	template< typename OUT, typename IN > OUT conversion_cast(IN const &in)
+	template< SOU::UnitSerial OUT, SOU::UnitSerial IN > OUT conversion_cast(IN const &in)
       noexcept(noexcept(OUT) && noexcept(IN))
 	{
-      static_assert(is_UnitType<IN>::value, "Input type is not UnitType");
-      static_assert(is_UnitType<OUT>::value, "Return type is not UnitType");
       static_assert( dimensions_same_assert< OUT, IN >(), "Dimensions of the two types are not the same");
 
 		/// Use the incoming types as the base types.
@@ -96,7 +94,7 @@ namespace SystemOfUnits
       return OUT{ out };
 	}
 }
-// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

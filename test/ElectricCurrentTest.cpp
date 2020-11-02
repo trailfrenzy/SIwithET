@@ -1,7 +1,9 @@
 //#include <SI.h>
-#include <gtest/gtest.h>
 #include "MetricTypes.h"
+#include "DerivedUnits.h"
 #include"WhatAmI.h"
+#include "ExpectUnitTest.h"
+#include <gtest/gtest.h>
 
 //namespace SystemOfUnits /// covers the basics of the system
 //{
@@ -41,18 +43,8 @@ TEST(Current, IsAmpere) {
    ASSERT_EQ("[A]", SystemOfUnits::Diminsion(amp));
 }
 
-static constexpr char const Watt_str[] = "Watt";
 
-// move to MetricTypes when done testing
-constexpr auto operator"" _watt(long double d)
-{
-   using Watt = Metric::AUMetric::MakeDim<2, -3, 1, 0, 0>::type;
-   using t_nameWatt = SystemOfUnits::CoherentUnit<Watt, Watt_str >;
-
-   return t_nameWatt(d);
-}
-
-static constexpr char const name[] = "Watt"; // must be global
+static constexpr char const name[] = "watt"; // must be global
 
 TEST(Current, IsWattType)
 {
@@ -62,17 +54,23 @@ TEST(Current, IsWattType)
    t_nameWatt watt(4.5);
    ASSERT_TRUE(SystemOfUnits::is_SIwithDIM< t_nameWatt>::value)<< "Tested in SITest.cpp too";
 
-   ASSERT_TRUE(watt == 4.5);
-   ASSERT_EQ("Watt", SystemOfUnits::WhatAmI(watt));
+   EXPECT_UNIT_EQ(watt, 4.5);
+   ASSERT_EQ("watt", SystemOfUnits::WhatAmI(watt));
 }
 
-TEST(Current, WattUDL) {
+TEST(Current, Watt_UDL) {
    auto watt = 67.8_watt;
-   ASSERT_TRUE(watt == 67.8);
-   ASSERT_EQ("Watt", SystemOfUnits::WhatAmI(watt));
+   EXPECT_UNIT_EQ(watt, 67.8);
+   ASSERT_EQ("watt", SystemOfUnits::WhatAmI(watt));
 }
 
-// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
+TEST(Current, Watt_UDL_Dimension) {
+   auto watt = 400.0_watt;
+
+   EXPECT_EQ(SystemOfUnits::Diminsion(watt), "[L]^2[M]/[T]^3");
+}
+
+// Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

@@ -60,7 +60,7 @@ TEST(WhatAmITest, TestWithOneDim)
 	EXPECT_EQ(std::string_view( "meter*second^(-1)"), SOU::WhatAmI(vel));
 
 	Metric::t_gramPsec massFlow(3.895);
-	EXPECT_EQ(std::string_view("second^(-1)*gram"), SOU::WhatAmI(massFlow));
+	EXPECT_EQ(std::string_view("second^(-1)*kilogram"), SOU::WhatAmI(massFlow));
 	EXPECT_TRUE(true);
 }
 
@@ -76,7 +76,7 @@ TEST(UnitNameWchar, Basic)
    EXPECT_EQ(std::wstring_view(L"meter*second^(-1)"), SOU::UnitName<wchar_t>(vel));
 
    Metric::t_gramPsec massFlow(3.895);
-   EXPECT_EQ(std::wstring_view(L"second^(-1)*gram"), SOU::UnitName<wchar_t>(massFlow));
+   EXPECT_EQ(std::wstring_view(L"second^(-1)*kilogram"), SOU::UnitName<wchar_t>(massFlow));
 }
 
 TEST(UnitNameWchar, Dim) {

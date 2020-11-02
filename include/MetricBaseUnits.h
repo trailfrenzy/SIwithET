@@ -53,29 +53,41 @@ namespace Metric
       };
 
       using MASS = SystemOfUnits::helpers::SymbolForDimension<'M'>;
-      struct gram : MASS /// represents quantity mass of a gram
-      {
-         enum:bool{ IsBase = true };/// Lets using classes know if class is used as a base.
-         constexpr static char const * str() noexcept { return "gram"; }/// Called by WhatAmI when creating the string describing the type.
-         constexpr static double toBase() noexcept { return 1.0; }///  Multiply by toBase() to get base value.
-         constexpr static double fromBase() noexcept { return 1.0; }/// Multiply by fromBase() to get diminsional value.
-         typedef gram Base;/// Typedef of the actual base
-      };
+      
+      /**  (from "The International System of Units (SI)" )
+      The kilogram is the only coherent SI unit, whose nameand symbol, for historical reasons,
+         include a prefix.Namesand symbols for decimal multiplesand sub - multiples of the unit of
+         mass are formed by attaching prefix names and symbols to the unit name “gram” and the
+         unit symbol “g” respectively.For example, 10?6 kg is written as milligram, mg, not as
+         microkilogram, ?kg.
+      */
       struct kilogram : MASS /// represents quantity mass of a kilogram.
       {
-         enum:bool{ IsBase = false };/// Lets using classes know if class is used as a base.
-         constexpr static char const * str() noexcept { return "kilogram"; }/// Called by WhatAmI when creating the string describing the type.
-         constexpr static double toBase() noexcept { return 1000.0; }///  Multiply by toBase() to get base value.
-         constexpr static double fromBase() noexcept { return 1.0 / toBase() ; }/// Multiply by fromBase() to get diminsional value.
-         typedef gram Base;/// Typedef of the actual base
+         enum :bool { IsBase = true };/// Lets using classes know if class is used as a base.
+         constexpr static char const* str() noexcept { return "kilogram"; }/// Called by WhatAmI when creating the string describing the type.
+         //constexpr static double toBase() noexcept { return 1000.0; }///  Multiply by toBase() to get base value.
+         constexpr static double toBase() noexcept { return 1.0; }///  Multiply by toBase() to get base value.
+         //constexpr static double fromBase() noexcept { return 1.0 / toBase(); }/// Multiply by fromBase() to get diminsional value.
+         constexpr static double fromBase() noexcept { return 1.0; }
+         using Base = kilogram;
       };
+
+      struct gram : MASS /// represents quantity mass of a gram
+      {
+         enum:bool{ IsBase = false };/// Lets using classes know if class is used as a base.
+         constexpr static char const * str() noexcept { return "gram"; }/// Called by WhatAmI when creating the string describing the type.
+         constexpr static double toBase() noexcept { return 0.001; }///  Multiply by toBase() to get base value.
+         constexpr static double fromBase() noexcept { return 1000.0; }/// Multiply by fromBase() to get diminsional value.
+         using Base = kilogram;
+      };
+
       struct miligram : MASS /// represents quantity mass of miligram.
       {
          enum:bool{ IsBase = false };/// Lets using classes know if class is used as a base.
          constexpr static char const * str() noexcept { return "miligram"; }/// Called by WhatAmI when creating the string describing the type.
          constexpr static double toBase() noexcept { return 1.0 / fromBase(); }///  Multiply by toBase() to get base value.
-         constexpr static double fromBase() noexcept { return 1000.0; }/// Multiply by fromBase() to get diminsional value.
-         typedef gram Base;/// Typedef of the actual base
+         constexpr static double fromBase() noexcept { return 1,000,000.0; }/// Multiply by fromBase() to get diminsional value.
+         using Base = kilogram;
       };
 
       enum { THETA = 233 }; // from www.asciitable.com

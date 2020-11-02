@@ -89,6 +89,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -122,6 +123,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\include\conversion_cast.h" />
+    <ClInclude Include="..\include\DerivedUnits.h" />
     <ClInclude Include="..\include\EnglishBaseUnits.h" />
     <ClInclude Include="..\include\EnglishTypes.h" />
     <ClInclude Include="..\include\MetricBaseUnits.h" />
@@ -129,11 +131,11 @@
     <ClInclude Include="..\include\operators.h" />
     <ClInclude Include="..\include\pow.h" />
     <ClInclude Include="..\include\SI.h" />
+    <ClInclude Include="..\include\Struct_Symbol.h" />
     <ClInclude Include="..\include\SystemOfUnits.h" />
     <ClInclude Include="..\include\Temperature.h" />
     <ClInclude Include="..\include\TimeAtomicUnits.h" />
     <ClInclude Include="..\include\WhatAmI.h" />
-    <ClInclude Include="Struct_Symbol.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

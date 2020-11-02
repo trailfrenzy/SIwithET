@@ -100,7 +100,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\..\googletest\googletest\include;$(SolutionDir)\include;$(SolutionDir)\..\cppunit\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableParallelCodeGeneration>false</EnableParallelCodeGeneration>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <EnableModules>false</EnableModules>
+      <EnableModules>true</EnableModules>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
