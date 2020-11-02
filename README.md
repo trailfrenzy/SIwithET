@@ -130,6 +130,15 @@ Or another option is to let the compiler create the Joule type for you:
 
 The possibilities are endless in the use of this library.
 
+## Derived Units and User Derived Literals (UDL)
+
+Anoter simple way to use a unit type is through C++ UDLs offered in header file `DerivedUnits.h`.
+
+For example to automatically create a Joule for use with the above mentioned header add the following in your code:
+
+`auto joule = 400.0_joule; \\ automatically creates a Joule from the header DerivedUnits.h`
+
+
 
 
 
