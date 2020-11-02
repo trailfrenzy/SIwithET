@@ -57,9 +57,9 @@ namespace Metric
       /**  (from "The International System of Units (SI)" )
       The kilogram is the only coherent SI unit, whose nameand symbol, for historical reasons,
          include a prefix.Namesand symbols for decimal multiplesand sub - multiples of the unit of
-         mass are formed by attaching prefix names and symbols to the unit name ìgramî and the
-         unit symbol ìgî respectively.For example, 10?6 kg is written as milligram, mg, not as
-         microkilogram, ?kg.
+         mass are formed by attaching prefix names and symbols to the unit name ‚Äúgram‚Äù and the
+         unit symbol ‚Äúg‚Äù respectively.For example, 10‚àí6 kg is written as milligram, mg, not as
+         microkilogram, Œºkg.
       */
       struct kilogram : MASS /// represents quantity mass of a kilogram.
       {
@@ -105,7 +105,7 @@ namespace Metric
       struct celsius : TEMPERATURE/// represents quanity Temperature celsius.
       {
          enum:bool{ IsBase = false };/// Lets using classes know if class is used as a base.
-         constexpr static char const * str()  noexcept { return "∞C"; }/// Called by WhatAmI when creating the string describing the type.
+         constexpr static char const * str()  noexcept { return "¬∞C"; }/// Called by WhatAmI when creating the string describing the type.
          // currently only kelvin is the only Temperature offered in compound
          constexpr static double toBase( double C ) noexcept { return C + 273.15; }///  Multiply by toBase() to get base value.
          constexpr static double fromBase( double K ) noexcept { return K - 273.15; }/// Multiply by fromBase() to get diminsional value.
@@ -113,13 +113,13 @@ namespace Metric
       };
 
 /*
-The ampere is defined by taking the fixed numerical value of the elementary charge e to be 1.602176634 ◊ 10?19 when expressed in the unit C, which is equal to A s, where the second is defined in terms of ??Cs.
+The ampere is defined by taking the fixed numerical value of the elementary charge e to be 1.602176634 √ó 10?19 when expressed in the unit C, which is equal to A s, where the second is defined in terms of ??Cs.
 
 The SI unit of electric potential difference is the volt (V) 1 V = 1 W/A.
 
 The SI unit of electric resistance is the ohm (?). 1 ? = 1 V/A.
 */
-      using ELECTRIC_CURRENT = SystemOfUnits::helpers::SymbolForDimension<'A'>;
+      using ELECTRIC_CURRENT = SystemOfUnits::helpers::SymbolForDimension<'C'>;
       struct ampere : ELECTRIC_CURRENT /// represents quantity electric current.
       {
          enum:bool{ IsBase = true };/// Lets using classes know if class is used as a base.
@@ -130,7 +130,7 @@ The SI unit of electric resistance is the ohm (?). 1 ? = 1 V/A.
       };
    }
 }
-// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright ¬© 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

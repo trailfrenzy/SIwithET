@@ -20,6 +20,23 @@ namespace SystemOfUnits {
       Pass the dimension as a single letter as the template argument. The single letter is represent the base unit diminsion.
       Use the typical symbol found from https://www.bipm.org/en/measurement-units/ "The International System of Units(SI), 9th edition 2019, pg 136 section 2.3.3, Table 3.
 
+      Physical quantities can be organized in a system of dimensions, where the system used is
+      decided by convention. Each of the seven base quantities used in the SI is regarded as
+      having its own dimension. The symbols used for the base quantities and the symbols used
+      to denote their dimension are shown in Table 3.
+      Table 3. Base quantities and dimensions used in the SI
+      _____________________________________________________________________________
+      Base quantity Typical symbol for quantity Symbol for dimension
+      _____________________________________________________________________________
+      time                       t              T
+      length                     l, x, r, etc.  L
+      mass                       m              M
+      electric current           I, i           I
+      thermodynamic temperature  T              Θ
+      amount of substance        n              N
+      luminous intensity         Iv             J
+      _____________________________________________________________________________
+
       All other quantities, with the exception of counts, are derived quantities, which may be
       written in terms of base quantities according to the equations of physics. The dimensions of
       the derived quantities are written as products of powers of the dimensions of the base
@@ -43,6 +60,13 @@ namespace SystemOfUnits {
             return str;
          }
       };
+
+      /**
+      For example to use set up a dimension:
+      @code using ELECTRIC_CURRENT = SystemOfUnits::helpers::SymbolForDimension<'C'>;       @endcode
+
+      These base dimensions are already established in the library.
+      */
 
       /// <summary>
       /// Uses the Trait to verify if template paramater is actually a SymbolForDimension type.
@@ -80,7 +104,7 @@ namespace SystemOfUnits {
 
    template<DIMENSION BASE_UNIT > struct is_CURRENT
    {
-      constexpr static bool value = BASE_UNIT::sym == 'A' || BASE_UNIT::sym == ' ';
+      constexpr static bool value = BASE_UNIT::sym == 'C' || BASE_UNIT::sym == ' ';
    };
 
    // Concepts used as the rules in building SI::Units
