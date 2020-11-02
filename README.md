@@ -132,6 +132,7 @@ The possibilities are endless in the use of this library.
 
 ## Derived Units and User Derived Literals (UDL)
 
+Derived Units are constructed as products of powers of the base units.
 Anoter simple way to use a unit type is through C++ UDLs offered in header file `DerivedUnits.h`.
 
 For example to automatically create a Joule for use with the above mentioned header add the following in your code:

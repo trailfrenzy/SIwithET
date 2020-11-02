@@ -78,7 +78,7 @@ namespace SystemOfUnits {
       };
    }
 
-   enum { THETA = 233 }; // from www.asciitable.com
+   enum:char unsigned { THETA = 233 }; // from www.asciitable.com
    /// Base classes for the dimensions of the base units
    using Length          = helpers::SymbolForDimension<'L'>;
    using Mass            = helpers::SymbolForDimension<'M'>;
@@ -106,7 +106,7 @@ namespace SystemOfUnits {
 
    template<DIMENSION BASE_UNIT > struct is_TEMPERATURE
    {
-      constexpr static bool value = BASE_UNIT::sym == 233 || BASE_UNIT::sym == ' ';
+      constexpr static bool value = BASE_UNIT::sym == THETA || BASE_UNIT::sym == ' ';
    };
 
    template<DIMENSION BASE_UNIT > struct is_CURRENT
