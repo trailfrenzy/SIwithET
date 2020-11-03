@@ -4,6 +4,6 @@
 
  This software is provided "as is" without express or implied warranty.
  
- Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
+ Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
  curt.leslie.lewis.martin@gmail.com
 

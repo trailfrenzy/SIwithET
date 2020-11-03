@@ -1,7 +1,8 @@
 //#include <SI.h>
 #include "MetricTypes.h"
 #include "DerivedUnits.h"
-#include"WhatAmI.h"
+#include "WhatAmI.h"
+#include "operators.h"
 #include "ExpectUnitTest.h"
 #include <gtest/gtest.h>
 
@@ -59,15 +60,26 @@ TEST(Current, IsWattType)
 }
 
 TEST(Current, Watt_UDL) {
+   using namespace SystemOfUnits::literals;
    auto watt = 67.8_watt;
    EXPECT_UNIT_EQ(watt, 67.8);
    ASSERT_EQ("watt", SystemOfUnits::WhatAmI(watt));
 }
 
-TEST(Current, Watt_UDL_Dimension) {
+TEST(Current, Watt_UDL_Dimension) 
+{
+   using SystemOfUnits::literals::operator""_watt;
    auto watt = 400.0_watt;
 
    EXPECT_EQ(SystemOfUnits::Diminsion(watt), "[L]^2[M]/[T]^3");
+}
+
+TEST(Current, MakeWatt_From_VoltbyAmpere)
+{
+   using namespace SystemOfUnits::literals;
+   auto watt = 100.0_volt * 4.0_ampere;
+   EXPECT_UNIT_EQ(watt, 400.0);
+   ASSERT_EQ("[L]^2[M]/[T]^3", SystemOfUnits::Diminsion(watt));
 }
 
 // Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.

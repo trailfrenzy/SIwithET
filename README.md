@@ -137,6 +137,8 @@ Anoter simple way to use a unit type is through C++ UDLs offered in header file 
 
 For example to automatically create a Joule for use with the above mentioned header add the following in your code:
 
+`using namesapce SystemOfUnits::literals;`
+
 `auto joule = 400.0_joule; \\ automatically creates a Joule from the header DerivedUnits.h`
 
 
