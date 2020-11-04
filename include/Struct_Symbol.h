@@ -85,45 +85,53 @@ namespace SystemOfUnits {
    using Time            = helpers::SymbolForDimension<'T'>;
    using Temperature     = helpers::SymbolForDimension< char(THETA) >;
    using ElectricCurrent = helpers::SymbolForDimension<'C'>;
+   using NO_DIM          = SystemOfUnits::helpers::SymbolForDimension<' '>;
 
    // Contrait for one of the type Dimensions.
    template< typename T > concept DIMENSION = helpers::is_SymbolForDimension<T>::value;
 
+   template< DIMENSION BASE_UNIT > struct is_Dimensionless
+   {
+      constexpr static bool value = BASE_UNIT::sym == ' ';
+   };
+
    template< DIMENSION BASE_UNIT > struct is_LENGTH //: std::is_integral<bool, std::is_base_of< SystemOfUnits::helpers::SymbolForDimension<'L'>, T>::value >::value;
    {
-      constexpr static bool value = BASE_UNIT::sym == 'L' || BASE_UNIT::sym == ' ';
+      constexpr static bool value = BASE_UNIT::sym == 'L';
    };
 
    template<DIMENSION BASE_UNIT > struct is_TIME
    {
-      constexpr static bool value = BASE_UNIT::sym == 'T' || BASE_UNIT::sym == ' ';
+      constexpr static bool value = BASE_UNIT::sym == 'T';
    };
 
    template<DIMENSION BASE_UNIT > struct is_MASS
    {
-      constexpr static bool value = BASE_UNIT::sym == 'M' || BASE_UNIT::sym == ' ';
+      constexpr static bool value = BASE_UNIT::sym == 'M';
    };
 
    template<DIMENSION BASE_UNIT > struct is_TEMPERATURE
    {
-      constexpr static bool value = BASE_UNIT::sym == THETA || BASE_UNIT::sym == ' ';
+      constexpr static bool value = BASE_UNIT::sym == THETA;
    };
 
    template<DIMENSION BASE_UNIT > struct is_CURRENT
    {
-      constexpr static bool value = BASE_UNIT::sym == 'C' || BASE_UNIT::sym == ' ';
+      constexpr static bool value = BASE_UNIT::sym == 'C';
    };
 
    // Concepts used as the rules in building SI::Units
 
+   template<typename T> concept Dimensionless = is_Dimensionless<T>::value;
+
    /// Constrait for Length to ensure only a Length type is passed for an arugment.
-   template<typename T> concept LENGTH = is_LENGTH<T>::value && sizeof(T) == 1;
+   template<typename T> concept LENGTH = is_LENGTH<T>::value || Dimensionless<T>;
 
    /// Constrait for Time to ensure only a Time type is passed for an arugment.
-   template<typename T> concept TIME = is_TIME<T>::value && sizeof(T) == 1;
+   template<typename T> concept TIME = is_TIME<T>::value || Dimensionless<T>;
 
    /// Constrait for Mass to ensure only a Mass type is passed for an arugment.
-   template<typename T> concept MASS = is_MASS<T>::value && sizeof(T) == 1;
+   template<typename T> concept MASS = is_MASS<T>::value || Dimensionless<T>;
 
    /// Constrait for Temperature to ensure only a Temperature type is passed for an arugment.
    template<typename T> concept TEMPERATURE = is_TEMPERATURE<T>::value && sizeof(T) == 1;

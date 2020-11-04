@@ -328,7 +328,6 @@ namespace SystemOfUnits /// covers the basics of the system
    };
 
    /// struct is used to create no dimension unit type. Used in the operators.h for (* /)
-   using NO_DIM = SystemOfUnits::helpers::SymbolForDimension<' '>;
    struct NoDim : NO_DIM
    {
       /// Lets using classes know if class is used as a base
