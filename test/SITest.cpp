@@ -5,6 +5,7 @@
 #include "ExpectUnitTest.h"
 #include "DerivedUnits.h"
 #include "operators.h"
+#include "Make_Squared.h"
 #include <gtest/gtest.h>
 #include <type_traits>
 #include <sstream>

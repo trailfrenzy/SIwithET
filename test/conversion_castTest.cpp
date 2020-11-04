@@ -13,6 +13,7 @@
 #include "MetricTypes.h"
 #include "conversion_cast.h"
 #include "pow.h"
+#include "Make_Squared.h"
 #include "ExpectUnitTest.h"
 #include <gtest\gtest.h>
 

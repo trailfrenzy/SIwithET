@@ -37,6 +37,9 @@ namespace SystemOfUnits
 {
    template<typename T> concept Arithmetic = std::is_arithmetic<T>::value;
 
+   /// a type with no dimensions or quantity types.  The same size as a double.
+   //using tNoUnit = unitType< NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0 >;
+
    namespace operators
    {
       /** \brief The trait idea came from "C++ Templates", pg 332.

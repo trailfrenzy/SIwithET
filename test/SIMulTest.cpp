@@ -9,6 +9,7 @@ operator for the System of Units Template Class.
 #include "template_help.h"
 #include "WhatAmI.h"
 #include "ExpectUnitTest.h"
+#include "Make_Squared.h"
 #include <gtest/gtest.h>
 
 #include <memory>

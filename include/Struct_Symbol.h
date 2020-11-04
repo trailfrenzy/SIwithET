@@ -85,7 +85,7 @@ namespace SystemOfUnits {
    using Time            = helpers::SymbolForDimension<'T'>;
    using Temperature     = helpers::SymbolForDimension< char(THETA) >;
    using ElectricCurrent = helpers::SymbolForDimension<'C'>;
-   using NO_DIM          = SystemOfUnits::helpers::SymbolForDimension<' '>;
+   using NO_DIM          = helpers::SymbolForDimension<' '>;
 
    // Contrait for one of the type Dimensions.
    template< typename T > concept DIMENSION = helpers::is_SymbolForDimension<T>::value;
@@ -134,10 +134,10 @@ namespace SystemOfUnits {
    template<typename T> concept MASS = is_MASS<T>::value || Dimensionless<T>;
 
    /// Constrait for Temperature to ensure only a Temperature type is passed for an arugment.
-   template<typename T> concept TEMPERATURE = is_TEMPERATURE<T>::value && sizeof(T) == 1;
+   template<typename T> concept TEMPERATURE = is_TEMPERATURE<T>::value || Dimensionless<T>;
 
    /// Constrait for Current to ensure only a Current type is passed for an arugment.
-   template<typename T> concept CURRENT = is_CURRENT<T>::value && sizeof(T) == 1;
+   template<typename T> concept CURRENT = is_CURRENT<T>::value || Dimensionless<T>;
 
    /// Used as the base class for UnitTypes for use in the identity template.
    struct Trait_Unit {};

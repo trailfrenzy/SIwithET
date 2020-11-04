@@ -3,6 +3,7 @@
 #include "MetricTypes.h"
 #include "TimeAtomicUnits.h"  // contains the time atomic units
 #include "WhatAmI.h"
+#include "Make_Squared.h"
 #include "ExpectUnitTest.h"
 #include <gtest/gtest.h>
 #include <memory>

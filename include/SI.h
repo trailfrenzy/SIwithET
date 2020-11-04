@@ -315,18 +315,6 @@ namespace SystemOfUnits /// covers the basics of the system
    /// </summary>
    template< typename T> concept UnitSpecies = is_UnitType<T>::value; 
    
-   /// template used to create a type has been squared
-   template< typename UNIT > struct MakeSQ
-   {
-      using type = unitType
-         < typename UNIT::Length, UNIT::eL + UNIT::eL // cannot use * , uses operator*
-         , typename UNIT::Time,   UNIT::et + UNIT::et
-         , typename UNIT::Mass,   UNIT::eM + UNIT::eM
-         , typename UNIT::Temperature, UNIT::eT + UNIT::eT
-         , typename UNIT::Charge, UNIT::eQ + UNIT::eQ
-         >;
-   };
-
    /// struct is used to create no dimension unit type. Used in the operators.h for (* /)
    struct NoDim : NO_DIM
    {
@@ -352,7 +340,7 @@ namespace SystemOfUnits /// covers the basics of the system
 
    /// Create a struct base on the quantity types.
    /// Used as a builder to create different types with the same quantities.  See builder pattern.
-   template< LENGTH LEN, TIME TIM, MASS MAS, TEMPERATURE TEM = NoDim, CURRENT CHR = NoDim > struct MakeType
+   template< LENGTH LEN, TIME TIM, MASS MAS, TEMPERATURE TEM, CURRENT CHR > struct MakeType
    {
       /// template is used to create unitTypes with just the dimension types.
       template<int L, int t, int M, int T, int Q> struct MakeDim
