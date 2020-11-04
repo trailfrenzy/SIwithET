@@ -1,14 +1,16 @@
 // File contains the basic unit tests for SI.h
 #include "SI.h"
+#include "MetricTypes.h"
+#include "template_help.h"
+#include "ExpectUnitTest.h"
+#include "DerivedUnits.h"
+#include "operators.h"
 #include <gtest/gtest.h>
 #include <type_traits>
 #include <sstream>
 #include <string>
 #include <memory>
 #include <type_traits>
-#include "MetricTypes.h"
-#include "template_help.h"
-#include "ExpectUnitTest.h"
 
 template< typename UNIT_TYPE >
 class SITest : public testing::Test
@@ -423,7 +425,25 @@ TEST(BasicSI, Concepts_CompileError )
    typedef SOU::unitType< Meter, 0, AT::second, -2, gram, 2, SOU::NoDim, 0, SOU::NoDim > t_gramPsecSQ;
 
 }
-// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
+
+// TODO: Why won't auto TestFunctionUsedBelow(SystemOfUnits::UnitSerial auto a, SystemOfUnits::UnitSerial auto b){};  work
+template <SystemOfUnits::UnitSerial T, SystemOfUnits::UnitSerial U> 
+auto TestFunctionUsedBelow(T a, U b)
+{
+   return a * b;
+}
+
+TEST(BasicSI, Concept_Function)
+{
+   using namespace SystemOfUnits::literals;
+   auto volt = 120.0_volt;
+   auto ampere = 4.0_ampere;
+
+   auto watt = TestFunctionUsedBelow(volt, ampere);
+   EXPECT_UNIT_EQ(watt, 480.0);
+}
+
+// Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

@@ -141,6 +141,19 @@ For example to automatically create a Joule for use with the above mentioned hea
 
 `auto joule = 400.0_joule; \\ automatically creates a Joule from the header DerivedUnits.h`
 
+## Writing functions which have a UnitType for an argument
+
+For some reason was unable to use concepts as function arguments using VS C++20.
+the following worked as a function using UnitTypes for arguments.
+
+`template <SystemOfUnits::UnitSerial T, SystemOfUnits::UnitSerial U> `
+
+`auto TestFunctionUsedBelow(T t, U u){`
+
+`   return t * u;`
+
+`}`
+
 
 
 
