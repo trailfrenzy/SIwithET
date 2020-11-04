@@ -109,7 +109,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>D:\Projects\googletest\googletest\msvc\2010\gtest\x64-Debug;%(AdditionalLibraryDirectories);$(SolutionDir)\..\googletest\googletest\msvc\2010\gtest\x64-$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>gtestd.lib;gtest_maind.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>gtestd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
