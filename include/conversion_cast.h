@@ -45,7 +45,7 @@ namespace SystemOfUnits
 	@param IN in is what will be converted
 	@return OUT the new type
 	*/
-	template< SystemOfUnits::UnitSerial OUT, SystemOfUnits::UnitSerial IN > OUT conversion_cast(IN const &in)
+	template< SystemOfUnits::UnitSpecies OUT, SystemOfUnits::UnitSpecies IN > OUT conversion_cast(IN const &in)
       noexcept(noexcept(OUT) && noexcept(IN))
 	{
       static_assert( dimensions_same_assert< OUT, IN >(), "Dimensions of the two types are not the same");

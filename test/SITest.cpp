@@ -428,7 +428,7 @@ TEST(BasicSI, Concepts_CompileError )
 }
 
 // TODO: Why won't auto TestFunctionUsedBelow(SystemOfUnits::UnitSerial auto a, SystemOfUnits::UnitSerial auto b){};  work
-template <SystemOfUnits::UnitSerial T, SystemOfUnits::UnitSerial U> 
+template <SystemOfUnits::UnitSpecies T, SystemOfUnits::UnitSpecies U>
 auto TestFunctionUsedBelow(T a, U b)
 {
    return a * b;

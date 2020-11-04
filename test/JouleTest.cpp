@@ -53,7 +53,7 @@ TEST(Joule, Product) {
 // TODO: Not ready for implimentation.
 namespace SystemOfUnits
 {
-	template< SOU::UnitSerial T, SOU::UnitSerial U >
+	template< SOU::UnitSpecies T, SOU::UnitSpecies U >
 	struct is_same
 	{
 		static_assert(std::is_same_v< T::Length, U::Length >);

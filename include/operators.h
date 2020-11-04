@@ -49,7 +49,7 @@ namespace SystemOfUnits
        created during multiplication and division operations using the SI templates.  @code A_Trait<T1,T2> @endcode
        allows operators "*" and "/" to use references of the SI types and values for built in types.
        */
-      template < UnitSerial T, UnitSerial T2 > struct A_Trait
+      template < UnitSpecies T, UnitSpecies T2 > struct A_Trait
       {
          static_assert(SystemOfUnits::is_UnitType<T>::value, "Must be a SystemOfUnits::UnitType");
          static_assert(SystemOfUnits::is_UnitType<T2>::value || std::is_arithmetic<T2>::value, "Must be a SystemOfUnits::UnitType or arithmetic type");
@@ -382,7 +382,7 @@ namespace SystemOfUnits
       template< Arithmetic A> ShowDim_t operator<<(A a) { out << a; return *this; }
 
       /// Used by the UnitType to display the acutal diminsion
-      template< UnitSerial S > ShowDim_t operator<<(S val)
+      template< UnitSpecies S > ShowDim_t operator<<(S val)
       {
          using t_unit = S; // SystemOfUnits::unitType<L, iL, t, it, M, iM, T, iT, Q, iQ>;
          using t_char = typename TOUT::char_type;  // will not compile if TOUT does not have char_type.
@@ -452,7 +452,7 @@ inline auto operator<<(TOUT & out, SystemOfUnits::ShowUnits_t<TOUT>* (*)()) //->
 }
 
 /// template function which is multiplication operator of two different operands
-template < SystemOfUnits::UnitSerial R1, SystemOfUnits::UnitSerial R2 >
+template < SystemOfUnits::UnitSpecies R1, SystemOfUnits::UnitSpecies R2 >
 /** product operator
    @param unitType left-handed side
    @param unitType right-handed side
@@ -465,7 +465,7 @@ noexcept( noexcept(SystemOfUnits::operators::Mul_Result<R1, R2>))
 }
 
 /// template function which is divisional operator of two different operands
-template< SystemOfUnits::UnitSerial R1, SystemOfUnits::UnitSerial R2 >
+template< SystemOfUnits::UnitSpecies R1, SystemOfUnits::UnitSpecies R2 >
 /** ratio operator
    @param Numerator unitType left-handed side
    @param Denominator unitType left-handed side

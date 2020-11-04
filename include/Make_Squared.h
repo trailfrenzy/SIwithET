@@ -6,7 +6,7 @@ namespace SystemOfUnits
 {
    /// template used to create a type has been squared.
    /// Since C++11 the templeate is not used as much since it was used more to automatically produce a result type prior to auto in C++11. Still availible for use.
-   template< UnitSerial UNIT > struct MakeSQ
+   template< UnitSpecies UNIT > struct MakeSQ
    {
       using type = unitType
          < typename UNIT::Length, UNIT::eL + UNIT::eL // 

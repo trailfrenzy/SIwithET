@@ -1,7 +1,6 @@
 /** @file SI.h https://github.com/trailfrenzy/SIwithET
   * contains the the class template which represent any different unit type to enforce The Principle Dimensional Homogeneity.
 */
-//import StructSymbols;
 #ifndef SI_INCLUDE_H_07MAY2003
 #define SI_INCLUDE_H_07MAY2003
 #include "Struct_Symbol.h"
@@ -26,7 +25,7 @@ namespace SystemOfUnits /// covers the basics of the system
 
       /// Dimensions as enum
       enum:int
-         { eL = iL /*!< Dimension of Length */
+         { eL = iL   /*!< Dimension of Length */
          , et = it   /*!< Dimension of Time */
          , eM = iM   /*!< Dimension of Mass */
          , eT = iT   /*!< Dimension of Temperature */
@@ -39,11 +38,11 @@ namespace SystemOfUnits /// covers the basics of the system
       static_assert(b_noexcept, "Why is this false?");
 
       // Quantity as typedefs
-      using Length = L;    /*!<  Quantity type for Length */
-      using Time = t;      /*!<  Quantity type for Time */
-      using Mass= M;      /*!<  Quantity type for Mass */
+      using Length = L;      /*!<  Quantity type for Length */
+      using Time = t;        /*!<  Quantity type for Time */
+      using Mass= M;         /*!<  Quantity type for Mass */
       using Temperature = T; /*!<  Quantity type for Temperature */
-      using Charge = Q ;    /*!<  Quantity type for Charge */
+      using Charge = Q ;     /*!<  Quantity type for Charge */
 
       /// default constructor (does not initialize scalar with default value, just like a built in type).
       unitType() noexcept(b_noexcept) = default;
@@ -77,12 +76,11 @@ namespace SystemOfUnits /// covers the basics of the system
      constexpr unitType &operator=(unitType &&rt) && noexcept(b_noexcept) = default;
 
      /// prevent assigning scalar values to an existing unit but still allows assnment to a new type.
-     /// Important to prevent novice users from assigning new amount to existing objects
+     /// Important to prevent implicit assignment of new amount to existing objects.
      unitType& operator=(t_float val) = delete;
 
       /** returns the scalar value of the object.  Would like to eliminate this method but is used by conversion_cast<> and testing.
           Method is a crutch for any novice of the library.
-      TODO: Use EXPECT_TRUE() instead of EXPECT_DOUBLE_EQ()
         * @return the scalar value of the type. */
       constexpr auto amount() const noexcept(b_noexcept) { return m_amount; }
 
@@ -270,14 +268,12 @@ namespace SystemOfUnits /// covers the basics of the system
    };
 
    /// Type trait struct which tests if the type is of UnitType class template above or not.
-   template< typename T > struct is_UnitType : std::integral_constant<bool, std::is_base_of< Trait_Unit, T>::value > //{};
-   {
-      //constexpr static bool value = std::is_base_of< Trait_Unit, T>::value;
-   };
+   template< typename T > struct is_UnitType : std::integral_constant<bool, std::is_base_of< Trait_Unit, T>::value > {};
 
-   ///  Constraint used for Template arguments for templates only for UnitTypes. Called Serial since serial is a group of types.
-   template<typename T> concept UnitSerial = is_UnitType<T>::value;
-
+   /// Concept for what a SI Unit is. The name 'UnitSpecies' is from "Elements of Programming" , Alexander Stepanove, Paul McJones, Semigroup Press, Sec 1.7. 
+   /// We call a collection of requirments a concpet, Tyeps represent spcies, concpts reprsents genera.
+   /// All of the different UnitType's which are defined by the template above belong to the species of UnitSpecies.
+   template< typename T> concept UnitSpecies = is_UnitType<T>::value;
 
    /// Derived units. Derived units are defined as products of powers of the base units. When the numerical
    /// factor of this product is one, the derived units are called coherent derived units.The base
@@ -285,7 +281,7 @@ namespace SystemOfUnits /// covers the basics of the system
    /// units.The word “coherent” here means that equations between the numerical values of
    /// quantities take exactly the same form as the equations between the quantities themselves.
    /// Some of the coherent derived units in the SI are given special names.
-   template< UnitSerial UNIT_TYPE, char const * NAME >
+   template< UnitSpecies UNIT_TYPE, char const * NAME >
    struct CoherentUnit : public UNIT_TYPE
    {
       using Base_Type = UNIT_TYPE;
@@ -308,13 +304,6 @@ namespace SystemOfUnits /// covers the basics of the system
       enum:bool{ value = true };
    };
 
-   /// <summary>
-   ///  Concept for what a SI Unit is. The name 'UnitSpecies' is from "Elements of Programming" , Alexander Stepanove, Paul McJones, Semigroup Press, Sec 1.7. 
-   /// We call a collection of requirments a concpet, Tyeps represent spcies, concpts reprsents genera.
-   /// All of the different UnitType's which are defined by the template above belong to the species of UnitSpecies.
-   /// </summary>
-   template< typename T> concept UnitSpecies = is_UnitType<T>::value; 
-   
    /// struct is used to create no dimension unit type. Used in the operators.h for (* /)
    struct NoDim : NO_DIM
    {
@@ -371,7 +360,7 @@ namespace SOU = SystemOfUnits; ///< Shortcut to the namespace.
 /** 
  @mainpage My Personal Index Page
  @section copyright_sec Copyright
- Copyright © 2003-2019 "Curt" Leslie L. Martin, All rights reserved.
+ Copyright © 2003-2020 "Curt" Leslie L. Martin, All rights reserved.
  curt.leslie.lewis.martin@gmail.com
 
  Permission to use, copy, modify, and distribute this software for any
