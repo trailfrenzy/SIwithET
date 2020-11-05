@@ -53,7 +53,7 @@ TEST(Current, IsWattType)
    using t_nameWatt = SystemOfUnits::CoherentUnit<Watt, name >;
 
    t_nameWatt watt(4.5);
-   ASSERT_TRUE(SystemOfUnits::is_SIwithDIM< t_nameWatt>::value)<< "Tested in SITest.cpp too";
+   ASSERT_TRUE(SystemOfUnits::is_CoherentUnit< t_nameWatt>::value)<< "Tested in SITest.cpp too";
 
    EXPECT_UNIT_EQ(watt, 4.5);
    ASSERT_EQ("watt", SystemOfUnits::WhatAmI(watt));

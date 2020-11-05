@@ -52,7 +52,7 @@ namespace SystemOfUnits
    inline auto UnitName( T const & )
       noexcept(noexcept(std::basic_ostringstream<char_type>) && noexcept(T) )
    {
-      if constexpr (is_SIwithDIM<T>::value) return std::basic_string<char_type>{T::unitName()};
+      if constexpr (is_CoherentUnit<T>::value) return std::basic_string<char_type>{T::unitName()};
       if constexpr (!is_UnitType<T>::value) return std::basic_string<char_type>{};
       else
       {
@@ -70,7 +70,8 @@ namespace SystemOfUnits
    }
 
    /// Returns in std::string what the type the UnitType is.
-   template< typename T > inline std::string WhatAmI(T const &val) {
+   template< typename T > inline std::string WhatAmI(T const &val)
+   {
       using t_char = std::ostringstream::char_type;
       return UnitName<t_char>(val);
    }

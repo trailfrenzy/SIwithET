@@ -366,10 +366,10 @@ using t_nameWatt = SystemOfUnits::CoherentUnit<Watt, name >;
 
 TEST(BasicSI, IsSIwithDim)
 {
-   EXPECT_FALSE(SystemOfUnits::is_SIwithDIM<double>::value);
-   EXPECT_FALSE(SystemOfUnits::is_SIwithDIM<t_Base>::value);
+   EXPECT_FALSE(SystemOfUnits::is_CoherentUnit<double>::value);
+   EXPECT_FALSE(SystemOfUnits::is_CoherentUnit<t_Base>::value);
 
-   ASSERT_TRUE(SystemOfUnits::is_SIwithDIM< t_nameWatt>::value);
+   EXPECT_TRUE(SystemOfUnits::is_CoherentUnit< t_nameWatt>::value);
 }
 
 

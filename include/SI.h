@@ -296,13 +296,10 @@ namespace SystemOfUnits /// covers the basics of the system
       static constexpr auto unitName() noexcept { return NAME; }
    };
 
-   /// Used at compile time to find if type is SIwithDIM<>
-   template< typename T> struct is_SIwithDIM{ enum:bool{ value = false}; };
+   /// Used at compile time to find if type is of a Coherent Unit Type.
+   template< typename T> struct is_CoherentUnit : std::integral_constant<bool, false> {};
 
-   template< typename T, char const * N > struct is_SIwithDIM< CoherentUnit<T, N > >
-   {
-      enum:bool{ value = true };
-   };
+   template< typename T, char const* N > struct is_CoherentUnit< CoherentUnit<T, N > > : std::integral_constant<bool, true> {};
 
    /// struct is used to create no dimension unit type. Used in the operators.h for (* /)
    struct NoDim : NO_DIM

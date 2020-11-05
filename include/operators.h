@@ -421,7 +421,7 @@ namespace SystemOfUnits
          return *this;
       }
 
-      /// Used by any type which is not a builtin or UnitType
+      /// Used by any type which is not a built-in or UnitType
       template< typename T > ShowUnits_t& operator<<(const T& val)
       {
          ref << val;

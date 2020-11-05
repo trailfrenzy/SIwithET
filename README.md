@@ -146,11 +146,11 @@ For example to automatically create a Joule for use with the above mentioned hea
 For some reason was unable to use concepts as function arguments using VS C++20.
 the following worked as a function using UnitTypes for arguments.
 
-`template <SystemOfUnits::UnitSerial T, SystemOfUnits::UnitSerial U> `
+`template <SystemOfUnits::UnitSpecies T, SystemOfUnits::UnitSpecies U> `
 
-`auto TestFunctionUsedBelow(T t, U u){`
+`auto SomeFunction(T t, U u){`
 
-`   return t * u;`
+`   return t * u;  // do a lot more but simple for the example.`
 
 `}`
 
