@@ -108,7 +108,7 @@ namespace SystemOfUnits
       template< typename T1, typename T2 > class base
       {
          /// private struct used in the the two operators (* / )
-         template< typename A1, typename A2 > struct CombineBaseTypes
+         template< Dimension A1, Dimension A2 > struct CombineBaseTypes
          {
             constexpr static double toBase() noexcept( noexcept(A1) && noexcept(A1) )
             { 
@@ -137,7 +137,7 @@ namespace SystemOfUnits
          enum :bool { IsTempSame = std::is_same< typename R1::Temperature, typename R2::Temperature >::value };
          enum :bool { IsChargeSame = std::is_same< typename R1::Charge, typename R2::Charge >::value };
 
-         /* what are the 4 proposed traits used for */
+         /* the 5 proposed traits are used in the result() function of the two inhereted classes */
            /// the proposed length type of the result
          using LenType = typename IF
             < R1::eL == 0 || R2::eL == 0
@@ -238,7 +238,6 @@ namespace SystemOfUnits
          enum isNoDim : bool { val = is_zero_dimensions<Dim>::value };
 
          using Length = typename IF< Dim::eL== Dim::Z, typename R1::Length,   typename IF<R1::eL!=0, typename R1::Length, typename R2::Length>::RET >::RET;
-
          using Time = typename IF< Dim::et== Dim::Z, typename R1::Time  ,    typename IF<R1::et!=0, typename R1::Time  , typename R2::Time  >::RET >::RET;
          using Mass = typename IF< Dim::eM== Dim::Z, typename R1::Mass,      typename IF<R1::eM!=0, typename R1::Mass  , typename R2::Mass  >::RET >::RET;
          using Temperature = typename IF< Dim::eT== Dim::Z, typename R1::Temperature, typename IF<R1::eT!=0, typename R1::Temperature, typename R2::Temperature>::RET >::RET;
