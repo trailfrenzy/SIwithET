@@ -193,6 +193,14 @@ TEST_F(conversion_castTest, TestWrongDim)
    //t_ms ms = conversion_cast< t_ms >( m );
 }
 
+TEST_F(conversion_castTest, constexpr_test)
+{
+   constexpr Metric::t_centimeter cent(20.0);
+   constexpr Metric::t_meter      meter = SOU::conversion_cast<Metric::t_meter>(cent);
+   static_assert(SOU::conversion_cast<Metric::t_meter>(cent).amount() == 0.20
+      , "shows conversion_cast<> supports compile time equations");
+}
+
 TEST(reinterpit_cast, DoesItWork) {
    Metric::t_centimeter cent{ 100.0 };
    //Metric::t_kilogram kg = reinterpret_cast<double>(cent);
