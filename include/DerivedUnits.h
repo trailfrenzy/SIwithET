@@ -47,16 +47,13 @@ namespace SystemOfUnits
          return SystemOfUnits::CoherentUnit<Type, name_str >(d);
       }
 
-      // TODO: add others from Table 4. Derived units "The international System of Units"
-
-
-      // move to MetricTypes when done testing. With the char const [] inside the function cannot be constexpr
+      /// power, work, amount of heat
       inline auto operator"" _watt(long double d) noexcept
       {
          static constexpr char const name_str[] = "watt";
-         using Watt = Metric::AUMetric::MakeDim<2, -3, 1, 0, 0>::type;
+         using Type = Metric::AUMetric::MakeDim<2, -3, 1, 0, 0>::type;
 
-         return SystemOfUnits::CoherentUnit<Watt, name_str >(d);
+         return SystemOfUnits::CoherentUnit<Type, name_str >(d);
       }
 
       /// electric charge
@@ -68,7 +65,7 @@ namespace SystemOfUnits
          return SystemOfUnits::CoherentUnit<Type, name_str >(d);
       }
 
-      // electric current
+      /// electric current
       inline auto operator"" _ampere(long double d)noexcept
       {
          static constexpr char const name_str[] = "ampere";

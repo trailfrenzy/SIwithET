@@ -88,11 +88,11 @@ namespace SystemOfUnits
          // only the numerator or denomitator is used not both, if ZERO then none are used.
          if constexpr (T > 0) {
             buf.first << '[' << C << ']';
-            if (T > 1) buf.first << '^' << T;
+            if constexpr (T > 1) buf.first << '^' << T;
          }
          if constexpr (T < 0) {
             buf.second << '[' << C << ']';
-            if (T < -1) buf.second << '^' << abs(T);
+            if constexpr (T < -1) buf.second << '^' << abs(T);
          }
          return buf;
       }

@@ -22,7 +22,7 @@ class conversion_castTest : public ::testing::Test
 protected:
    Metric::t_centimeter m_cent { 0.0 };
 public:
-	void SetUp() { m_cent = Metric::t_centimeter(0.0); }
+	//void SetUp() { m_cent = Metric::t_centimeter(0.0); }
 private:
 };
 
@@ -33,26 +33,26 @@ TEST_F(conversion_castTest, TestPow)
 {
    using namespace SOU::helpers;
 
-   EXPECT_DOUBLE_EQ(1.0e+010, P< Metric::AtomicUnit::Centimeter >::thePower<-5>::toBase() /*, 0.0001*/);
-   EXPECT_DOUBLE_EQ(1.0e+008, P< Metric::AtomicUnit::Centimeter >::thePower<-4>::toBase()/*, 0.0001*/);
-   EXPECT_DOUBLE_EQ(1.0e+006, P< Metric::AtomicUnit::Centimeter >::thePower<-3>::toBase()/*, 0.0001*/);
-   EXPECT_DOUBLE_EQ(1.0e+004, P< Metric::AtomicUnit::Centimeter >::thePower<-2>::toBase());
-   EXPECT_DOUBLE_EQ(100.0, P< Metric::AtomicUnit::Centimeter >::thePower<-1>::toBase());
-   EXPECT_DOUBLE_EQ(1.0, P< Metric::AtomicUnit::Centimeter >::thePower<0>::toBase());
-   EXPECT_DOUBLE_EQ(0.01, P< Metric::AtomicUnit::Centimeter >::thePower<1>::toBase());
-   EXPECT_DOUBLE_EQ(0.0001, P< Metric::AtomicUnit::Centimeter >::thePower<2>::toBase());
+   static_assert(1.0e+010 == P< Metric::AtomicUnit::Centimeter >::thePower<-5>::toBase() /*, 0.0001*/);
+   static_assert(1.0e+008 == P< Metric::AtomicUnit::Centimeter >::thePower<-4>::toBase()/*, 0.0001*/);
+   static_assert(1.0e+006 == P< Metric::AtomicUnit::Centimeter >::thePower<-3>::toBase()/*, 0.0001*/);
+   static_assert(1.0e+004 == P< Metric::AtomicUnit::Centimeter >::thePower<-2>::toBase());
+   static_assert(100.0 == P< Metric::AtomicUnit::Centimeter >::thePower<-1>::toBase());
+   static_assert(1.0 == P< Metric::AtomicUnit::Centimeter >::thePower<0>::toBase());
+   static_assert(0.01 == P< Metric::AtomicUnit::Centimeter >::thePower<1>::toBase());
+   static_assert(0.0001 == P< Metric::AtomicUnit::Centimeter >::thePower<2>::toBase());
    EXPECT_DOUBLE_EQ(1.0e-006, P< Metric::AtomicUnit::Centimeter >::thePower<3>::toBase() /*, 0.000001*/);
    EXPECT_DOUBLE_EQ(1.0e-008, P< Metric::AtomicUnit::Centimeter >::thePower<4>::toBase() /*, 0.000001*/);
    EXPECT_DOUBLE_EQ(1.0e-010, P< Metric::AtomicUnit::Centimeter >::thePower<5>::toBase() /*, 0.000001*/);
    EXPECT_DOUBLE_EQ(1.0e-012, P< Metric::AtomicUnit::Centimeter >::thePower<6>::toBase() /*, 0.000001*/);
 
-   EXPECT_DOUBLE_EQ(10000.0, P< SOU::MakeFrom<Metric::AtomicUnit::Centimeter> >::thePower<2>::toBase());
+   static_assert(10000.0 == P< SOU::MakeFrom<Metric::AtomicUnit::Centimeter> >::thePower<2>::toBase());
 }
 
 TEST_F(conversion_castTest, MakeFrom)
 {
-   EXPECT_DOUBLE_EQ( 1.0, SOU::MakeFrom< Metric::AtomicUnit::kilogram >::toBase() );
-   EXPECT_DOUBLE_EQ(1000, SOU::MakeFrom<Metric::AtomicUnit::gram>::toBase());
+   static_assert( 1.0 == SOU::MakeFrom< Metric::AtomicUnit::kilogram >::toBase() );
+   static_assert(1000 == SOU::MakeFrom<Metric::AtomicUnit::gram>::toBase());
 
    double out = 2.0;
 
@@ -187,7 +187,7 @@ TEST_F(conversion_castTest, TestWrongDim)
    typedef t_m IN;
    typedef t_ms OUT;
    enum { eALLDIMS_THE_SAME = IN::eL == OUT::eL && IN::et == OUT::et && IN::eM == OUT::eM };
-   EXPECT_TRUE(!eALLDIMS_THE_SAME);
+   static_assert(!eALLDIMS_THE_SAME);
 
    //t_m m = 9.0;
    //t_ms ms = conversion_cast< t_ms >( m );

@@ -5,7 +5,7 @@ using namespace SystemOfUnits;
 
 namespace {
    /// Mock is designed so SOU::UnitType is not used during the test so if failures happens with the thePower<> template, the same failure will happen with UnitType.
-	struct Mock
+	struct Mock : public SystemOfUnits::helpers::Trait_SymbolForDimension
 	{
 		constexpr static double toBase() noexcept { return 2.0; }
 	};
@@ -18,7 +18,7 @@ TEST(powerTest, NoExcept)
 
 TEST(powerTest, Zero)
 {
-	static_assert(helpers::P<int>::thePower<0>::toBase() == 1.0, "To the zeroth order is always 1.0");
+	//static_assert(helpers::P<int>::thePower<0>::toBase() == 1.0, "To the zeroth order is always 1.0");
 	static_assert(helpers::P<Mock>::thePower<0>::toBase() == 1.0, "To the zeroth order is always 1.0");
 }
 
