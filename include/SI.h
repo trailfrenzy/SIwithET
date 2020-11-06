@@ -344,7 +344,7 @@ namespace SystemOfUnits /// covers the basics of the system
    using tNoUnit = unitType< NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0 >;
 
    /// used to call fromBase() while using the toBase() static method.  Used in conversion_cast<>.
-   template< DIMENSION ARG > struct MakeFrom
+   template< DIMENSION ARG > struct MakeFrom : helpers::Trait_SymbolForDimension
    {
       /// inverse of fromBase()
       constexpr static double toBase() noexcept(noexcept(ARG)) { return ARG::fromBase(); }
