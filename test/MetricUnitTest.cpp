@@ -8,16 +8,18 @@ TEST(MetricUnitTest, BasicTest)
 {
 	typedef Metric::AtomicUnit::Meter m;
 	EXPECT_EQ(std::string("meter"), std::string(m::str()));
-	EXPECT_TRUE(m::IsBase == true);
-	EXPECT_TRUE(m::toBase() == 1.0);
-	EXPECT_TRUE(m::fromBase() == 1.0);
+	static_assert(m::IsBase == true);
+   static_assert(m::toBase() == 1.0);
+   static_assert(m::fromBase() == 1.0);
 }
 TEST(MetricUnitTest, BasicTestLength)
 {
 	typedef Metric::AtomicUnit::Meter m;
 	typedef Metric::AtomicUnit::Kilometer km;
-	EXPECT_EQ(1000.0, km::toBase());
+   static_assert(1000.0 == km::toBase());
 }
+
+using namespace SystemOfUnits::literals;
 
 TEST(UDL_Metric, meter)
 {
@@ -27,14 +29,14 @@ TEST(UDL_Metric, meter)
 }
 
 TEST(UDL_Metric, kph) {
-   auto val = 100.0_kph;
-   ASSERT_TRUE(val == 100.0);
+   constexpr auto val = 100.0_kph;
+   static_assert( val == 100.0);
    ASSERT_STREQ(SOU::Diminsion(val).c_str(), "[L]/[T]");
 }
 
 TEST(UDL_Metric, kilometer) {
-   auto L1 = 1000.0_meter;
-   auto L2 = 1.0_kilometer;
+   constexpr auto L1 = 1000.0_meter;
+   constexpr auto L2 = 1.0_kilometer;
    //ASSERT_TRUE(L1 == L2) << "both values are equal";
    ASSERT_TRUE(L1 == SOU::conversion_cast<Metric::t_meter>(L2) ) << "both values are equal, but need to convert km to m";
    ASSERT_TRUE(SOU::conversion_cast<Metric::t_kilometer>(L1) == L2);

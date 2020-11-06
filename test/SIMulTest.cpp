@@ -555,9 +555,13 @@ TEST(Multiply, constexpr_Mul) {
    ASSERT_DOUBLE_EQ(meterCubed.amount(), 32.0) << "The inputs may be constexpr but the result many not";
    constexpr auto mCubed{ m1 * mSq };
    ASSERT_DOUBLE_EQ(mCubed.amount(), 32.0) << "missing a constexp if this fails";
+   static_assert(mCubed == 32.0, "Shows all the mulipication took place at compile time including the comparison operator");
+
+   constexpr double val = (mCubed.amount() - 32.0);
+   static_assert( val < 0.0001 && val > -0.0001 , "Shows all the mulipication took place at compile time" );
 }
 
-// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any
