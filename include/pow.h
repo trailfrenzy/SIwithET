@@ -12,6 +12,7 @@
 #pragma once
 
 #include "template_help.h"
+#include "Struct_Symbol.h"
 
 namespace SystemOfUnits
 {
@@ -19,7 +20,7 @@ namespace SystemOfUnits
    namespace helpers
    {
       /// container struct that contains the nested structs.
-      template< typename T> struct P
+      template< Dimension T> struct P
       {
          /// forward declaration of the struct.
          template< int E > struct thePower;

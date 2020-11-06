@@ -89,33 +89,34 @@ namespace SystemOfUnits {
 
    // Contrait for one of the type Dimensions.
    template< typename T > concept DIMENSION = helpers::is_SymbolForDimension<T>::value;
+   template< typename T > concept Dimension = helpers::is_SymbolForDimension<T>::value;
 
-   template< DIMENSION BASE_UNIT > struct is_Dimensionless
+   template< Dimension BASE_UNIT > struct is_Dimensionless
    {
       constexpr static bool value = BASE_UNIT::sym == ' ';
    };
 
-   template< DIMENSION BASE_UNIT > struct is_LENGTH //: std::is_integral<bool, std::is_base_of< SystemOfUnits::helpers::SymbolForDimension<'L'>, T>::value >::value;
+   template< Dimension BASE_UNIT > struct is_LENGTH //: std::is_integral<bool, std::is_base_of< SystemOfUnits::helpers::SymbolForDimension<'L'>, T>::value >::value;
    {
       constexpr static bool value = BASE_UNIT::sym == 'L';
    };
 
-   template<DIMENSION BASE_UNIT > struct is_TIME
+   template<Dimension BASE_UNIT > struct is_TIME
    {
       constexpr static bool value = BASE_UNIT::sym == 'T';
    };
 
-   template<DIMENSION BASE_UNIT > struct is_MASS
+   template<Dimension BASE_UNIT > struct is_MASS
    {
       constexpr static bool value = BASE_UNIT::sym == 'M';
    };
 
-   template<DIMENSION BASE_UNIT > struct is_TEMPERATURE
+   template<Dimension BASE_UNIT > struct is_TEMPERATURE
    {
       constexpr static bool value = BASE_UNIT::sym == THETA;
    };
 
-   template<DIMENSION BASE_UNIT > struct is_CURRENT
+   template<Dimension BASE_UNIT > struct is_CURRENT
    {
       constexpr static bool value = BASE_UNIT::sym == 'C';
    };
