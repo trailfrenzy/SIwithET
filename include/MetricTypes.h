@@ -17,8 +17,7 @@ namespace Metric
 {
    namespace AU = AtomicUnit;
 
-   // TODO: change AU::gram to kilogram.
-   /// Used in makeing other metric types.
+   /// Used in makeing other metric types. Is the base MakeType for the majority of UnitTypes which users will create or use.
    using AUMetric=SystemOfUnits::MakeType< AU::Meter, AT::second, AU::kilogram, AU::kelvin, AU::ampere >;
 
    /// Length compond units
@@ -55,30 +54,40 @@ namespace Metric
 
 } // end of namespace
 
-// Metric UDL's (User Defined Literals)
-inline constexpr auto operator"" _meter( long double d) noexcept
+// UDL in here so not to pollute the global namespace.
+namespace SystemOfUnits::literals
 {
-   return Metric::t_meter(d);
+   // Metric UDL's (User Defined Literals)
+   inline constexpr auto operator"" _meter(long double d) noexcept
+   {
+      return Metric::t_meter(d);
+   }
+
+   constexpr auto operator"" _kilogram(long double d) noexcept {
+      return Metric::t_kilometer(d);
+   }
+
+   // Kilometer UDL (User Definded Literals)
+   constexpr auto operator"" _kilometer(long double d) noexcept
+   {
+      return Metric::t_kilometer{ static_cast<double>(d) };
+   }
+
+   constexpr auto operator"" _kph(long double d) noexcept
+   {
+      using t_kilometerPerHour = SystemOfUnits::unitType< Metric::AU::Kilometer, 1, AT::hour, -1, Metric::AU::gram, 0, Metric::AU::kelvin, 0, Metric::AU::ampere, 0 >;
+      return t_kilometerPerHour{ d };
+   }
+   constexpr auto operator"" _centimeter(long double d) noexcept
+   {
+      return Metric::t_centimeter{ d };
+   }
+   constexpr auto operator"" _milimeter(long double d) noexcept
+   {
+      return Metric::t_milimeter{ d };
+   }
+
 }
-
-constexpr auto operator"" _kilogram(long double d) noexcept {
-   return Metric::t_kilometer(d);
-}
-
-// Kilometer UDL (User Definded Literals)
-constexpr auto operator"" _kilometer( long double d) noexcept
-{ return Metric::t_kilometer{ static_cast<double>(d) }; }
-
-constexpr auto operator"" _kph( long double d) noexcept
-{
-   using t_kilometerPerHour = SystemOfUnits::unitType< Metric::AU::Kilometer, 1, AT::hour, -1, Metric::AU::gram, 0, Metric::AU::kelvin, 0, Metric::AU::ampere, 0 >;
-   return t_kilometerPerHour{ d };
-}
-constexpr auto operator"" _centimeter(long double d) noexcept
-{ return Metric::t_centimeter{ d }; }
-constexpr auto operator"" _milimeter(long double d) noexcept
-{ return Metric::t_milimeter{ d }; }
-
 // Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
