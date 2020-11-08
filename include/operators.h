@@ -375,7 +375,7 @@ namespace SystemOfUnits
    {
       TOUT &out;  /// TOUT can be std::cout, std::ofstream, std::stringstream, or anyother stream which uses insertors.
    public:
-      ShowDim_t(TOUT &r) : out(r){} // TBD: Make private but will require the inserter which calls it in the same namespace.
+      ShowDim_t(TOUT &r) : out(r){}
 
       /// pass by value instead of reference for built in types.
       template< Arithmetic A> ShowDim_t operator<<(A a) { out << a; return *this; }
@@ -408,7 +408,7 @@ namespace SystemOfUnits
       /// TOUT can be std::cout, std::ofstream, std::stringstream, or anyother stream which uses insertors.
       TOUT &ref;
    public:
-      ShowUnits_t(TOUT &r) : ref(r){} // TBD: Make private but will require the inserter which calls it to be in the same namespace.
+      ShowUnits_t(TOUT &r) : ref(r){}
 
       ///  The built-in types are arithmetic so pass by value and not by reference.
       template< Arithmetic A> ShowUnits_t& operator<<(A a) { ref << a; return *this; }
