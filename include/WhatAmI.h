@@ -82,7 +82,8 @@ namespace SystemOfUnits
 	   using t_bufPair = std::pair< std::ostringstream, std::ostringstream >;
 	   enum { THETA = 233 }; // from www.asciitable.com
 
-      template < char C, int T, typename T_BufPair > inline auto& OneDim(T_BufPair &buf)
+      template < char C, int T, typename T_BufPair >
+      inline auto& OneDim(T_BufPair &buf)
          noexcept( noexcept(t_bufPair::first_type)&&noexcept(t_bufPair::second_type) )
       {
          // only the numerator or denomitator is used not both, if ZERO then none are used.

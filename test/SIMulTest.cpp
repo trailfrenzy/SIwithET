@@ -10,6 +10,7 @@ operator for the System of Units Template Class.
 #include "WhatAmI.h"
 #include "ExpectUnitTest.h"
 #include "Make_Squared.h"
+#include "DerivedUnits.h"
 #include <gtest/gtest.h>
 
 #include <memory>
@@ -560,6 +561,25 @@ TEST(Multiply, constexpr_Mul) {
    constexpr double val = (mCubed.amount() - 32.0);
    static_assert( val < 0.0001 && val > -0.0001 , "Shows all the mulipication took place at compile time" );
 }
+
+// TODO: Why won't auto TestFunctionUsedBelow(SystemOfUnits::UnitSerial auto a, SystemOfUnits::UnitSerial auto b){};  work
+template <SystemOfUnits::UnitSpecies T, SystemOfUnits::UnitSpecies U>
+auto TestFunctionUsedBelow(T a, U b)
+{
+   return a * b;
+}
+
+TEST(Multiply, Concept_Function)
+{
+   using namespace SystemOfUnits::literals;
+   auto volt = 120.0_volt;
+   auto ampere = 4.0_ampere;
+
+   auto watt = TestFunctionUsedBelow(volt, ampere);
+   EXPECT_UNIT_EQ(watt, 480.0);
+}
+
+
 
 // Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com

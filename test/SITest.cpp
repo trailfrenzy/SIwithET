@@ -3,8 +3,6 @@
 #include "MetricTypes.h"
 #include "template_help.h"
 #include "ExpectUnitTest.h"
-#include "DerivedUnits.h"
-#include "operators.h"
 #include "Make_Squared.h"
 #include <gtest/gtest.h>
 #include <type_traits>
@@ -257,13 +255,21 @@ TEST(BasicSI, NoUnitValue) {
 TEST(BasicSI, Mult_float)
 {
    t_Meter km = 3.0 * t_Meter(1.0);
-   EXPECT_EQ(km.amount(), 3.0);
+   EXPECT_UNIT_EQ(km, 3.0);
+
+   km = t_Meter(3.0) * 5.0;
+   EXPECT_UNIT_EQ(km, 15.0);
 }
 
 TEST(BasicSI, Div_float)
 {
    auto m = 9.0 / t_Meter(3.0);
    EXPECT_UNIT_EQ(m, 3.0);
+
+   auto n = t_Meter(30.0) / 3.0;
+   EXPECT_UNIT_EQ(n, 10.0);
+
+   static_assert(std::is_same< decltype(n), t_Meter >::value, "using the built in operator/() not in operator.h");
 }
 
 //TEST(BasicSI, NULL_Value) {
@@ -427,23 +433,6 @@ TEST(BasicSI, Concepts_CompileError )
 
    typedef SOU::unitType< Meter, 0, AT::second, -2, gram, 2, SOU::NoDim, 0, SOU::NoDim > t_gramPsecSQ;
 
-}
-
-// TODO: Why won't auto TestFunctionUsedBelow(SystemOfUnits::UnitSerial auto a, SystemOfUnits::UnitSerial auto b){};  work
-template <SystemOfUnits::UnitSpecies T, SystemOfUnits::UnitSpecies U>
-auto TestFunctionUsedBelow(T a, U b)
-{
-   return a * b;
-}
-
-TEST(BasicSI, Concept_Function)
-{
-   using namespace SystemOfUnits::literals;
-   auto volt = 120.0_volt;
-   auto ampere = 4.0_ampere;
-
-   auto watt = TestFunctionUsedBelow(volt, ampere);
-   EXPECT_UNIT_EQ(watt, 480.0);
 }
 
 // Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
