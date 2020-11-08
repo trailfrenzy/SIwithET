@@ -49,7 +49,7 @@ namespace SystemOfUnits
    /// @return std::string
    /// @note future work is to remove the blank space after each string.
    template< typename char_type, typename T >
-   inline auto UnitName( T const & )
+   inline auto UnitName( T  )
       noexcept(noexcept(std::basic_ostringstream<char_type>) && noexcept(T) )
    {
       if constexpr (is_CoherentUnit<T>::value) return std::basic_string<char_type>{T::unitName()};

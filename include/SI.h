@@ -64,6 +64,11 @@ namespace SystemOfUnits /// covers the basics of the system
         copy constructor was explicit but removed when testing for pass by value instread of pass by reference. One Less machine instruction when pass by ref.
       */
       constexpr unitType(unitType const &val ) noexcept(b_noexcept) = default;
+
+      /** move-constructor from the same unitType.
+      * @param a unitType of the same type.
+        move constructor was explicit but removed when testing for pass by value instread of pass by reference. One Less machine instruction when pass by ref.
+      */
       constexpr unitType(unitType &&val) noexcept(b_noexcept) = default;
 
 	  /** assignment operator
@@ -72,7 +77,10 @@ namespace SystemOfUnits /// covers the basics of the system
 	  */
      constexpr unitType &operator=(unitType const &) & noexcept(b_noexcept) = default;
 
-     /// default move-assignment operator
+     /** move assignment operator
+     * @param value which the left-handed object will be moved
+     * @return the current object
+     */
      constexpr unitType &operator=(unitType &&rt) && noexcept(b_noexcept) = default;
 
      /// prevent assigning scalar values to an existing unit but still allows assnment to a new type.
@@ -80,7 +88,7 @@ namespace SystemOfUnits /// covers the basics of the system
      unitType& operator=(t_float val) = delete;
 
       /** returns the scalar value of the object.  Would like to eliminate this method but is used by conversion_cast<> and testing.
-          Method is a crutch for any novice of the library.
+          Method is a crutch for any novice of the library. Used in the Test Suite excessively. 
         * @return the scalar value of the type. */
       constexpr auto amount() const noexcept(b_noexcept) { return m_amount; }
 
