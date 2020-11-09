@@ -93,7 +93,7 @@ namespace SystemOfUnits
          enum : bool { value = R1::eL == 0 && R1::et == 0 && R1::eM == 0 && R1::eT == 0 && R1::eQ == 0 };
       };
 
-      /// base class to Mul_Result and Div_Result
+      /// Base class to Mul_Result and Div_Result
       /** NOTE:
       "Expression Templates, Chap 18", C++ Templates The Complete Guide, Addison-Wesley,
       David Vandevoorde and Nicolai M. Josuttis, 2003.
@@ -105,7 +105,7 @@ namespace SystemOfUnits
 
 	  Remember that all enums and types are calculated at compile time.
       */
-      template< typename T1, typename T2 > class base
+      template< typename T1, typename T2 > class Base
       {
          /// private struct used in the the two operators (* / )
          template< Dimensional A1, Dimensional A2 > struct CombineBaseTypes
@@ -217,15 +217,16 @@ namespace SystemOfUnits
 
       /// a class for objects that represents the multiplication of two operands
       template< typename T1, typename T2 >
-      class Mul_Result : public operators::base< T1, T2 >
+      class Mul_Result : public operators::Base< T1, T2 >
       {
-		  using t_base = base< T1, T2 >;
+		  using t_base = Base< T1, T2 >;
 
         typename const t_base::R1::ExprRef m_r1;    /// first operand reference
         typename const t_base::R2::ExprRef m_r2;    /// second operand reference
       public:
 		  using R1 = t_base::R1;
 		  using R2 = t_base::R2;
+
          /// multiplication is addition of the powers 
          enum Dim : int { Z = 0
               , eL = R1::eL + R2::eL   /// Length Dimensional 
@@ -237,11 +238,12 @@ namespace SystemOfUnits
          /// informs user during the compile process if the result has no dimensions.
          enum isNoDim : bool { val = is_zero_dimensions<Dim>::value };
 
-         using Length = typename IF< Dim::eL== Dim::Z, typename R1::Length,   typename IF<R1::eL!=0, typename R1::Length, typename R2::Length>::RET >::RET;
-         using Time = typename IF< Dim::et== Dim::Z, typename R1::Time  ,    typename IF<R1::et!=0, typename R1::Time  , typename R2::Time  >::RET >::RET;
-         using Mass = typename IF< Dim::eM== Dim::Z, typename R1::Mass,      typename IF<R1::eM!=0, typename R1::Mass  , typename R2::Mass  >::RET >::RET;
-         using Temperature = typename IF< Dim::eT== Dim::Z, typename R1::Temperature, typename IF<R1::eT!=0, typename R1::Temperature, typename R2::Temperature>::RET >::RET;
-         using Charge = typename IF< Dim::eQ== Dim::Z, typename R1::Charge   , typename IF<R1::eQ!=0, typename R1::Charge, typename R2::Charge>::RET >::RET;
+         // Yes, these lines are long, but kept long to help the eye catch an error.
+         using Length      = typename IF< Dim::eL == Dim::Z, typename R1::Length, typename IF<R1::eL != 0,      typename R1::Length,      typename R2::Length>::RET >::RET;
+         using Time        = typename IF< Dim::et == Dim::Z, typename R1::Time, typename IF<R1::et != 0,        typename R1::Time,        typename R2::Time  >::RET >::RET;
+         using Mass        = typename IF< Dim::eM == Dim::Z, typename R1::Mass, typename IF<R1::eM != 0,        typename R1::Mass,        typename R2::Mass  >::RET >::RET;
+         using Temperature = typename IF< Dim::eT == Dim::Z, typename R1::Temperature, typename IF<R1::eT != 0, typename R1::Temperature, typename R2::Temperature>::RET >::RET;
+         using Charge      = typename IF< Dim::eQ == Dim::Z, typename R1::Charge, typename IF<R1::eQ != 0,      typename R1::Charge,      typename R2::Charge>::RET >::RET;
 
          /// all results are based on the first operands type, if NoDim then base on the second.
          using TBeforeResult = SystemOfUnits::UnitType
@@ -287,32 +289,34 @@ namespace SystemOfUnits
 
       /// a class for objects that represents the division of two operands
       template< typename T1, typename T2 >
-      class Div_Result : public operators::base< T1, T2 >
+      class Div_Result : public operators::Base< T1, T2 >
       {
-         using t_base = base< T1, T2 >;
+         using t_base = Base< T1, T2 >;
          typename t_base::R1::ExprRef m_r1;    /// first operand reference
          typename t_base::R2::ExprRef m_r2;    /// second operand reference
 
       public:
          using R1 = t_base::R1;
          using R2 = t_base::R2;
+
          /// division is based on subtracting the two dimensions of the operands
          enum Dim:int{ Z = 0
             , eL = R1::eL - R2::eL   /// Length Dimensional 
             , et = R1::et - R2::et   /// Time Dimensional 
             , eM = R1::eM - R2::eM   /// Mass Dimensional 
             , eT = R1::eT - R2::eT   /// Temperature Dimensional 
-            , eQ = R1::eQ - R2::eQ
-         };/// Charge Dimensional 
+            , eQ = R1::eQ - R2::eQ   /// Charge Dimensional 
+         };
 
          /// informs us during the compile process that the result has no dimensions.
          enum isNoDim : bool { val = is_zero_dimensions<Dim>::value };
 
-         using Length = typename IF< Dim::eL==Dim::Z, typename R1::Length,    typename IF<R1::eL!=0, typename R1::Length, typename R2::Length>::RET >::RET;
-         using  Time = typename IF< Dim::et==Dim::Z, typename R1::Time,     typename IF<R1::et!=0, typename R1::Time  , typename R2::Time  >::RET >::RET;
-         using Mass = typename IF< Dim::eM==Dim::Z, typename R1::Mass,      typename IF<R1::eM!=0, typename R1::Mass  , typename R2::Mass  >::RET >::RET;
+         // Yes, these lines are long, but kept long to help the eye catch an error.
+         using Length      = typename IF< Dim::eL==Dim::Z, typename R1::Length,      typename IF<R1::eL!=0, typename R1::Length,      typename R2::Length>::RET >::RET;
+         using Time        = typename IF< Dim::et==Dim::Z, typename R1::Time,        typename IF<R1::et!=0, typename R1::Time  ,      typename R2::Time  >::RET >::RET;
+         using Mass        = typename IF< Dim::eM==Dim::Z, typename R1::Mass,        typename IF<R1::eM!=0, typename R1::Mass  ,      typename R2::Mass  >::RET >::RET;
          using Temperature = typename IF< Dim::eT==Dim::Z, typename R1::Temperature, typename IF<R1::eT!=0, typename R1::Temperature, typename R2::Temperature>::RET >::RET;
-         using Charge = typename IF< Dim::eQ==Dim::Z, typename R1::Charge   , typename IF<R1::eQ!=0, typename R1::Charge, typename R2::Charge>::RET >::RET;
+         using Charge      = typename IF< Dim::eQ==Dim::Z, typename R1::Charge   ,   typename IF<R1::eQ!=0, typename R1::Charge,      typename R2::Charge>::RET >::RET;
 
          /// the type it will be if the dims are not 0
          using TBeforeResult = SystemOfUnits::UnitType
