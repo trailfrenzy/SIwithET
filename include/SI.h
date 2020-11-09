@@ -25,11 +25,11 @@ namespace SystemOfUnits /// covers the basics of the system
 
       /// Dimensions as enum
       enum:int
-         { eL = iL   /*!< Dimension of Length */
-         , et = it   /*!< Dimension of Time */
-         , eM = iM   /*!< Dimension of Mass */
-         , eT = iT   /*!< Dimension of Temperature */
-         , eQ = iQ   /*!< Dimension of Charge */
+         { eL = iL   /*!< Dimensional of Length */
+         , et = it   /*!< Dimensional of Time */
+         , eM = iM   /*!< Dimensional of Mass */
+         , eT = iT   /*!< Dimensional of Temperature */
+         , eQ = iQ   /*!< Dimensional of Charge */
       };
 
       /// Used in all class methods and friend functions for their noexcept()
@@ -352,7 +352,7 @@ namespace SystemOfUnits /// covers the basics of the system
    using tNoUnit = UnitType< NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0 >;
 
    /// used to call fromBase() while using the toBase() static method.  Used in conversion_cast<>.
-   template< DIMENSION ARG > struct MakeFrom : helpers::Trait_SymbolForDimension
+   template< Dimensional ARG > struct MakeFrom : helpers::Trait_SymbolForDimension
    {
       /// inverse of fromBase()
       constexpr static double toBase() noexcept(noexcept(ARG)) { return ARG::fromBase(); }

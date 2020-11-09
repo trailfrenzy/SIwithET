@@ -60,11 +60,11 @@ namespace SystemOfUnits
 
          /// the dimensions of the trait
          enum
-         { eL = T::eL   /// Length Dimension 
-         , et = T::et   /// Time Dimension
-         , eM = T::eM   /// Mass Dimension
-         , eT = T::eT   /// Temperature Dimension
-         , eQ = T::eQ   /// Charge Dimension
+         { eL = T::eL   /// Length Dimensional 
+         , et = T::et   /// Time Dimensional
+         , eM = T::eM   /// Mass Dimensional
+         , eT = T::eT   /// Temperature Dimensional
+         , eQ = T::eQ   /// Charge Dimensional
          };
 
          using Length = typename T::Length;        /// Length type of the incoming arg.
@@ -108,7 +108,7 @@ namespace SystemOfUnits
       template< typename T1, typename T2 > class base
       {
          /// private struct used in the the two operators (* / )
-         template< Dimension A1, Dimension A2 > struct CombineBaseTypes
+         template< Dimensional A1, Dimensional A2 > struct CombineBaseTypes
          {
             constexpr static double toBase() noexcept( noexcept(A1) && noexcept(A1) )
             { 
@@ -228,11 +228,11 @@ namespace SystemOfUnits
 		  using R2 = t_base::R2;
          /// multiplication is addition of the powers 
          enum Dim : int { Z = 0
-              , eL = R1::eL + R2::eL   /// Length Dimension 
-              , et = R1::et + R2::et   /// Time Dimension 
-              , eM = R1::eM + R2::eM   /// Mass Dimension 
-              , eT = R1::eT + R2::eT   /// Temperature Dimension 
-              , eQ = R1::eQ + R2::eQ };/// Charge Dimension 
+              , eL = R1::eL + R2::eL   /// Length Dimensional 
+              , et = R1::et + R2::et   /// Time Dimensional 
+              , eM = R1::eM + R2::eM   /// Mass Dimensional 
+              , eT = R1::eT + R2::eT   /// Temperature Dimensional 
+              , eQ = R1::eQ + R2::eQ };/// Charge Dimensional 
 
          /// informs user during the compile process if the result has no dimensions.
          enum isNoDim : bool { val = is_zero_dimensions<Dim>::value };
@@ -298,12 +298,12 @@ namespace SystemOfUnits
          using R2 = t_base::R2;
          /// division is based on subtracting the two dimensions of the operands
          enum Dim:int{ Z = 0
-            , eL = R1::eL - R2::eL   /// Length Dimension 
-            , et = R1::et - R2::et   /// Time Dimension 
-            , eM = R1::eM - R2::eM   /// Mass Dimension 
-            , eT = R1::eT - R2::eT   /// Temperature Dimension 
+            , eL = R1::eL - R2::eL   /// Length Dimensional 
+            , et = R1::et - R2::et   /// Time Dimensional 
+            , eM = R1::eM - R2::eM   /// Mass Dimensional 
+            , eT = R1::eT - R2::eT   /// Temperature Dimensional 
             , eQ = R1::eQ - R2::eQ
-         };/// Charge Dimension 
+         };/// Charge Dimensional 
 
          /// informs us during the compile process that the result has no dimensions.
          enum isNoDim : bool { val = is_zero_dimensions<Dim>::value };

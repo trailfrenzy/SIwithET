@@ -20,7 +20,7 @@ namespace SystemOfUnits
    namespace helpers
    {
       /// container struct that contains the nested structs.
-      template< Dimension T> struct P
+      template< Dimensional T> struct P
       {
          /// forward declaration of the struct.
          template< int E > struct thePower;

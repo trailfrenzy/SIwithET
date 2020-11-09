@@ -87,36 +87,35 @@ namespace SystemOfUnits {
    using ElectricCurrent = helpers::SymbolForDimension<'C'>;
    using NO_DIM          = helpers::SymbolForDimension<' '>;
 
-   // Contrait for one of the type Dimensions.
-   template< typename T > concept DIMENSION = helpers::is_SymbolForDimension<T>::value;
-   template< typename T > concept Dimension = helpers::is_SymbolForDimension<T>::value;
+   // Contrait for one of the type Dimensions. The adjective dimensional refers to relating to the actual thing.
+   template< typename T > concept Dimensional = helpers::is_SymbolForDimension<T>::value;
 
-   template< Dimension BASE_UNIT > struct is_Dimensionless
+   template< Dimensional BASE_UNIT > struct is_Dimensionless
    {
       constexpr static bool value = BASE_UNIT::sym == ' ';
    };
 
-   template< Dimension BASE_UNIT > struct is_LENGTH //: std::is_integral<bool, std::is_base_of< SystemOfUnits::helpers::SymbolForDimension<'L'>, T>::value >::value;
+   template< Dimensional BASE_UNIT > struct is_LENGTH //: std::is_integral<bool, std::is_base_of< SystemOfUnits::helpers::SymbolForDimension<'L'>, T>::value >::value;
    {
       constexpr static bool value = BASE_UNIT::sym == 'L';
    };
 
-   template<Dimension BASE_UNIT > struct is_TIME
+   template<Dimensional BASE_UNIT > struct is_TIME
    {
       constexpr static bool value = BASE_UNIT::sym == 'T';
    };
 
-   template<Dimension BASE_UNIT > struct is_MASS
+   template<Dimensional BASE_UNIT > struct is_MASS
    {
       constexpr static bool value = BASE_UNIT::sym == 'M';
    };
 
-   template<Dimension BASE_UNIT > struct is_TEMPERATURE
+   template<Dimensional BASE_UNIT > struct is_TEMPERATURE
    {
       constexpr static bool value = BASE_UNIT::sym == THETA;
    };
 
-   template<Dimension BASE_UNIT > struct is_CURRENT
+   template<Dimensional BASE_UNIT > struct is_CURRENT
    {
       constexpr static bool value = BASE_UNIT::sym == 'C';
    };
