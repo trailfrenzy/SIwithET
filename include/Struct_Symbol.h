@@ -125,19 +125,19 @@ namespace SystemOfUnits {
    template<typename T> concept Dimensionless = is_Dimensionless<T>::value;
 
    /// Constrait for Length to ensure only a Length type is passed for an arugment.
-   template<typename T> concept LENGTH = is_Length<T>::value || Dimensionless<T>;
+   template<typename T> concept LengthRule = is_Length<T>::value || Dimensionless<T>;
 
    /// Constrait for Time to ensure only a Time type is passed for an arugment.   Timeous is adjective of Time.
-   template<typename T> concept TIME = is_Time<T>::value || Dimensionless<T>;
+   template<typename T> concept TimeRule = is_Time<T>::value || Dimensionless<T>;
 
    /// Constrait for Mass to ensure only a Mass type is passed for an arugment.
-   template<typename T> concept MASS = is_Mass<T>::value || Dimensionless<T>;
+   template<typename T> concept MassRule = is_Mass<T>::value || Dimensionless<T>;
 
    /// Constrait for Temperature to ensure only a Temperature type is passed for an arugment.
-   template<typename T> concept TEMPERATURE = is_Temperature<T>::value || Dimensionless<T>;
+   template<typename T> concept TemperatureRule = is_Temperature<T>::value || Dimensionless<T>;
 
    /// Constrait for Current to ensure only a Current type is passed for an arugment.
-   template<typename T> concept CURRENT = is_Current<T>::value || Dimensionless<T>;
+   template<typename T> concept CurrentRule = is_Current<T>::value || Dimensionless<T>;
 
    /// Used as the base class for UnitTypes for use in the identity template.
    struct TraitUnit {};

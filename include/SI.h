@@ -10,11 +10,11 @@ namespace SystemOfUnits /// covers the basics of the system
 {
    /// the class which is the heart of this library
    template
-      < LENGTH L,      int iL    // length
-      , TIME t,        int it    // time
-      , MASS M,        int iM    // mass
-      , TEMPERATURE T, int iT    // temperature
-      , CURRENT Q,     int iQ =0 // charge
+      < LengthRule L,      int iL    // length
+      , TimeRule t,        int it    // time
+      , MassRule M,        int iM    // mass
+      , TemperatureRule T, int iT    // temperature
+      , CurrentRule Q,     int iQ =0 // charge
    >
    class UnitType : public TraitUnit
    {
@@ -334,7 +334,7 @@ namespace SystemOfUnits /// covers the basics of the system
 
    /// Create a struct base on the quantity types.
    /// Used as a builder to create different types with the same quantities.  See builder pattern.
-   template< LENGTH LEN, TIME TIM, MASS MAS, TEMPERATURE TEM, CURRENT CHR > struct MakeType
+   template< LengthRule LEN, TimeRule TIM, MassRule MAS, TemperatureRule TEM, CurrentRule CHR > struct MakeType
    {
       /// template is used to create UnitTypes with just the dimension types.
       template<int L, int t, int M, int T, int Q> struct MakeDim

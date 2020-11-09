@@ -23,11 +23,11 @@ TEST(Diminsion, LEN) {
 	Metric::t_meter meter{ 444.5 };
 	EXPECT_EQ("[L]", SOU::Diminsion(meter));
 }
-TEST(Diminsion, MASS) {
+TEST(Diminsion, MassRule) {
 	Metric::t_gram gram{ 444.5 };
 	EXPECT_EQ("[M]", SOU::Diminsion(gram));
 }
-TEST(Diminsion, TIME ) {
+TEST(Diminsion, TimeRule ) {
 	Metric::t_second sec{ 444.5 };
 	EXPECT_EQ("[T]", SOU::Diminsion(sec));
 }

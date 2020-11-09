@@ -84,7 +84,7 @@ TEST(Dimensions_same, Joule) {
    EXPECT_TRUE(bAns);
 }
 
-TEST(Diminsion, TEMPERATURE ) {
+TEST(Diminsion, TemperatureRule ) {
 	t_Cel C{ 100.0 };
 	EXPECT_EQ(SOU::WhatAmI(C), "°C") << "May need to comeback to see why the dot is not displayed";
 
