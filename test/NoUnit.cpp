@@ -5,7 +5,7 @@
 namespace SystemOfUnits {
    struct NoUnit : public tNoUnit
    {
-      NoUnit(t_float val) : tNoUnit(val) {} /// Needed since unitType has an explicit constructor.
+      NoUnit(t_float val) : tNoUnit(val) {} /// Needed since UnitType has an explicit constructor.
       //NoUnit(float val) : tNoUnit(val) {}
    };
 }

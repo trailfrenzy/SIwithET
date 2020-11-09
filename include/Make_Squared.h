@@ -8,7 +8,7 @@ namespace SystemOfUnits
    /// Since C++11 the templeate is not used as much since it was used more to automatically produce a result type prior to auto in C++11. Still availible for use.
    template< UnitSpecies UNIT > struct MakeSQ
    {
-      using type = unitType
+      using type = UnitType
          < typename UNIT::Length, UNIT::eL + UNIT::eL // 
          , typename UNIT::Time, UNIT::et + UNIT::et
          , typename UNIT::Mass, UNIT::eM + UNIT::eM

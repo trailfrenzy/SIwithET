@@ -13,9 +13,9 @@ using t_Kelvin = AUMetric::MakeDim<0, 0, 0, 1, 0>::type;
 using t_Joule = AUMetric::MakeDim<2, -2, 1, 0, 0>::type;
 using t_kilogram = AUMetric::MakeDim<0, 0, 1, 0, 0>::type;
 
-using t_Far = SOU::unitType< AU::Meter, 0, AT::minute, 0, AU::gram, 0, SOU::AtomicUnit::fahrenheit, 1, AU::ampere, 0 >;
-using t_Cel = SOU::unitType< AU::Meter, 0, AT::minute, 0, AU::gram, 0, SOU::AtomicUnit::celsius, 1, AU::ampere, 0 >;
-using t_HeatFluxC = SOU::unitType< AU::Meter, 2, AT::minute, -1, AU::gram, 1, SOU::AtomicUnit::celsius, -1, AU::ampere, 0 >;
+using t_Far = SOU::UnitType< AU::Meter, 0, AT::minute, 0, AU::gram, 0, SOU::AtomicUnit::fahrenheit, 1, AU::ampere, 0 >;
+using t_Cel = SOU::UnitType< AU::Meter, 0, AT::minute, 0, AU::gram, 0, SOU::AtomicUnit::celsius, 1, AU::ampere, 0 >;
+using t_HeatFluxC = SOU::UnitType< AU::Meter, 2, AT::minute, -1, AU::gram, 1, SOU::AtomicUnit::celsius, -1, AU::ampere, 0 >;
 
 TEST(temperature, ToBase) {
 	EXPECT_NEAR( t_Cel::Temperature::toBase(0.0), 273.15, 0.01);  // to K

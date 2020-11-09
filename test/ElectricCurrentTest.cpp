@@ -12,7 +12,7 @@
 //   template< typename UNIT_TYPE, char const * NAME >
 //   struct SIwithDIM : UNIT_TYPE
 //   {
-//      //using t_unitType = t;
+//      //using t_UnitType = t;
 //      constexpr SIwithDIM(double val) noexcept : UNIT_TYPE(val)
 //      {
 //         static_assert(is_UnitType< UNIT_TYPE>::value);

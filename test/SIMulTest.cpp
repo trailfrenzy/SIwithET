@@ -25,7 +25,7 @@ public:
    typedef Metric::AtomicUnit::gram gram;
    //typedef SOU::MakeType< Meter, second, gram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::ampere > t_Base;
    //typedef SOU::MakeType< Meter, second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::ampere > t_Base;
-   //typedef SI::unitType< Meter, 1, second, 0, gram, 0 > t_Meter;
+   //typedef SI::UnitType< Meter, 1, second, 0, gram, 0 > t_Meter;
    //typedef t_Base::MakeDim<1,0,0,0,0>::type t_Meter;
    typedef Metric::t_meter t_Meter;
 
@@ -225,7 +225,7 @@ TEST_F(MultiplyFirst, TestWithNonAtomicUnitUnitsMass)
 {
    using namespace Metric;
    namespace AU = AtomicUnit;
-   typedef SOU::unitType< AU::Meter, 0, Metric::AtomicUnit::second, -1, AU::kilogram, 0, AU::kelvin, 0, AU::ampere, 0 > t_Hertz;
+   typedef SOU::UnitType< AU::Meter, 0, Metric::AtomicUnit::second, -1, AU::kilogram, 0, AU::kelvin, 0, AU::ampere, 0 > t_Hertz;
 
    Metric::t_kilogram const kg{ 25.0 };
    t_Hertz hz{ 3.0 };
@@ -245,8 +245,8 @@ TEST_F(MultiplyFirst, TestWithNonDimension)
    EXPECT_TRUE(14.00 == 2 * meter) << "with a scalar value";
    t_Meter high = meter * y;
    EXPECT_TRUE(high == 14.0) << "testing with variable";
-   EXPECT_TRUE(21.0 == meter * 3.0) << "testing unitType*constant";
-   EXPECT_TRUE(3.0 * meter == 21.0) << "testing constant * unitType";
+   EXPECT_TRUE(21.0 == meter * 3.0) << "testing UnitType*constant";
+   EXPECT_TRUE(3.0 * meter == 21.0) << "testing constant * UnitType";
 
    double const x = 4;
    //t_Meter low = meter * tNoUnit(3.0);
@@ -299,11 +299,11 @@ public:
    typedef Metric::AtomicUnit::ampere coul;
    typedef Metric::AtomicUnit::kelvin kelvin;
    ///argument 1 for operator testing
-   typedef SOU::unitType< Meter, MUL1, second, 0, gram, 0, kelvin, 0, coul, 0 > t_1;
+   typedef SOU::UnitType< Meter, MUL1, second, 0, gram, 0, kelvin, 0, coul, 0 > t_1;
    ///argument 2 for operator testing
-   typedef SOU::unitType< Meter, MUL2, second, 0, gram, 0, kelvin, 0, coul, 0 > t_2;
+   typedef SOU::UnitType< Meter, MUL2, second, 0, gram, 0, kelvin, 0, coul, 0 > t_2;
    /// product type for the result of operator* testing
-   typedef SOU::unitType< Meter, PROD, second, 0, gram, 0, kelvin, 0, coul, 0 > t_3;
+   typedef SOU::UnitType< Meter, PROD, second, 0, gram, 0, kelvin, 0, coul, 0 > t_3;
 
    SI_Multiply() : m_delta(0.0000001) {}
 

@@ -1,4 +1,4 @@
-/** Provides the unitType's a way to convert from one type to another with
+/** Provides the UnitType's a way to convert from one type to another with
    compile time error checking to check the dimensions.  Enforces Dimensional Homogeneity even when casting from the English System of units to the Metric System of units.  Fuction converstion_cast<> will not violate Dimensional Homogeneity.
    Cannot convert from length to velocity.
    conversion_cast<> is used like the a static_cast<>.

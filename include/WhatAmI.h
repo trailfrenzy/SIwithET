@@ -45,7 +45,7 @@ namespace SystemOfUnits
    }
 
    /// method owned by the class which prints the type of class
-   /// @prama SystemOfUnits::unitType
+   /// @prama SystemOfUnits::UnitType
    /// @return std::string
    /// @note future work is to remove the blank space after each string.
    template< typename char_type, typename T >

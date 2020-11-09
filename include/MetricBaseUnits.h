@@ -9,7 +9,7 @@ namespace Metric
  @page page4 SI-Metric base types
 
     Atomic comes from Martin Fowler's pg 36.
-    Atomic units are not intended to be used by outside class template unitType.
+    Atomic units are not intended to be used by outside class template UnitType.
 
 	A property Tag is a type used to name and identify properties.
    */

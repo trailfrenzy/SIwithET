@@ -24,11 +24,11 @@ namespace English
    typedef MakeEnglish::MakeDim<1,-1, 0,0,0>::type t_FPS;   /// Feet per second.  First order deriviative
    typedef MakeEnglish::MakeDim<1,-2, 0,0,0>::type t_FPSS; /// Feet per second second.  Second order derviative
 
-   typedef SystemOfUnits::unitType< AU::Mile, 1, AT::second, 0, AU::Slug, 0, K, 0, ampere, 0 > t_mile; /// Mile Type
-   typedef SystemOfUnits::unitType< AU::Mile, 1, AT::second,-1, AU::Slug, 0, K, 0, ampere, 0 > t_mps; /// Miles per Second Type
-   typedef SystemOfUnits::unitType< AU::Mile, 1, AT::hour, -1, AU::Slug, 0, K, 0, ampere, 0 > t_mph;/// Miles per Hour Type
+   typedef SystemOfUnits::UnitType< AU::Mile, 1, AT::second, 0, AU::Slug, 0, K, 0, ampere, 0 > t_mile; /// Mile Type
+   typedef SystemOfUnits::UnitType< AU::Mile, 1, AT::second,-1, AU::Slug, 0, K, 0, ampere, 0 > t_mps; /// Miles per Second Type
+   typedef SystemOfUnits::UnitType< AU::Mile, 1, AT::hour, -1, AU::Slug, 0, K, 0, ampere, 0 > t_mph;/// Miles per Hour Type
 
-   typedef SystemOfUnits::unitType< AU::Yard, 1, AT::hour, 0, AU::Slug, 0, K, 0, ampere, 0 > t_yard; /// Yard Type
+   typedef SystemOfUnits::UnitType< AU::Yard, 1, AT::hour, 0, AU::Slug, 0, K, 0, ampere, 0 > t_yard; /// Yard Type
 
 }
 #endif

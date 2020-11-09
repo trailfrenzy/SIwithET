@@ -35,7 +35,7 @@ protected:
 TYPED_TEST_SUITE_P(SITest);
 
 /// All types should be the same as a double
-/// Size is needed to show that unitType<> is the same size as a double
+/// Size is needed to show that UnitType<> is the same size as a double
 TYPED_TEST_P(SITest, SizeOf)
 {
 	using TAG = SITest<TypeParam >;
@@ -52,7 +52,7 @@ TYPED_TEST_P(SITest, Comparison)
 	EXPECT_TRUE(*TAG::m_1 == *TAG::m_2);
 	EXPECT_TRUE(TAG::m_1->amount() == 4.5);
 
-	// testing with one side double the other side unitType
+	// testing with one side double the other side UnitType
 	EXPECT_TRUE(*TAG::m_1 == 4.5)  << "Use to have three different comparison operators, now only one";
    auto b = TAG::t_type( 4.5 ) == *TAG::m_1;
    EXPECT_TRUE(b);
@@ -217,8 +217,8 @@ TEST(SITestSQ, Squaring)
 {
 	namespace AT = Metric::AtomicUnit;
 	using namespace Metric::AtomicUnit;
-	typedef SOU::unitType< Meter, 0, AT::second, -1, gram, 1, SOU::NoDim, 0, SOU::NoDim > t_gramPsec;
-	typedef SOU::unitType< Meter, 0, AT::second, -2, gram, 2, SOU::NoDim, 0, SOU::NoDim > t_gramPsecSQ;
+	typedef SOU::UnitType< Meter, 0, AT::second, -1, gram, 1, SOU::NoDim, 0, SOU::NoDim > t_gramPsec;
+	typedef SOU::UnitType< Meter, 0, AT::second, -2, gram, 2, SOU::NoDim, 0, SOU::NoDim > t_gramPsecSQ;
 
 	typedef SOU::MakeSQ<t_gramPsec>::type gramSQ;
 
@@ -234,7 +234,7 @@ typedef Metric::AtomicUnit::Meter Meter;
 typedef Metric::AtomicUnit::second second;
 typedef Metric::AtomicUnit::gram gram;
 typedef SOU::MakeType< Meter, second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::ampere > t_Base;
-//typedef SI::unitType< Meter, 1, second, 0, gram, 0 > t_Meter;
+//typedef SI::UnitType< Meter, 1, second, 0, gram, 0 > t_Meter;
 typedef t_Base::MakeDim<1,0,0,0,0>::type t_Meter;
 typedef t_Base::MakeDim<2,0,0,0,0>::type t_MeterSq;
 typedef t_Base::MakeDim<3,0,0,0,0>::type t_MeterCubed;
@@ -427,11 +427,11 @@ TEST(BasicSI, Concepts_CompileError )
 
    // supposed to cause a compile error here!  Concept is not implimented correctly if compiles.
    /*
-   typedef SOU::unitType< Meter, 0, AT::second, -1, Meter, 1, SOU::NoDim, 0, SOU::NoDim > t_gramPsec;
+   typedef SOU::UnitType< Meter, 0, AT::second, -1, Meter, 1, SOU::NoDim, 0, SOU::NoDim > t_gramPsec;
    */
    //t_gramPsec gramO{ 4.0 };
 
-   typedef SOU::unitType< Meter, 0, AT::second, -2, gram, 2, SOU::NoDim, 0, SOU::NoDim > t_gramPsecSQ;
+   typedef SOU::UnitType< Meter, 0, AT::second, -2, gram, 2, SOU::NoDim, 0, SOU::NoDim > t_gramPsecSQ;
 
 }
 

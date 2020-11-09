@@ -38,7 +38,7 @@ namespace SystemOfUnits
    template<typename T> concept Arithmetic = std::is_arithmetic<T>::value;
 
    /// a type with no dimensions or quantity types.  The same size as a double.
-   //using tNoUnit = unitType< NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0 >;
+   //using tNoUnit = UnitType< NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0 >;
 
    namespace operators
    {
@@ -87,7 +87,7 @@ namespace SystemOfUnits
          };
       };
 
-      // Used below to test if it the unitType as zero dimensions.
+      // Used below to test if it the UnitType as zero dimensions.
       template< typename R1 > struct is_zero_dimensions
       {
          enum : bool { value = R1::eL == 0 && R1::et == 0 && R1::eM == 0 && R1::eT == 0 && R1::eQ == 0 };
@@ -244,7 +244,7 @@ namespace SystemOfUnits
          using Charge = typename IF< Dim::eQ== Dim::Z, typename R1::Charge   , typename IF<R1::eQ!=0, typename R1::Charge, typename R2::Charge>::RET >::RET;
 
          /// all results are based on the first operands type, if NoDim then base on the second.
-         using TBeforeResult = SystemOfUnits::unitType
+         using TBeforeResult = SystemOfUnits::UnitType
             < Length, Dim::eL
             , Time, Dim::et
             , Mass, Dim::eM
@@ -315,7 +315,7 @@ namespace SystemOfUnits
          using Charge = typename IF< Dim::eQ==Dim::Z, typename R1::Charge   , typename IF<R1::eQ!=0, typename R1::Charge, typename R2::Charge>::RET >::RET;
 
          /// the type it will be if the dims are not 0
-         using TBeforeResult = SystemOfUnits::unitType
+         using TBeforeResult = SystemOfUnits::UnitType
             < Length, Dim::eL
             , Time, Dim::et
             , Mass, Dim::eM
@@ -383,7 +383,7 @@ namespace SystemOfUnits
       /// Used by the UnitType to display the acutal diminsion
       template< UnitSpecies S > ShowDim_t operator<<(S val)
       {
-         using t_unit = S; // SystemOfUnits::unitType<L, iL, t, it, M, iM, T, iT, Q, iQ>;
+         using t_unit = S; // SystemOfUnits::UnitType<L, iL, t, it, M, iM, T, iT, Q, iQ>;
          using t_char = typename TOUT::char_type;  // will not compile if TOUT does not have char_type.
          out << val << ' ' << t_Diminsion<t_char, t_unit>(val);
          return *this;
@@ -453,8 +453,8 @@ inline auto operator<<(TOUT & out, SystemOfUnits::ShowUnits_t<TOUT>* (*)()) //->
 /// template function which is multiplication operator of two different operands
 template < SystemOfUnits::UnitSpecies R1, SystemOfUnits::UnitSpecies R2 >
 /** product operator
-   @param unitType left-handed side
-   @param unitType right-handed side
+   @param UnitType left-handed side
+   @param UnitType right-handed side
    @return the same type is the product of the left and right hand side UnitType.
 */
 constexpr inline auto operator*( R1 const &r1, R2 const &r2 ) // TODO: write tests for constexpr
@@ -466,8 +466,8 @@ noexcept( noexcept(SystemOfUnits::operators::Mul_Result<R1, R2>))
 /// template function which is divisional operator of two different operands
 template< SystemOfUnits::UnitSpecies R1, SystemOfUnits::UnitSpecies R2 >
 /** ratio operator
-   @param Numerator unitType left-handed side
-   @param Denominator unitType left-handed side
+   @param Numerator UnitType left-handed side
+   @param Denominator UnitType left-handed side
    @return the ratio of the Numerator type by the Denominator type.
 */
 constexpr inline auto operator/( R1 const &r1, R2 const &r2 )

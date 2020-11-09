@@ -2,7 +2,7 @@
 Test is based from "Dynamics of Physical Systems", Robert H. Cannon, 1967, McGraw-Hill, Inc
 ISBN 07-009754-2, pg 22-28
 
-Used these quantities and dimensions to test how well template unitType held up.
+Used these quantities and dimensions to test how well template UnitType held up.
 */
 //#include <cppunit/extensions/HelperMacros.h> // the macros and headers needed by CPPUnit
 #include <gtest/gtest.h>
