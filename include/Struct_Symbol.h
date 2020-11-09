@@ -95,27 +95,27 @@ namespace SystemOfUnits {
       constexpr static bool value = BASE_UNIT::sym == ' ';
    };
 
-   template< Dimensional BASE_UNIT > struct is_LENGTH //: std::is_integral<bool, std::is_base_of< SystemOfUnits::helpers::SymbolForDimension<'L'>, T>::value >::value;
+   template< Dimensional BASE_UNIT > struct is_Length //: std::is_integral<bool, std::is_base_of< SystemOfUnits::helpers::SymbolForDimension<'L'>, T>::value >::value;
    {
       constexpr static bool value = BASE_UNIT::sym == 'L';
    };
 
-   template<Dimensional BASE_UNIT > struct is_TIME
+   template<Dimensional BASE_UNIT > struct is_Time
    {
       constexpr static bool value = BASE_UNIT::sym == 'T';
    };
 
-   template<Dimensional BASE_UNIT > struct is_MASS
+   template<Dimensional BASE_UNIT > struct is_Mass
    {
       constexpr static bool value = BASE_UNIT::sym == 'M';
    };
 
-   template<Dimensional BASE_UNIT > struct is_TEMPERATURE
+   template<Dimensional BASE_UNIT > struct is_Temperature
    {
       constexpr static bool value = BASE_UNIT::sym == THETA;
    };
 
-   template<Dimensional BASE_UNIT > struct is_CURRENT
+   template<Dimensional BASE_UNIT > struct is_Current
    {
       constexpr static bool value = BASE_UNIT::sym == 'C';
    };
@@ -125,19 +125,19 @@ namespace SystemOfUnits {
    template<typename T> concept Dimensionless = is_Dimensionless<T>::value;
 
    /// Constrait for Length to ensure only a Length type is passed for an arugment.
-   template<typename T> concept LENGTH = is_LENGTH<T>::value || Dimensionless<T>;
+   template<typename T> concept LENGTH = is_Length<T>::value || Dimensionless<T>;
 
-   /// Constrait for Time to ensure only a Time type is passed for an arugment.
-   template<typename T> concept TIME = is_TIME<T>::value || Dimensionless<T>;
+   /// Constrait for Time to ensure only a Time type is passed for an arugment.   Timeous is adjective of Time.
+   template<typename T> concept TIME = is_Time<T>::value || Dimensionless<T>;
 
    /// Constrait for Mass to ensure only a Mass type is passed for an arugment.
-   template<typename T> concept MASS = is_MASS<T>::value || Dimensionless<T>;
+   template<typename T> concept MASS = is_Mass<T>::value || Dimensionless<T>;
 
    /// Constrait for Temperature to ensure only a Temperature type is passed for an arugment.
-   template<typename T> concept TEMPERATURE = is_TEMPERATURE<T>::value || Dimensionless<T>;
+   template<typename T> concept TEMPERATURE = is_Temperature<T>::value || Dimensionless<T>;
 
    /// Constrait for Current to ensure only a Current type is passed for an arugment.
-   template<typename T> concept CURRENT = is_CURRENT<T>::value || Dimensionless<T>;
+   template<typename T> concept CURRENT = is_Current<T>::value || Dimensionless<T>;
 
    /// Used as the base class for UnitTypes for use in the identity template.
    struct TraitUnit {};
