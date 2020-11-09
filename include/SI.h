@@ -16,7 +16,7 @@ namespace SystemOfUnits /// covers the basics of the system
       , TEMPERATURE T, int iT    // temperature
       , CURRENT Q,     int iQ =0 // charge
    >
-   class UnitType : public Trait_Unit
+   class UnitType : public TraitUnit
    {
       long double m_amount; /// the scalar value of the object. On the Microsoft compiler the double and long double are the same.
 
@@ -276,7 +276,7 @@ namespace SystemOfUnits /// covers the basics of the system
    };
 
    /// Type trait struct which tests if the type is of UnitType class template above or not.
-   template< typename T > struct is_UnitType : std::integral_constant<bool, std::is_base_of< Trait_Unit, T>::value > {};
+   template< typename T > struct is_UnitType : std::integral_constant<bool, std::is_base_of< TraitUnit, T>::value > {};
 
    /// Concept for what a SI Unit is. The name 'UnitSpecies' is from "Elements of Programming" , Alexander Stepanove, Paul McJones, Semigroup Press, Sec 1.7. 
    /// We call a collection of requirments a concpet, Tyeps represent spcies, concpts reprsents genera.

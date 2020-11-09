@@ -141,7 +141,7 @@ namespace SystemOfUnits {
    template<typename T> concept CURRENT = is_CURRENT<T>::value || Dimensionless<T>;
 
    /// Used as the base class for UnitTypes for use in the identity template.
-   struct Trait_Unit {};
+   struct TraitUnit {};
 }
 #endif
 
