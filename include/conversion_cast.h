@@ -42,8 +42,9 @@ namespace SystemOfUnits
    }
 
 	/** Template used to convert between different types that have the same dimensions.
-	@param IN in is what will be converted
-	@return OUT the new type
+	UnitType conversion is done at compile time, while the conversion of a value may take place at runtime if not know at compile time.
+	@param IN is the current UnitType converted from.
+	@return OUT the new UnitType which is converted to.
 	*/
 	template< SystemOfUnits::UnitSpecies OUT, SystemOfUnits::UnitSpecies IN >
 	constexpr OUT conversion_cast(IN const &in)
