@@ -3,7 +3,7 @@
  The **Systems Of Units (SOU)** Library was created out the author's desire to solve a problem with C++ strong type definitions where
  known engineering and scientific unit types will not mix to produce the wrong result type.  The library
  automatically enforces the Principle of Dimensional Homogeneity through strong type definitions and completes unit conversions during compile time or
- will produce a compile time error if types are used incorrectly.  Violating the Principle of Dimensional Homogeneity
+ will produce a compile time error if types are used incorrectly. All checks for unit conversion and correct dimensions of units is done while compiling, non at run-time.  Violating the Principle of Dimensional Homogeneity
  will force a compliation error.  The end result is all strong types are the same size as built in types such as float or double during runtime.
 
 The **SOU** library has evovled over the years with the use of C++ language updates.  This current version takes advantage of the concepts offered in C++20.  Future plans for the code include the use of modules.
