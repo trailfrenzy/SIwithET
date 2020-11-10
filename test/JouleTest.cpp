@@ -2,6 +2,7 @@
 #include "MetricTypes.h"
 #include "WhatAmI.h"
 #include "operators.h"
+#include "DerivedUnits.h"
 #include "ExpectUnitTest.h"
 
 /*
@@ -147,7 +148,15 @@ TEST(Joule, GravityDim) {
 	EXPECT_EQ("[L]^3/[M][T]^2", SystemOfUnits::Diminsion(GRAVITY));
 }
 
-// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
+TEST(Joule, PowerRatio)
+{
+	using namespace SOU::literals;
+	auto gain = 45.0_watt / 9.0_watt;
+	EXPECT_EQ("", SystemOfUnits::Diminsion(gain));
+	static_assert(!SOU::is_UnitType<decltype(gain)>::value, "When this is true we will have Decibels");
+}
+
+// Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

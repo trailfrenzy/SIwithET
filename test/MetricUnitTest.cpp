@@ -3,6 +3,7 @@
 #include "MetricTypes.h"
 #include "operators.h"
 #include "conversion_cast.h"
+#include "ExpectUnitTest.h"
 
 TEST(MetricUnitTest, BasicTest)
 {
@@ -40,6 +41,11 @@ TEST(UDL_Metric, kilometer) {
    //ASSERT_TRUE(L1 == L2) << "both values are equal";
    ASSERT_TRUE(L1 == SOU::conversion_cast<Metric::t_meter>(L2) ) << "both values are equal, but need to convert km to m";
    ASSERT_TRUE(SOU::conversion_cast<Metric::t_kilometer>(L1) == L2);
+}
+
+TEST(UDL_Metric, centimeter) {
+   constexpr auto meter = 4.0_meter + SOU::conversion_cast< Metric::t_meter>( 30.0_centimeter);
+   EXPECT_UNIT_EQ(meter, 4.3);
 }
 
 // Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
