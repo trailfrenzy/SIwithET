@@ -435,6 +435,16 @@ TEST(BasicSI, Concepts_CompileError )
 
 }
 
+TEST(BasicSI, isZeroDim)
+{
+   typedef SOU::UnitType< Meter, 0, AT::second, -2, gram, 2, SOU::NoDim, 0, SOU::NoDim > t_gramPsecSQ;
+   typedef SOU::UnitType< Meter, 0, AT::second,  0, gram, 0, SOU::NoDim, 0, SOU::NoDim > t_NoDim;
+
+   constexpr auto noDim = t_NoDim(4.0);
+   ASSERT_TRUE( noDim.isZeroDimensions() );
+   static_assert(noDim.isZeroDimensions());
+}
+
 // Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //

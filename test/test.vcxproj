@@ -181,6 +181,7 @@
     <ClCompile Include="SIDivTest.cpp" />
     <ClCompile Include="SIMulTest.cpp" />
     <ClCompile Include="SITest.cpp" />
+    <ClCompile Include="SOU_math.cpp" />
     <ClCompile Include="Struct_Symbol.cpp" />
     <ClCompile Include="TableIITest.cpp" />
     <ClCompile Include="TemperatureTest.cpp" />

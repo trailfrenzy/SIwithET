@@ -236,7 +236,7 @@ namespace SystemOfUnits
               , eQ = R1::eQ + R2::eQ };/// Charge Dimensional 
 
          /// informs user during the compile process if the result has no dimensions.
-         enum isNoDim : bool { val = is_zero_dimensions<Dim>::value };
+         //enum isNoDim : bool { val = is_zero_dimensions<Dim>::value };
 
          // Yes, these lines are long, but kept long to help the eye catch an error.
          using Length      = typename IF< Dim::eL == Dim::Z, typename R1::Length, typename IF<R1::eL != 0,      typename R1::Length,      typename R2::Length>::RET >::RET;
@@ -254,9 +254,11 @@ namespace SystemOfUnits
             , Charge, Dim::eQ
             >;
 
-      public:
+         /// The type if both UnitTypes cancel each other out in their deminsions. Allows for ratio of UnitTypes which is a UnitType with zero for Dimension values.
+         //using t_decibel = UnitType< Length, 0, Time, 0, Mass, 0, Temperature, 0, Charge, 0 >;
+
          /// if not dimensions then the return type is double
-         using TResult = typename IF<isNoDim::val, tNoUnit::t_float, typename TBeforeResult >::RET;
+         using TResult = TBeforeResult; // typename IF<isNoDim::val, tNoUnit::t_float, typename TBeforeResult >::RET;
 
          /// constructor initializes references to the operands.
          /// @param R1::ArgRef r1 is the right hand side.
@@ -309,7 +311,7 @@ namespace SystemOfUnits
          };
 
          /// informs us during the compile process that the result has no dimensions.
-         enum isNoDim : bool { val = is_zero_dimensions<Dim>::value };
+         //enum isNoDim : bool { val = is_zero_dimensions<Dim>::value };
 
          // Yes, these lines are long, but kept long to help the eye catch an error.
          using Length      = typename IF< Dim::eL==Dim::Z, typename R1::Length,      typename IF<R1::eL!=0, typename R1::Length,      typename R2::Length>::RET >::RET;
@@ -326,9 +328,13 @@ namespace SystemOfUnits
             , Temperature, Dim::eT
             , Charge, Dim::eQ
             >;
+
+         /// The type if both UnitTypes cancel each other out in their deminsions. Allows for ratio of UnitTypes which is a UnitType with zero for Dimension values.
+         //using t_decibel = UnitType< Length, 0, Time, 0, Mass, 0, Temperature, 0, Charge, 0 >;
+
          /// enum is used so let user know that the types did not match
          /// all results are based on the first operands type, if NoDim then base on the second.
-         using TResult = typename IF<isNoDim::val, tNoUnit::t_float, typename TBeforeResult >::RET;
+         using TResult = TBeforeResult; //  typename IF<isNoDim::val, tNoUnit::t_float, typename TBeforeResult >::RET;
 
          /// constructor.
          /// @param R1::ArgRef r1 is the right hand side.

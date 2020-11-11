@@ -153,7 +153,7 @@ TEST(Joule, PowerRatio)
 	using namespace SOU::literals;
 	auto gain = 45.0_watt / 9.0_watt;
 	EXPECT_EQ("", SystemOfUnits::Diminsion(gain));
-	static_assert(!SOU::is_UnitType<decltype(gain)>::value, "When this is true we will have Decibels");
+	static_assert(SOU::is_UnitType<decltype(gain)>::value, "When this is true we will have Decibels");
 }
 
 // Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.

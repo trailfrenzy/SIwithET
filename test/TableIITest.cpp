@@ -5,7 +5,6 @@ ISBN 07-009754-2, pg 22-28
 Used these quantities and dimensions to test how well template UnitType held up.
 */
 //#include <cppunit/extensions/HelperMacros.h> // the macros and headers needed by CPPUnit
-#include <gtest/gtest.h>
 #include "SI.h"
 #include "MetricBaseUnits.h"
 #include "TimeAtomicUnits.h"
@@ -13,6 +12,8 @@ Used these quantities and dimensions to test how well template UnitType held up.
 #include "WhatAmI.h"
 #include <cmath>
 #include <string_view>
+#include "ExpectUnitTest.h"
+#include <gtest/gtest.h>
 
 namespace
 {
@@ -60,19 +61,6 @@ TEST(TableIITest, TestAcceleration)
 	   Forces the user to keep their types together before mul or dividing.
 		  a acc2 = V1+V2/t;
 	*/
-}
-
-/**
-   Test is to see if dB is produced correctly.
-*/
-TEST(TableIITest, TestWithlog)
-{
-   t_sec T1{ 80.0 };
-   t_sec T2{ 8.0 };
-
-	double x = log(T1 / T2);
-	EXPECT_DOUBLE_EQ(2.3025850929940456840179914546844, x) << "Test to see if a scalar value is produced";
-	EXPECT_DOUBLE_EQ(10.00, T1 / T2);
 }
 
 // Copyright © 2002-2018 "Curt" Leslie L. Martin, All rights reserved.

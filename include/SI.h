@@ -92,6 +92,9 @@ namespace SystemOfUnits /// covers the basics of the system
         * @return the scalar value of the type. */
       constexpr auto amount() const noexcept(b_noexcept) { return m_amount; }
 
+      ///  Returns wheather the class is a zero dimensions or not.
+      constexpr static bool isZeroDimensions() noexcept { return eL == 0 && et == 0 && eM == 0 && eT == 0 && eQ == 0; }
+
       /** comparison operator which enforces Dimensional Homogeneity
        * @param UnitType (or numeric type) on the left hand side
        * @param UnitType (or numeric type) on the right hand side

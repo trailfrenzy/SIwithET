@@ -126,14 +126,14 @@ TEST_F(DivisionFirst, TestChaining)
 TEST_F(DivisionFirst, TestDimisionLess)
 {
    // see how well a diminsonless unit is handled
-   double d1 = t_MeterSq(12.0) / t_MeterSq(4.0);
+   auto d1 = t_MeterSq(12.0) / t_MeterSq(4.0);
    EXPECT_TRUE(d1 == 3.0);
 
-   double const d2 = t_Meter(11.0) / t_Meter(11.0);
-   EXPECT_DOUBLE_EQ(1.0, d2);
+   auto const d2 = t_Meter(11.0) / t_Meter(11.0);
+   EXPECT_UNIT_EQ(1.0, d2);
 
    auto d3 = t_MeterCubed(24.0) / t_MeterCubed(12.0);
-   EXPECT_DOUBLE_EQ(2.0, d3);
+   EXPECT_UNIT_EQ(2.0, d3);
    EXPECT_EQ("", SOU::Diminsion(d3)) << "Caused a compile time failure";
 }
 
