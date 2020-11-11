@@ -9,6 +9,8 @@ namespace SystemOfUnits::math
    inline constexpr auto log(S s) noexcept
    {
       static_assert(s.isZeroDimensions(), "To use log() the argument must have zero dimensions"); //TODO look at making a concept for this rule.
+
+      // In the future may add a template argument to UnitType which where the amount may be a float, double, or long double.
       if constexpr (std::is_same_v< double, S::t_float>) return ::log(s.amount());
       if constexpr (std::is_same_v< long double, S::t_float>) return ::logl(s.amount());
       else return ::logf(s.amount());

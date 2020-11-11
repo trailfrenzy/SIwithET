@@ -37,9 +37,6 @@ namespace SystemOfUnits
 {
    template<typename T> concept Arithmetic = std::is_arithmetic<T>::value;
 
-   /// a type with no dimensions or quantity types.  The same size as a double.
-   //using tNoUnit = UnitType< NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0 >;
-
    namespace operators
    {
       /** \brief The trait idea came from "C++ Templates", pg 332.
@@ -51,8 +48,6 @@ namespace SystemOfUnits
        */
       template < UnitSpecies T, UnitSpecies T2 > struct A_Trait
       {
-         static_assert(SystemOfUnits::is_UnitType<T>::value, "Must be a SystemOfUnits::UnitType");
-         static_assert(SystemOfUnits::is_UnitType<T2>::value || std::is_arithmetic<T2>::value, "Must be a SystemOfUnits::UnitType or arithmetic type");
          /// used as the argument for the operators
          using ArgRef = T const &;
          /// constant reference
@@ -235,9 +230,6 @@ namespace SystemOfUnits
               , eT = R1::eT + R2::eT   /// Temperature Dimensional 
               , eQ = R1::eQ + R2::eQ };/// Charge Dimensional 
 
-         /// informs user during the compile process if the result has no dimensions.
-         //enum isNoDim : bool { val = is_zero_dimensions<Dim>::value };
-
          // Yes, these lines are long, but kept long to help the eye catch an error.
          using Length      = typename IF< Dim::eL == Dim::Z, typename R1::Length, typename IF<R1::eL != 0,      typename R1::Length,      typename R2::Length>::RET >::RET;
          using Time        = typename IF< Dim::et == Dim::Z, typename R1::Time, typename IF<R1::et != 0,        typename R1::Time,        typename R2::Time  >::RET >::RET;
@@ -245,20 +237,14 @@ namespace SystemOfUnits
          using Temperature = typename IF< Dim::eT == Dim::Z, typename R1::Temperature, typename IF<R1::eT != 0, typename R1::Temperature, typename R2::Temperature>::RET >::RET;
          using Charge      = typename IF< Dim::eQ == Dim::Z, typename R1::Charge, typename IF<R1::eQ != 0,      typename R1::Charge,      typename R2::Charge>::RET >::RET;
 
-         /// all results are based on the first operands type, if NoDim then base on the second.
-         using TBeforeResult = SystemOfUnits::UnitType
+         /// all results are based on the first argument operands type, if NoDim then base on the second argument.
+         using TResult = SystemOfUnits::UnitType
             < Length, Dim::eL
             , Time, Dim::et
             , Mass, Dim::eM
             , Temperature, Dim::eT
             , Charge, Dim::eQ
             >;
-
-         /// The type if both UnitTypes cancel each other out in their deminsions. Allows for ratio of UnitTypes which is a UnitType with zero for Dimension values.
-         //using t_decibel = UnitType< Length, 0, Time, 0, Mass, 0, Temperature, 0, Charge, 0 >;
-
-         /// if not dimensions then the return type is double
-         using TResult = TBeforeResult; // typename IF<isNoDim::val, tNoUnit::t_float, typename TBeforeResult >::RET;
 
          /// constructor initializes references to the operands.
          /// @param R1::ArgRef r1 is the right hand side.
@@ -275,8 +261,7 @@ namespace SystemOfUnits
 
             // line will compiler error if not the same compatible types
             static_assert( t_base::ALLTYPES_THE_SAME::val, "line will compiler error if not the same compatible types" );
-            // temperature is not supported in more than 1 dimension
-            static_assert(Dim::eT == 0 || Dim::eT == 1 || Dim::eT == -1, "temperature is not supported in more than 1 dimension" );
+            static_assert(Dim::eT == Dim::Z || Dim::eT == 1 || Dim::eT == -1, "T must not be greater abs(1)");
 
             return TResult
                ( m_r1.amount() 
@@ -310,9 +295,6 @@ namespace SystemOfUnits
             , eQ = R1::eQ - R2::eQ   /// Charge Dimensional 
          };
 
-         /// informs us during the compile process that the result has no dimensions.
-         //enum isNoDim : bool { val = is_zero_dimensions<Dim>::value };
-
          // Yes, these lines are long, but kept long to help the eye catch an error.
          using Length      = typename IF< Dim::eL==Dim::Z, typename R1::Length,      typename IF<R1::eL!=0, typename R1::Length,      typename R2::Length>::RET >::RET;
          using Time        = typename IF< Dim::et==Dim::Z, typename R1::Time,        typename IF<R1::et!=0, typename R1::Time  ,      typename R2::Time  >::RET >::RET;
@@ -320,21 +302,14 @@ namespace SystemOfUnits
          using Temperature = typename IF< Dim::eT==Dim::Z, typename R1::Temperature, typename IF<R1::eT!=0, typename R1::Temperature, typename R2::Temperature>::RET >::RET;
          using Charge      = typename IF< Dim::eQ==Dim::Z, typename R1::Charge   ,   typename IF<R1::eQ!=0, typename R1::Charge,      typename R2::Charge>::RET >::RET;
 
-         /// the type it will be if the dims are not 0
-         using TBeforeResult = SystemOfUnits::UnitType
+         /// all results are based on the first argument operands type, if NoDim then base on the second argument.
+         using TResult = SystemOfUnits::UnitType
             < Length, Dim::eL
             , Time, Dim::et
             , Mass, Dim::eM
             , Temperature, Dim::eT
             , Charge, Dim::eQ
             >;
-
-         /// The type if both UnitTypes cancel each other out in their deminsions. Allows for ratio of UnitTypes which is a UnitType with zero for Dimension values.
-         //using t_decibel = UnitType< Length, 0, Time, 0, Mass, 0, Temperature, 0, Charge, 0 >;
-
-         /// enum is used so let user know that the types did not match
-         /// all results are based on the first operands type, if NoDim then base on the second.
-         using TResult = TBeforeResult; //  typename IF<isNoDim::val, tNoUnit::t_float, typename TBeforeResult >::RET;
 
          /// constructor.
          /// @param R1::ArgRef r1 is the right hand side.
