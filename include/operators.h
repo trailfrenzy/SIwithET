@@ -48,10 +48,11 @@ namespace SystemOfUnits
        */
       template < UnitSpecies T, UnitSpecies T2 > struct A_Trait
       {
-         /// used as the argument for the operators
-         using ArgRef = T const &;
-         /// constant reference
-         using ExprRef = T const &;
+         /// used as the argument for the operators. Seems to like a good idea to make one copy and move it all the way down.
+         using ArgRef = T &&;
+
+         /// constant reference. Original 32-bit version went with ref, but have not seen any changes in 64-bit if us by value.
+         using ExprRef = T const;
 
          /// the dimensions of the trait
          enum
@@ -249,9 +250,9 @@ namespace SystemOfUnits
          /// constructor initializes references to the operands.
          /// @param R1::ArgRef r1 is the right hand side.
          /// @param R2::ArgRef r2 is the left hand side.
-         constexpr Mul_Result( typename const R1::ArgRef r1, typename const R2::ArgRef r2 )
+         constexpr Mul_Result( typename R1::ArgRef r1, typename R2::ArgRef r2 )
             noexcept(noexcept(R1::ArgRef) && noexcept(R2::ArgRef ) )
-            : m_r1(r1), m_r2(r2){}
+            : m_r1(std::move(r1)), m_r2(std::move(r2)){}
 
          /// computes when requested
          /// @return TResult which is found at compile time which is a double or UnitType<>
@@ -316,7 +317,7 @@ namespace SystemOfUnits
          /// @param R2::ArgRef r2 is the left hand side.
          constexpr Div_Result( typename R1::ArgRef r1, typename R2::ArgRef r2 )
             noexcept(noexcept(R1::ArgRef) && noexcept(R2::ArgRef)) 
-            : m_r1(r1), m_r2(r2){}
+            : m_r1(std::move(r1)), m_r2(std::move(r2)){}
 
          /// computes when requested
          /// @return TResult which is found at compile time
@@ -438,27 +439,27 @@ inline auto operator<<(TOUT & out, SystemOfUnits::ShowUnits_t<TOUT>* (*)()) //->
 /// template function which is multiplication operator of two different operands
 template < SystemOfUnits::UnitSpecies R1, SystemOfUnits::UnitSpecies R2 >
 /** product operator
-   @param UnitType left-handed side
-   @param UnitType right-handed side
+   @param UnitType left-handed side. Copy is made then moved to Result template operator.
+   @param UnitType right-handed side. Copy is made then moved to Result template operator.
    @return the same type is the product of the left and right hand side UnitType.
 */
-constexpr inline auto operator*( R1 const &r1, R2 const &r2 ) // TODO: write tests for constexpr
+constexpr inline auto operator*( R1 r1, R2 r2 ) // TODO: write tests for constexpr
 noexcept( noexcept(SystemOfUnits::operators::Mul_Result<R1, R2>))
 {
-   return SystemOfUnits::operators::Mul_Result<R1, R2>(r1, r2).result();
+   return SystemOfUnits::operators::Mul_Result<R1, R2>(std::move(r1), std::move(r2)).result();
 }
 
 /// template function which is divisional operator of two different operands
 template< SystemOfUnits::UnitSpecies R1, SystemOfUnits::UnitSpecies R2 >
 /** ratio operator
-   @param Numerator UnitType left-handed side
-   @param Denominator UnitType left-handed side
+   @param Numerator UnitType left-handed side. Copy is made then moved to Result template operator.
+   @param Denominator UnitType left-handed side. Copy is made then moved to Result template operator.
    @return the ratio of the Numerator type by the Denominator type.
 */
-constexpr inline auto operator/( R1 const &r1, R2 const &r2 )
+constexpr inline auto operator/( R1 r1, R2 r2 )
 noexcept(noexcept(SystemOfUnits::operators::Div_Result<R1, R2>))
 {
-   return SystemOfUnits::operators::Div_Result<R1, R2>(r1, r2).result();
+   return SystemOfUnits::operators::Div_Result<R1, R2>(std::move(r1), std::move(r2)).result();
 }
 
 // Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.

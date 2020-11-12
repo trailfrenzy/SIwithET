@@ -225,8 +225,10 @@ TYPED_TEST_SUITE_P(SOU_Division);
 TYPED_TEST_P(SOU_Division, TestDiv_Result)
 {
 	using TAG = SOU_Division<TypeParam >;
+   typename TAG::t_1 arg1 = *TAG::m_1;
+   typename TAG::t_2 arg2 = *TAG::m_2;
 
-	SOU::operators::Div_Result< TAG::t_1, TAG::t_2 > res(*TAG::m_1, *TAG::m_2);
+	SOU::operators::Div_Result< TAG::t_1, TAG::t_2 > res(std::move(arg1), std::move(arg2));
    EXPECT_UNIT_EQ(res.result(), *TAG::m_3 );
 }
 
@@ -237,7 +239,7 @@ TYPED_TEST_P(SOU_Division, Test2)
 
 	auto /*TAG::t_3*/ res = *TAG::m_1 / *TAG::m_2;
    EXPECT_UNIT_EQ(res, *TAG::m_3);
-	//EXPECT_DOUBLE_EQ( res.amount(), *TAG::m_3.amount() ) << "need to write an comparison for episoln";
+
    EXPECT_UNIT_EQ(*TAG::m_3, *TAG::m_1 / *TAG::m_2);
 
 	auto res2 = *TAG::m_1 / *TAG::m_3;

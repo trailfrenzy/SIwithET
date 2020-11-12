@@ -330,11 +330,18 @@ TYPED_TEST_P(SI_Multiply, TestMul_Result)
 {
    using namespace SOU::operators;
    using TAG = SI_Multiply<TypeParam >;
-   Mul_Result<TAG::t_1, TAG::t_2> sq_m(*TAG::m_1, *TAG::m_2);
-   EXPECT_TRUE(sq_m.result() == *TAG::m_3) << "testing the expression template for mult";
+   typename TAG::t_1 arg1 = *TAG::m_1;
+   typename TAG::t_2 arg2 = *TAG::m_2;
 
-   Mul_Result<TAG::t_1, TAG::t_2> const sq_m2(*TAG::m_1, *TAG::m_2);
-   EXPECT_TRUE(sq_m2.result() == *TAG::m_3) << "testing the expression template for mult";
+
+   // Modified when Mul_Result is a move.
+   Mul_Result<TAG::t_1, TAG::t_2> sq_m(std::move(arg1), std::move(arg2) ); 
+
+   EXPECT_TRUE(sq_m.result() == *TAG::m_3) << "testing the expression template for mult";
+   //EXPECT_UNIT_EQ((*TAG::m_1 * *TAG::m_2), *TAG::m_3);
+
+   //Mul_Result<TAG::t_1, TAG::t_2> const sq_m2(*TAG::m_1, *TAG::m_2);
+   //EXPECT_TRUE(sq_m2.result() == *TAG::m_3) << "testing the expression template for mult";
 }
 
 /// First test with operator*() and shows that it is working correctly
