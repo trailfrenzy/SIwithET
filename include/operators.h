@@ -382,6 +382,7 @@ namespace SystemOfUnits
          return *this;
       }
 
+      /// converts the class to the stream implicitly. Is the last function called by the stream when the Manipulator is used.
       operator TOUT &() const { return out; }
    };
 
@@ -413,6 +414,7 @@ namespace SystemOfUnits
          return *this;
       }
 
+      /// converts the class to the stream implicitly. Is the last function called by the stream when the Manipulator is used.
       operator TOUT &() const { return ref; }
    };
 
