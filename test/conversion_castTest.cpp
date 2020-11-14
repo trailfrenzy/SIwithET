@@ -60,7 +60,8 @@ TEST_F(conversion_castTest, MakeFrom)
    using IN = Metric::t_kilogram;
    enum {eM = 1};
 
-   EXPECT_DOUBLE_EQ(SOU::MakeFrom<OUT::Mass>::toBase(), 1000);
+   //EXPECT_DOUBLE_EQ(SOU::MakeFrom<OUT::Mass>::toBase(), 1000);
+   static_assert(SOU::MakeFrom<OUT::Mass>::toBase() == 1000);
 
    //out *=
    //   SOU::helpers::P< SOU::MakeFrom<OUT::Mass> >::thePower<eM>::toBase()
@@ -74,15 +75,16 @@ TEST_F(conversion_castTest, MakeFrom)
 /// Test basic length conversions
 TEST_F(conversion_castTest, TestLength)
 {
-   Metric::t_centimeter cent(20.0);
-   Metric::t_meter meter = SOU::conversion_cast<Metric::t_meter>(cent);
+   constexpr Metric::t_centimeter const cent(20.0);
+   constexpr Metric::t_meter const meter = SOU::conversion_cast<Metric::t_meter>(cent);
+   static_assert(0.20 == meter, "shows all conversion_cast<> took place at compile time" );
    EXPECT_UNIT_EQ(0.20, meter );
-   EXPECT_EQ(0.20, meter.amount());
-   EXPECT_TRUE(0.20 == meter);
+   //EXPECT_EQ(0.20, meter.amount());
+   //EXPECT_TRUE(0.20 == meter);
 
    m_cent = Metric::t_centimeter(200.0);
    Metric::t_kilometer kilo = SOU::conversion_cast<Metric::t_kilometer>(m_cent);
-   EXPECT_DOUBLE_EQ(0.002, kilo.amount());
+   EXPECT_UNIT_EQ(0.002, kilo );
 
    m_cent = SOU::conversion_cast<Metric::t_centimeter>(meter);
 }
@@ -96,7 +98,7 @@ TEST_F(conversion_castTest, TestLengthSquared)
 
    t_meterSq m2 = SOU::conversion_cast<t_meterSq>(cent2);
 
-   EXPECT_DOUBLE_EQ(1.0, m2.amount());
+   EXPECT_UNIT_EQ(1.0, m2 );
    EXPECT_TRUE(1.0 == m2)
       << "works since the inside of EXPECT_DOUBLE_EQ expects both to be the same type";
    //EXPECT_DOUBLE_EQ( 1.0, m2 );
@@ -107,16 +109,16 @@ TEST_F(conversion_castTest, TestTime)
 {
    Metric::t_hour hr(2.0);
    Metric::t_minute min = SOU::conversion_cast<Metric::t_minute>(hr);
-   EXPECT_DOUBLE_EQ(120.0, min.amount());
+   EXPECT_UNIT_EQ(120.0, min );
 
    // hour to sec
    Metric::t_second sec = SOU::conversion_cast<Metric::t_second>(hr);
-   EXPECT_DOUBLE_EQ(2.0*60.0*60.0, sec.amount());
+   EXPECT_UNIT_EQ(2.0*60.0*60.0, sec );
 
    // sec to hour
    sec = Metric::t_second(22.0) * 60.0 * 60.0;
    hr = SOU::conversion_cast<Metric::t_hour>(sec);
-   EXPECT_DOUBLE_EQ(22.0, hr.amount());
+   EXPECT_UNIT_EQ(22.0, hr );
 }
 
 /// Test Time squared.  Also to see how well conversion_cast<> works with squared diminsions.
@@ -127,7 +129,7 @@ TEST_F(conversion_castTest, TestTimeSq)
 
    t_minSq minSq{ 2.0 };
    t_secSq secSq = SOU::conversion_cast<t_secSq>(minSq);
-   EXPECT_DOUBLE_EQ(7200.0, secSq.amount());
+   EXPECT_UNIT_EQ(7200.0, secSq );
 }
 
 /// Test the inverse time.
@@ -144,7 +146,7 @@ TEST_F(conversion_castTest, TestInverseTimeSq)
 
    ACCinKM accKM1{ 2.0 };
    ACCinM  accM1 = SOU::conversion_cast<ACCinM>(accKM1);
-   EXPECT_DOUBLE_EQ(2000.0, accM1.amount() /*, 0.00001*/);
+   EXPECT_UNIT_EQ(2000.0, accM1 /*, 0.00001*/);
 
 }
 
@@ -162,7 +164,7 @@ TEST_F(conversion_castTest, TestMass)
 {
    Metric::t_gram g(400.0);
    Metric::t_kilogram kg = SOU::conversion_cast<Metric::t_kilogram>(g);
-   EXPECT_DOUBLE_EQ(0.4, kg.amount());
+   EXPECT_UNIT_EQ(0.4, kg);
 }
 
 /// Test Mass Squared
@@ -172,7 +174,7 @@ TEST_F(conversion_castTest, TestMassSq)
    typedef SOU::MakeSQ< Metric::t_kilogram >::type t_kiloSq;
    t_kiloSq kiloSq{ 1.0 };
    t_gramSq gramSq = SOU::conversion_cast<t_gramSq>(kiloSq);
-   EXPECT_DOUBLE_EQ(1e6, gramSq.amount());
+   EXPECT_UNIT_EQ(1e6, gramSq );
 }
 
 /// Test where the dimensions are the wrong size for a conversion.  Test should be a failure.
