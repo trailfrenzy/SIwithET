@@ -6,30 +6,6 @@
 #include "ExpectUnitTest.h"
 #include <gtest/gtest.h>
 
-//namespace SystemOfUnits /// covers the basics of the system
-//{
-//   // TODO: move to SI.h when ready!
-//   template< typename UNIT_TYPE, char const * NAME >
-//   struct SIwithDIM : UNIT_TYPE
-//   {
-//      //using t_UnitType = t;
-//      constexpr SIwithDIM(double val) noexcept : UNIT_TYPE(val)
-//      {
-//         static_assert(is_UnitType< UNIT_TYPE>::value);
-//      }
-//
-//      static constexpr char const * unitName() noexcept { return NAME; }
-//      //static char const * unitDim()  noexcept { return DIM; }
-//   };
-//
-//   /// Used at compile time to find if type is SIwithDIM<>
-//   template< typename T> struct is_SIwithDIM { enum :bool { value = false }; };
-//   template< typename T, char const * N > struct is_SIwithDIM< SIwithDIM<T, N > >
-//   {
-//      enum :bool { value = true };
-//   };
-//}
-
 using Amp = Metric::AUMetric::MakeDim<0, 0, 0, 0, 1>::type;
 using Watt = Metric::AUMetric::MakeDim<2, -3, 1, 0, 0>::type;
 
