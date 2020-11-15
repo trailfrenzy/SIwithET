@@ -1,58 +1,102 @@
 /*
    Provides an implimentation of comparing UnitType to the built in type or to another UnitType.
    Made as a compliment to gtest since prior to this the comparing of UnitTypes required conversion to double in the test.
+   Now the conversion to double is hidden in the class and not explicit by the user.
 */
 #ifndef SYSTEM_OF_UNITS_EXPECT_UNIT_EQ
 #define SYSTEM_OF_UNITS_EXPECT_UNIT_EQ
 #include "SI.h"
 #include <gtest/gtest.h>
+#include <string_view>
 
-/// <summary>
-/// Wraps the macro EXPECT_PRED_FORMAT2 in function which can be called over again. Easier for the compiler to decide to inline it or call it.
-/// </summary>
-/// <param name="t"></param>
-/// <param name="u"></param>
-/// <returns></returns>
-inline auto TheMacro(double t, double u)
+template<typename T> concept Arithmetic = std::is_arithmetic<T>::value;
+
+// Class exists only so the inheriting class does not have to define its intiliziation three times for each of the constructors.
+class BaseExpect
 {
-   EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<double>, t, u);
+   const ::testing::AssertionResult gtest_ar;
+   ::testing::internal::AssertHelper assHelp;
+protected:
+   /// used by operatora<<() to store the message for display if error.
+   ::testing::Message message;
+
+   /// The same constructor is used by the three conctructors below.
+   BaseExpect(double t, double u, char const* file, int line, char const* charT, char const* charU)
+      : gtest_ar(::testing::internal::CmpHelperFloatingPointEQ<double>(charT, charU, t, u))
+      , assHelp(gtest_ar ? ::testing::TestPartResult::kSuccess : ::testing::TestPartResult::kNonFatalFailure, file, line, (gtest_ar ? "" : gtest_ar.message()) )
+   {}
+
+   /// The destructor actually writes the message out to std::cout. Note it is not virtual.
+   ~BaseExpect()
+   {
+      assHelp = message;
+   }
+};
+
+/// Class is only inteded to be used by the Macro at the bottom.
+class ExpectUnitEq : private BaseExpect
+{
+public:
+   /// Three different constructors are used since the macro below can generate three different calls.
+   template< SOU::UnitSpecies SPEC >
+   ExpectUnitEq( SPEC t, double u, char const* file, int line, char const * charT, char const *charU)
+      : BaseExpect( t.amount(), u, file, line, charT, charU )
+   {}
+
+   template< SOU::UnitSpecies SPEC >
+   ExpectUnitEq(double t, SPEC u, char const* file, int line, char const* charT, char const* charU)
+      : BaseExpect(t, u.amount(), file, line, charT, charU)
+   {}
+
+   template< SOU::UnitSpecies T, SOU::UnitSpecies U >
+   ExpectUnitEq(T t, U u, char const* file, int line, char const* charT, char const* charU)
+      : BaseExpect(t.amount(), u.amount(), file, line, charT, charU)
+   {}
+
+   /// Most of the time it is a char const * string we are passing
+   ExpectUnitEq& operator<<(std::string_view val)
+   {
+      message << val;
+      return *this;
+   }
+
+   // Used with built in types. Not expected to have a lot of them.
+   template< Arithmetic A > ExpectUnitEq& operator<<(A val) { message << val; return *this; }
+
+   // Special operator<<() for all UnitTypes, pass by value.
+   template< SOU::UnitSpecies SPEC > ExpectUnitEq& operator<<(SPEC val)
+   {
+      message << val;
+      return *this;
+   }
+
+   /// Used by any type which does not has its own operator<<();
+   template< typename T > ExpectUnitEq& operator<<(const T& val)
+   {
+      message << val;
+      return *this;
+   }
+};
+
+/// Yes, we still must use a macro since the file name, line number and two varibles must be generated at compile time.
+/// Not sure how else to do it.
+#define EXPECT_UNIT_EQ( t,  u) ExpectUnitEq(t, u, __FILE__, __LINE__, #t, #u )
+
+/*
+The above macro is used like any other Google Unit test.
+
+TEST(reinterpit_cast, failedTest)
+{
+   typedef SOU::MakeSQ< Metric::t_gram >::type t_gramSq;
+   t_gramSq kiloSq{ 1.0 };
+
+   EXPECT_UNIT_EQ(2.0, kiloSq) << "Unhappy message goes here " << kiloSq << " and continue with more";
+
 }
 
-template< SOU::UnitSpecies T, SOU::UnitSpecies U > auto EXPECT_UNIT_EQ(T t, U u)
-{
-   static_assert(std::is_same< T, U>::value, "These two types must be the same, if not do not compile");
-
-   TheMacro(t.amount(), u.amount());
-}
-
-template< SOU::UnitSpecies T > auto EXPECT_UNIT_EQ(T t, double u)
-{
-   // TODO Set up for return type someday.
-   /* return *//* did not work will return some other day. */
-   TheMacro(t.amount(), u);
-}
-
-template< SOU::UnitSpecies U > auto EXPECT_UNIT_EQ(double t, U u)
-{
-   TheMacro(t, u.amount());
-}
+*/
 
 #endif
-//template< typename T, typename U > struct IsBothSOU
-//{
-//   constexpr static bool value = SOU::is_UnitType<T>::value && SOU::is_UnitType<U>::value;
-//};
-//
-//#define EXPECT_UNIT_EQ( t, u ) \
-//   if constexpr( IsBothSOU<decltype(t), decltype(u) >::value ) { \
-//      static_assert(std::is_same< decltype(t), decltype(u)>::value, "These two types must be the same, if not do not compile"); \
-//      EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<double>, t.amount(), u.amount()); \
-//   } \
-//   else if constexpr( SOU::is_UnitType<decltype(t)>::value ) \
-//      EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<double>, t.amount(), u); \
-//   else if constexpr( SOU::is_UnitType<decltype(u)>::value ) \
-//      EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<double>, t, u.amount()); \
-//   else {static_assert(false, "Non-UnitTypes where passes as arguments"); }
 
 // Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
