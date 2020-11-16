@@ -1,29 +1,21 @@
 // cpp file is created only to use with Google Test Framework.
-#include <gtest/gtest.h>
-#include <tuple>
 #include "template_help.h"	/// The file we are testing.
 #include "MetricTypes.h"
+#include <gtest/gtest.h>
+#include <tuple>
 
-TEST(helpUnitTest, TheSameTypeTest)
-{
-	EXPECT_TRUE((std::is_same<float, float>::value)) << "Using the built in types for test";
-	EXPECT_TRUE((std::is_same<int, int>::value));
-	EXPECT_TRUE((std::is_same<double, double>::value));
-	EXPECT_FALSE((std::is_same<int, double >::value));
-}
 
 TEST(helpUnitTest, IF_Test)
 {
-	EXPECT_TRUE(4 == 4) << "A test for my own sanity";
-	EXPECT_TRUE((std::is_same< SystemOfUnits::IF<true, int, double >::RET, int >::value));
-	EXPECT_TRUE((std::is_same< SystemOfUnits::IF<false, int, double >::RET, double>::value));
+	static_assert((std::is_same< SystemOfUnits::IF<true, int, double >::RET, int >::value));
+	static_assert((std::is_same< SystemOfUnits::IF<false, int, double >::RET, double>::value));
 }
 
 TEST(helpUnitTest, MetricMeter) {
-	EXPECT_FALSE((std::is_same<Metric::t_meter, Metric::t_centimeter>::value));
+	static_assert( !std::is_same<Metric::t_meter, Metric::t_centimeter>::value);
 }
 TEST(helpUnitTest, MetricGram) {
-	EXPECT_FALSE((std::is_same<Metric::t_gram, Metric::t_kilogram>::value));
+	static_assert(!std::is_same<Metric::t_gram, Metric::t_kilogram>::value);
 }
 
 using t_MakeType = SOU::MakeType< Metric::AtomicUnit::Meter, AT::second, Metric::AtomicUnit::kilogram, Metric::AtomicUnit::kelvin, Metric::AtomicUnit::ampere >;

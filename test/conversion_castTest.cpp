@@ -78,7 +78,7 @@ TEST_F(conversion_castTest, TestLength)
    constexpr Metric::t_centimeter const cent(20.0);
    constexpr Metric::t_meter const meter = SOU::conversion_cast<Metric::t_meter>(cent);
    static_assert(0.20 == meter, "shows all conversion_cast<> took place at compile time" );
-   EXPECT_UNIT_EQ(0.20, meter );
+   EXPECT_UNIT_EQ(0.20, meter ) << "Why did it fail?";
    //EXPECT_EQ(0.20, meter.amount());
    //EXPECT_TRUE(0.20 == meter);
 
@@ -99,7 +99,7 @@ TEST_F(conversion_castTest, TestLengthSquared)
    t_meterSq m2 = SOU::conversion_cast<t_meterSq>(cent2);
 
    EXPECT_UNIT_EQ(1.0, m2 );
-   EXPECT_TRUE(1.0 == m2)
+   EXPECT_UNIT_EQ(1.0, m2)
       << "works since the inside of EXPECT_DOUBLE_EQ expects both to be the same type";
    //EXPECT_DOUBLE_EQ( 1.0, m2 );
 }
@@ -205,10 +205,24 @@ TEST_F(conversion_castTest, constexpr_test)
 
 TEST(reinterpit_cast, DoesItWork) {
    Metric::t_centimeter cent{ 100.0 };
+   EXPECT_UNIT_EQ(cent, 100.0);
    //Metric::t_kilogram kg = reinterpret_cast<double>(cent);
    //Metric::t_kilogram kg = reinterpret_cast<Metric::t_kilogram>(cent);
 
    SUCCEED() << "Does not allow reinterpret_cast<> to work.  Test commented out.";
+}
+
+TEST_F(conversion_castTest, failedTest)
+{
+   typedef SOU::MakeSQ< Metric::t_gram >::type t_gramSq;
+   t_gramSq kiloSq{ 1.0 };
+
+   EXPECT_UNIT_EQ(2.0, kiloSq) << "Unhappy message goes here " << kiloSq << " and continue with more";
+
+   EXPECT_UNIT_EQ(kiloSq, 3.0);
+
+   EXPECT_UNIT_EQ(kiloSq, 1.0);
+
 }
 
 // Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.

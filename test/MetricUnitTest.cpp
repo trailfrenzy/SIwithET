@@ -1,9 +1,9 @@
-#include <gtest\gtest.h>
 //#include "EnglishTypes.h"
 #include "MetricTypes.h"
 #include "operators.h"
 #include "conversion_cast.h"
 #include "ExpectUnitTest.h"
+#include <gtest\gtest.h>
 
 TEST(MetricUnitTest, BasicTest)
 {
@@ -25,7 +25,7 @@ using namespace SystemOfUnits::literals;
 TEST(UDL_Metric, meter)
 {
    auto sq = 4.0_meter * 5.0_meter;
-   ASSERT_EQ(sq.amount(), 20.0);
+   EXPECT_UNIT_EQ(sq, 20.0);
    ASSERT_STREQ(SOU::Diminsion(sq).c_str(), "[L]^2");
 }
 

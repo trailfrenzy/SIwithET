@@ -85,10 +85,10 @@ TEST_F(MultiplyFirst, TestMul_Result)
 TEST_F(MultiplyFirst, TestWithCube)
 {
    t_MeterCubed cu1 = t_Meter(2.0) * t_MeterSq(3.0);
-   EXPECT_TRUE(cu1 == 6.0);
+   EXPECT_UNIT_EQ(cu1, 6.0);
 
    auto cu2 = t_MeterSq(4.0) * t_Meter(2.0);
-   EXPECT_TRUE(cu2 == 8.0);
+   EXPECT_UNIT_EQ(cu2, 8.0);
    EXPECT_EQ("[L]^3", SOU::Diminsion(cu2));
 }
 
@@ -160,42 +160,42 @@ TEST_F(MultiplyFirst, TestWithNonAtomicUnitUnitsLength)
    t_MeterSq meterSq2 = mul.result();
 
    const Metric::t_centimeter cent(200.0);
-   EXPECT_DOUBLE_EQ(200.0, cent.amount());
-   EXPECT_DOUBLE_EQ(2.0, SOU::conversion_cast<t_Meter>(cent).amount());
+   EXPECT_UNIT_EQ(200.0, cent );
+   EXPECT_UNIT_EQ(2.0, SOU::conversion_cast<t_Meter>(cent) );
 
    const t_Meter meter{ 7.0 };
-   EXPECT_DOUBLE_EQ(7.0, meter.amount());
-   EXPECT_DOUBLE_EQ(700.0, SOU::conversion_cast<Metric::t_centimeter>(meter).amount());
+   EXPECT_UNIT_EQ(7.0, meter );
+   EXPECT_UNIT_EQ(700.0, SOU::conversion_cast<Metric::t_centimeter>(meter) );
 
    t_MeterSq meterSq;
    meterSq = meter * cent;
 
-   EXPECT_DOUBLE_EQ(14.0, meterSq.amount()) << "this test caused problems since kilogram is the base mass. fixed problem in operator.h";
+   EXPECT_UNIT_EQ(14.0, meterSq ) << "this test caused problems since kilogram is the base mass. fixed problem in operator.h";
 
    typedef SOU::MakeSQ<Metric::t_centimeter>::type t_cmSQ;
    t_cmSQ cmSQ = cent * meter;
-   EXPECT_DOUBLE_EQ(140000.0, cmSQ.amount());
+   EXPECT_UNIT_EQ(140000.0, cmSQ );
 
    Metric::t_kilometer k{ 4.0 };
    t_Meter m{ 4000.0 }; //k * 1.0;
 
    t_MeterSq m2 = m * k; //k * m;
-   EXPECT_DOUBLE_EQ(16000000.0, m2.amount());
+   EXPECT_UNIT_EQ(16000000.0, m2 );
 
    typedef SOU::MakeSQ<Metric::t_kilometer>::type t_kmSQ;
    t_kmSQ kmSQ = k * m;
-   EXPECT_DOUBLE_EQ(16.0, kmSQ.amount());
+   EXPECT_UNIT_EQ(16.0, kmSQ );
 
    kmSQ = k * Metric::t_centimeter(100000.0);
-   EXPECT_DOUBLE_EQ(4.0, kmSQ.amount());
+   EXPECT_UNIT_EQ(4.0, kmSQ );
 
    typedef SOU::MakeSQ<Metric::t_milimeter>::type t_mmSQ;
    m = t_Meter(4.0);
    t_mmSQ mmSq = Metric::t_milimeter(5.0) * m;
-   EXPECT_DOUBLE_EQ(20000.0, mmSq.amount());
+   EXPECT_UNIT_EQ(20000.0, mmSq );
 
    t_MeterSq m3 = m * Metric::t_milimeter(5.0);
-   EXPECT_DOUBLE_EQ(0.02, m3.amount());
+   EXPECT_UNIT_EQ(0.02, m3 );
 }
 /// Basic test with time units
 TEST_F(MultiplyFirst, TestWithNonAtomicUnitUnitsTime)
@@ -205,19 +205,19 @@ TEST_F(MultiplyFirst, TestWithNonAtomicUnitUnitsTime)
    typedef SOU::MakeSQ<Metric::t_hour>::type t_hrSQ;
 
    t_sSQ const s1 = Metric::t_second(3) * Metric::t_second(4);
-   EXPECT_DOUBLE_EQ(12.0, s1.amount());
+   EXPECT_UNIT_EQ(12.0, s1 );
 
    t_sSQ const s2 = Metric::t_second(3.0) * Metric::t_minute(1.0);
-   EXPECT_DOUBLE_EQ(180.0, s2.amount());
+   EXPECT_UNIT_EQ(180.0, s2 );
 
    t_mSQ const m1 = Metric::t_minute(2.0) * Metric::t_second(120.0);
-   EXPECT_DOUBLE_EQ(4.0, m1.amount());
+   EXPECT_UNIT_EQ(4.0, m1 );
 
    t_mSQ const m2 = Metric::t_minute(2.0) * Metric::t_hour(1.0);
-   EXPECT_DOUBLE_EQ(120.0, m2.amount());
+   EXPECT_UNIT_EQ(120.0, m2 );
 
    t_hrSQ const hr1 = Metric::t_hour(1.0) * Metric::t_second(7200);
-   EXPECT_DOUBLE_EQ(2.0, hr1.amount());
+   EXPECT_UNIT_EQ(2.0, hr1 );
 
 }
 ///Basic test with mass types
@@ -232,7 +232,7 @@ TEST_F(MultiplyFirst, TestWithNonAtomicUnitUnitsMass)
    EXPECT_EQ("1/[T]", SOU::Diminsion(hz));
 
    Metric::t_gramPsec gps = kg * hz;
-   EXPECT_DOUBLE_EQ(75.0, gps.amount());
+   EXPECT_UNIT_EQ(75.0, gps );
    EXPECT_EQ("[M]/[T]", SOU::Diminsion(gps));
 }
 /// Test with the non-dimensional unit type to ensure that operator* still works with
@@ -241,35 +241,35 @@ TEST_F(MultiplyFirst, TestWithNonDimension)
 {
    const t_Meter meter{ 7.0 };
    double y = 2.0;
-   EXPECT_TRUE(14.00 == meter * 2) << "with a scalar value";
-   EXPECT_TRUE(14.00 == 2 * meter) << "with a scalar value";
+   EXPECT_UNIT_EQ(14.00, meter * 2) << "with a scalar value";
+   EXPECT_UNIT_EQ(14.00, 2 * meter) << "with a scalar value";
    t_Meter high = meter * y;
-   EXPECT_TRUE(high == 14.0) << "testing with variable";
-   EXPECT_TRUE(21.0 == meter * 3.0) << "testing UnitType*constant";
-   EXPECT_TRUE(3.0 * meter == 21.0) << "testing constant * UnitType";
+   EXPECT_UNIT_EQ(high, 14.0) << "testing with variable";
+   EXPECT_UNIT_EQ(21.0, meter * 3.0) << "testing UnitType*constant";
+   EXPECT_UNIT_EQ(3.0 * meter, 21.0) << "testing constant * UnitType";
 
    double const x = 4;
    //t_Meter low = meter * tNoUnit(3.0);
    //low = meter * x;
-   EXPECT_TRUE(meter * x == 28.0) << "testing with constant variable";
-   EXPECT_TRUE(meter * 5 == 35.0) << "test with a int";
-   EXPECT_TRUE(meter * 5.0f == 35.0) << "test with a float";
+   EXPECT_UNIT_EQ(meter * x, 28.0) << "testing with constant variable";
+   EXPECT_UNIT_EQ(meter * 5, 35.0) << "test with a int";
+   EXPECT_UNIT_EQ(meter * 5.0f, 35.0) << "test with a float";
 
-   EXPECT_TRUE(meter * static_cast<float>(5.0) == 35.0) << "test with a float";
-   EXPECT_TRUE(12.0 == x * 3) << "is this still allowed";
+   EXPECT_UNIT_EQ(meter * static_cast<float>(5.0), 35.0) << "test with a float";
+   EXPECT_DOUBLE_EQ(12.0, x * 3) << "is this still allowed, want to make sure UnitType did not effect the basic operation";
 
-   EXPECT_TRUE(0 == meter * 0.0) << "with zero";
-   EXPECT_TRUE(0 == 0 * meter);
-   //EXPECT_DOUBLE_EQ( t_Meter(0.0), 0.0 * meter) << "find out why it will not compile.";
-   EXPECT_TRUE(t_Meter(0) == meter * 0.0);
-   EXPECT_TRUE(0.0 == meter * 0.0);
+   EXPECT_UNIT_EQ(0, meter * 0.0) << "with zero";
+   EXPECT_UNIT_EQ(0, 0 * meter);
+   EXPECT_UNIT_EQ( t_Meter(0.0), 0.0 * meter) << "find out why it will not compile.";
+   EXPECT_UNIT_EQ(t_Meter(0), meter * 0.0);
+   EXPECT_UNIT_EQ(0.0, meter * 0.0);
 
    Metric::t_kilometer km = 3.0 * Metric::t_kilometer(1.0);
 
-   EXPECT_DOUBLE_EQ(3.0, km.amount());
+   EXPECT_UNIT_EQ(3.0, km );
    km = Metric::t_kilometer(1.0) * 3;
-   EXPECT_DOUBLE_EQ(3.0, km.amount());
-   EXPECT_TRUE(Metric::t_kilometer(3.0) == 3.0 * Metric::t_kilometer(1.0));
+   EXPECT_UNIT_EQ(3.0, km );
+   EXPECT_UNIT_EQ(Metric::t_kilometer(3.0), 3.0 * Metric::t_kilometer(1.0));
 }
 
 /// Test with a multiplication after an subtraction
@@ -279,7 +279,7 @@ TEST_F(MultiplyFirst, TestWithSubinside)
    second Tmin{ 55.5 };
    second Tmax{ 105.5 };
    second Topt = Tmin + 0.7 * (Tmax - Tmin);
-   EXPECT_DOUBLE_EQ(90.5, Topt.amount());
+   EXPECT_UNIT_EQ(90.5, Topt );
 }
 
 template< int NUM_X, int NUM_Y, int PROD > struct ARG { enum { eX = NUM_X, eY = NUM_Y, ePROD = PROD }; };
@@ -337,7 +337,7 @@ TYPED_TEST_P(SI_Multiply, TestMul_Result)
    // Modified when Mul_Result is a move.
    Mul_Result<TAG::t_1, TAG::t_2> sq_m(std::move(arg1), std::move(arg2) ); 
 
-   EXPECT_TRUE(sq_m.result() == *TAG::m_3) << "testing the expression template for mult";
+   EXPECT_UNIT_EQ(sq_m.result(), *TAG::m_3) << "testing the expression template for mult";
    //EXPECT_UNIT_EQ((*TAG::m_1 * *TAG::m_2), *TAG::m_3);
 
    //Mul_Result<TAG::t_1, TAG::t_2> const sq_m2(*TAG::m_1, *TAG::m_2);
@@ -350,16 +350,16 @@ TYPED_TEST_P(SI_Multiply, Test2)
    using TAG = SI_Multiply<TypeParam >;
    // these test call internally Mul_Result
    typename TAG::t_3 prod = *TAG::m_1 * *TAG::m_2;
-   EXPECT_TRUE(prod == *TAG::m_3);
-   EXPECT_TRUE(*TAG::m_3 == *TAG::m_1 * *TAG::m_2);
+   EXPECT_UNIT_EQ(prod, *TAG::m_3);
+   EXPECT_UNIT_EQ(*TAG::m_3, *TAG::m_1 * *TAG::m_2);
 
    *TAG::m_3 = *TAG::m_1 * *TAG::m_2;
-   EXPECT_TRUE(*TAG::m_3 == 12.0);
+   EXPECT_UNIT_EQ(*TAG::m_3, 12.0);
 
-   EXPECT_TRUE(*TAG::m_1 * *TAG::m_3 == *TAG::m_1 * *TAG::m_1 * *TAG::m_2) << "some chaining";
-   EXPECT_TRUE(*TAG::m_1 * *TAG::m_3 * *TAG::m_2 == *TAG::m_1 * *TAG::m_1 * *TAG::m_2 * *TAG::m_2) << "some chaining";
-   EXPECT_TRUE((*TAG::m_1 * *TAG::m_3) * *TAG::m_2 == *TAG::m_1 * (*TAG::m_1 * *TAG::m_2) * *TAG::m_2) << "some chaining";
-   EXPECT_TRUE(*TAG::m_1 * (*TAG::m_3 * *TAG::m_2) == (*TAG::m_1 * *TAG::m_1) * (*TAG::m_2 * *TAG::m_2)) << "some chaining";
+   EXPECT_UNIT_EQ(*TAG::m_1 * *TAG::m_3, *TAG::m_1 * *TAG::m_1 * *TAG::m_2) << "some chaining";
+   EXPECT_UNIT_EQ(*TAG::m_1 * *TAG::m_3 * *TAG::m_2, *TAG::m_1 * *TAG::m_1 * *TAG::m_2 * *TAG::m_2) << "some chaining";
+   EXPECT_UNIT_EQ((*TAG::m_1 * *TAG::m_3) * *TAG::m_2, *TAG::m_1 * (*TAG::m_1 * *TAG::m_2) * *TAG::m_2) << "some chaining";
+   EXPECT_UNIT_EQ(*TAG::m_1 * (*TAG::m_3 * *TAG::m_2), (*TAG::m_1 * *TAG::m_1) * (*TAG::m_2 * *TAG::m_2)) << "some chaining";
 
 }
 /// Test operator*() with scalar values.
@@ -367,19 +367,19 @@ TYPED_TEST_P(SI_Multiply, TestWithScaler)
 {
    using TAG = SI_Multiply<TypeParam >;
 
-   EXPECT_TRUE(12.0 == *TAG::m_1 * 4.0);
-   EXPECT_TRUE(TAG::t_1(12.0) == *TAG::m_1 * 4.0);
-   EXPECT_TRUE(TAG::t_1(12.0) == 4.0 * *TAG::m_1);
+   EXPECT_UNIT_EQ(12.0, *TAG::m_1 * 4.0);
+   EXPECT_UNIT_EQ(TAG::t_1(12.0), *TAG::m_1 * 4.0);
+   EXPECT_UNIT_EQ(TAG::t_1(12.0), 4.0 * *TAG::m_1);
 
-   EXPECT_TRUE(16.0 == *TAG::m_2 * 4.0);
-   EXPECT_TRUE(TAG::t_2(16.0) == *TAG::m_2 * 4.0);
-   EXPECT_TRUE(TAG::t_2(16.0) == 4.0 * *TAG::m_2);
+   EXPECT_UNIT_EQ(16.0, *TAG::m_2 * 4.0);
+   EXPECT_UNIT_EQ(TAG::t_2(16.0), *TAG::m_2 * 4.0);
+   EXPECT_UNIT_EQ(TAG::t_2(16.0), 4.0 * *TAG::m_2);
 
-   EXPECT_TRUE(48.0 == *TAG::m_3 * 4.0);
-   EXPECT_TRUE(TAG::t_3(48.0) == *TAG::m_3 * 4.0);
-   EXPECT_TRUE(TAG::t_3(48.0) == *TAG::m_3 * 2.0 * 2.0) << "with some chaining";
-   EXPECT_TRUE(TAG::t_3(48.0) == 2.0 * *TAG::m_3 * 2.0) << "with some chaining";
-   EXPECT_TRUE(TAG::t_3(48.0) == 2.0 * 2.0 * *TAG::m_3) << "with some chaining";
+   EXPECT_UNIT_EQ(48.0, *TAG::m_3 * 4.0);
+   EXPECT_UNIT_EQ(TAG::t_3(48.0), *TAG::m_3 * 4.0);
+   EXPECT_UNIT_EQ(TAG::t_3(48.0), *TAG::m_3 * 2.0 * 2.0) << "with some chaining";
+   EXPECT_UNIT_EQ(TAG::t_3(48.0), 2.0 * *TAG::m_3 * 2.0) << "with some chaining";
+   EXPECT_UNIT_EQ(TAG::t_3(48.0), 2.0 * 2.0 * *TAG::m_3) << "with some chaining";
 }
 
 TYPED_TEST_P(SI_Multiply, ScalerInteter)
@@ -408,8 +408,8 @@ TYPED_TEST_P(SI_Multiply, TestChainWithScaler)
    {
       typename TAG::t_3 arg1 = *TAG::m_3 *x*x;
       typename TAG::t_3 arg2 = (*TAG::m_1*x) *(*TAG::m_2 * x);
-      EXPECT_DOUBLE_EQ(arg1.amount(), arg2.amount());
-      ASSERT_TRUE(*TAG::m_3 *x*x == (*TAG::m_1*x) *( *TAG::m_2 * x) ) << "Why didn't it work";
+      EXPECT_UNIT_EQ(arg1, arg2);
+      EXPECT_UNIT_EQ(*TAG::m_3 *x*x, (*TAG::m_1*x) *( *TAG::m_2 * x) ) << "Why didn't it work";
    }
 }
 
@@ -418,10 +418,10 @@ TYPED_TEST_P(SI_Multiply, TestMultipleAssign)
 {
    using TAG = SI_Multiply<TypeParam >;
    *TAG::m_3 *= 2.0;
-   EXPECT_DOUBLE_EQ(24.0, TAG::m_3->amount());
+   EXPECT_UNIT_EQ(24.0, *TAG::m_3);
 
    *TAG::m_3 *= 0.5;
-   EXPECT_DOUBLE_EQ(12.0, TAG::m_3->amount());
+   EXPECT_UNIT_EQ(12.0, *TAG::m_3);
 }
 
 /// test operator*=()
@@ -429,10 +429,10 @@ TYPED_TEST_P(SI_Multiply, TestMultipleAssignInt)
 {
    using TAG = SI_Multiply<TypeParam >;
    *TAG::m_3 *= 2;
-   EXPECT_DOUBLE_EQ(24.0, TAG::m_3->amount());
+   EXPECT_UNIT_EQ(24.0, *TAG::m_3 );
 
    *TAG::m_3 *= 0.5f;
-   EXPECT_DOUBLE_EQ(12.0, TAG::m_3->amount());
+   EXPECT_UNIT_EQ(12.0, *TAG::m_3 );
 
 }
 
@@ -560,13 +560,12 @@ TEST(Multiply, constexpr_Mul) {
    constexpr t_Meter m1{ 4.0 };
    constexpr t_MeterSq mSq{ 8.0 };
    constexpr t_MeterCubed meterCubed = m1 * mSq;
-   ASSERT_DOUBLE_EQ(meterCubed.amount(), 32.0) << "The inputs may be constexpr but the result many not";
+   EXPECT_UNIT_EQ(meterCubed, 32.0) << "The inputs may be constexpr but the result many not";
+
    constexpr auto mCubed{ m1 * mSq };
-   ASSERT_DOUBLE_EQ(mCubed.amount(), 32.0) << "missing a constexp if this fails";
+   EXPECT_UNIT_EQ(mCubed, 32.0) << "missing a constexp if this fails";
    static_assert(mCubed == 32.0, "Shows all the mulipication took place at compile time including the comparison operator");
 
-   constexpr double val = (mCubed.amount() - 32.0);
-   static_assert( val < 0.0001 && val > -0.0001 , "Shows all the mulipication took place at compile time" );
 }
 
 // TODO: Why won't auto TestFunctionUsedBelow(SystemOfUnits::UnitSerial auto a, SystemOfUnits::UnitSerial auto b){};  work

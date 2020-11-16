@@ -109,7 +109,7 @@ TEST_F(DivisionFirst, TestChaining)
    EXPECT_UNIT_EQ(m2, 3.0);
 
    m2 = t_MeterCubed(27.0) / t_Meter(3.0) / t_Meter(3.0) / 2;
-   EXPECT_DOUBLE_EQ(1.5, m2.amount()) << "test with operator=()";
+   EXPECT_UNIT_EQ(1.5, m2 ) << "test with operator=()";
 
    t_Meter m3 = (t_Meter(2.0) * t_Meter(9.0)) / t_Meter(3.0);
    EXPECT_UNIT_EQ(m3, 6.0);
@@ -139,7 +139,7 @@ TEST_F(DivisionFirst, TestDimisionLess)
 
 TEST_F(DivisionFirst, DimensionLessDenom) {
    auto const res = t_MeterSq(12.0) / 4.0;
-   EXPECT_DOUBLE_EQ(3.0, res.amount()) << SOU::WhatAmI(res);
+   EXPECT_UNIT_EQ(3.0, res ) << SOU::WhatAmI(res);
    ASSERT_EQ(SOU::Diminsion(res), std::string("[L]^2"));
 }
 
@@ -158,7 +158,7 @@ TEST_F(DivisionFirst, TestWithNonAtomicUnitUnitsLength)
    t_MeterSq meterSq(14.0);
 
    typedef SOU::operators::Div_Result<t_MeterSq, t_centimeter> t_result;
-   EXPECT_TRUE(static_cast<bool>(t_result::ALLTYPES_THE_SAME::val) == true);
+   static_assert(static_cast<bool>(t_result::ALLTYPES_THE_SAME::val) == true);
 
    meter = meterSq / cent;
    EXPECT_UNIT_EQ(7.0, meter );
@@ -250,26 +250,23 @@ TYPED_TEST_P(SOU_Division, Test2)
 TYPED_TEST_P(SOU_Division, TestWithScaler)
 {
 	using TAG = SOU_Division<TypeParam >;
-	EXPECT_DOUBLE_EQ(12.0, TAG::m_1->amount()) << "Verify we are starting correctly";
+   EXPECT_UNIT_EQ(12.0, *TAG::m_1 ) << "Verify we are starting correctly";
 
    typename TAG::t_1 const res = *TAG::m_1 / 4.0;
-	EXPECT_DOUBLE_EQ(3.0, res.amount()) << SOU::WhatAmI(res);
+   EXPECT_UNIT_EQ(3.0, res ) << SOU::WhatAmI(res);
 
 	auto res1 = 36.0 / (*TAG::m_3);
-   // TODO: Correct this, compile error in gtest.h 
-   //auto ans = res1.amount();
-	//ASSERT_TRUE(res1.amount() == 12.0 ) << SOU::WhatAmI(res1);
-   EXPECT_UNIT_EQ(res1, 12.0);
-   //std::cout << SOU::WhatAmI(res1) << '\n';
+   //std::cout << "auto res1 = " << SOU::WhatAmI(res1) << '\n';
+   EXPECT_UNIT_EQ(res1, 12.0); // << "The type is " << SOU::WhatAmI(res1);
 }
 
 TYPED_TEST_P(SOU_Division, TestDivideAssign)
 {
 	using TAG = SOU_Division<TypeParam >;
-	EXPECT_DOUBLE_EQ(12.0, TAG::m_1->amount() ) << "Verify we are starting correctly";
+   EXPECT_UNIT_EQ(12.0, *TAG::m_1 ) << "Verify we are starting correctly";
 
 	*TAG::m_1 /= 2.0;
-	EXPECT_DOUBLE_EQ(6.0, TAG::m_1->amount()) << "12/2 is 6";
+   EXPECT_UNIT_EQ(6.0, *TAG::m_1 ) << "12/2 is 6";
 
 	*TAG::m_1 /= 0.1;
    EXPECT_UNIT_EQ(60.0, *TAG::m_1 );

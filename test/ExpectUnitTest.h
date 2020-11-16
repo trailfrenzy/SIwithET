@@ -51,7 +51,9 @@ public:
    template< SOU::UnitSpecies T, SOU::UnitSpecies U >
    ExpectUnitEq(T t, U u, char const* file, int line, char const* charT, char const* charU)
       : BaseExpect(t.amount(), u.amount(), file, line, charT, charU)
-   {}
+   {
+      static_assert(std::is_same<T, U>::value, "Both T and U must be the same.");
+   }
 
    /// Most of the time it is a char const * string we are passing
    ExpectUnitEq& operator<<(std::string_view val)

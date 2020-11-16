@@ -1,5 +1,6 @@
 #include "SI.h"
 #include <gtest\gtest.h>
+#include "ExpectUnitTest.h"
 //#include "MetricTypes.h"
 
 namespace SystemOfUnits {
@@ -32,6 +33,17 @@ TEST(NoUnit, Constructor_NoUnit)
    SOU::NoUnit noDim5(5ll);
    SOU::NoUnit noDim6(5u);
 }
+
+TEST(NoUnit, NoUnitValueZero) {
+   SOU::tNoUnit val(0.0);
+   EXPECT_UNIT_EQ(val, 0.0);
+}
+
+TEST(NoUnit, NoUnitValue) {
+   SOU::tNoUnit val(6.0);
+   EXPECT_UNIT_EQ(val, 6.0);
+}
+
 
 //TEST(NoUnit, AddtionScaler)
 //{

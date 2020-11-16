@@ -1,10 +1,11 @@
 // file contains tests for tempeture which is different from other dimensions in its unique conversions it does.
-#include <gtest/gtest.h>
 #include "Temperature.h"
 #include "MetricTypes.h"
 #include "conversion_cast.h"
 #include "operators.h"
 #include "WhatAmI.h"
+#include "ExpectUnitTest.h"
+#include <gtest/gtest.h>
 
 namespace AU = Metric::AU;
 using AUMetric = Metric::AUMetric;
@@ -18,12 +19,12 @@ using t_Cel = SOU::UnitType< AU::Meter, 0, AT::minute, 0, AU::gram, 0, SOU::Atom
 using t_HeatFluxC = SOU::UnitType< AU::Meter, 2, AT::minute, -1, AU::gram, 1, SOU::AtomicUnit::celsius, -1, AU::ampere, 0 >;
 
 TEST(temperature, ToBase) {
-	EXPECT_NEAR( t_Cel::Temperature::toBase(0.0), 273.15, 0.01);  // to K
-	EXPECT_NEAR(t_Kelvin::Temperature::toBase(0.0), 0.0, 0.01);
+	static_assert(t_Cel::Temperature::toBase(0.0) == 273.15, "Shows the conversion is able to work at compile time");
+	static_assert(t_Kelvin::Temperature::toBase(0.0) == 0.0);
 }
 TEST(temperature, FromBase) {
-	EXPECT_NEAR(t_Kelvin::Temperature::fromBase(0.0), 0.0, 0.01);
-	EXPECT_NEAR(t_Cel::Temperature::fromBase(273.15), 0.0, 0.01);
+	static_assert(t_Kelvin::Temperature::fromBase(0.0) == 0.0);
+	static_assert(t_Cel::Temperature::fromBase(273.15) == 0.0);
 }
 TEST(temperature, ToFromBase) {
 	auto out = t_Cel::Temperature::toBase(0.0);
@@ -35,23 +36,23 @@ TEST(temperature, ToFromBase) {
 TEST(temperature, StartKtoC_conversion_cast) {
 	t_Kelvin K(0.0);
 	t_Cel C = SOU::conversion_cast<t_Cel>(K);
-	EXPECT_NEAR(C.amount(), -273.15, 0.0001) << "is it close?";
+	EXPECT_UNIT_EQ(C, -273.15) << "is it close?";
 }
 TEST(temperature, StartCtoK_conversion_cast) {
 	t_Cel C(0.0);
 	EXPECT_DOUBLE_EQ(C.amount(), 0.0);
 	t_Kelvin K = SOU::conversion_cast<t_Kelvin>(C);
-	EXPECT_NEAR(K.amount(), 273.15, 0.0001);
+	EXPECT_UNIT_EQ(K, 273.15);
 }
 TEST(temperature, FtoC_conversion_cast) {
 	t_Far F(32.0);
 	t_Cel C = SOU::conversion_cast<t_Cel>(F);
-	EXPECT_NEAR(C.amount(), (0.0), 0.0001);
+	EXPECT_UNIT_EQ(C, 0.0);
 }
 TEST(temperature, CtoF_conversion_cast) {
 	t_Cel C{ 100.0 };
 	t_Far F = SOU::conversion_cast<t_Far>(C);
-	EXPECT_NEAR(F.amount(), 212.0, 0.0001);
+	EXPECT_UNIT_EQ(F, 212.0);
 }
 
 TEST(temerature, STATIC_Assert) {
@@ -64,7 +65,7 @@ TEST(temperature, Negative_conversion_cast) {
    t_Kelvin K{ 100 };
    t_Joule  J{ 5000 };
    auto HeatCapicity = J / K;
-   ASSERT_DOUBLE_EQ(HeatCapicity.amount(), 50.0);
+   EXPECT_UNIT_EQ(HeatCapicity, 50.0);
    auto bAns = SOU::dimensions_same_assert< decltype(J), t_Joule >();
    std::cout << SOU::dimension << HeatCapicity << '\n';
 
@@ -75,13 +76,7 @@ TEST(temperature, Negative_conversion_cast) {
    ASSERT_FALSE(bAns) << "Heat flux is not the same as capacity you dummy";
    // TODO: complete the negitive conversion cast
    //auto Flux = SOU::conversion_cast<t_HeatFluxC>(HeatCapicity);
-   ASSERT_TRUE(tmp::eT == -1) << "Proof of the neg Temp dim";
-}
-
-TEST(Dimensions_same, Joule) {
-   constexpr t_Joule J(5000);
-   constexpr bool bAns = SOU::dimensions_same< decltype(J), t_Joule >();
-   EXPECT_TRUE(bAns);
+   static_assert(tmp::eT == -1, "Proof of the neg Temp dim");
 }
 
 TEST(Diminsion, TemperatureRule ) {

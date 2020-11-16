@@ -61,7 +61,6 @@ TEST(WhatAmITest, TestWithOneDim)
 
 	Metric::t_gramPsec massFlow(3.895);
 	EXPECT_EQ(std::string_view("second^(-1)*kilogram"), SOU::WhatAmI(massFlow));
-	EXPECT_TRUE(true);
 }
 
 TEST(UnitNameWchar, Basic)

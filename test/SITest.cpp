@@ -43,22 +43,22 @@ TYPED_TEST_P(SITest, SizeOf)
    static_assert(sizeof(double) == sizeof(long double), "if fail you are no longer on a long double is 64bit");
 }
 
-TYPED_TEST_P(SITest, Comparison)
+TYPED_TEST_P(SITest, Comparison) // Test must use EXPECT_TRUE() since it is testing the comparison operator.
 {
 	using TAG = SITest<TypeParam >;
 	*TAG::m_1 = TAG::t_type(4.5);
 	*TAG::m_2 = TAG::t_type(4.5);
 
 	EXPECT_TRUE(*TAG::m_1 == *TAG::m_2);
-	EXPECT_TRUE(TAG::m_1->amount() == 4.5);
+	EXPECT_TRUE(*TAG::m_1 == 4.5);
 
 	// testing with one side double the other side UnitType
-	EXPECT_TRUE(*TAG::m_1 == 4.5)  << "Use to have three different comparison operators, now only one";
+	EXPECT_TRUE(*TAG::m_1 == 4.5)  << "There is three different comparison operators in UnitType";
    auto b = TAG::t_type( 4.5 ) == *TAG::m_1;
    EXPECT_TRUE(b);
 }
 
-TYPED_TEST_P(SITest, NotEqual)
+TYPED_TEST_P(SITest, NotEqual) // Test must use EXPECT_TRUE() since it is testing the comparison operator.
 {
 	using TAG = SITest<TypeParam >;
 	EXPECT_TRUE(*TAG::m_1 != *TAG::m_2);
@@ -66,7 +66,7 @@ TYPED_TEST_P(SITest, NotEqual)
    EXPECT_TRUE(*TAG::m_2 != TAG::t_type( 4.5 ));
 }
 
-TYPED_TEST_P(SITest, LessThan)
+TYPED_TEST_P(SITest, LessThan) // Test must use EXPECT_TRUE() since it is testing the comparison operator.
 {
 	using TAG = SITest<TypeParam >;
 	*TAG::m_1 = TAG::t_type(4.55555);
@@ -77,14 +77,14 @@ TYPED_TEST_P(SITest, LessThan)
    EXPECT_TRUE(TAG::t_type(1) < *TAG::m_3);
 }
 
-TYPED_TEST_P(SITest, GreaterThan)
+TYPED_TEST_P(SITest, GreaterThan) // Test must use EXPECT_TRUE() since it is testing the comparison operator.
 {
 	using TAG = SITest<TypeParam >;
 	EXPECT_TRUE(*TAG::m_4 > *TAG::m_3);
    EXPECT_TRUE(TAG::t_type(20) > *TAG::m_3);
 }
 
-TYPED_TEST_P(SITest, GreaterThanEqual )
+TYPED_TEST_P(SITest, GreaterThanEqual ) // Test must use EXPECT_TRUE() since it is testing the comparison operator.
 {
    using TAG = SITest<TypeParam >;
    EXPECT_TRUE(*TAG::m_4 >= *TAG::m_3);
@@ -92,7 +92,7 @@ TYPED_TEST_P(SITest, GreaterThanEqual )
    EXPECT_TRUE(TAG::t_type(3.0) >= *TAG::m_3);
 }
 
-TYPED_TEST_P(SITest, LessThanEqual )
+TYPED_TEST_P(SITest, LessThanEqual ) // Test must use EXPECT_TRUE() since it is testing the comparison operator.
 {
    using TAG = SITest<TypeParam >;
    *TAG::m_1 = TAG::t_type(4.55555);
@@ -108,66 +108,72 @@ TYPED_TEST_P(SITest, Assignment)
 {
 	using TAG = SITest<TypeParam >;
 	*TAG::m_1 = TAG::t_type(68.9);
-	EXPECT_TRUE(*TAG::m_1 == 68.9);
+   EXPECT_UNIT_EQ(*TAG::m_1, 68.9);
 
 	*TAG::m_2 = *TAG::m_1;
-	EXPECT_TRUE(*TAG::m_2 == 68.9);
+   EXPECT_UNIT_EQ(*TAG::m_2, 68.9);
 
 	*TAG::m_2 = TAG::t_type(4.5);
-	EXPECT_TRUE(*TAG::m_2 == 4.5);
+   EXPECT_UNIT_EQ(*TAG::m_2, 4.5);
 }
 
 TYPED_TEST_P(SITest, Addition)
 {
 	using TAG = SITest<TypeParam >;
-	EXPECT_TRUE(*TAG::m_1 == *TAG::m_2 + *TAG::m_3);
-	EXPECT_TRUE(*TAG::m_1 == *TAG::m_3 + *TAG::m_2);
-	EXPECT_TRUE(*TAG::m_1 == *TAG::m_4 + *TAG::m_4);
-	//CPPUNIT_ASSERT_DOUBLES_EQUAL( *m_1, *m_4 + *m_4, 0.00000001 ); 
+   EXPECT_UNIT_EQ(*TAG::m_1, *TAG::m_2 + *TAG::m_3);
+   EXPECT_UNIT_EQ(*TAG::m_1, *TAG::m_3 + *TAG::m_2);
+   EXPECT_UNIT_EQ(*TAG::m_1, *TAG::m_4 + *TAG::m_4);
 }
 TYPED_TEST_P(SITest, Addition_constexp) {
    using TAG = SITest<TypeParam>;
    constexpr TAG::t_type a{ 2 };
    constexpr TAG::t_type b{ 3.0 };
    constexpr auto c = a + b;
-   ASSERT_DOUBLE_EQ(c.amount(), 5.0);
+   EXPECT_UNIT_EQ(c, 5.0);
+   static_assert(c == 5.0, "Proves the addtion took place at compile time.");
 }
 TYPED_TEST_P(SITest, Subtraction_constexp) {
    using TAG = SITest<TypeParam>;
    constexpr TAG::t_type a{ 12 };
    constexpr TAG::t_type b{ 5.0 };
    constexpr auto c = a - b;
-   ASSERT_DOUBLE_EQ(c.amount(), 7.0);
+   EXPECT_UNIT_EQ(c, 7.0);
+   static_assert( c == 7.0, "Proves the subtraction took place at compile time.");
 }
 TYPED_TEST_P(SITest, AdditionAssignment)
 {
 	using TAG = SITest<TypeParam>;
-	*TAG::m_2 += *TAG::m_3;
-	EXPECT_TRUE(*TAG::m_1 == *TAG::m_2);
+
+   *TAG::m_2 += *TAG::m_3;
+   EXPECT_UNIT_EQ(*TAG::m_1, *TAG::m_2);
+
    *TAG::m_2 += TAG::t_type(3.0);
+   EXPECT_UNIT_EQ(*TAG::m_2, 11.0) << "This method caused an error from bad developer logic";
 }
 TYPED_TEST_P(SITest, Subtraction)
 {
 	using TAG = SITest<TypeParam >;
-	EXPECT_TRUE(*TAG::m_1 - *TAG::m_2 == *TAG::m_3);
-	EXPECT_TRUE(*TAG::m_3 == *TAG::m_1 - *TAG::m_2);
+   EXPECT_UNIT_EQ(*TAG::m_1 - *TAG::m_2, *TAG::m_3);
+   EXPECT_UNIT_EQ(*TAG::m_3, *TAG::m_1 - *TAG::m_2);
 }
 TYPED_TEST_P(SITest, SubtractionAssignment)
 {
 	using TAG = SITest<TypeParam >;
 	*TAG::m_1 -= *TAG::m_2;
-	EXPECT_TRUE(*TAG::m_1 == *TAG::m_3);
+   EXPECT_UNIT_EQ(*TAG::m_1, *TAG::m_3);
 }
 TYPED_TEST_P(SITest, Chaining)
 {
 	using TAG = SITest<TypeParam >;
-	EXPECT_TRUE(*TAG::m_4 + *TAG::m_4 - *TAG::m_2 == *TAG::m_3);
+   EXPECT_UNIT_EQ(*TAG::m_4 + *TAG::m_4 - *TAG::m_2, *TAG::m_3);
 
-   typename TAG::t_type u1(12.0);
-   typename TAG::t_type u2(6.0);
-	EXPECT_TRUE(u2 + u2 + u2 + u2 - u1 == u1);
-	EXPECT_TRUE(u2 + u2 + u2 + u2 - u1 - u2 == u1 - u2);
-	EXPECT_TRUE(TAG::t_type(2.0) + TAG::t_type(3.0) == TAG::t_type(5.0));
+   constexpr typename TAG::t_type u1(12.0);
+   constexpr typename TAG::t_type u2(6.0);
+   EXPECT_UNIT_EQ(u2 + u2 + u2 + u2 - u1, u1);
+   static_assert(u2 + u2 + u2 + u2 - u1 == u1);
+   EXPECT_UNIT_EQ(u2 + u2 + u2 + u2 - u1 - u2, u1 - u2);
+   static_assert(u2 + u2 + u2 + u2 - u1 - u2 == u1 - u2);
+   EXPECT_UNIT_EQ(TAG::t_type(2.0) + TAG::t_type(3.0), TAG::t_type(5.0));
 }
 
 TYPED_TEST_P(SITest, DestructorNoThrow) {
@@ -242,16 +248,6 @@ typedef t_Base::MakeDim<3,0,0,0,0>::type t_MeterCubed;
 typedef ::testing::Types< Metric::t_meter, Metric::t_metersecond, Metric::t_second, Metric::t_velocity, Metric::t_gramPsec, t_MeterSq, t_MeterCubed > MyTypes;
 INSTANTIATE_TYPED_TEST_SUITE_P(My, SITest, MyTypes);
 
-TEST( BasicSI, NoUnitValueZero ) {
-   SOU::tNoUnit val( 0.0 );
-   EXPECT_EQ( val.amount(), 0.0);
-}
-
-TEST(BasicSI, NoUnitValue) {
-   SOU::tNoUnit val(6.0);
-   EXPECT_EQ(val.amount(), 6.0);
-}
-
 TEST(BasicSI, Mult_float)
 {
    t_Meter km = 3.0 * t_Meter(1.0);
@@ -272,22 +268,9 @@ TEST(BasicSI, Div_float)
    static_assert(std::is_same< decltype(n), t_Meter >::value, "using the built in operator/() not in operator.h");
 }
 
-//TEST(BasicSI, NULL_Value) {
-//   t_Meter M;
-//   M /= 2.0;
-//
-//   t_Meter M2(4.5);
-//   M += M2;
-//   M2 += M;
-//
-//   double t = 0.0 / 0.0;
-//   //EXPECT_LT(0.0, M.amount());
-//}
-
-
 TEST(BasicSI, Constexpr) {
    constexpr t_MeterSq const val(7.0);
-   EXPECT_EQ(val.amount(), 7.0);
+   EXPECT_UNIT_EQ(val, 7.0);
 }
 
 // TODO: change ASSERT_DOUBLE_EQ() to handle comparison of two different types.
@@ -439,12 +422,11 @@ TEST(BasicSI, Concepts_CompileError )
 
 TEST(BasicSI, isZeroDim)
 {
-   typedef SOU::UnitType< Meter, 0, AT::second, -2, gram, 2, SOU::NoDim, 0, SOU::NoDim > t_gramPsecSQ;
    typedef SOU::UnitType< Meter, 0, AT::second,  0, gram, 0, SOU::NoDim, 0, SOU::NoDim > t_NoDim;
 
    constexpr auto noDim = t_NoDim(4.0);
    ASSERT_TRUE( noDim.isZeroDimensions() );
-   static_assert(noDim.isZeroDimensions());
+   static_assert(noDim.isZeroDimensions(),"Evaluated at compile time");
 }
 
 // Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.

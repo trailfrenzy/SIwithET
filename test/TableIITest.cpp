@@ -41,7 +41,7 @@ TEST(TableIITest, TestNewton)
    t_mass mass{ 5.0 };
 
 	t_n const N = acc * mass;
-	EXPECT_DOUBLE_EQ(49.05, N.amount());
+   EXPECT_UNIT_EQ(49.05, N );
 	EXPECT_EQ(std::string_view("meter*second^(-2)*kilogram"), SOU::WhatAmI(N));
 	//std::cout << SI::WhatAmI(N);
 }
@@ -52,10 +52,10 @@ TEST(TableIITest, TestAcceleration)
    v V2{ 3.0 };
    t_sec t{ 2.0 };
 	a acc = (V1 + V2) / t;
-	EXPECT_DOUBLE_EQ(4.0, acc.amount());
+   EXPECT_UNIT_EQ(4.0, acc );
 
 	a acc2 = acc + V2 / t;
-	EXPECT_DOUBLE_EQ(5.5, acc2.amount());
+   EXPECT_UNIT_EQ(5.5, acc2 );
 
 	/* This line below will fail since no brackets are used.
 	   Forces the user to keep their types together before mul or dividing.

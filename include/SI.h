@@ -104,8 +104,8 @@ namespace SystemOfUnits /// covers the basics of the system
       { return lf.m_amount == rt.m_amount; }
 
       /// provided to allow testing using ASSERT_TRUE() which will not use method amount()
-      friend constexpr bool operator==(UnitType const &lf, double rt) noexcept(b_noexcept) { return lf.m_amount == rt; }
-      friend constexpr bool operator==(double lf, UnitType const & rt) noexcept(b_noexcept) { return lf == rt.m_amount; }
+      friend constexpr bool operator==(UnitType const &lf, t_float rt) noexcept(b_noexcept) { return lf.m_amount == rt; }
+      friend constexpr bool operator==(t_float lf, UnitType const &rt) noexcept(b_noexcept) { return lf == rt.m_amount; }
 
       // not-comparison operator
       /** not-comparison operator

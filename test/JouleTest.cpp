@@ -2,6 +2,7 @@
 #include "MetricTypes.h"
 #include "WhatAmI.h"
 #include "operators.h"
+#include "conversion_cast.h"
 #include "DerivedUnits.h"
 #include "ExpectUnitTest.h"
 
@@ -111,12 +112,19 @@ TEST(Joule, MakeNewtonThroughAuto)
 	static_assert( SOU::is_same<decltype(joule), t_Joule >::value, "See how the compiler generated Joule is the same" );
 }
 
+TEST(Joule, Dimensions_same) {
+	constexpr t_Joule J(5000);
+	constexpr bool bAns = SOU::dimensions_same< decltype(J), t_Joule >();
+	EXPECT_TRUE(bAns);
+}
+
+
 TEST(Joule, Ratio) {
 	t_Joule J{ 45.0 };
 	t_Newton N{ 5.0 };
 	auto M = J / N;
-	EXPECT_DOUBLE_EQ(9.0, M.amount());
-	EXPECT_EQ(SystemOfUnits::WhatAmI(M), std::string("meter"));
+	EXPECT_UNIT_EQ(9.0, M );
+	EXPECT_EQ(SystemOfUnits::WhatAmI(M), "meter");
 }
 using t_Meter = t_MakeType::MakeDim<1, 0, 0, 0, 0>::type;
 using t_MeterSq = t_MakeType::MakeDim<2, 0, 0, 0, 0>::type;
@@ -126,7 +134,7 @@ TEST(Joule, Pressure) {
 	t_Newton N{ 45.0 };
    t_MeterSq M2{ 9.0 };
 	auto Pressure = N / M2;
-	EXPECT_DOUBLE_EQ(5.0, Pressure.amount()) << "Building up for the ideal gas law"; // kg/(m·s2)
+	EXPECT_UNIT_EQ(5.0, Pressure ) << "Building up for the ideal gas law"; // kg/(m·s2)
 	//EXPECT_EQ( SystemOfUnits::WhatAmI( P ), "")
 }
 
