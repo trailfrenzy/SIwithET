@@ -47,13 +47,15 @@ namespace SystemOfUnits
    /// method owned by the class which prints the type of class
    /// @prama SystemOfUnits::UnitType
    /// @return std::string
-   /// @note future work is to remove the blank space after each string.
+   /// @note The function builds the sequence of stream inserters at compile time but will still call the stream inserters at run time. 
    template< typename char_type, typename T >
-   inline auto UnitName( T  )
+   inline auto UnitName( T )
       noexcept(noexcept(std::basic_ostringstream<char_type>) && noexcept(T) )
    {
+      typedef T Type ;
       if constexpr (is_CoherentUnit<T>::value) return std::basic_string<char_type>{T::unitName()};
-      if constexpr (!is_UnitType<T>::value) return std::basic_string<char_type>{};
+      else if constexpr (!is_UnitType<T>::value) return std::basic_string<char_type>{};
+      else if constexpr (Type::isZeroDimensions()) return std::basic_string<char_type>{};
       else
       {
          std::basic_ostringstream<char_type> buf;
@@ -65,7 +67,8 @@ namespace SystemOfUnits
          helpers::printAtom< T::Temperature, T::eT >(buf);
          helpers::printAtom< T::Charge, T::eQ >(buf);
 
-         return buf.str().erase(buf.str().size() - 1); // removes the last space char in the buffer
+         // NOTE: causes error with noDim.
+         return buf.str().erase(buf.str().size() - 1); // removes the last space char in the buffer at runtime.
       }
    }
 
@@ -112,7 +115,7 @@ namespace SystemOfUnits
    {
       if constexpr (!is_UnitType<T>::value) return {}; // not a UnitType bale and get out.
 
-      else if constexpr(!T::eL && !T::eM && !T::et && !T::eT && !T::eQ) return {}; // no dim, bale out fast!
+      else if constexpr( T::isZeroDimensions() ) return {}; // no dim, bale out fast!
       else
       {
          std::pair< std::basic_ostringstream<char_type>, std::basic_ostringstream<char_type> > buf;
@@ -143,6 +146,7 @@ namespace SystemOfUnits
       return t_Diminsion<char>(val);
    }
 }
+
 // Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //

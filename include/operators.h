@@ -55,13 +55,16 @@ namespace SystemOfUnits
          using ExprRef = T const;
 
          /// the dimensions of the trait
-         enum
+         enum : int
          { eL = T::eL   /// Length Dimensional 
          , et = T::et   /// Time Dimensional
          , eM = T::eM   /// Mass Dimensional
          , eT = T::eT   /// Temperature Dimensional
          , eQ = T::eQ   /// Charge Dimensional
          };
+
+         ///  Returns wheather the class is a zero dimensions or not.
+         constexpr static bool isZeroDimensions() noexcept { return eL == 0 && et == 0 && eM == 0 && eT == 0 && eQ == 0; }
 
          using Length = typename T::Length;        /// Length type of the incoming arg.
          using Time = typename T::Time;            /// Time type of the incoming arg.
@@ -81,12 +84,6 @@ namespace SystemOfUnits
             && std::is_same<R1::Temperature::Base, R2::Temperature::Base >::value
             && std::is_same<R1::Charge::Base, R2::Charge::Base >::value
          };
-      };
-
-      // Used below to test if it the UnitType as zero dimensions.
-      template< typename R1 > struct is_zero_dimensions
-      {
-         enum : bool { value = R1::eL == 0 && R1::et == 0 && R1::eM == 0 && R1::eT == 0 && R1::eQ == 0 };
       };
 
       /// Base class to Mul_Result and Div_Result
@@ -120,8 +117,8 @@ namespace SystemOfUnits
          /// ie so feet and meters are not mixed up but both are base units
          enum ALLTYPES_THE_SAME : bool {
             val = is_same_BASE<R1, R2 >::value
-            || is_zero_dimensions<R1>::value
-            || is_zero_dimensions<R2>::value
+            || R1::isZeroDimensions()
+            || R2::isZeroDimensions()
             , T = true
          };
 

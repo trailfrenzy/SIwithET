@@ -43,7 +43,8 @@ TEST(MathFunc, TestWithlog)
 
    //auto val = log(T1);  // causes errors as expected.
 
-   static_assert(SOU::operators::is_zero_dimensions< decltype(T1 / T2) >::value);
+   //static_assert(SOU::operators::is_zero_dimensions< decltype(T1 / T2) >::value);
+   static_assert(decltype(T1 / T2)::isZeroDimensions());
 
    auto timeRatio = T1 / T2;
 

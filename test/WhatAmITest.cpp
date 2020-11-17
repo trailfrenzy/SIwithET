@@ -1,11 +1,12 @@
 // used to test the WhatAmI() method
-#include <gtest/gtest.h>
+#include "WhatAmI.h"
 #include "SI.h"
 #include "MetricTypes.h"
-#include "WhatAmI.h"
 #include "operators.h"
 #include <sstream>
 #include <string_view>
+#include <gtest/gtest.h>
+#include "ExpectUnitTest.h"
 
 TEST(Diminsion, NoDim) {
 	EXPECT_EQ("", SOU::Diminsion(SOU::tNoUnit(2.0) ));
@@ -142,7 +143,27 @@ TEST(WhatAmITest, TestMultipleDim)
 
 }
 
-// Copyright © 2005-2015 "Curt" Leslie L. Martin, All rights reserved.
+TEST(WhatAmITest, Inverse)
+{
+	using namespace SystemOfUnits::literals;
+
+	auto res1 = 36.0 / 3.0_meter;
+	//std::cout << "auto res1 = " << SOU::WhatAmI(res1) << '\n';
+	EXPECT_UNIT_EQ(res1, 12.0) << "The type is " << SOU::WhatAmI(res1);
+
+	EXPECT_EQ(SOU::WhatAmI(res1), "meter^(-1)") << "Think about changing so it is like the dimensions";
+}
+
+TEST(WhatAmITest, NoDim )
+{
+	using namespace SystemOfUnits::literals;
+	auto val = 40.0_meter / 5.0_meter;
+	EXPECT_EQ("", SOU::WhatAmI(val) ) << "Test caused an error from erasing the last astrick if empty";
+}
+
+
+
+// Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any
