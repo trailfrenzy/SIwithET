@@ -96,7 +96,7 @@ namespace SystemOfUnits
          }
          if constexpr (T < 0) {
             buf.second << '[' << C << ']';
-            if constexpr (T < -1) buf.second << '^' << abs(T);
+            if constexpr (T < -1) buf.second << '^' << (-1 * T);
          }
          return buf;
       }
