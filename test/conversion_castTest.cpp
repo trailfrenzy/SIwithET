@@ -212,20 +212,7 @@ TEST(reinterpit_cast, DoesItWork) {
    SUCCEED() << "Does not allow reinterpret_cast<> to work.  Test commented out.";
 }
 
-TEST_F(conversion_castTest, failedTest)
-{
-   typedef SOU::MakeSQ< Metric::t_gram >::type t_gramSq;
-   t_gramSq kiloSq{ 1.0 };
-
-   EXPECT_UNIT_EQ(2.0, kiloSq) << "Unhappy message goes here " << kiloSq << " and continue with more";
-
-   EXPECT_UNIT_EQ(kiloSq, 3.0);
-
-   EXPECT_UNIT_EQ(kiloSq, 1.0);
-
-}
-
-// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any
