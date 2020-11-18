@@ -73,19 +73,6 @@ namespace SystemOfUnits
          using Charge = typename T::Charge;        /// Charge of the incoming arg.
       };
 
-
-      template< typename R1, typename R2 >
-      struct is_same_BASE {
-         enum : bool {
-            value =
-            std::is_same<R1::Length::Base, R2::Length::Base>::value
-            && std::is_same<R1::Time::Base, R2::Time::Base >::value
-            && std::is_same<R1::Mass::Base, R2::Mass::Base >::value
-            && std::is_same<R1::Temperature::Base, R2::Temperature::Base >::value
-            && std::is_same<R1::Charge::Base, R2::Charge::Base >::value
-         };
-      };
-
       /// Base class to Mul_Result and Div_Result
       /** NOTE:
       "Expression Templates, Chap 18", C++ Templates The Complete Guide, Addison-Wesley,
@@ -113,13 +100,23 @@ namespace SystemOfUnits
          using R1 = A_Trait<T1, T2>; /// the type of the left side of the arg
          using R2 = A_Trait<T2, T1>; /// the type of the right side of the arg
 
+         /// Do both the traits have the same base dimensions?
+         constexpr static bool is_same_BASE() noexcept
+         {
+            return
+               std::is_same<R1::Length::Base, R2::Length::Base>::value
+               && std::is_same<R1::Time::Base, R2::Time::Base >::value
+               && std::is_same<R1::Mass::Base, R2::Mass::Base >::value
+               && std::is_same<R1::Temperature::Base, R2::Temperature::Base >::value
+               && std::is_same<R1::Charge::Base, R2::Charge::Base >::value;
+         }
+
          /// public enum is used to let users know that the types did not match
-         /// ie so feet and meters are not mixed up but both are base units
+         /// ie so feet and meters are not mixed up but both are base units. Used in static_assert()
          enum ALLTYPES_THE_SAME : bool {
-            val = is_same_BASE<R1, R2 >::value
+            val = is_same_BASE() //is_same_BASE<R1, R2 >::value
             || R1::isZeroDimensions()
             || R2::isZeroDimensions()
-            , T = true
          };
 
          // Below is a compile time check to compare if the length as same type ie meter to meter, not meter to kilometer

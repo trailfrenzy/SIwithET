@@ -49,7 +49,7 @@ TEST_F(MultiplyFirst, TestAssignment)
    static_assert(t_MeterSq::eQ == 0);
 
    typedef Mul_Result<t_Meter, t_Meter> tMulSq;
-   static_assert(tMulSq::ALLTYPES_THE_SAME::val == tMulSq::ALLTYPES_THE_SAME::T);
+   static_assert(tMulSq::ALLTYPES_THE_SAME::val );
    static_assert(tMulSq::TResult::eL == t_MeterSq::eL);//good
    static_assert(tMulSq::TResult::et == t_MeterSq::et);
    static_assert(tMulSq::TResult::eM == t_MeterSq::eM);
