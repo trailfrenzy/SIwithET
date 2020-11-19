@@ -27,23 +27,23 @@ namespace SystemOfUnits
       /// used by what am i
       /// @prama std::stringstream is used to create the return stream
       //template< typename TYPE, int DIM > void printAtom( std::ostringstream &ret )
-      template< Dimensional TYPE, int DIM, typename TOUT >
-      void printAtom(TOUT &ret)
-         noexcept( noexcept(TOUT) && noexcept(TYPE))
+      template< Dimensional TYPE, int DIM, typename T_BufPair >
+      void printAtom(T_BufPair& buf)
+         noexcept( noexcept(T_BufPair) && noexcept(TYPE))
       {
          if constexpr( DIM != 0) // value known at compile time
          {
-            ret << TYPE::str();
+            buf << TYPE::str();
    			if constexpr (DIM > 1)
             {
-               ret << '^' << DIM;
+               buf << '^' << DIM;
 			   }
             if constexpr (DIM < 0)
             {
-               ret << "^(" << DIM << ')';
+               buf << "^(" << DIM << ')';
             }
 
-            ret << '*'; // need to remove if last DIM
+            buf << '*'; // need to remove if last DIM
          }
       }
    }
@@ -87,18 +87,18 @@ namespace SystemOfUnits
    {
 
       /// Called by Diminsion() below.
-      template < char C, int T, typename T_BufPair >
+      template < char C, int DIM, typename T_BufPair >
       inline auto& OneDim(T_BufPair &buf)
          noexcept( noexcept(t_bufPair::first_type)&&noexcept(t_bufPair::second_type) )
       {
          // only the numerator or denomitator is used not both, if ZERO then none are used.
-         if constexpr (T > 0) {
+         if constexpr (DIM > 0) {
             buf.first << '[' << C << ']';
-            if constexpr (T > 1) buf.first << '^' << T;
+            if constexpr (DIM > 1) buf.first << '^' << DIM;
          }
-         if constexpr (T < 0) {
+         if constexpr (DIM < 0) {
             buf.second << '[' << C << ']';
-            if constexpr (T < -1) buf.second << '^' << (-1 * T);
+            if constexpr (DIM < -1) buf.second << '^' << (-1 * DIM);
          }
          return buf;
       }
