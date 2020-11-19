@@ -21,10 +21,14 @@ namespace SystemOfUnits
    /// namespace used by classes and methods inside namespace SI
    namespace helpers
    {
+      /// The pair stringstream is used to make the first numerator and second denominator in dimensions.
+      using t_bufPair = std::pair< std::ostringstream, std::ostringstream >;
+
       /// used by what am i
       /// @prama std::stringstream is used to create the return stream
       //template< typename TYPE, int DIM > void printAtom( std::ostringstream &ret )
-      template< Dimensional TYPE, int DIM, typename TOUT > void printAtom(TOUT &ret)
+      template< Dimensional TYPE, int DIM, typename TOUT >
+      void printAtom(TOUT &ret)
          noexcept( noexcept(TOUT) && noexcept(TYPE))
       {
          if constexpr( DIM != 0) // value known at compile time
@@ -81,10 +85,8 @@ namespace SystemOfUnits
 
    namespace helpers
    {
-      /// The pair stringstream is used to make the first numerator and second denominator in dimensions.
-	   using t_bufPair = std::pair< std::ostringstream, std::ostringstream >;
-	   enum { THETA = 233 }; // from www.asciitable.com
 
+      /// Called by Diminsion() below.
       template < char C, int T, typename T_BufPair >
       inline auto& OneDim(T_BufPair &buf)
          noexcept( noexcept(t_bufPair::first_type)&&noexcept(t_bufPair::second_type) )

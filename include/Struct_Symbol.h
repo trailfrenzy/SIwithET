@@ -76,14 +76,15 @@ namespace SystemOfUnits {
       {
          constexpr static bool value = std::is_base_of< SystemOfUnits::helpers::Trait_SymbolForDimension, T > ::value;
       };
+
+      enum :char unsigned { THETA = 233 }; // from www.asciitable.com
    }
 
-   enum:char unsigned { THETA = 233 }; // from www.asciitable.com
    /// Base classes for the dimensions of the base units
    using Length          = helpers::SymbolForDimension<'L'>;
    using Mass            = helpers::SymbolForDimension<'M'>;
    using Time            = helpers::SymbolForDimension<'T'>;
-   using Temperature     = helpers::SymbolForDimension< char(THETA) >;
+   using Temperature     = helpers::SymbolForDimension< char(helpers::THETA) >;
    using ElectricCurrent = helpers::SymbolForDimension<'C'>;
    using NO_DIM          = helpers::SymbolForDimension<' '>;
 
@@ -112,7 +113,7 @@ namespace SystemOfUnits {
 
    template<Dimensional BASE_UNIT > struct is_Temperature
    {
-      constexpr static bool value = BASE_UNIT::sym == THETA;
+      constexpr static bool value = BASE_UNIT::sym == helpers::THETA;
    };
 
    template<Dimensional BASE_UNIT > struct is_Current
