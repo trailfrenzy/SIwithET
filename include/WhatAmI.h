@@ -24,6 +24,34 @@ namespace SystemOfUnits
       /// The pair stringstream is used to make the first numerator and second denominator in dimensions.
       using t_bufPair = std::pair< std::ostringstream, std::ostringstream >;
 
+      template<typename char_type>
+      auto PairToString(std::pair< std::basic_ostringstream<char_type>, std::basic_ostringstream<char_type> > &buf)
+      {
+         std::basic_ostringstream<char_type> out;
+
+         // if numerator is empty insert a 1 into the stream.
+         if (buf.first.tellp() != std::streampos(0)) out << buf.first.str();
+         else out << '1';
+
+         // if denominator has a value then insert a slash prior to the values.
+         if (buf.second.tellp() != std::streampos(0)) out << '/' << buf.second.str();
+
+         return out.str();
+      }
+
+      template<typename char_type>
+      auto RemoveLastChar(std::pair< std::basic_ostringstream<char_type>, std::basic_ostringstream<char_type> >& buf)
+      {
+         if (buf.first.tellp() != std::streampos(0)) {
+            buf.first.str().erase(buf.first.str().size() - 1); // removes the last space char in the buffer at runtime.
+         }
+         if (buf.second.tellp() != std::streampos(0)) {
+            buf.second.str().erase(buf.second.str().size() - 1);
+         }
+         return buf;
+      }
+
+
       /// used by what am i
       /// @prama std::stringstream is used to create the return stream
       //template< typename TYPE, int DIM > void printAtom( std::ostringstream &ret )
@@ -31,19 +59,27 @@ namespace SystemOfUnits
       void printAtom(T_BufPair& buf)
          noexcept( noexcept(T_BufPair) && noexcept(TYPE))
       {
-         if constexpr( DIM != 0) // value known at compile time
+         if constexpr (DIM > 0)
          {
-            buf << TYPE::str();
-   			if constexpr (DIM > 1)
-            {
-               buf << '^' << DIM;
-			   }
-            if constexpr (DIM < 0)
-            {
-               buf << "^(" << DIM << ')';
-            }
+            // inserts a space if not the first one on the stream.
+            if (buf.first.tellp() != std::streampos(0)) buf.first << ' ';
 
-            buf << '*'; // need to remove if last DIM
+            buf.first << TYPE::str();
+            if constexpr (DIM > 1) {
+               buf.first << '^' << DIM;
+            }
+            //buf.first << ' ';
+         }
+         if constexpr (DIM < 0)
+         {
+            // inserts a space if not the first one on the stream.
+            if (buf.second.tellp() != std::streampos(0)) buf.second << ' ';
+
+            buf.second << TYPE::str();
+            if constexpr (DIM < -1) {
+               buf.second << '^' << (-1 * DIM);
+            }
+            //buf.second << ' ';
          }
       }
    }
@@ -54,7 +90,7 @@ namespace SystemOfUnits
    /// @note The function builds the sequence of stream inserters at compile time but will still call the stream inserters at run time. 
    template< typename char_type, typename T >
    inline auto UnitName( T )
-      noexcept(noexcept(std::basic_ostringstream<char_type>) && noexcept(T) )
+      //noexcept(noexcept(std::basic_ostringstream<char_type>) && noexcept(T) )
    {
       typedef T Type ;
       if constexpr (is_CoherentUnit<T>::value) return std::basic_string<char_type>{T::unitName()};
@@ -62,7 +98,8 @@ namespace SystemOfUnits
       else if constexpr (Type::isZeroDimensions()) return std::basic_string<char_type>{};
       else
       {
-         std::basic_ostringstream<char_type> buf;
+         //std::basic_ostringstream<char_type> buf;
+         std::pair< std::basic_ostringstream<char_type>, std::basic_ostringstream<char_type> > buf;
 
          // use a template map to sort these later
          helpers::printAtom< T::Length, T::eL >(buf);
@@ -72,7 +109,8 @@ namespace SystemOfUnits
          helpers::printAtom< T::Charge, T::eQ >(buf);
 
          // NOTE: causes error with noDim.
-         return buf.str().erase(buf.str().size() - 1); // removes the last space char in the buffer at runtime.
+         //return buf.str().erase(buf.str().size() - 1); // removes the last space char in the buffer at runtime.
+         return helpers::PairToString(buf);
       }
    }
 
@@ -129,16 +167,17 @@ namespace SystemOfUnits
          if constexpr (0 != T::eT) OneDim<T::Temperature::sym, T::eT >(buf);
          if constexpr (0 != T::eQ) OneDim<T::Charge::sym, T::eQ >(buf);
 
-         std::basic_ostringstream<char_type> out;
+         //std::basic_ostringstream<char_type> out;
 
-         // if numerator is empty insert a 1 into the stream.
-         if (buf.first.tellp() != std::streampos(0)) out << buf.first.str();
-         else out << '1';
+         //// if numerator is empty insert a 1 into the stream.
+         //if (buf.first.tellp() != std::streampos(0)) out << buf.first.str();
+         //else out << '1';
 
-         // if denominator has a value then insert a slash prior to the values.
-         if (buf.second.tellp() != std::streampos(0)) out << '/' << buf.second.str();
+         //// if denominator has a value then insert a slash prior to the values.
+         //if (buf.second.tellp() != std::streampos(0)) out << '/' << buf.second.str();
 
-         return out.str();
+         //return out.str();
+         return helpers::PairToString<char_type>(buf);
       }
    }
 

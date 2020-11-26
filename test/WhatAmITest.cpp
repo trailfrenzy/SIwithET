@@ -22,7 +22,7 @@ TEST(Diminsion, Double) {
 
 TEST(Diminsion, LEN) {
 	Metric::t_meter meter{ 444.5 };
-	EXPECT_EQ("[L]", SOU::Diminsion(meter));
+	EXPECT_STREQ("[L]", SOU::Diminsion(meter).c_str() );
 }
 TEST(Diminsion, MassRule) {
 	Metric::t_gram gram{ 444.5 };
@@ -58,25 +58,25 @@ TEST(WhatAmITest, TestWithOneDim)
 	EXPECT_EQ(std::string("second"), SOU::WhatAmI(sec));
 
 	Metric::t_velocity vel(81.5);
-	EXPECT_EQ(std::string_view( "meter*second^(-1)"), SOU::WhatAmI(vel));
+	EXPECT_EQ(std::string_view( "meter/second"), SOU::WhatAmI(vel));
 
 	Metric::t_gramPsec massFlow(3.895);
-	EXPECT_EQ(std::string_view("second^(-1)*kilogram"), SOU::WhatAmI(massFlow));
+	EXPECT_EQ(std::string_view("kilogram/second"), SOU::WhatAmI(massFlow));
 }
 
 TEST(UnitNameWchar, Basic)
 {
    Metric::t_meter const meter(1.34578f);
-   EXPECT_EQ(std::wstring(L"meter"), SOU::UnitName<wchar_t>(meter));
+	EXPECT_STREQ( L"meter", SOU::UnitName<wchar_t>(meter).c_str() );
 
    Metric::t_second sec(58903.3);
    EXPECT_EQ(std::wstring(L"second"), SOU::UnitName<wchar_t>(sec));
 
    Metric::t_velocity vel(81.5);
-   EXPECT_EQ(std::wstring_view(L"meter*second^(-1)"), SOU::UnitName<wchar_t>(vel));
+   EXPECT_EQ(std::wstring_view(L"meter/second"), SOU::UnitName<wchar_t>(vel));
 
    Metric::t_gramPsec massFlow(3.895);
-   EXPECT_EQ(std::wstring_view(L"second^(-1)*kilogram"), SOU::UnitName<wchar_t>(massFlow));
+   EXPECT_EQ(std::wstring_view(L"kilogram/second"), SOU::UnitName<wchar_t>(massFlow));
 }
 
 TEST(UnitNameWchar, Dim) {
@@ -151,7 +151,7 @@ TEST(WhatAmITest, Inverse)
 	//std::cout << "auto res1 = " << SOU::WhatAmI(res1) << '\n';
 	EXPECT_UNIT_EQ(res1, 12.0) << "The type is " << SOU::WhatAmI(res1);
 
-	EXPECT_EQ(SOU::WhatAmI(res1), "meter^(-1)") << "Think about changing so it is like the dimensions";
+	EXPECT_EQ(SOU::WhatAmI(res1), "1/meter") << "Think about changing so it is like the dimensions";
 }
 
 TEST(WhatAmITest, NoDim )

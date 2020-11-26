@@ -79,7 +79,7 @@ TEST(Inserter, TestForMD)
    auto ms = m / s;
    std::stringstream strm;
    strm << SOU::units << ms;
-   EXPECT_EQ(strm.str(), std::string_view("3 meter*second^(-1)"));
+   EXPECT_EQ(strm.str(), std::string_view("3 meter/second"));
 
    static_assert(!std::is_same<decltype(s), decltype(m)>::value);
    static_assert(!std::is_same<decltype(ms), decltype(m)>::value);
@@ -121,7 +121,7 @@ TEST(Inserter, ShowUnitCubeSec) {
    t_CubedPerSec mps  { 1967.09 };
    std::ostringstream strm;
    strm << SOU::units << mps;
-   ASSERT_EQ(strm.str(), std::string_view("1967.09 meter^3*second^(-1)"));
+   ASSERT_EQ(strm.str(), std::string_view("1967.09 meter^3/second"));
 }
 
 TEST(Extractor, ConceptWork) {

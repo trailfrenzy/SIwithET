@@ -42,7 +42,7 @@ TEST(TableIITest, TestNewton)
 
 	t_n const N = acc * mass;
    EXPECT_UNIT_EQ(49.05, N );
-	EXPECT_EQ(std::string_view("meter*second^(-2)*kilogram"), SOU::WhatAmI(N));
+	EXPECT_EQ(std::string_view("meter kilogram/second^2"), SOU::WhatAmI(N));
 	//std::cout << SI::WhatAmI(N);
 }
 

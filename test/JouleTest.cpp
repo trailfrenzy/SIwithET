@@ -27,7 +27,7 @@ const t_Grav GRAVITY  { 6.6740831e-11 };
 TEST(Diminsion, Joule) {
 	t_Joule joule{ 45.033 };
 	EXPECT_EQ(SystemOfUnits::Diminsion(joule), "[L]^2[M]/[T]^2");
-	EXPECT_EQ(SystemOfUnits::WhatAmI(joule), "meter^2*second^(-2)*kilogram");
+	EXPECT_EQ(SystemOfUnits::WhatAmI(joule), "meter^2 kilogram/second^2");
 }
 
 /*
@@ -40,7 +40,7 @@ using t_Newton = t_MakeType::MakeDim<1, -2, 1, 0, 0 >::type;
 TEST(Diminsion, Newton) {
 	t_Newton N{ 45.5885 };
 	EXPECT_EQ(SystemOfUnits::Diminsion(N),"[L][M]/[T]^2");
-	EXPECT_EQ(SystemOfUnits::WhatAmI(N), "meter*second^(-2)*kilogram");
+	EXPECT_EQ(SystemOfUnits::WhatAmI(N), "meter kilogram/second^2");
 }
 
 TEST(Joule, Product) {
@@ -48,7 +48,7 @@ TEST(Joule, Product) {
 	Metric::t_meter M{ 5.0 };
 	auto J = N * M;
 	EXPECT_EQ(SystemOfUnits::Diminsion(J), "[L]^2[M]/[T]^2");
-	EXPECT_EQ(SystemOfUnits::WhatAmI(J), "meter^2*second^(-2)*kilogram");
+	EXPECT_EQ(SystemOfUnits::WhatAmI(J), "meter^2 kilogram/second^2");
 	EXPECT_UNIT_EQ(225.0, J );
 }
 
