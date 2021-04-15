@@ -45,10 +45,10 @@ namespace SystemOfUnits /// covers the basics of the system
       using Charge = Q ;     /*!<  Quantity type for Charge */
 
       /// default constructor (does not initialize scalar with default value, just like a built in type).
-      UnitType() noexcept(b_noexcept) = default;
+      UnitType() noexcept = default;
 
       /// rule of 6, provide a default destructor if one of the 6 is provided.
-      ~UnitType() noexcept(b_noexcept) = default;
+      ~UnitType() noexcept = default;
 
       /// constructor from a scalar
       /** constructor from a scalar value.
@@ -57,40 +57,40 @@ namespace SystemOfUnits /// covers the basics of the system
       Without the explicit a user could introduce a double to equation where only a UnitType is correct.
        * @param a double is used to initialize the original value
       */
-      explicit constexpr UnitType( t_float m ) noexcept(b_noexcept) : m_amount(m){}
+      explicit constexpr UnitType( t_float m ) noexcept : m_amount(m){}
 
       /** copy-constructor from the same UnitType.
       * @param a UnitType of the same type.
         copy constructor was explicit but removed when testing for pass by value instread of pass by reference. One Less machine instruction when pass by ref.
       */
-      constexpr UnitType(UnitType const &val ) noexcept(b_noexcept) = default;
+      constexpr UnitType(UnitType const &val ) noexcept = default;
 
       /** move-constructor from the same UnitType.
       * @param a UnitType of the same type.
         move constructor was explicit but removed when testing for pass by value instread of pass by reference. One Less machine instruction when pass by ref.
       */
-      constexpr UnitType(UnitType &&val) noexcept(b_noexcept) = default;
+      constexpr UnitType(UnitType &&val) noexcept = default;
 
 	  /** assignment operator
 	  * @param value which the left-handed object will be assigned
 	  * @return the current object
 	  */
-     constexpr UnitType &operator=(UnitType const &) & noexcept(b_noexcept) = default;
+     constexpr UnitType &operator=(UnitType const &) & noexcept = default;
 
      /** move assignment operator
      * @param value which the left-handed object will be moved
      * @return the current object
      */
-     constexpr UnitType &operator=(UnitType &&rt) && noexcept(b_noexcept) = default;
+     constexpr UnitType &operator=(UnitType &&rt) && noexcept = default;
 
-     /// prevent assigning scalar values to an existing unit but still allows assnment to a new type.
+     /// prevent assigning scalar values to an existing unit but still allows assignment to a new type.
      /// Important to prevent implicit assignment of new amount to existing objects.
      UnitType& operator=(t_float val) = delete;
 
       /** returns the scalar value of the object.  Would like to eliminate this method but is used by conversion_cast<> and testing.
           Method is a crutch for any novice of the library. Used in the Test Suite excessively. 
         * @return the scalar value of the type. */
-      constexpr auto amount() const noexcept(b_noexcept) { return m_amount; }
+      constexpr auto amount() const noexcept { return m_amount; }
 
       ///  Returns wheather the class is a zero dimensions or not.
       constexpr static bool isZeroDimensions() noexcept { return eL == 0 && et == 0 && eM == 0 && eT == 0 && eQ == 0; }
@@ -100,12 +100,12 @@ namespace SystemOfUnits /// covers the basics of the system
        * @param UnitType (or numeric type) on the right hand side
        * @return bool true if the left and right are equal, false if not
       */
-      friend constexpr bool operator==( UnitType const &lf, UnitType const &rt ) noexcept(b_noexcept)
+      friend constexpr bool operator==( UnitType const &lf, UnitType const &rt ) noexcept
       { return lf.m_amount == rt.m_amount; }
 
       /// provided to allow testing using ASSERT_TRUE() which will not use method amount()
-      friend constexpr bool operator==(UnitType const &lf, t_float rt) noexcept(b_noexcept) { return lf.m_amount == rt; }
-      friend constexpr bool operator==(t_float lf, UnitType const &rt) noexcept(b_noexcept) { return lf == rt.m_amount; }
+      friend constexpr bool operator==(UnitType const &lf, t_float rt) noexcept { return lf.m_amount == rt; }
+      friend constexpr bool operator==(t_float lf, UnitType const &rt) noexcept { return lf == rt.m_amount; }
 
       // not-comparison operator
       /** not-comparison operator
@@ -113,7 +113,7 @@ namespace SystemOfUnits /// covers the basics of the system
        * @param UnitType (or numeric type) on the right hand side
        * @return bool true if the left and right are not equal, false if equal
       */
-      friend constexpr bool operator!=( UnitType const &lf, UnitType const &rt ) noexcept(b_noexcept)
+      friend constexpr bool operator!=( UnitType const &lf, UnitType const &rt ) noexcept
       { return !(lf == rt); }
 
       /** less than operator
@@ -121,7 +121,7 @@ namespace SystemOfUnits /// covers the basics of the system
       * @param UnitType on the right hand side
       * @return bool true if the left side is less than the right side
       */
-      friend constexpr bool operator<(UnitType const &lf, UnitType const &rt) noexcept(b_noexcept)
+      friend constexpr bool operator<(UnitType const &lf, UnitType const &rt) noexcept
       { return lf.m_amount < rt.m_amount; }
 
       /** greater than operator
@@ -129,7 +129,7 @@ namespace SystemOfUnits /// covers the basics of the system
       * @param UnitType on the right hand side
       * @return bool true if the left side is greater than the right side
       */
-      friend constexpr bool operator>(UnitType const &lf, UnitType const &rt) noexcept(b_noexcept)
+      friend constexpr bool operator>(UnitType const &lf, UnitType const &rt) noexcept
       { return rt < lf; }
 
       /** less than equal operator
@@ -137,7 +137,7 @@ namespace SystemOfUnits /// covers the basics of the system
        * @param UnitType on the right hand side
        * @return bool true if the left side is less than or equal to the right side
       */
-      friend constexpr bool operator<=( UnitType const &lf, UnitType const &rt ) noexcept(b_noexcept)
+      friend constexpr bool operator<=( UnitType const &lf, UnitType const &rt ) noexcept
       { return !(rt < lf); }
 
       /** greater than equal operator
@@ -145,14 +145,14 @@ namespace SystemOfUnits /// covers the basics of the system
        * @param UnitType on the right hand side
        * @return bool true if the left side is greater than or equal to the right side
       */
-      friend constexpr bool operator>=( UnitType const &lf, UnitType const &rt ) noexcept(b_noexcept)
+      friend constexpr bool operator>=( UnitType const &lf, UnitType const &rt ) noexcept
       { return !(lf < rt); }
 
       /** addition assignment operator
        * @param UnitType value which the left-handed object will be added with
        * @return the current object which was increased by the right-handed value
       */
-      constexpr UnitType &operator+=( UnitType const &rt ) noexcept(b_noexcept)
+      constexpr UnitType &operator+=( UnitType const &rt ) noexcept
       {
          m_amount += rt.m_amount;
          return *this;
@@ -162,7 +162,7 @@ namespace SystemOfUnits /// covers the basics of the system
        * @param value which the left-handed object will be differenced against
        * @return the current object
       */
-      constexpr UnitType &operator-=( UnitType const &rt ) noexcept(b_noexcept)
+      constexpr UnitType &operator-=( UnitType const &rt ) noexcept
       {
          m_amount -= rt.m_amount;
          return *this;
@@ -173,7 +173,7 @@ namespace SystemOfUnits /// covers the basics of the system
        * @param double which is multiplied against the current object
        * @return the current object
       */
-      constexpr UnitType &operator *=( double rt ) noexcept(b_noexcept)
+      constexpr UnitType &operator *=( double rt ) noexcept
       {
          m_amount *= rt;
          return *this;
@@ -184,7 +184,7 @@ namespace SystemOfUnits /// covers the basics of the system
        * @param double which is multiplied against the current object
        * @return the current object
       */
-      constexpr UnitType &operator /=( double rt ) noexcept(b_noexcept)
+      constexpr UnitType &operator /=( double rt ) noexcept
       {
          m_amount /= rt;
          return *this;
@@ -195,7 +195,7 @@ namespace SystemOfUnits /// covers the basics of the system
          @param UnitType right-handed side
          @return a new UnitType of the same type as the left and right sides.
       */
-      friend constexpr UnitType operator+( UnitType const &lf, UnitType const &rt ) noexcept(b_noexcept)
+      friend constexpr UnitType operator+( UnitType const &lf, UnitType const &rt ) noexcept
       {
          return UnitType( lf.m_amount + rt.m_amount );
       }
@@ -205,7 +205,7 @@ namespace SystemOfUnits /// covers the basics of the system
          @param UnitType right-handed side
          @return a new UnitType of the same type as the left and right sides.
       */
-      friend constexpr UnitType operator-( UnitType const &lf, UnitType const &rt ) noexcept(b_noexcept)
+      friend constexpr UnitType operator-( UnitType const &lf, UnitType const &rt ) noexcept
       {
          return UnitType( lf.m_amount - rt.m_amount);
       }

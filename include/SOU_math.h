@@ -19,7 +19,7 @@ namespace SystemOfUnits::math
    template< SOU::UnitSpecies S >
    inline constexpr auto sin(S s) noexcept
    {
-      static_assert(s.isZeroDimensions(), "To use log() the argument must have zero dimensions"); //TODO look at making a concept for this rule.
+      static_assert(s.isZeroDimensions(), "To use sin() the argument must have zero dimensions"); //TODO look at making a concept for this rule.
       if constexpr (std::is_same_v< double, S::t_float>) return ::sin(s.amount());
       if constexpr (std::is_same_v< long double, S::t_float>) return ::sinl(s.amount());
       else return ::sinf(s.amount());
@@ -28,7 +28,7 @@ namespace SystemOfUnits::math
    template< SOU::UnitSpecies S >
    inline constexpr auto cos(S s) noexcept
    {
-      static_assert(s.isZeroDimensions(), "To use log() the argument must have zero dimensions"); //TODO look at making a concept for this rule.
+      static_assert(s.isZeroDimensions(), "To use cos() the argument must have zero dimensions"); //TODO look at making a concept for this rule.
       if constexpr (std::is_same_v< double, S::t_float>) return ::cos(s.amount());
       if constexpr (std::is_same_v< long double, S::t_float>) return ::cosl(s.amount());
       else return ::cosf(s.amount());
@@ -37,7 +37,7 @@ namespace SystemOfUnits::math
    template< SOU::UnitSpecies S >
    inline constexpr auto tan(S s) noexcept
    {
-      static_assert(s.isZeroDimensions(), "To use log() the argument must have zero dimensions"); //TODO look at making a concept for this rule.
+      static_assert(s.isZeroDimensions(), "To use tan() the argument must have zero dimensions"); //TODO look at making a concept for this rule.
       if constexpr (std::is_same_v< double, S::t_float>) return ::tan(s.amount());
       if constexpr (std::is_same_v< long double, S::t_float>) return ::tanl(s.amount());
       else return ::tanf(s.amount());
