@@ -39,19 +39,6 @@ namespace SystemOfUnits
          return out.str();
       }
 
-      template<typename char_type>
-      auto RemoveLastChar(std::pair< std::basic_ostringstream<char_type>, std::basic_ostringstream<char_type> >& buf)
-      {
-         if (buf.first.tellp() != std::streampos(0)) {
-            buf.first.str().erase(buf.first.str().size() - 1); // removes the last space char in the buffer at runtime.
-         }
-         if (buf.second.tellp() != std::streampos(0)) {
-            buf.second.str().erase(buf.second.str().size() - 1);
-         }
-         return buf;
-      }
-
-
       /// used by what am i
       /// @prama std::stringstream is used to create the return stream
       //template< typename TYPE, int DIM > void printAtom( std::ostringstream &ret )
@@ -68,7 +55,6 @@ namespace SystemOfUnits
             if constexpr (DIM > 1) {
                buf.first << '^' << DIM;
             }
-            //buf.first << ' ';
          }
          if constexpr (DIM < 0)
          {
@@ -79,7 +65,6 @@ namespace SystemOfUnits
             if constexpr (DIM < -1) {
                buf.second << '^' << (-1 * DIM);
             }
-            //buf.second << ' ';
          }
       }
    }
@@ -102,11 +87,11 @@ namespace SystemOfUnits
          std::pair< std::basic_ostringstream<char_type>, std::basic_ostringstream<char_type> > buf;
 
          // use a template map to sort these later
-         helpers::printAtom< T::Length, T::eL >(buf);
-         helpers::printAtom< T::Time, T::et >(buf);
-         helpers::printAtom< T::Mass, T::eM >(buf);
-         helpers::printAtom< T::Temperature, T::eT >(buf);
-         helpers::printAtom< T::Charge, T::eQ >(buf);
+         helpers::printAtom< typename T::Length, T::eL >(buf);
+         helpers::printAtom< typename T::Time, T::et >(buf);
+         helpers::printAtom< typename T::Mass, T::eM >(buf);
+         helpers::printAtom< typename T::Temperature, T::eT >(buf);
+         helpers::printAtom< typename T::Charge, T::eQ >(buf);
 
          // NOTE: causes error with noDim.
          //return buf.str().erase(buf.str().size() - 1); // removes the last space char in the buffer at runtime.
@@ -123,7 +108,6 @@ namespace SystemOfUnits
 
    namespace helpers
    {
-
       /// Called by Diminsion() below.
       template < char C, int DIM, typename T_BufPair >
       inline auto& OneDim(T_BufPair &buf)
@@ -188,7 +172,7 @@ namespace SystemOfUnits
    }
 }
 
-// Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2022 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

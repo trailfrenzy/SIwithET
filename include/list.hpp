@@ -234,7 +234,7 @@ namespace Meta
    template< class Head, class Tail, unsigned Index >
    struct At< Meta::LIST<Head, Tail>, Index >
    {
-      typedef typename At< Tail, Index - 1>::RET RET;
+      using RET = typename At< Tail, Index - 1>::RET;
    };
 
    using NullType = EmptyList;

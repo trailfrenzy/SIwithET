@@ -358,10 +358,10 @@ namespace SystemOfUnits
       ShowDim_t(TOUT &r) : out(r){}
 
       /// pass by value instead of reference for built in types.
-      template< Arithmetic A> ShowDim_t operator<<(A a) { out << a; return *this; }
+      template< Arithmetic A> ShowDim_t &operator<<(A a) { out << a; return *this; }
 
       /// Used by the UnitType to display the acutal diminsion
-      template< UnitSpecies S > ShowDim_t operator<<(S val)
+      template< UnitSpecies S > ShowDim_t &operator<<(S val)
       {
          using t_unit = S; // SystemOfUnits::UnitType<L, iL, t, it, M, iM, T, iT, Q, iQ>;
          using t_char = typename TOUT::char_type;  // will not compile if TOUT does not have char_type.
@@ -458,7 +458,7 @@ noexcept(noexcept(SystemOfUnits::operators::Div_Result<R1, R2>))
    return SystemOfUnits::operators::Div_Result<R1, R2>(std::move(r1), std::move(r2)).result();
 }
 
-// Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2022 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

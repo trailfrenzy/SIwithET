@@ -63,20 +63,20 @@ namespace SystemOfUnits
 		// correct the length
 		if constexpr(0 != eL) {  // check to see if compiles out when zero
 			out *=
-				P< MakeFrom<OUT::Length> >::thePower<eL>::toBase() // converts the outgoing to the base unit
-				* P< IN::Length >::thePower<eL>::toBase();         // converts the incoming to the base unit
+				P< MakeFrom< typename OUT::Length > >::thePower<eL>::toBase() // converts the outgoing to the base unit
+				* P< typename IN::Length >::thePower<eL>::toBase();         // converts the incoming to the base unit
 		}
 		// correct the time
 		if constexpr (0 != et) {
 			out *=
-				P< MakeFrom<OUT::Time> >::thePower<et>::toBase()
-				* P< IN::Time >::thePower<et>::toBase();
+				P< MakeFrom< typename OUT::Time> >::thePower<et>::toBase()
+				* P< typename IN::Time >::thePower<et>::toBase();
 		}
 		// correct the mass
 		if constexpr (0 != eM) {
 			out *=
-				P< MakeFrom<OUT::Mass> >::thePower<eM>::toBase()
-				* P< IN::Mass >::thePower<eM>::toBase();
+				P< MakeFrom< typename OUT::Mass> >::thePower<eM>::toBase()
+				* P< typename IN::Mass >::thePower<eM>::toBase();
 		}
 		// need a correct the temperature
 		if constexpr (eT == 1) {
@@ -89,14 +89,14 @@ namespace SystemOfUnits
 		// correct the charge
 		if constexpr (0 != eQ) {
 			out *=
-				P< MakeFrom<OUT::Charge> >::thePower<eQ>::toBase()
-				* P< IN::Charge >::thePower<eQ>::toBase();
+				P< MakeFrom< typename OUT::Charge> >::thePower<eQ>::toBase()
+				* P< typename IN::Charge >::thePower<eQ>::toBase();
 		}
 		// during the return the constructor from a scalar value will be used.
       return OUT{ out };
 	}
 }
-// Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2022 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

@@ -32,17 +32,18 @@ namespace SystemOfUnits /// covers the basics of the system
          , eQ = iQ   /*!< Dimensional of Charge */
       };
 
-      /// Used in all class methods and friend functions for their noexcept()
-      enum:bool{ b_noexcept = noexcept(L) && noexcept(t) && noexcept(M) && noexcept(T) && noexcept(Q) };
-      //enum: bool{ b_noexcept = true };
-      static_assert(b_noexcept, "Why is this false?");
-
       // Quantity as typedefs
       using Length = L;      /*!<  Quantity type for Length */
       using Time = t;        /*!<  Quantity type for Time */
       using Mass= M;         /*!<  Quantity type for Mass */
       using Temperature = T; /*!<  Quantity type for Temperature */
       using Charge = Q ;     /*!<  Quantity type for Charge */
+
+      /// Used in all class methods and friend functions for their noexcept()
+      enum:bool{ b_Test = noexcept(Length() ) };
+      enum:bool{ b_noexcept = noexcept(Length()) && noexcept(Time()) && noexcept(Mass()) && noexcept(Temperature()) && noexcept(Charge()) };
+      //enum: bool{ b_noexcept = true };
+      static_assert(b_noexcept, "Why is this false?");
 
       /// default constructor (does not initialize scalar with default value, just like a built in type).
       UnitType() noexcept = default;
@@ -282,7 +283,7 @@ namespace SystemOfUnits /// covers the basics of the system
    template< typename T > struct is_UnitType : std::integral_constant<bool, std::is_base_of< TraitUnit, T>::value > {};
 
    /// Concept for what a SI Unit is. The name 'UnitSpecies' is from "Elements of Programming" , Alexander Stepanove, Paul McJones, Semigroup Press, Sec 1.7. 
-   /// We call a collection of requirments a concpet, Tyeps represent spcies, concpts reprsents genera.
+   /// We call a collection of requirments a concpet, Types represent spcies, concpts reprsents genera.
    /// All of the different UnitType's which are defined by the template above belong to the species of UnitSpecies.
    template< typename T> concept UnitSpecies = is_UnitType<T>::value;
 
@@ -368,7 +369,7 @@ namespace SOU = SystemOfUnits; ///< Shortcut to the namespace.
 /** 
  @mainpage My Personal Index Page
  @section copyright_sec Copyright
- Copyright © 2003-2020 "Curt" Leslie L. Martin, All rights reserved.
+ Copyright © 2003-2022 "Curt" Leslie L. Martin, All rights reserved.
  curt.leslie.lewis.martin@gmail.com
 
  Permission to use, copy, modify, and distribute this software for any
