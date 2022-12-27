@@ -246,7 +246,7 @@ namespace SystemOfUnits
          /// @param R2::ArgRef r2 is the left hand side.
          constexpr Mul_Result( typename R1::ArgRef r1, typename R2::ArgRef r2 )
             noexcept(noexcept(R1::ArgRef) && noexcept(R2::ArgRef ) )
-            : m_r1(std::move(r1)), m_r2(std::move(r2)){}
+            : m_r1(std::forward<R1::ArgRef>(r1)), m_r2(std::forward<R2::ArgRef>(r2)){}
 
          /// computes when requested
          /// @return TResult which is found at compile time which is a double or UnitType<>
@@ -311,7 +311,7 @@ namespace SystemOfUnits
          /// @param R2::ArgRef r2 is the left hand side.
          constexpr Div_Result( typename R1::ArgRef r1, typename R2::ArgRef r2 )
             noexcept(noexcept(R1::ArgRef) && noexcept(R2::ArgRef)) 
-            : m_r1(std::move(r1)), m_r2(std::move(r2)){}
+            : m_r1(std::forward<R1::ArgRef>(r1)), m_r2(std::forward<R2::ArgRef>(r2)){}
 
          /// computes when requested
          /// @return TResult which is found at compile time
@@ -442,7 +442,7 @@ template < SystemOfUnits::UnitSpecies R1, SystemOfUnits::UnitSpecies R2 >
 constexpr inline auto operator*( R1 r1, R2 r2 ) // TODO: write tests for constexpr
 noexcept( noexcept(SystemOfUnits::operators::Mul_Result<R1, R2>))
 {
-   return SystemOfUnits::operators::Mul_Result<R1, R2>(std::move(r1), std::move(r2)).result();
+   return SystemOfUnits::operators::Mul_Result<R1, R2>(std::forward<R1>(r1), std::forward<R2>(r2)).result();
 }
 
 /// template function which is divisional operator of two different operands
@@ -455,7 +455,7 @@ template< SystemOfUnits::UnitSpecies R1, SystemOfUnits::UnitSpecies R2 >
 constexpr inline auto operator/( R1 r1, R2 r2 )
 noexcept(noexcept(SystemOfUnits::operators::Div_Result<R1, R2>))
 {
-   return SystemOfUnits::operators::Div_Result<R1, R2>(std::move(r1), std::move(r2)).result();
+   return SystemOfUnits::operators::Div_Result<R1, R2>(std::forward<R1>(r1), std::forward<R2>(r2)).result();
 }
 
 // Copyright © 2005-2022 "Curt" Leslie L. Martin, All rights reserved.
