@@ -85,7 +85,7 @@ namespace SystemOfUnits {
    using Mass            = helpers::SymbolForDimension<'M'>;
    using Time            = helpers::SymbolForDimension<'T'>;
    using Temperature     = helpers::SymbolForDimension< char(helpers::THETA) >;
-   using ElectricCurrent = helpers::SymbolForDimension<'C'>;
+   using ElectricCurrent = helpers::SymbolForDimension<'I'>;
    using NO_DIM          = helpers::SymbolForDimension<' '>;
 
    // Contrait for one of the type Dimensions. The adjective dimensional refers to relating to the actual thing.
@@ -118,7 +118,7 @@ namespace SystemOfUnits {
 
    template<Dimensional BASE_UNIT > struct is_Current
    {
-      constexpr static bool value = BASE_UNIT::sym == 'C';
+      constexpr static bool value = BASE_UNIT::sym == 'I';
    };
 
    // Concepts used as the rules in building SI::Units
@@ -145,7 +145,7 @@ namespace SystemOfUnits {
 }
 #endif
 
-// Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2022 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

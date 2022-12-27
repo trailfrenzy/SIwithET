@@ -347,7 +347,7 @@ TEST(Dim, OneElement) {
     EXPECT_EQ("[L]", SystemOfUnits::Dim(t_MakeType::MakeDim< 1, 0, 0, 0, 0 >::type()));
     EXPECT_EQ("[T]", SystemOfUnits::Dim(t_MakeType::MakeDim< 0, 1, 0, 0, 0 >::type()));
     EXPECT_EQ("[M]", SystemOfUnits::Dim(t_MakeType::MakeDim< 0, 0, 1, 0, 0 >::type()));
-    EXPECT_EQ("[C]", SystemOfUnits::Dim(t_MakeType::MakeDim< 0, 0, 0, 0, 1 >::type()));
+    EXPECT_EQ("[I]", SystemOfUnits::Dim(t_MakeType::MakeDim< 0, 0, 0, 0, 1 >::type()));
 }
 
 TEST(Dim, ThetaOrTempeture) {
@@ -358,7 +358,7 @@ TEST(Dim, ThetaOrTempeture) {
 TEST(Dim, RandomType) {
     using t_Unk = t_MakeType::MakeDim< -3, -2, -1, 1, 2 >::type;
     std::string const str = SystemOfUnits::Dim(t_Unk());
-    EXPECT_EQ("[C]^2[\xE9]/[M][T]^2[L]^3", str );
+    EXPECT_EQ("[I]^2[\xE9]/[M][T]^2[L]^3", str );
 }
 
 

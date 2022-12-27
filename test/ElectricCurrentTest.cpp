@@ -17,7 +17,7 @@ TEST(Current, IsWatt) {
 
 TEST(Current, IsAmpere) {
    Amp amp{4.5};
-   ASSERT_EQ("[C]", SystemOfUnits::Diminsion(amp));
+   ASSERT_EQ("[I]", SystemOfUnits::Diminsion(amp));
 }
 
 
