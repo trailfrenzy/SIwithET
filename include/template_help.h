@@ -2,7 +2,7 @@
 */
 #ifndef UNIT_TYPE_TEMPLATE_HELPER_INCLUDE_H_
 #define UNIT_TYPE_TEMPLATE_HELPER_INCLUDE_H_
-#pragma warning( disable : 4091 )  
+// #pragma warning( disable : 4091 )  
 #include <type_traits>
 //#include <tuple>
 //#include <utility> // for tuple_sort
@@ -28,6 +28,7 @@ namespace SystemOfUnits
 
 	  namespace TL 
 	  {
+#ifdef DO_NOT_USE_YET
 		  /// used during the sort
 		  template< int DIM, typename T> struct Atom 
 		  {
@@ -35,7 +36,6 @@ namespace SystemOfUnits
 			  using t_AtomicType = T;
 		  };
 
-#ifdef DO_NOT_USE_YET
         template <class T, class U>
 		  struct descending : std::conditional_t<( U::eDIM < T::eDIM ), std::true_type, std::false_type>
 		  {};

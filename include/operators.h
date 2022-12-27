@@ -30,6 +30,7 @@ itself.
 #pragma once
 #include "SI.h"                           /// why we are here
 #include "template_help.h"
+#include "Dimension.h"
 #include "WhatAmI.h"
 #include <type_traits>
 
@@ -365,7 +366,8 @@ namespace SystemOfUnits
       {
          using t_unit = S; // SystemOfUnits::UnitType<L, iL, t, it, M, iM, T, iT, Q, iQ>;
          using t_char = typename TOUT::char_type;  // will not compile if TOUT does not have char_type.
-         out << val << ' ' << t_Diminsion<t_char, t_unit>(val);
+         // WAS the following: out << val << ' ' << t_Diminsion<t_char, t_unit>(val);
+         out << val << ' ' << SystemOfUnits::Dim(val);
          return *this;
       }
 

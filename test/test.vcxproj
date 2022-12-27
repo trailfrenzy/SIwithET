@@ -168,7 +168,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="A_Traits.cpp" />
     <ClCompile Include="conversion_castTest.cpp" />
     <ClCompile Include="ElectricCurrentTest.cpp" />
     <ClCompile Include="EnglishUnitTest.cpp" />
@@ -186,18 +185,10 @@
     <ClCompile Include="Struct_Symbol.cpp" />
     <ClCompile Include="TableIITest.cpp" />
     <ClCompile Include="TemperatureTest.cpp" />
-    <ClCompile Include="template_helpUnitTest.cpp">
-      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</IntrinsicFunctions>
-      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</IntrinsicFunctions>
-      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Speed</FavorSizeOrSpeed>
-      <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Speed</FavorSizeOrSpeed>
-      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdcpp14</LanguageStandard>
-    </ClCompile>
     <ClCompile Include="WhatAmITest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ExpectUnitTest.h" />
-    <ClInclude Include="template_help.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

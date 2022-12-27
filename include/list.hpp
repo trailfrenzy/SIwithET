@@ -1,6 +1,6 @@
 #ifndef META_LIST_H
 #define META_LIST_H
-#include <iostream>
+//#include <iostream>
 //#include "conditional.hpp"
 namespace Meta 
 {
@@ -58,34 +58,6 @@ namespace Meta
    // Change to a Variadic variadic template templates, see https://stackoverflow.com/questions/9662632/variadic-variadic-template-templates
    template<typename a, typename b, typename c, typename d, typename e, typename f> struct LIST6 {
       typedef typename LIST<a, LIST<b, LIST<c, LIST<d, LIST<e, LIST<f, EmptyList> > > > > > TYPE;
-   };
-
-   // printing lists to std::cout
-   template <class L> struct ListPrinter
-   {
-      template< typename OUT > static inline void print(OUT &out)
-      {
-         //return out;
-         //out << std::endl;
-      }
-   };
-
-   template <typename a> struct ListPrinter<LIST<a, EmptyList> >
-   {
-      template< typename OUT > static inline void print(OUT &out)
-      {
-         out << a::DIM;
-         ListPrinter<EmptyList>::print(out);
-      }
-   };
-
-   template <typename a, class TAIL> struct ListPrinter<LIST<a, TAIL> >
-   {
-      template< typename OUT> static inline void print(OUT &out)
-      {
-         out << a::DIM << ", ";
-         ListPrinter<TAIL>::print(out);
-      }
    };
 
    // prepend

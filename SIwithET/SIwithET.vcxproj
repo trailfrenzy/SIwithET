@@ -124,6 +124,7 @@
   <ItemGroup>
     <ClInclude Include="..\include\conversion_cast.h" />
     <ClInclude Include="..\include\DerivedUnits.h" />
+    <ClInclude Include="..\include\Dimension.h" />
     <ClInclude Include="..\include\EnglishBaseUnits.h" />
     <ClInclude Include="..\include\EnglishTypes.h" />
     <ClInclude Include="..\include\Make_Squared.h" />
@@ -136,6 +137,7 @@
     <ClInclude Include="..\include\Struct_Symbol.h" />
     <ClInclude Include="..\include\SystemOfUnits.h" />
     <ClInclude Include="..\include\Temperature.h" />
+    <ClInclude Include="..\include\template_help.h" />
     <ClInclude Include="..\include\TimeAtomicUnits.h" />
     <ClInclude Include="..\include\WhatAmI.h" />
   </ItemGroup>
