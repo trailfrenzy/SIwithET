@@ -55,6 +55,11 @@ namespace Meta
       typedef typename LIST<a, LIST<b, LIST<c, LIST<d, LIST<e, EmptyList > > > > > TYPE;
    };
 
+   // Change to a Variadic variadic template templates, see https://stackoverflow.com/questions/9662632/variadic-variadic-template-templates
+   template<typename a, typename b, typename c, typename d, typename e, typename f> struct LIST6 {
+      typedef typename LIST<a, LIST<b, LIST<c, LIST<d, LIST<e, LIST<f, EmptyList> > > > > > TYPE;
+   };
+
    // printing lists to std::cout
    template <class L> struct ListPrinter
    {

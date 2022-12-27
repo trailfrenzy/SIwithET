@@ -17,24 +17,20 @@ template< int D > struct t_Test
 };
 
 // used for compile time sorting test.
-using myList = Meta::LIST5<t_Test<10>, t_Test<23>, t_Test<4>, t_Test<2>, t_Test<9> >::TYPE ;
+using myList = Meta::LIST6<t_Test<10>, t_Test<23>, t_Test<4>, t_Test<2>, t_Test<9>, t_Test<-2> >::TYPE ;
+static_assert(myList::LENGTH == 6, "Replace a run time test");
 
-
-TEST(MetaList, LIST5) {
-   EXPECT_EQ(myList::LENGTH, 5);
-   //using t_list = Meta::LIST5< 2, 1, 5, 3, 10>::TYPE; does not compile
-}
 
 TEST(MetaList, UnSortedInt) {
    std::stringstream strm;
    Meta::ListPrinter<myList>::print(strm);
-   EXPECT_EQ( strm.str(), "10, 23, 4, 2, 9");
+   EXPECT_EQ( strm.str(), "10, 23, 4, 2, 9, -2");
 }
 
 TEST(MetaList, SortedInt) {
    std::stringstream strm;
    Meta::ListPrinter< Meta::SORT< Meta::DIM_GT, myList>::TYPE >::print(strm);
-   EXPECT_EQ(strm.str(), "23, 10, 9, 4, 2") << "an example of sort at compile time";
+   EXPECT_EQ(strm.str(), "23, 10, 9, 4, 2, -2") << "an example of sort at compile time";
 }
 
 TEST(MetaList, SortWithNeg) {
@@ -42,6 +38,9 @@ TEST(MetaList, SortWithNeg) {
    using t_Sorted = Meta::SORT<Meta::DIM_GT, t_List>::TYPE;
    using t_Last = Meta::At<t_Sorted, 4 >::RET;
    EXPECT_EQ(t_Last::DIM, -10);
+   using t_front = Meta::At<t_Sorted, 0>::RET;
+   static_assert(t_front::DIM == 23);
+   static_assert(Meta::At<t_Sorted, 1>::RET::DIM == 9, "Can look at them at compile time.");
 }
 
 TEST(MetaList, ListAtZero ) {
@@ -62,29 +61,43 @@ namespace SystemOfUnits
       /// Solidus is the name of the slash
       using SOLIDUS = SystemOfUnits::helpers::SymbolForDimension<'/'>;
 
+      struct base_SingleDim {};
+
       template< Dimensional T, int D, typename char_type = char > 
-      struct t_SingleDim
+      struct t_SingleDim : public base_SingleDim
       {
          using t_BaseUnit = T;
          enum:int { DIM = D };
          enum:char unsigned { CHAR = t_BaseUnit::sym };
          using Tstring = typename std::basic_string<char_type>;
 
-         static auto c_str() noexcept(noexcept(Tstring() ) && noexcept(T))-> Tstring
+         /// Produces a string of a dimension and absolute.
+         static auto c_str() noexcept(noexcept(Tstring() ) && noexcept(t_BaseUnit))-> Tstring
          {
-            Tstring str;
-            if (CHAR == SOLIDUS::sym) str = CHAR;
-            else if (DIM == 0) {} //return "";
-            else if (DIM == 1 || DIM == -1) {
-               str = { '[', CHAR ,']' };
+            if constexpr (CHAR == SOLIDUS::sym) { return { CHAR }; }
+            else if constexpr (DIM == 0) { return ""; } // if DIM==0 then its is dimensionless.
+            else if constexpr (DIM == 1 || DIM == -1) 
+            {
+               return { '[', static_cast<char_type>(CHAR) ,']' };
             }
-            else {
+            else // greater than one add a '^' carrot
+            {
                enum { absDIM = (DIM < 0) ? -1 * DIM : DIM };
-               str = { '[', CHAR, ']', '^', '0' + absDIM };
+               return { '[', CHAR, ']', '^', '0' + absDIM };
             }
-            return str;
          }
       };
+
+      /// Added to the sorted List to display.
+      using t_SingleSolidus = t_SingleDim< SOLIDUS, 0 >;
+
+      template< typename T >
+      struct is_SingleDim
+      {
+         constexpr static bool value = std::is_base_of< base_SingleDim, T > ::value;
+      };
+
+      template<typename T> concept SingleDimRule = is_SingleDim<T>::value;
 
    } // end of namespace helpers
 
@@ -106,15 +119,12 @@ namespace SystemOfUnits
    using t_testCharge = SystemOfUnits::helpers::t_SingleDim< t_Grav::Charge, t_Grav::eQ>;
    static_assert(t_test2::DIM == t_Grav::eL);
 
-
    /// Used in sorting the dimensions below.
-   template <class a, class b> struct ORD {
+   template <helpers::SingleDimRule a, helpers::SingleDimRule b>
+   struct ORD {
       enum :bool { VALUE = a::DIM > b::DIM };
    };
 
-   /* Commented out: The Meta::At<>::RET caused compile error
-   
-   /// NOTE: Not ready for use.
    template< UnitSpecies T > 
    inline std::string Dim(T const )
    {
@@ -129,37 +139,85 @@ namespace SystemOfUnits
          static_assert(TYPE::Length::sym == 'L');
          using t_SingleLen = t_SingleDim< typename TYPE::Length, TYPE::eL>;
          using t_SingleTime = t_SingleDim< typename TYPE::Time, TYPE::et>;
-         using t_SingleMass = t_SingleDim< typename T::Mass, T::eM>;
+         using t_SingleMass = t_SingleDim< typename TYPE::Mass, T::eM>;
          using t_SingleCharge = t_SingleDim< typename TYPE::Charge, TYPE::eQ >;
-         using t_SingleTemp = t_SingleDim< typename T::Temperature, T::eT>;
+         using t_SingleTemp = t_SingleDim< typename TYPE::Temperature, T::eT>;
 
-         using typename t_List = Meta::LIST5< t_SingleLen, t_SingleTime, t_SingleMass, t_SingleTemp, t_SingleDim >::TYPE;
+         using t_List = Meta::LIST6< t_SingleLen,  t_SingleTime,  t_SingleMass,  t_SingleTemp,  t_SingleCharge, helpers::t_SingleSolidus >::TYPE;
 
-         using t_Sorted = typename Meta::SORT<ORD, typename t_List >::TYPE;
+         using t_Sorted = typename Meta::SORT<ORD, t_List >::TYPE;
          
-         using DIM0 = typename Meta::At< t_Sorted, 0 >::RET;
-         using DIM1 = typename Meta::At< t_Sorted, 1 >::RET;
-         using DIM2 = typename Meta::At< t_Sorted, 2 >::RET;
-         using DIM3 = typename Meta::At< t_Sorted, 3 >::RET;
-         using DIM4 = typename Meta::At< t_Sorted, 4 >::RET;
+         using DIM0 = typename Meta::At<  t_Sorted, 0 >::RET;
+         using DIM1 = typename Meta::At<  t_Sorted, 1 >::RET;
+         using DIM2 = typename Meta::At<  t_Sorted, 2 >::RET;
+         using DIM3 = typename Meta::At<  t_Sorted, 3 >::RET;
+         using DIM4 = typename Meta::At<  t_Sorted, 4 >::RET;
+         using DIM5 = typename Meta::At<  t_Sorted, 5 >::RET;
 
-         //enum{ isDIM0 = SystemOfUnits::IF<(DIM0::DIM < 0), true, false>::RET };
-         enum :bool { isDIM0_Neg = DIM0::DIM <= 0, isDIM4_Pos = DIM4::DIM >= 0 };
+         enum :bool { isFrontNeg = DIM0::DIM <= 0, isLastNeg = DIM5::DIM < 0 };
 
          std::string retStr;
-         if constexpr (isDIM0_Neg) {
-            retStr += "1/";
-            if constexpr (0 != DIM0::DIM) retStr += DIM0::c_str();
-            if constexpr (0 != DIM1::DIM) retStr += DIM1::c_str();
-            if constexpr (0 != DIM2::DIM) retStr += DIM2::c_str();
-            if constexpr (0 != DIM3::DIM) retStr += DIM3::c_str();
-            if constexpr (0 != DIM4::DIM) retStr += DIM4::c_str();
-         }
 
+         if constexpr (isFrontNeg)
+         {
+             retStr += '1';
+             retStr += DIM0::c_str();
+             retStr += DIM1::c_str();
+             retStr += DIM2::c_str();
+             retStr += DIM3::c_str();
+             retStr += DIM4::c_str();
+             retStr += DIM5::c_str();
+         }
+         else if constexpr (not isFrontNeg and isLastNeg)
+         {
+             // has a '\' Solidus in string
+             retStr += DIM0::c_str();
+             retStr += DIM1::c_str();
+             retStr += DIM2::c_str();
+             retStr += DIM3::c_str();
+             retStr += DIM4::c_str();
+             retStr += DIM5::c_str();
+         }
+         else
+         {
+             // No '/' Solidus in the string.
+             retStr += DIM0::c_str();
+             if constexpr (DIM1::DIM ) retStr += DIM1::c_str();
+             if constexpr (DIM2::DIM )retStr += DIM2::c_str();
+             if constexpr (DIM3::DIM )retStr += DIM3::c_str();
+             if constexpr (DIM4::DIM )retStr += DIM4::c_str();
+             if constexpr (DIM5::DIM )retStr += DIM5::c_str();
+         }
          return retStr;
       }
    };
-   */
+
+}
+
+using t_Joule = t_MakeType::MakeDim<2, -2, 1, 0, 0>::type;
+using t_kilogram = t_MakeType::MakeDim<0, 0, 1, 0, 0>::type;
+
+TEST(Dim, ListSort)
+{
+    using SystemOfUnits::helpers::t_SingleDim;
+    using TYPE = t_Joule;
+
+    using t_SingleLen = t_SingleDim< typename TYPE::Length, TYPE::eL>;
+    using t_SingleTime = t_SingleDim< typename TYPE::Time, TYPE::et>;
+    using t_SingleMass = t_SingleDim< typename TYPE::Mass, TYPE::eM>;
+    using t_SingleCharge = t_SingleDim< typename TYPE::Charge, TYPE::eQ >;
+    using t_SingleTemp = t_SingleDim< typename TYPE::Temperature, TYPE::eT>;
+
+    using t_List = Meta::LIST6< t_SingleLen, t_SingleTime, t_SingleMass, t_SingleTemp, t_SingleCharge, SystemOfUnits::helpers::t_SingleSolidus >::TYPE;
+
+    using t_Sorted = typename Meta::SORT<SystemOfUnits::ORD, t_List >::TYPE;
+
+    static_assert(Meta::At<t_Sorted, 0>::RET::DIM == 2);
+    static_assert(Meta::At<t_Sorted, 1>::RET::DIM == 1);
+    static_assert(Meta::At<t_Sorted, 2>::RET::DIM == 0);
+    static_assert(Meta::At<t_Sorted, 3>::RET::DIM == 0);
+    static_assert(Meta::At<t_Sorted, 4>::RET::DIM == 0);
+    static_assert(Meta::At<t_Sorted, 5>::RET::DIM == -2);
 }
 
 using LENGTH = SystemOfUnits::helpers::SymbolForDimension<'L'>;
@@ -171,7 +229,6 @@ static_assert(Len1::CHAR == 'L');
 TEST(MetaList, PrintSymbol) {
    EXPECT_EQ(std::string("[L]"), LENGTH::Symstr() ) << "Ensure base print works";
    EXPECT_EQ(std::string("[M]"), MassRule::Symstr());
-   //EXPECT_STREQ
 }
 
 TEST(MetaList, PrintSymbolWchar) {
@@ -198,13 +255,8 @@ TEST(MetaList, ListAtForth) {
 
 TEST(MetaList, SizeSorted) {
    using t_Sorted = Meta::SORT<Meta::DIM_GT, myList>::TYPE;
-   EXPECT_EQ(t_Sorted::LENGTH, 5);
+   EXPECT_EQ(t_Sorted::LENGTH, 6);
 }
-
-using t_Joule = t_MakeType::MakeDim<2, -2, 1, 0, 0>::type;
-using t_kilogram = t_MakeType::MakeDim<0, 0, 1, 0, 0>::type;
-
-
 
 TEST(MetaList, BuildListWithUnit) {
 
@@ -246,13 +298,6 @@ TEST(Dim, CharFromSingleString) {
 
 }
 
-// NOTE: KEEP, commented out so not included in the compile and not ready for use.
-TEST(Dim, DISABLED_FirstTest ) {  // disabled since it is not ready for use.
-   //std::string const str = SystemOfUnits::Dim(t_Joule() );
-
-   //EXPECT_EQ(str, std::string("[L]^2[M]/[T]^2")); // << "The return of Dim is: " << str;
-}
-
 TEST(WhatAmITest, TestDouble)
 {
    double val = 6.7888;
@@ -278,14 +323,43 @@ TEST(Diminsion, Struct_Sym) {
    EXPECT_EQ('X', t_X::sym);
 }
 
-TEST(Dim, DISABLED_NoDiminsion) {
-   //EXPECT_EQ(SystemOfUnits::Dim(SystemOfUnits::tNoUnit()), std::string_view(""));
+TEST(Dim, NoDiminsion) {
+   EXPECT_EQ(SystemOfUnits::Dim(SystemOfUnits::tNoUnit()), std::string_view(""));
 }
 
-TEST(MetaList, DISABLED_InverseOne) {
+TEST(Dim, InverseOne) {
    using t_Unk = t_MakeType::MakeDim< -3, -2, -1, 0, 0 >::type;
-   //EXPECT_EQ("1/[M][T]^2[L]^3", SystemOfUnits::Dim( t_Unk() ) );
-   //EXPECT_EQ("1/);
+   std::string const str = SystemOfUnits::Dim(t_Unk());
+   EXPECT_EQ("1/[M][T]^2[L]^3", str );
 }
+
+TEST(Dim, FirstTest ) {
+   EXPECT_EQ( SystemOfUnits::Dim(t_Joule() ), "[L]^2[M]/[T]^2" ); // << "The return of Dim is: " << str;
+}
+
+TEST(Dim, Kilogram) {
+    std::string const str = SystemOfUnits::Dim(t_kilogram());
+    EXPECT_EQ(str, std::string_view("[M]"));
+}
+
+TEST(Dim, OneElement) {
+    using t_Unk1 = t_MakeType::MakeDim< 1,0,0,0,0 >::type;
+    EXPECT_EQ("[L]", SystemOfUnits::Dim(t_MakeType::MakeDim< 1, 0, 0, 0, 0 >::type()));
+    EXPECT_EQ("[T]", SystemOfUnits::Dim(t_MakeType::MakeDim< 0, 1, 0, 0, 0 >::type()));
+    EXPECT_EQ("[M]", SystemOfUnits::Dim(t_MakeType::MakeDim< 0, 0, 1, 0, 0 >::type()));
+    EXPECT_EQ("[C]", SystemOfUnits::Dim(t_MakeType::MakeDim< 0, 0, 0, 0, 1 >::type()));
+}
+
+TEST(Dim, ThetaOrTempeture) {
+    EXPECT_EQ("[\xe9]", SystemOfUnits::Dim(t_MakeType::MakeDim< 0, 0, 0, 1, 0 >::type()));  // \xE9
+}
+
+
+TEST(Dim, RandomType) {
+    using t_Unk = t_MakeType::MakeDim< -3, -2, -1, 1, 2 >::type;
+    std::string const str = SystemOfUnits::Dim(t_Unk());
+    EXPECT_EQ("[C]^2[\xE9]/[M][T]^2[L]^3", str );
+}
+
 
 
