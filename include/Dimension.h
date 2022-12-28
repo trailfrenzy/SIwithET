@@ -27,7 +27,7 @@ namespace SystemOfUnits
          static auto c_str() noexcept(noexcept(Tstring() ) && noexcept(t_BaseUnit))-> Tstring
          {
             if constexpr (CHAR == SOLIDUS::sym) { return { CHAR }; }
-            else if constexpr (DIM == 0) { return {}; } // if DIM==0 then its is dimensionless.
+            else if constexpr (DIM == 0) { return {}; }
             else if constexpr (DIM == 1 || DIM == -1) 
             {
                return { '[', static_cast<char_type>(CHAR) ,']' };

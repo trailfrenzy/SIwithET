@@ -78,6 +78,7 @@ namespace SystemOfUnits
       //noexcept(noexcept(std::basic_ostringstream<char_type>) && noexcept(T) )
    {
       typedef T Type ;
+      // CoherentUnit has a name defined by the user or system.
       if constexpr (is_CoherentUnit<T>::value) return std::basic_string<char_type>{T::unitName()};
       else if constexpr (!is_UnitType<T>::value) return std::basic_string<char_type>{};
       else if constexpr (Type::isZeroDimensions()) return std::basic_string<char_type>{};
@@ -170,7 +171,46 @@ namespace SystemOfUnits
    {
       return t_Diminsion<char>(val);
    }
+
+   template< class TOUT >
+   class ShowUnits_t
+   {
+       /// TOUT can be std::cout, std::ofstream, std::stringstream, or anyother stream which uses insertors.
+       TOUT& ref;
+   public:
+       ShowUnits_t(TOUT& r) : ref(r) {}
+
+       ///  The built-in types are arithmetic so pass by value and not by reference.
+       template< Arithmetic A> ShowUnits_t& operator<<(A a) { ref << a; return *this; }
+
+       template< UnitSpecies S> ShowUnits_t& operator<<(S val)
+       {
+           using t_char = typename TOUT::char_type;  // will not compile if TOUT does not have char_type.
+           ref << val << ' ' << SystemOfUnits::UnitName<t_char>(val);
+           return *this;
+       }
+
+       /// Used by any type which is not a built-in or UnitType
+       template< typename T > ShowUnits_t& operator<<(const T& val)
+       {
+           ref << val;
+           return *this;
+       }
+
+       /// converts the class to the stream implicitly. Is the last function called by the stream when the Manipulator is used.
+       operator TOUT& () const { return ref; }
+   };
+
+   template< class TOUT > inline auto units() -> ShowUnits_t<TOUT>* { return 0; }
+
 }
+
+template< class TOUT >
+inline auto operator<<(TOUT& out, SystemOfUnits::ShowUnits_t<TOUT>* (*)()) //-> SystemOfUnits::ShowDim_t<TOUT>
+{
+    return SystemOfUnits::ShowUnits_t<TOUT>(out);
+}
+
 
 // Copyright © 2005-2022 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com

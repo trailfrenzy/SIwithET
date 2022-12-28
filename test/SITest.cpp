@@ -284,13 +284,15 @@ TEST(BasicSI, InserterNoUnit) {
 
 TEST(BasicSI, IsTrivial)
 {
-   static_assert(std::is_trivial<t_MeterSq>::value);
-   static_assert(std::is_trivially_constructible<t_MeterSq>::value);
+   static_assert(std::is_trivial<t_MeterSq>::value, "Keep trivial by having no default value for m_amount.");
+   static_assert(std::is_trivially_constructible<t_MeterSq>::value, "Keep trivial by having no default value for m_amount.");
+   static_assert(std::is_trivially_default_constructible_v<t_MeterSq>);
    static_assert(std::is_trivially_copy_constructible<t_MeterSq>::value);
    static_assert(std::is_trivially_copy_assignable<t_MeterSq>::value);
    static_assert(std::is_trivially_copyable<t_MeterSq>::value);
    static_assert(std::is_trivially_move_assignable<t_MeterSq>::value);
    static_assert(std::is_trivially_move_constructible<t_MeterSq>::value);
+   static_assert(std::is_trivially_destructible_v< t_MeterSq>);
 
    static_assert(std::is_nothrow_copy_assignable<t_MeterSq>::value);
 }

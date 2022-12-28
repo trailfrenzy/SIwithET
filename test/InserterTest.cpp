@@ -1,7 +1,9 @@
 // class is for testing stream inserter and the manipulators which work with the inserter.
+#include "stream-insertors.h"
+#include "WhatAmI.h"
 #include "SI.h"
 #include "operators.h"
-#include <gtest/gtest.h>
+//#include <gtest/gtest.h>
 #include <sstream>
 #include "MetricTypes.h"
 #include "ExpectUnitTest.h"
@@ -126,7 +128,7 @@ TEST(Inserter, ShowUnitCubeSec) {
 
 TEST(Extractor, ConceptWork) {
    std::stringstream strm("12.45");
-   t_CubedPerSec mps;
+   t_CubedPerSec mps{};
    strm >> mps;
    EXPECT_UNIT_EQ(mps, 12.45);
 }

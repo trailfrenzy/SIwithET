@@ -288,6 +288,11 @@ namespace SystemOfUnits /// covers the basics of the system
    /// All of the different UnitType's which are defined by the template above belong to the species of UnitSpecies.
    template< typename T> concept UnitSpecies = is_UnitType<T>::value;
 
+   /// <summary>
+   ///  Used with built in types. (i.e. float, double)
+   /// </summary>
+   template<typename T> concept Arithmetic = std::is_arithmetic<T>::value;
+
    /// Derived units. Derived units are defined as products of powers of the base units. When the numerical
    /// factor of this product is one, the derived units are called coherent derived units.The base
    /// and coherent derived units of the SI form a coherent set, designated the set of coherent SI
@@ -376,14 +381,15 @@ namespace SOU = SystemOfUnits; ///< Shortcut to the namespace.
  see https://www.nist.gov/pml/weights-and-measures/metric-si/si-units
  @section Introduction
  
- The Systems Of Units (SystemOfUnits) Library was created out the author's desire to solve a problem where
+ The **Systems Of Units (SOU)** Library was created out the author's desire to solve a problem with C++ strong type definitions where
  known engineering and scientific unit types will not mix to produce the wrong result type.  The library
- automatically does unit conversions during compile time or will produce a compile time error if types
- are mixed incorrectly.
+ automatically enforces the Principle of Dimensional Homogeneity through strong type definitions and completes unit conversions during compile time or
+ will produce a compile time error if types are used incorrectly. All checks for unit conversion and correct dimensions of units is done while compiling, non at run-time.  Violating the Principle of Dimensional Homogeneity
+ will force a compliation error.  The end result is all strong types are the same size as built in types such as float or double during runtime.
 
- Any physically meaningful equation (and any inequality) will have the same dimensions on its left and right sides, a property known as dimensional homogeneity. Checking for dimensional homogeneity is a common application of dimensional analysis, serving as a plausibility check on derived equations and computations. It also serves as a guide and constraint in deriving equations that may describe a physical system in the absence of a more rigorous derivation.
+ Any physically meaningful equation (and any inequality) will have the same dimensions on its left and right sides of the equation, a property known as dimensional homogeneity. Checking for dimensional homogeneity is a common application of dimensional analysis, serving as a plausibility check on derived equations and computations. It also serves as a guide and constraint in deriving equations that may describe a physical system in the absence of a more rigorous derivation.
  The library provides strong type-checking of different unit types at compile time.  It does not wait for
- runtime to find errors the compiler will detect.
+ runtime to find errors the compiler will detect. The errors are detected while a user is compiling their software.
  When writing code to solve an engineering 
  problem it is hard to find what the units are envolved in the equation and if the equation
  cancels out the incorrect units.  For example, what is the unit for the following varible:

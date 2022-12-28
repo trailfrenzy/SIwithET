@@ -4,6 +4,7 @@
 #include "conversion_cast.h"
 #include "operators.h"
 #include "WhatAmI.h"
+#include "stream-insertors.h"
 #include "ExpectUnitTest.h"
 #include <gtest/gtest.h>
 

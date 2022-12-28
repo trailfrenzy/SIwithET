@@ -134,6 +134,7 @@
     <ClInclude Include="..\include\pow.h" />
     <ClInclude Include="..\include\SI.h" />
     <ClInclude Include="..\include\SOU_math.h" />
+    <ClInclude Include="..\include\stream-insertors.h" />
     <ClInclude Include="..\include\Struct_Symbol.h" />
     <ClInclude Include="..\include\SystemOfUnits.h" />
     <ClInclude Include="..\include\Temperature.h" />
