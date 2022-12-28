@@ -172,10 +172,13 @@ TEST(MetaList, SizeSorted) {
    EXPECT_EQ(t_Sorted::LENGTH, 6);
 }
 
+// Used in tests below. Transfered away from having struct t_BaseDim in SI.h
+template< SystemOfUnits::Dimensional T, int D >
+using t_BaseDim = SystemOfUnits::helpers::t_SingleDim<T, D>;
+
 TEST(MetaList, BuildListWithUnit) {
 
    using T = t_Joule;
-   using SystemOfUnits::t_BaseDim;
 
    using t_List = Meta::LIST5< t_BaseDim< typename T::Length, T::eL>, t_BaseDim< T::Time, T::et>, t_BaseDim< T::Mass, T::eM>, t_BaseDim< T::Temperature, T::eT>, t_BaseDim< T::Charge, T::eQ > >;
    EXPECT_EQ(t_List::TYPE::LENGTH, 5);
@@ -183,7 +186,6 @@ TEST(MetaList, BuildListWithUnit) {
 
 TEST(MetaList, SortWithUnit) {
    using T = t_Joule;
-   using SystemOfUnits::t_BaseDim;
 
    using t_List = Meta::LIST5< t_BaseDim< t_Joule::Length, T::eL>, t_BaseDim< T::Time, T::et>, t_BaseDim< T::Mass, T::eM>, t_BaseDim< T::Temperature, T::eT>, t_BaseDim< T::Charge, T::eQ > >::TYPE;
 

@@ -93,7 +93,8 @@ namespace SystemOfUnits /// covers the basics of the system
         * @return the scalar value of the type. */
       constexpr auto amount() const noexcept { return m_amount; }
 
-      ///  Returns wheather the class is a zero dimensions or not.
+      /**  Returns wheather the class is a zero dimensions or not.
+      * @return bool true if UnitType has zero dimensions. */
       constexpr static bool isZeroDimensions() noexcept { return eL == 0 && et == 0 && eM == 0 && eT == 0 && eQ == 0; }
 
       /** comparison operator which enforces Dimensional Homogeneity
@@ -327,13 +328,6 @@ namespace SystemOfUnits /// covers the basics of the system
       constexpr static double fromBase() noexcept { return 1.0; }
       /// Typedef of the actual base
       using  Base = NoDim;
-   };
-
-   /// Used in making the dimensions
-   template< typename T, int D> struct t_BaseDim
-   {
-      using t_BaseUnit = T;
-      enum:int{ DIM = D };
    };
 
    /// Create a struct base on the quantity types.
