@@ -19,7 +19,7 @@ template< int D > struct t_Test
 
 // used for compile time sorting test.
 using myList = Meta::LIST6<t_Test<10>, t_Test<23>, t_Test<4>, t_Test<2>, t_Test<9>, t_Test<-2> >::TYPE ;
-static_assert(myList::LENGTH == 6, "Replace a run time test");
+static_assert(myList::LENGTH == 6, "Replaced a run time test");
 
 namespace Meta
 {
@@ -66,6 +66,7 @@ TEST(MetaList, SortedInt) {
 
 TEST(MetaList, SortWithNeg) {
    using t_List = Meta::LIST5<t_Test<-10>, t_Test<23>, t_Test<4>, t_Test<2>, t_Test<9> >::TYPE;
+   static_assert(t_List::LENGTH == 5);
    using t_Sorted = Meta::SORT<Meta::DIM_GT, t_List>::TYPE;
    using t_Last = Meta::At<t_Sorted, 4 >::RET;
    EXPECT_EQ(t_Last::DIM, -10);

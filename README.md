@@ -60,6 +60,8 @@ Is it in feet or meters?  Is Knots or Kilometers per Hour?  Or is it in grams or
 
 The recommended practical system of units of measurement is the International System of Units *(Système International d'Unités)*, with the international abbreviation SI.  The SI is defined by the [SI Brochure](https://www.bipm.org/en/publications/si-brochure/), which is published by the BIPM (Bureau International des Poids et Measures).
 
+The US Goverment also has information dedicated to units of measurment at (https://www.nist.gov/pml/weights-and-measures/metric-si/si-units).
+
 SI has 7 base units (time, length, mass, electric current, thermodynamic temperature, amount of susbance, luminous intensity).  The [base units](https://www.bipm.org/en/measurement-units/) are defined here in more detail.  The current version of the **System Of Units (SOU)** library only represents 5 of 7 base units (time, length, mass electric current, thermodynamic temperature) with the other two planned for future releases of the library.
 
 # Use of the SOU Library
@@ -141,6 +143,26 @@ For example to automatically create a Joule for use with the above mentioned hea
 
 `auto joule = 400.0_joule; \\ automatically creates a Joule from the header DerivedUnits.h`
 
+## Multiplication and Division Operators or (MaD-O)
+
+Multiplication and division where a little more difficult to implement where the result is 
+ completly different from the two arguments.  The result type should be know by the the developer
+ who uses the code when the division and multiplication operators are used.  For example:
+ `code meter x = 3;`
+ `meter y = 4.0;`
+ `meterSq z = x * y; @endcode`
+
+ Where the following will not work:
+ `meter z = x * y; //error `
+
+ Multiplication and division operators can also have scalars in their arguments on either side.
+ `meter z = 3.0 * y; `
+ or
+ `meter z = y * 3.0; `
+
+ The idea is to prevent a user software developer to mismatch the to multiplier argument types with the
+ product result type.
+
 ## Writing functions which have a UnitType for an argument
 
 For some reason was unable to use concepts as function arguments using VS C++20.
@@ -153,6 +175,23 @@ the following worked as a function using UnitTypes for arguments.
 `   return t * u;  // do a lot more but simple for the example.`
 
 `}`
+
+## Support for stream insertion with type or dimension is concluded.
+
+The library takes advantage of stream manipulator classes included in the library. The following:
+`   t_MeterCubed m3(10.11);`
+`   std::stringstream strm;`
+`   strm << m3;`
+
+Produces the following at the console: `10.11`
+
+Where as the following code:
+`   t_MeterCubed m3(10.11);`
+`   std::stringstream strm;`
+`   strm << SOU::dimension << m3;`
+
+Produces the following at the console: `10.11 [L]^3`
+Which uses stream-manipulator **SOU::dimension**.  Stream-Manipulator **SOU::dimension** only has an effect on UnitTypes. All other types and classes are defaulted back to their inserters.
 
 
 

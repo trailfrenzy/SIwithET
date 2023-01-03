@@ -49,3 +49,4 @@ SIwithET/x64/Release/CodeAnalysisResultManifest.txt
 test/x64/Release/CodeAnalysisResultManifest.txt
 *.sarif
 *.coverage
+/test/list.t.cpp
