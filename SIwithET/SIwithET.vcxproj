@@ -127,6 +127,7 @@
     <ClInclude Include="..\include\Dimension.h" />
     <ClInclude Include="..\include\EnglishBaseUnits.h" />
     <ClInclude Include="..\include\EnglishTypes.h" />
+    <ClInclude Include="..\include\LuminusBaseUnit.h" />
     <ClInclude Include="..\include\Make_Squared.h" />
     <ClInclude Include="..\include\MetricBaseUnits.h" />
     <ClInclude Include="..\include\MetricTypes.h" />
@@ -136,6 +137,7 @@
     <ClInclude Include="..\include\SOU_math.h" />
     <ClInclude Include="..\include\stream-insertors.h" />
     <ClInclude Include="..\include\Struct_Symbol.h" />
+    <ClInclude Include="..\include\SubstanceBaseUnit.h" />
     <ClInclude Include="..\include\SystemOfUnits.h" />
     <ClInclude Include="..\include\Temperature.h" />
     <ClInclude Include="..\include\template_help.h" />

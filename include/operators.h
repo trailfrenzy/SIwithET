@@ -30,8 +30,6 @@ itself.
 #pragma once
 #include "SI.h"                           /// why we are here
 #include "template_help.h"
-#include "Dimension.h"
-#include "WhatAmI.h"
 #include <type_traits>
 
 namespace SystemOfUnits
@@ -47,10 +45,12 @@ namespace SystemOfUnits
        */
       template < UnitSpecies T, UnitSpecies T2 > struct A_Trait
       {
+         using type = T;
+
          /// used as the argument for the operators. Seems to like a good idea to make one copy and move it all the way down.
          using ArgRef = T &&;
 
-         /// constant reference. Original 32-bit version went with ref, but have not seen any changes in 64-bit if us by value.
+         /// constant reference. Original 32-bit version went with ref, but have not seen any changes in 64-bit if use by value.
          using ExprRef = T const;
 
          /// the dimensions of the trait
@@ -60,16 +60,22 @@ namespace SystemOfUnits
          , eM = T::eM   /// Mass Dimensional
          , eT = T::eT   /// Temperature Dimensional
          , eQ = T::eQ   /// Charge Dimensional
+         , eN = T::eN
+         , eJ = T::eJ
          };
 
          ///  Returns wheather the class is a zero dimensions or not.
-         constexpr static bool isZeroDimensions() noexcept { return eL == 0 && et == 0 && eM == 0 && eT == 0 && eQ == 0; }
+         constexpr static bool isZeroDimensions() noexcept { return T::isZeroDimensions(); }
+         //static_cast(SystemOfUnits::helpers::is_SymbolForDimension<T::Length>::value);
 
          using Length = typename T::Length;        /// Length type of the incoming arg.
+         //static_cast(SystemOfUnits::helpers::is_SymbolForDimension<Length>::value);
          using Time = typename T::Time;            /// Time type of the incoming arg.
          using Mass = typename T::Mass;            /// Mass type of the incoming arg.
          using Temperature = typename T::Temperature;  /// Temperature of the incoming arg.
          using Charge = typename T::Charge;        /// Charge of the incoming arg.
+         using Substance = typename T::Substance;
+         using Luminous = typename T::Luminous;
       };
 
       /// Base class to Mul_Result and Div_Result
@@ -84,14 +90,17 @@ namespace SystemOfUnits
 
 	  Remember that all enums and types are calculated at compile time.
       */
-      template< typename T1, typename T2 > class Base
+      template< UnitSpecies T1, UnitSpecies T2 > class Base
       {
          /// private struct used in the the two operators (* / )
          template< Dimensional A1, Dimensional A2 > struct CombineBaseTypes
          {
             constexpr static double toBase() noexcept( noexcept(A1) && noexcept(A1) )
             { 
-               return A1::toBase() * A2::toBase() * A1::fromBase() * A1::fromBase(); 
+                if constexpr (A1::IsBase and A2::IsBase) { return 1.0; }
+                else {
+                    return A1::toBase() * A2::toBase() * A1::fromBase() * A1::fromBase();
+                }
             }
          };
 
@@ -102,12 +111,15 @@ namespace SystemOfUnits
          /// Do both the traits have the same base dimensions?
          constexpr static bool is_same_BASE() noexcept
          {
-            return
-               std::is_same<R1::Length::Base, R2::Length::Base>::value
-               && std::is_same<R1::Time::Base, R2::Time::Base >::value
-               && std::is_same<R1::Mass::Base, R2::Mass::Base >::value
-               && std::is_same<R1::Temperature::Base, R2::Temperature::Base >::value
-               && std::is_same<R1::Charge::Base, R2::Charge::Base >::value;
+             return
+                 std::is_same<R1::Length::Base, R2::Length::Base>::value
+                 && std::is_same<R1::Time::Base, R2::Time::Base >::value
+                 && std::is_same<R1::Mass::Base, R2::Mass::Base >::value
+                 && std::is_same<R1::Temperature::Base, R2::Temperature::Base >::value
+                 && std::is_same<R1::Charge::Base, R2::Charge::Base >::value
+                 && std::is_same<R1::Substance::Base, R2::Substance::Base >::value
+                 && std::is_same<R1::Luminous::Base, R2::Luminous::Base >::value
+                 ;
          }
 
          /// public enum is used to let users know that the types did not match
@@ -125,6 +137,8 @@ namespace SystemOfUnits
          enum :bool { IsMassSame = std::is_same< typename R1::Mass, typename R2::Mass   >::value };
          enum :bool { IsTempSame = std::is_same< typename R1::Temperature, typename R2::Temperature >::value };
          enum :bool { IsChargeSame = std::is_same< typename R1::Charge, typename R2::Charge >::value };
+         enum :bool { IsSubstanceSame = std::is_same< typename R1::Substance, typename R2::Substance >::value };
+         enum :bool { IsLuminousSame = std::is_same< typename R1::Luminous, typename R2::Luminous >::value };
 
          /* the 5 proposed traits are used in the result() function of the two inhereted classes */
            /// the proposed length type of the result
@@ -141,6 +155,9 @@ namespace SystemOfUnits
             >::RET
             >::RET
             >::RET;
+         //static_cast(helpers::is_SymbolForDimension<R1::Length>::value);
+         //static_cast(helpers::is_SymbolForDimension<R2::Length>::value);
+         //static_cast(helpers::is_SymbolForDimension<typename LenType>::value);
 
          /// the proposed time type of the result
          using TimeType = typename IF
@@ -205,31 +222,37 @@ namespace SystemOfUnits
       };
 
       /// a class for objects that represents the multiplication of two operands
-      template< typename T1, typename T2 >
+      template< UnitSpecies T1, UnitSpecies T2 >
       class Mul_Result : public operators::Base< T1, T2 >
       {
 		  using t_base = Base< T1, T2 >;
 
-        typename const t_base::R1::ExprRef m_r1;    /// first operand reference
-        typename const t_base::R2::ExprRef m_r2;    /// second operand reference
+          typename t_base::R1::ExprRef m_r1{ 0.0 };    /// first operand reference
+          typename t_base::R2::ExprRef m_r2{ 0.0 };    /// second operand reference
       public:
 		  using R1 = t_base::R1;
 		  using R2 = t_base::R2;
 
          /// multiplication is addition of the powers 
-         enum Dim : int { Z = 0
+          enum Dim : int {
+              Z = 0
               , eL = R1::eL + R2::eL   /// Length Dimensional 
               , et = R1::et + R2::et   /// Time Dimensional 
               , eM = R1::eM + R2::eM   /// Mass Dimensional 
               , eT = R1::eT + R2::eT   /// Temperature Dimensional 
-              , eQ = R1::eQ + R2::eQ };/// Charge Dimensional 
+              , eQ = R1::eQ + R2::eQ   /// Charge Dimensional 
+              , eN = R1::eN + R2::eN
+              , eJ = R1::eJ + R2::eJ
+          };
 
          // Yes, these lines are long, but kept long to help the eye catch an error.
-         using Length      = typename IF< Dim::eL == Dim::Z, typename R1::Length, typename IF<R1::eL != 0,      typename R1::Length,      typename R2::Length>::RET >::RET;
-         using Time        = typename IF< Dim::et == Dim::Z, typename R1::Time, typename IF<R1::et != 0,        typename R1::Time,        typename R2::Time  >::RET >::RET;
-         using Mass        = typename IF< Dim::eM == Dim::Z, typename R1::Mass, typename IF<R1::eM != 0,        typename R1::Mass,        typename R2::Mass  >::RET >::RET;
-         using Temperature = typename IF< Dim::eT == Dim::Z, typename R1::Temperature, typename IF<R1::eT != 0, typename R1::Temperature, typename R2::Temperature>::RET >::RET;
-         using Charge      = typename IF< Dim::eQ == Dim::Z, typename R1::Charge, typename IF<R1::eQ != 0,      typename R1::Charge,      typename R2::Charge>::RET >::RET;
+         using Length      = typename IF< Dim::eL == 0, typename R1::Length, typename IF<R1::eL != 0,      typename R1::Length,      typename R2::Length>::RET >::RET;
+         using Time        = typename IF< Dim::et == 0, typename R1::Time, typename IF<R1::et != 0,        typename R1::Time,        typename R2::Time  >::RET >::RET;
+         using Mass        = typename IF< Dim::eM == 0, typename R1::Mass, typename IF<R1::eM != 0,        typename R1::Mass,        typename R2::Mass  >::RET >::RET;
+         using Temperature = typename IF< Dim::eT == 0, typename R1::Temperature, typename IF<R1::eT != 0, typename R1::Temperature, typename R2::Temperature>::RET >::RET;
+         using Charge      = typename IF< Dim::eQ == 0, typename R1::Charge, typename IF<R1::eQ != 0,      typename R1::Charge,      typename R2::Charge>::RET >::RET;
+         using Substance   = typename IF< Dim::eN == 0, typename R1::Substance, typename IF<R1::eN != 0,   typename R1::Substance,   typename R2::Substance>::RET >::RET;
+         using Luminous    = typename IF< Dim::eJ == 0, typename R1::Luminous, typename IF<R1::eJ != 0,    typename R1::Luminous,    typename R2::Luminous>::RET >::RET;
 
          /// all results are based on the first argument operands type, if NoDim then base on the second argument.
          using TResult = SystemOfUnits::UnitType
@@ -238,6 +261,8 @@ namespace SystemOfUnits
             , Mass, Dim::eM
             , Temperature, Dim::eT
             , Charge, Dim::eQ
+            , Substance, Dim::eN
+            , Luminous, Dim::eJ
             >;
 
          /// constructor initializes references to the operands.
@@ -255,26 +280,27 @@ namespace SystemOfUnits
 
             // line will compiler error if not the same compatible types
             static_assert( t_base::ALLTYPES_THE_SAME::val, "line will compiler error if not the same compatible types" );
-            static_assert(Dim::eT == Dim::Z || Dim::eT == 1 || Dim::eT == -1, "T must not be greater abs(1)");
+            static_assert(Dim::eT == 0 || Dim::eT == 1 || Dim::eT == -1, "T must not be greater abs(1)");
 
-            return TResult
-               ( m_r1.amount() 
-               * t_base::LenType::toBase()
-               * t_base::TimeType::toBase()
-               * t_base::MassType::toBase()  // TODO: what about Temperature and charge?
-               * t_base::ChargeType::toBase()
-               * m_r2.amount()
-               );
+            typename TResult::t_float result = m_r1.amount() * m_r2.amount();
+
+            if constexpr (!t_base::R1::type::Length::IsBase or !t_base::R2::type::Length::IsBase) { result *= t_base::LenType::toBase(); }
+            if constexpr (!t_base::R1::type::Time::IsBase or !t_base::R2::type::Time::IsBase) { result *= t_base::TimeType::toBase(); }
+            if constexpr (!t_base::R1::type::Mass::IsBase or !t_base::R2::type::Mass::IsBase) { result *= t_base::MassType::toBase(); }
+            if constexpr (!t_base::R1::type::Charge::IsBase or !t_base::R2::type::Charge::IsBase) { result *= t_base::ChargeType::toBase(); }
+            // Nothing for Substance since only one type currently
+            // Nothing for Luminous since only one type currently
+            return TResult(result);
          }
       };
 
       /// a class for objects that represents the division of two operands
-      template< typename T1, typename T2 >
+      template< UnitSpecies T1, UnitSpecies T2 >
       class Div_Result : public operators::Base< T1, T2 >
       {
          using t_base = Base< T1, T2 >;
-         typename t_base::R1::ExprRef m_r1;    /// first operand reference
-         typename t_base::R2::ExprRef m_r2;    /// second operand reference
+         typename t_base::R1::ExprRef m_r1{ 0.0 };    /// first operand reference
+         typename t_base::R2::ExprRef m_r2{ 0.0 };    /// second operand reference
 
       public:
          using R1 = t_base::R1;
@@ -287,14 +313,18 @@ namespace SystemOfUnits
             , eM = R1::eM - R2::eM   /// Mass Dimensional 
             , eT = R1::eT - R2::eT   /// Temperature Dimensional 
             , eQ = R1::eQ - R2::eQ   /// Charge Dimensional 
+            , eN = R1::eN - R2::eN
+            , eJ = R1::eJ - R2::eJ
          };
 
          // Yes, these lines are long, but kept long to help the eye catch an error.
-         using Length      = typename IF< Dim::eL==Dim::Z, typename R1::Length,      typename IF<R1::eL!=0, typename R1::Length,      typename R2::Length>::RET >::RET;
-         using Time        = typename IF< Dim::et==Dim::Z, typename R1::Time,        typename IF<R1::et!=0, typename R1::Time  ,      typename R2::Time  >::RET >::RET;
-         using Mass        = typename IF< Dim::eM==Dim::Z, typename R1::Mass,        typename IF<R1::eM!=0, typename R1::Mass  ,      typename R2::Mass  >::RET >::RET;
-         using Temperature = typename IF< Dim::eT==Dim::Z, typename R1::Temperature, typename IF<R1::eT!=0, typename R1::Temperature, typename R2::Temperature>::RET >::RET;
-         using Charge      = typename IF< Dim::eQ==Dim::Z, typename R1::Charge   ,   typename IF<R1::eQ!=0, typename R1::Charge,      typename R2::Charge>::RET >::RET;
+         using Length      = typename IF< Dim::eL==0, typename R1::Length,      typename IF<R1::eL!=0, typename R1::Length,      typename R2::Length>::RET >::RET;
+         using Time        = typename IF< Dim::et==0, typename R1::Time,        typename IF<R1::et!=0, typename R1::Time  ,      typename R2::Time  >::RET >::RET;
+         using Mass        = typename IF< Dim::eM==0, typename R1::Mass,        typename IF<R1::eM!=0, typename R1::Mass  ,      typename R2::Mass  >::RET >::RET;
+         using Temperature = typename IF< Dim::eT==0, typename R1::Temperature, typename IF<R1::eT!=0, typename R1::Temperature, typename R2::Temperature>::RET >::RET;
+         using Charge      = typename IF< Dim::eQ==0, typename R1::Charge   ,   typename IF<R1::eQ!=0, typename R1::Charge,      typename R2::Charge>::RET >::RET;
+         using Substance   = typename IF< Dim::eN == 0, typename R1::Substance, typename IF<R1::eN != 0, typename R1::Substance, typename R2::Substance>::RET >::RET;
+         using Luminous    = typename IF< Dim::eJ == 0, typename R1::Luminous, typename IF<R1::eJ != 0, typename R1::Luminous, typename R2::Luminous>::RET >::RET;
 
          /// all results are based on the first argument operands type, if NoDim then base on the second argument.
          using TResult = SystemOfUnits::UnitType
@@ -303,6 +333,8 @@ namespace SystemOfUnits
             , Mass, Dim::eM
             , Temperature, Dim::eT
             , Charge, Dim::eQ
+            , Substance, Dim::eN
+            , Luminous, Dim::eJ
             >;
 
          /// constructor.
@@ -320,15 +352,15 @@ namespace SystemOfUnits
             static_assert(t_base::ALLTYPES_THE_SAME::val, "line will compile error if not the same compatible types" );
             static_assert(Dim::eT == Dim::Z || Dim::eT == 1 || Dim::eT == -1 ,"T must not be greater abs(1)");
 
-            return TResult
-               ( 
-               m_r1.amount() 
-               / t_base::LenType::toBase()
-               / t_base::TimeType::toBase()
-               / t_base::MassType::toBase()
-               / t_base::ChargeType::toBase()
-               / m_r2.amount() 
-               );
+            typename TResult::t_float result = m_r1.amount() / m_r2.amount();
+
+            if constexpr (!t_base::R1::type::Length::IsBase or !t_base::R2::type::Length::IsBase) { result /= t_base::LenType::toBase(); }
+            if constexpr (!t_base::R1::type::Time::IsBase or !t_base::R2::type::Time::IsBase) { result /= t_base::TimeType::toBase(); }
+            if constexpr (!t_base::R1::type::Mass::IsBase or !t_base::R2::type::Mass::IsBase) { result /= t_base::MassType::toBase(); }
+            if constexpr (!t_base::R1::type::Charge::IsBase or !t_base::R2::type::Charge::IsBase) { result /= t_base::ChargeType::toBase(); }
+            // Nothing for Substance since only one type currently
+            // Nothing for Luminous since only one type currently
+            return TResult(result);
          }
       };
    }  // end of namespace operators

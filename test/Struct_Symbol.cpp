@@ -46,6 +46,12 @@ TEST(Struct_Symbol, is_SymbolForDimensionTest)
    static_assert( SystemOfUnits::helpers::is_SymbolForDimension< Metric::AtomicUnit::Meter >::value );
    static_assert(SystemOfUnits::helpers::is_SymbolForDimension< SystemOfUnits::AtomicUnit::celsius >::value);
    static_assert( !SystemOfUnits::helpers::is_SymbolForDimension< double >::value);
+
+   static_assert(SystemOfUnits::helpers::is_SymbolForDimension< SystemOfUnits::Length >::value, "Shows that is_SymbolForDimension<> works correctly");
+   static_assert(SystemOfUnits::helpers::is_SymbolForDimension< SystemOfUnits::Temperature >::value);
+   static_assert(SystemOfUnits::helpers::is_SymbolForDimension< SystemOfUnits::ElectricCurrent >::value);
+   static_assert(SystemOfUnits::helpers::is_SymbolForDimension< SystemOfUnits::NO_DIM >::value);
+   SUCCEED();
 }
 
 // Copyright © 2005-2022 "Curt" Leslie L. Martin, All rights reserved.

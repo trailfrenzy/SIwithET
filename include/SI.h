@@ -4,6 +4,8 @@
 #ifndef SI_INCLUDE_H_07MAY2003
 #define SI_INCLUDE_H_07MAY2003
 #include "Struct_Symbol.h"
+#include "LuminusBaseUnit.h"
+#include "SubstanceBaseUnit.h"
 #include <concepts>
 
 namespace SystemOfUnits /// covers the basics of the system
@@ -15,6 +17,8 @@ namespace SystemOfUnits /// covers the basics of the system
       , MassRule M,        int iM    // mass
       , TemperatureRule T, int iT    // temperature
       , CurrentRule Q,     int iQ =0 // charge
+      , SubstanceRule N = Metric::AtomicUnit::Mole,   int iN=0
+      , LuminousRule J = Metric::AtomicUnit::Candela, int iJ=0
    >
    class UnitType : public TraitUnit
    {
@@ -30,6 +34,8 @@ namespace SystemOfUnits /// covers the basics of the system
          , eM = iM   /*!< Dimensional of Mass */
          , eT = iT   /*!< Dimensional of Temperature */
          , eQ = iQ   /*!< Dimensional of Charge */
+         , eN = iN
+         , eJ = iJ
       };
 
       // Quantity as typedefs
@@ -38,6 +44,8 @@ namespace SystemOfUnits /// covers the basics of the system
       using Mass= M;         /*!<  Quantity type for Mass */
       using Temperature = T; /*!<  Quantity type for Temperature */
       using Charge = Q ;     /*!<  Quantity type for Charge */
+      using Substance = N;
+      using Luminous = J;
 
       /// Used in all class methods and friend functions for their noexcept()
       enum:bool{ b_Test = noexcept(Length() ) };
@@ -95,7 +103,7 @@ namespace SystemOfUnits /// covers the basics of the system
 
       /**  Returns wheather the class is a zero dimensions or not.
       * @return bool true if UnitType has zero dimensions. */
-      constexpr static bool isZeroDimensions() noexcept { return eL == 0 && et == 0 && eM == 0 && eT == 0 && eQ == 0; }
+      constexpr static bool isZeroDimensions() noexcept { return eL == 0 && et == 0 && eM == 0 && eT == 0 && eQ == 0 && eN==0 && eJ==0; }
 
       /** comparison operator which enforces Dimensional Homogeneity
        * @param UnitType (or numeric type) on the left hand side
@@ -255,7 +263,10 @@ namespace SystemOfUnits /// covers the basics of the system
                         , RT::Time, -1 * RT::et
                         , RT::Mass, -1 * RT::eM
                         , RT::Temperature, -1 * RT::eT
-                        , RT::Charge, -1 * RT::eQ >
+                        , RT::Charge, -1 * RT::eQ
+                        , RT::Substance, -1 * RT::eN
+                        , RT::Luminous, -1 * RT::eJ
+         >
             (lf / rt.m_amount);
       }
 
@@ -337,22 +348,29 @@ namespace SystemOfUnits /// covers the basics of the system
 
    /// Create a struct base on the quantity types.
    /// Used as a builder to create different types with the same quantities.  See builder pattern.
-   template< LengthRule LEN, TimeRule TIM, MassRule MAS, TemperatureRule TEM, CurrentRule CHR > struct MakeType
+   template< LengthRule LEN
+       , TimeRule TIM
+       , MassRule MAS
+       , TemperatureRule TEM
+       , CurrentRule CHR
+       , SubstanceRule SUB = Metric::AtomicUnit::Mole
+       , LuminousRule LUM  = Metric::AtomicUnit::Candela 
+   > struct MakeType
    {
       /// template is used to create UnitTypes with just the dimension types.
-      template<int L, int t, int M, int T, int Q> struct MakeDim
+      template<int L, int t, int M, int T, int Q, int N=0, int J=0> struct MakeDim
       {
          using type = UnitType< LEN, L, TIM, t, MAS, M, TEM, T, CHR, Q >;
       };
 
-      template<int L, int t, int M > struct MakeDim<L, t, M, 0, 0>
+      template<int L, int t, int M > struct MakeDim<L, t, M, 0, 0, 0, 0>
       {
          using type = UnitType< LEN, L, TIM, t, MAS, M, TEM, 0, CHR, 0 >;
       };
    };
 
    /// a type with no dimensions or quantity types.  The same size as a double.
-   using tNoUnit = UnitType< NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0 >;
+   using tNoUnit = UnitType< NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0, NoDim, 0 >;
 
    /// used to call fromBase() while using the toBase() static method.  Used in conversion_cast<>.
    template< Dimensional ARG > struct MakeFrom : helpers::Trait_SymbolForDimension
@@ -368,7 +386,7 @@ namespace SOU = SystemOfUnits; ///< Shortcut to the namespace.
 /** 
  @mainpage My Personal Index Page
  @section copyright_sec Copyright
- Copyright © 2003-2022 "Curt" Leslie L. Martin, All rights reserved.
+ Copyright © 2003-2023 "Curt" Leslie L. Martin, All rights reserved.
  curt.leslie.lewis.martin@gmail.com
 
  Permission to use, copy, modify, and distribute this software for any
