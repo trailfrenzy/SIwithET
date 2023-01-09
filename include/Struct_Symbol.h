@@ -72,10 +72,8 @@ namespace SystemOfUnits {
       /// Uses the Trait to verify if template paramater is actually a SymbolForDimension type.
       /// </summary>
       /// <typeparam name="T"></typeparam>
-      template< typename T > struct is_SymbolForDimension // : public std::false_type {};
-      {
-         constexpr static bool value = std::is_base_of< SystemOfUnits::helpers::Trait_SymbolForDimension, T > ::value;
-      };
+      template< typename T > struct is_SymbolForDimension
+          : std::integral_constant<bool, std::is_base_of< SystemOfUnits::helpers::Trait_SymbolForDimension, T >::value > {};
 
       enum :char unsigned { THETA = 233 }; // from www.asciitable.com
    }
@@ -86,40 +84,28 @@ namespace SystemOfUnits {
    using Time            = helpers::SymbolForDimension<'T'>;
    using Temperature     = helpers::SymbolForDimension< char(helpers::THETA) >;
    using ElectricCurrent = helpers::SymbolForDimension<'I'>;
+   using Substance       = helpers::SymbolForDimension<'N'>;
+   using Luminous        = helpers::SymbolForDimension<'J'>;
    using NO_DIM          = helpers::SymbolForDimension<' '>;
 
    // Contrait for one of the type Dimensions. The adjective dimensional refers to relating to the actual thing.
    template< typename T > concept Dimensional = helpers::is_SymbolForDimension<T>::value;
 
-   template< Dimensional BASE_UNIT > struct is_Dimensionless
-   {
-      constexpr static bool value = BASE_UNIT::sym == ' ';
-   };
+   template< Dimensional BASE_UNIT > struct is_Dimensionless : std::integral_constant<bool, BASE_UNIT::sym == ' ' >{};
 
-   template< Dimensional BASE_UNIT > struct is_Length //: std::is_integral<bool, std::is_base_of< SystemOfUnits::helpers::SymbolForDimension<'L'>, T>::value >::value;
-   {
-      constexpr static bool value = BASE_UNIT::sym == 'L';
-   };
+   template< Dimensional BASE_UNIT > struct is_Length : std::integral_constant<bool, BASE_UNIT::sym == 'L' > {};
 
-   template<Dimensional BASE_UNIT > struct is_Time
-   {
-      constexpr static bool value = BASE_UNIT::sym == 'T';
-   };
+   template<Dimensional BASE_UNIT > struct is_Time : std::integral_constant<bool, BASE_UNIT::sym == 'T' > {};
 
-   template<Dimensional BASE_UNIT > struct is_Mass
-   {
-      constexpr static bool value = BASE_UNIT::sym == 'M';
-   };
+   template<Dimensional BASE_UNIT > struct is_Mass : std::integral_constant<bool, BASE_UNIT::sym == 'M' > {};
 
-   template<Dimensional BASE_UNIT > struct is_Temperature
-   {
-      constexpr static bool value = BASE_UNIT::sym == helpers::THETA;
-   };
+   template<Dimensional BASE_UNIT > struct is_Temperature : std::integral_constant<bool, BASE_UNIT::sym == helpers::THETA > {};
 
-   template<Dimensional BASE_UNIT > struct is_Current
-   {
-      constexpr static bool value = BASE_UNIT::sym == 'I';
-   };
+   template<Dimensional BASE_UNIT > struct is_Current : std::integral_constant<bool, BASE_UNIT::sym == 'I' > {};
+
+   template<Dimensional BASE_UNIT > struct is_Substance : std::integral_constant<bool, BASE_UNIT::sym == 'N' > {};
+
+   template<Dimensional BASE_UNIT > struct is_Luminous : std::integral_constant<bool, BASE_UNIT::sym == 'J' > {};
 
    // Concepts used as the rules in building SI::Units
 
@@ -140,12 +126,18 @@ namespace SystemOfUnits {
    /// Constrait for Current to ensure only a Current type is passed for an arugment.
    template<typename T> concept CurrentRule = is_Current<T>::value || Dimensionless<T>;
 
+   /// Constrait for Substance to ensure only a Substance type is passed for an arugment.
+   template<typename T> concept SubstanceRule = is_Substance<T>::value || Dimensionless<T>;
+
+   /// Constrait for Luminous to ensure only a Luminous type is passed for an arugment.
+   template<typename T> concept LuminousRule = is_Luminous<T>::value || Dimensionless<T>;
+
    /// Used as the base class for UnitTypes for use in the identity template.
    struct TraitUnit {};
 }
 #endif
 
-// Copyright © 2005-2022 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2023 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any
