@@ -31,6 +31,8 @@ namespace SystemOfUnits
       static_assert(LF::eM == RT::eM, "Mass not the same. See next line of error output for location.");
       static_assert(LF::eT == RT::eT, "Temp not the same. See next line of error output for location.");
       static_assert(LF::eQ == RT::eQ, "Charge not the same. See next line of error output for location.");
+	  static_assert(LF::eN == RT::eN, "Substance not the same. See next line of error output for location.");
+	  static_assert(LF::eJ == RT::eJ, "Luminous not the same. See next line of error output for location.");
       return true;
    }
 
@@ -38,7 +40,7 @@ namespace SystemOfUnits
    template< typename LF, typename RT >
    constexpr bool dimensions_same() noexcept
    {
-      return (LF::eL == RT::eL && LF::et == RT::et && LF::eM == RT::eM && LF::eT == RT::eT && LF::eQ == RT::eQ);
+      return (LF::eL == RT::eL && LF::et == RT::et && LF::eM == RT::eM && LF::eT == RT::eT && LF::eQ == RT::eQ && LF::eN == RT::eN && LF::eJ == RT::eJ);
    }
 
 	/** Template used to convert between different types that have the same dimensions.
@@ -53,7 +55,7 @@ namespace SystemOfUnits
       static_assert( dimensions_same_assert< OUT, IN >(), "Dimensions of the two types are not the same");
 
 		/// Use the incoming types as the base types.
-		enum { eL = IN::eL, et = IN::et, eM = IN::eM, eT = IN::eT, eQ = IN::eQ };
+		enum { eL = IN::eL, et = IN::et, eM = IN::eM, eT = IN::eT, eQ = IN::eQ, eN = IN::eN, eJ = IN::eJ };
 
 		// set the value to the incoming scaler before correcting the value
       typename OUT::t_float out{ in.amount() };
@@ -61,25 +63,25 @@ namespace SystemOfUnits
 		using namespace helpers;
 
 		// correct the length
-		if constexpr(0 != eL) {  // check to see if compiles out when zero
+		if constexpr(0 != eL && !std::is_same_v< typename OUT::Length, typename IN::Length> ) {
 			out *=
 				P< MakeFrom< typename OUT::Length > >::thePower<eL>::toBase() // converts the outgoing to the base unit
 				* P< typename IN::Length >::thePower<eL>::toBase();         // converts the incoming to the base unit
 		}
 		// correct the time
-		if constexpr (0 != et) {
+		if constexpr (0 != et && !std::is_same_v< typename OUT::Time, typename IN::Time> ) {
 			out *=
 				P< MakeFrom< typename OUT::Time> >::thePower<et>::toBase()
 				* P< typename IN::Time >::thePower<et>::toBase();
 		}
 		// correct the mass
-		if constexpr (0 != eM) {
+		if constexpr (0 != eM && !std::is_same_v< typename OUT::Mass, typename IN::Mass> ) {
 			out *=
 				P< MakeFrom< typename OUT::Mass> >::thePower<eM>::toBase()
 				* P< typename IN::Mass >::thePower<eM>::toBase();
 		}
 		// need a correct the temperature
-		if constexpr (eT == 1) {
+		if constexpr (eT == 1 && !std::is_same_v< typename OUT::Temperature, typename IN::Temperature>) {
 			out =  IN::Temperature::toBase(out);  // to K
 			out = OUT::Temperature::fromBase(out); // from K
 		}
@@ -87,16 +89,31 @@ namespace SystemOfUnits
 		static_assert( eT== 0 || eT==1, "Temperature dimension may only be 1 or 0" );  // TODO: correct so it may be negitive 1.
 
 		// correct the charge
-		if constexpr (0 != eQ) {
+		if constexpr (0 != eQ && !std::is_same_v< typename OUT::Charge, typename IN::Charge>) {
 			out *=
 				P< MakeFrom< typename OUT::Charge> >::thePower<eQ>::toBase()
 				* P< typename IN::Charge >::thePower<eQ>::toBase();
 		}
+
+		// correct the Substance
+		if constexpr (0 != eN && !std::is_same_v< typename OUT::Substance, typename IN::Substance>) {
+			out *=
+				P< MakeFrom< typename OUT::Substance> >::thePower<eN>::toBase()
+				* P< typename IN::Substance >::thePower<eN>::toBase();
+		}
+
+		// correct the Luminous
+		if constexpr (0 != eJ && !std::is_same_v< typename OUT::Luminous, typename IN::Luminous>) {
+			out *=
+				P< MakeFrom< typename OUT::Luminous> >::thePower<eJ>::toBase()
+				* P< typename IN::Luminous >::thePower<eJ>::toBase();
+		}
+
 		// during the return the constructor from a scalar value will be used.
       return OUT{ out };
 	}
 }
-// Copyright © 2005-2022 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2023 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

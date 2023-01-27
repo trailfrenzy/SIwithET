@@ -565,8 +565,16 @@ TEST(Multiply, constexpr_Mul) {
    constexpr auto mCubed{ m1 * mSq };
    EXPECT_UNIT_EQ(mCubed, 32.0) << "missing a constexp if this fails";
    static_assert(mCubed == 32.0, "Shows all the mulipication took place at compile time including the comparison operator");
-
+   static_assert(m1 * mSq == 32.0);
 }
+
+TEST(BasicSI, Mult_float_constexpr)
+{
+    constexpr auto m1 = t_Meter(5.0);
+    constexpr auto m2 = t_Meter(2.0);
+    static_assert(m1 * m2 == 10.0);
+}
+
 
 // TODO: Why won't auto TestFunctionUsedBelow(SystemOfUnits::UnitSerial auto a, SystemOfUnits::UnitSerial auto b){};  work
 template <SystemOfUnits::UnitSpecies T, SystemOfUnits::UnitSpecies U>

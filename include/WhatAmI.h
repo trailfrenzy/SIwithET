@@ -25,6 +25,7 @@ namespace SystemOfUnits
       using t_bufPair = std::pair< std::ostringstream, std::ostringstream >;
 
       template<typename char_type>
+      inline
       auto PairToString(std::pair< std::basic_ostringstream<char_type>, std::basic_ostringstream<char_type> > &buf)
       {
          std::basic_ostringstream<char_type> out;
@@ -41,8 +42,8 @@ namespace SystemOfUnits
 
       /// used by what am i
       /// @prama std::stringstream is used to create the return stream
-      //template< typename TYPE, int DIM > void printAtom( std::ostringstream &ret )
       template< Dimensional TYPE, int DIM, typename T_BufPair >
+      inline
       void printAtom(T_BufPair& buf)
          noexcept( noexcept(T_BufPair) && noexcept(TYPE))
       {
@@ -75,7 +76,6 @@ namespace SystemOfUnits
    /// @note The function builds the sequence of stream inserters at compile time but will still call the stream inserters at run time. 
    template< typename char_type, typename T >
    inline auto UnitName( T )
-      //noexcept(noexcept(std::basic_ostringstream<char_type>) && noexcept(T) )
    {
       typedef T Type ;
       // CoherentUnit has a name defined by the user or system.
@@ -84,18 +84,17 @@ namespace SystemOfUnits
       else if constexpr (Type::isZeroDimensions()) return std::basic_string<char_type>{};
       else
       {
-         //std::basic_ostringstream<char_type> buf;
          std::pair< std::basic_ostringstream<char_type>, std::basic_ostringstream<char_type> > buf;
 
          // use a template map to sort these later
-         helpers::printAtom< typename T::Length, T::eL >(buf);
-         helpers::printAtom< typename T::Time, T::et >(buf);
-         helpers::printAtom< typename T::Mass, T::eM >(buf);
-         helpers::printAtom< typename T::Temperature, T::eT >(buf);
-         helpers::printAtom< typename T::Charge, T::eQ >(buf);
+         if constexpr (T::eL) helpers::printAtom< typename T::Length, T::eL >(buf);
+         if constexpr (T::et) helpers::printAtom< typename T::Time, T::et >(buf);
+         if constexpr (T::eM) helpers::printAtom< typename T::Mass, T::eM >(buf);
+         if constexpr (T::eT) helpers::printAtom< typename T::Temperature, T::eT >(buf);
+         if constexpr (T::eQ) helpers::printAtom< typename T::Charge, T::eQ >(buf);
+         if constexpr (T::eN) helpers::printAtom< typename T::Substance, T::eN>(buf);
+         if constexpr (T::eJ) helpers::printAtom< typename T::Luminous, T::eJ>(buf);
 
-         // NOTE: causes error with noDim.
-         //return buf.str().erase(buf.str().size() - 1); // removes the last space char in the buffer at runtime.
          return helpers::PairToString(buf);
       }
    }
@@ -151,17 +150,9 @@ namespace SystemOfUnits
          if constexpr (0 != T::et) OneDim<T::Time::sym, T::et >(buf);
          if constexpr (0 != T::eT) OneDim<T::Temperature::sym, T::eT >(buf);
          if constexpr (0 != T::eQ) OneDim<T::Charge::sym, T::eQ >(buf);
+         if constexpr (0 != T::eN) OneDim<T::Substance::sym, T::eN>(buf);
+         if constexpr (0 != T::eJ) OneDim<T::Luminus::sym, T::eJ>(buf);
 
-         //std::basic_ostringstream<char_type> out;
-
-         //// if numerator is empty insert a 1 into the stream.
-         //if (buf.first.tellp() != std::streampos(0)) out << buf.first.str();
-         //else out << '1';
-
-         //// if denominator has a value then insert a slash prior to the values.
-         //if (buf.second.tellp() != std::streampos(0)) out << '/' << buf.second.str();
-
-         //return out.str();
          return helpers::PairToString<char_type>(buf);
       }
    }
@@ -212,7 +203,7 @@ inline auto operator<<(TOUT& out, SystemOfUnits::ShowUnits_t<TOUT>* (*)()) //-> 
 }
 
 
-// Copyright © 2005-2022 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2023 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any

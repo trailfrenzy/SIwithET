@@ -4,7 +4,7 @@
 #ifndef SI_INCLUDE_H_07MAY2003
 #define SI_INCLUDE_H_07MAY2003
 #include "Struct_Symbol.h"
-#include "LuminusBaseUnit.h"
+#include "LuminousBaseUnit.h"
 #include "SubstanceBaseUnit.h"
 #include <concepts>
 

@@ -14,6 +14,8 @@ namespace SystemOfUnits
          , typename UNIT::Mass, UNIT::eM + UNIT::eM
          , typename UNIT::Temperature, UNIT::eT + UNIT::eT
          , typename UNIT::Charge, UNIT::eQ + UNIT::eQ
+         , typename UNIT::Substance, UNIT::eN + UNIT::eN
+         , typename UNIT::Luminous, UNIT::eJ + UNIT::eJ
          >;
    };
 }

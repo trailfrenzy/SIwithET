@@ -21,10 +21,6 @@ namespace SystemOfUnits
 		  using RET = ELSE;
 	  };
 
-	  /// pre C++ version 11 struct which is still used.
-	  //template <bool x> struct STATIC_ASSERTION_FAILURE;
-
-	  //template <> struct STATIC_ASSERTION_FAILURE<true> { enum { value = true }; };
 
 	  namespace TL 
 	  {

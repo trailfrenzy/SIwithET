@@ -127,7 +127,7 @@
     <ClInclude Include="..\include\Dimension.h" />
     <ClInclude Include="..\include\EnglishBaseUnits.h" />
     <ClInclude Include="..\include\EnglishTypes.h" />
-    <ClInclude Include="..\include\LuminusBaseUnit.h" />
+    <ClInclude Include="..\include\LuminousBaseUnit.h" />
     <ClInclude Include="..\include\Make_Squared.h" />
     <ClInclude Include="..\include\MetricBaseUnits.h" />
     <ClInclude Include="..\include\MetricTypes.h" />

@@ -129,6 +129,7 @@ TYPED_TEST_P(SITest, Addition_constexp) {
    constexpr TAG::t_type a{ 2 };
    constexpr TAG::t_type b{ 3.0 };
    constexpr auto c = a + b;
+   static_assert(a + b == 5,"Shows addition takes place at compile time");
    EXPECT_UNIT_EQ(c, 5.0);
    static_assert(c == 5.0, "Proves the addtion took place at compile time.");
 }
@@ -405,6 +406,12 @@ TEST(Exception, DimTypes)
    static_assert(noexcept( t_Meter::Time()));
    static_assert(noexcept(t_Meter::Temperature()));
    static_assert(noexcept(t_Meter::Charge()));
+}
+
+TEST(BasicSI, IsArithmetic)
+{
+	static_assert(!std::is_arithmetic<t_Meter>::value, "Shows UnitType is not confused with Arithmetic types");
+	static_assert(!std::is_arithmetic<Watt>::value);
 }
 
 TEST(BasicSI, Concepts_CompileError )

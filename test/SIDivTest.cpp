@@ -70,13 +70,13 @@ TEST_F(DivisionFirst, Constexpr_scaler) {
 TEST_F(DivisionFirst, TestDiv_Result)
 {
    // division during intialization
-   t_Meter m(t_MeterSq(1.0) / t_Meter(1.0));
+   constexpr t_Meter m(t_MeterSq(1.0) / t_Meter(1.0));
    EXPECT_UNIT_EQ(m, 1.0);
 
-   t_Meter m2 = t_MeterSq(1.0) / t_Meter(2.0);
+   constexpr t_Meter m2 = t_MeterSq(1.0) / t_Meter(2.0);
    EXPECT_UNIT_EQ(m2, 0.5);
 
-   auto m3 = t_MeterSq(1.0) / t_Meter(4.0);
+   constexpr auto m3 = t_MeterSq(1.0) / t_Meter(4.0);
    EXPECT_EQ("[L]", SOU::Diminsion(m3));
    EXPECT_UNIT_EQ(m3, 0.25);
 }
@@ -84,8 +84,9 @@ TEST_F(DivisionFirst, TestDiv_Result)
 /// Test with cube
 TEST_F(DivisionFirst, TestWithCube)
 {
-   t_MeterSq sq1 = t_MeterCubed(9.0) / t_Meter(2.0);
+   constexpr t_MeterSq sq1 = t_MeterCubed(9.0) / t_Meter(2.0);
    EXPECT_UNIT_EQ(sq1, 4.5);
+   static_assert( sq1 == t_MeterCubed(9.0) / t_Meter(2.0) );
 
    t_Meter m1 = t_MeterCubed(15.0) / t_MeterSq(5.0);
    EXPECT_UNIT_EQ(m1, 3.0);
@@ -102,8 +103,9 @@ TEST_F(DivisionFirst, TestWithCube)
 /// of division.
 TEST_F(DivisionFirst, TestChaining)
 {
-   t_Meter m1 = t_Meter(2.0) * t_Meter(2.0) / t_Meter(2.0);
+   constexpr t_Meter m1 = t_Meter(2.0) * t_Meter(2.0) / t_Meter(2.0);
    EXPECT_UNIT_EQ(m1, 2.0);
+   static_assert(t_Meter(2.0) * t_Meter(2.0) / t_Meter(2.0) == 2.0, "Divsion Chaning at compile time");
 
    t_Meter m2 = t_MeterCubed(27.0) / t_Meter(3.0) / t_Meter(3.0);
    EXPECT_UNIT_EQ(m2, 3.0);
@@ -146,6 +148,7 @@ TEST_F(DivisionFirst, DimensionLessDenom) {
 TEST_F(DivisionFirst, DimensionlessNum) {
    auto res = 36.0 / t_MeterSq(12.0);
    EXPECT_UNIT_EQ(3.0, res );
+   static_assert(3.0 == 36.0 / t_MeterSq(12.0));
    ASSERT_EQ(SOU::Diminsion(res), std::string("1/[L]^2"));
 }
 

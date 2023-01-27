@@ -94,10 +94,11 @@ TEST_F(conversion_castTest, TestLengthSquared)
 {
    typedef SOU::MakeSQ< Metric::t_meter >::type t_meterSq;
    typedef SOU::MakeSQ< Metric::t_centimeter >::type t_centSq;
-   t_centSq cent2{ 10000.0 };
+   constexpr t_centSq cent2{ 10000.0 };
 
-   t_meterSq m2 = SOU::conversion_cast<t_meterSq>(cent2);
+   constexpr t_meterSq m2 = SOU::conversion_cast<t_meterSq>(cent2);
 
+   static_assert(SOU::conversion_cast<t_meterSq>(cent2) == 1.0, "conversion_cast<> works at compile time");
    EXPECT_UNIT_EQ(1.0, m2 );
    EXPECT_UNIT_EQ(1.0, m2)
       << "works since the inside of EXPECT_DOUBLE_EQ expects both to be the same type";

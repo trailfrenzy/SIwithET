@@ -106,9 +106,8 @@ template< int SIZE > void MakeDimTest()
 	// Produce the string a different way to test it.
 	std::stringstream stream;
 	stream << "meter^" << SIZE;
-	std::string const str = stream.str();
 
-	EXPECT_EQ(str, SOU::WhatAmI(meter));
+	EXPECT_EQ(stream.str(), SOU::WhatAmI(meter));
 }
 
 TEST(WhatAmITest, TestWithTwoDim)
@@ -161,9 +160,13 @@ TEST(WhatAmITest, NoDim )
 	EXPECT_EQ("", SOU::WhatAmI(val) ) << "Test caused an error from erasing the last astrick if empty";
 }
 
+TEST(WhatAmITest, Luminous)
+{
+	using type = Metric::AUMetric::MakeDim<-2, 0, 0, 0, 0, 0, 2>::type;
+	EXPECT_EQ("candela^2/meter^2", SOU::WhatAmI(type(5.09)));
+}
 
-
-// Copyright © 2005-2020 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2023 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any
