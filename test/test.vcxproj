@@ -169,6 +169,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="conversion_castTest.cpp" />
+    <ClCompile Include="Dimension.t.cpp" />
     <ClCompile Include="ElectricCurrentTest.cpp" />
     <ClCompile Include="EnglishUnitTest.cpp" />
     <ClCompile Include="InserterTest.cpp" />

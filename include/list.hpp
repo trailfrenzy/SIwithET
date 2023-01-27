@@ -60,6 +60,10 @@ namespace Meta
       typedef typename LIST<a, LIST<b, LIST<c, LIST<d, LIST<e, LIST<f, EmptyList> > > > > > TYPE;
    };
 
+   template<typename a, typename b, typename c, typename d, typename e, typename f, typename g, typename h> struct LIST8 {
+       typedef typename LIST<a, LIST<b, LIST<c, LIST<d, LIST<e, LIST<f, LIST<g, LIST<h, EmptyList> > > > > > > > TYPE;
+   };
+
    // prepend
    template< typename a, class L> struct PREPEND
    {
@@ -143,10 +147,10 @@ namespace Meta
    private:
       typedef typename SPLIT<TAIL>::TYPE _SPLIT_REC;
    public:
-      typedef typename PAIR<
+      using TYPE = typename PAIR<
          typename PREPEND<a, typename _SPLIT_REC::FST>::TYPE,
          typename PREPEND<b, typename _SPLIT_REC::SND>::TYPE
-      > TYPE;
+      >;
    };
 
    // was template <int, int> class P

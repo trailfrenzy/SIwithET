@@ -86,7 +86,10 @@ namespace SystemOfUnits::literals
    {
       return Metric::t_milimeter{ d };
    }
-
+   constexpr auto operator"" _sec(long double d) noexcept
+   {
+       return Metric::t_second{ d };
+   }
 }
 // Copyright © 2005-2019 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com

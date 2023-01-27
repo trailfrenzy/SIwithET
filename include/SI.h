@@ -358,15 +358,20 @@ namespace SystemOfUnits /// covers the basics of the system
    > struct MakeType
    {
       /// template is used to create UnitTypes with just the dimension types.
-      template<int L, int t, int M, int T, int Q, int N=0, int J=0> struct MakeDim
+      template<int L, int t, int M, int T, int Q, int N = 0, int J = 0> struct MakeDim
       {
-         using type = UnitType< LEN, L, TIM, t, MAS, M, TEM, T, CHR, Q >;
+          using type = UnitType< LEN, L, TIM, t, MAS, M, TEM, T, CHR, Q, SUB, N, LUM, J >;
       };
 
-      template<int L, int t, int M > struct MakeDim<L, t, M, 0, 0, 0, 0>
-      {
-         using type = UnitType< LEN, L, TIM, t, MAS, M, TEM, 0, CHR, 0 >;
-      };
+      //template<int L, int t, int M, int T, int Q > struct MakeDim<L, t, M, T, Q, 0, 0>
+      //{
+      //   using type = UnitType< LEN, L, TIM, t, MAS, M, TEM, T, CHR, Q, SUB, 0, LUM, 0 >;
+      //};
+       
+      //template<int L, int t, int M > struct MakeDim<L, t, M, 0, 0, 0, 0>
+      //{
+      //   using type = UnitType< LEN, L, TIM, t, MAS, M, TEM, 0, CHR, 0, SUB, 0, LUM, 0 >;
+      //};
    };
 
    /// a type with no dimensions or quantity types.  The same size as a double.

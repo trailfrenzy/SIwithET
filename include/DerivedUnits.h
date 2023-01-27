@@ -137,6 +137,34 @@ namespace SystemOfUnits
 
          return SystemOfUnits::CoherentUnit<Type, name_str >(d);
       }
+
+      /// Abosorbed Dose
+      inline auto operator"" _gray(long double d) noexcept
+      {
+          static constexpr char const name_str[] = "gray";
+          using Type = Metric::AUMetric::MakeDim< 2, -2, 0, 0, 0, 0, 0>::type;
+
+          return SystemOfUnits::CoherentUnit<Type, name_str >(d);
+      }
+
+      /// catalytic activity
+      inline auto operator"" _kat(long double d) noexcept
+      {
+          static constexpr char const name_str[] = "katal";
+          using Type = Metric::AUMetric::MakeDim<0, -1, 0, 0, 0, 1, 0>::type;
+
+          return SystemOfUnits::CoherentUnit<Type, name_str >(d);
+      }
+
+      /// Illuminance
+      inline auto operator"" _lux(long double d) noexcept
+      {
+          static constexpr char const name_str[] = "lux";
+          using Type = Metric::AUMetric::MakeDim<-2, 0, 0, 0, 0, 0, 1>::type;
+
+          return SystemOfUnits::CoherentUnit<Type, name_str >(d);
+      }
+
    }
 }
 

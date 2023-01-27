@@ -73,10 +73,12 @@ namespace SystemOfUnits
          using t_SingleLen = t_SingleDim< typename TYPE::Length, TYPE::eL>;
          using t_SingleTime = t_SingleDim< typename TYPE::Time, TYPE::et>;
          using t_SingleMass = t_SingleDim< typename TYPE::Mass, TYPE::eM>;
-         using t_SingleCharge = t_SingleDim< typename TYPE::Charge, TYPE::eQ >;
+         using t_SingleCharge = t_SingleDim< typename TYPE::Charge, TYPE::eQ>;
          using t_SingleTemp = t_SingleDim< typename TYPE::Temperature, TYPE::eT>;
+         using t_SingleSub = t_SingleDim< typename TYPE::Substance, TYPE::eN >;
+         using t_SingleLum = t_SingleDim< typename TYPE::Luminous, TYPE::eJ>;
 
-         using t_List = Meta::LIST6< t_SingleLen,  t_SingleTime,  t_SingleMass,  t_SingleTemp,  t_SingleCharge, helpers::t_SingleSolidus >::TYPE;
+         using t_List = Meta::LIST8< t_SingleLen,  t_SingleTime,  t_SingleMass,  t_SingleTemp,  t_SingleCharge, helpers::t_SingleSolidus, t_SingleSub, t_SingleLum >::TYPE;
 
          using t_Sorted = typename Meta::SORT<ORD, t_List >::TYPE;
          
@@ -86,8 +88,10 @@ namespace SystemOfUnits
          using DIM3 = typename Meta::At<  t_Sorted, 3 >::RET;
          using DIM4 = typename Meta::At<  t_Sorted, 4 >::RET;
          using DIM5 = typename Meta::At<  t_Sorted, 5 >::RET;
+         using DIM6 = typename Meta::At<  t_Sorted, 6 >::RET;
+         using DIM7 = typename Meta::At<  t_Sorted, 7 >::RET;
 
-         enum :bool { isFrontNeg = DIM0::DIM <= 0, isLastNeg = DIM5::DIM < 0 };
+         enum :bool { isFrontNeg = DIM0::DIM <= 0, isLastNeg = DIM7::DIM < 0 };
 
          std::string retStr;
 
@@ -100,6 +104,8 @@ namespace SystemOfUnits
              retStr += DIM3::c_str();
              retStr += DIM4::c_str();
              retStr += DIM5::c_str();
+             retStr += DIM6::c_str();
+             retStr += DIM7::c_str();
          }
          else if constexpr (not isFrontNeg and isLastNeg)
          {
@@ -110,6 +116,8 @@ namespace SystemOfUnits
              retStr += DIM3::c_str();
              retStr += DIM4::c_str();
              retStr += DIM5::c_str();
+             retStr += DIM6::c_str();
+             retStr += DIM7::c_str();
          }
          else
          {
@@ -120,6 +128,8 @@ namespace SystemOfUnits
              if constexpr (DIM3::DIM )retStr += DIM3::c_str();
              if constexpr (DIM4::DIM )retStr += DIM4::c_str();
              if constexpr (DIM5::DIM )retStr += DIM5::c_str();
+             if constexpr (DIM6::DIM)retStr += DIM6::c_str();
+             if constexpr (DIM7::DIM)retStr += DIM7::c_str();
          }
          return retStr;
       }
@@ -129,7 +139,7 @@ namespace SystemOfUnits
 }
 #endif // !SOI_DIMENSION_INCLUDE_H
 
-// Copyright © 2005-2022 "Curt" Leslie L. Martin, All rights reserved.
+// Copyright © 2005-2023 "Curt" Leslie L. Martin, All rights reserved.
 // curt.leslie.lewis.martin@gmail.com
 //
 // Permission to use, copy, modify, and distribute this software for any
